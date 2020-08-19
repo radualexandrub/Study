@@ -110,24 +110,41 @@ ORDER BY 1,2; --- sorteaza pirmele doua coloane precizate in ordine imediat dupa
 SELECT *, quantity*unit_price AS 'total price'
 FROM Order_items
 WHERE order_id=2
-ORDER BY 'total price' DESC
+ORDER BY 'total price' DESC;
 ```
 
 ### <a name="SELECT_LIMIT"></a>SELECT: LIMIT
 Get only the first 3/4/7/n customers (rows)
 ```
-SELECT * FROM Customers LIMIT 3
+SELECT * FROM Customers LIMIT 3;
 ```
 Useful to limit customers per page (eg page1:1-3, page2:4-6 etc)
 ```
 SELECT * FROM Customers
-LIMIT 6,3 --- afiseaza maxim 3 persoane si adauga un offset de 6 persoane (skip la primii 6)
+LIMIT 6,3; --- afiseaza maxim 3 persoane si adauga un offset de 6 persoane (skip la primii 6)
 ```
 
+---
 
 ## <a name="INNERJOIN"></a>INNER JOIN
 ```
 SELECT order_id, orders.customer_id, first_name, last_name
 FROM orders
-JOIN customers ON orders.customer_id = customers.customer_id
+JOIN customers ON orders.customer_id = customers.customer_id;
 ```
+```
+SELECT * FROM Sectii
+JOIN Pacienti ON Sectii.IdSectie = Paciennti.IdSectie;
+
+/* or */
+
+SELECT * FROM Pacienti
+JOIN Sectii ON Pacienti.IdSectie = Sectii.IdSectie;
+
+```
+| IdPacient | Nume        | Prenume | IdSectie | IdSectie | Nume | Buget |
+| --------- | ----------- | ------- | -------- | -------- | --- | ----- |
+| 1   | Popescu    | Ana | 1 | 1 | s1 | 5500
+| 2   | Munteanu    | Alex | 3 | 3 | s3 | 6000
+| 3   |        | | 2 | 2 | s2 | 5200 |
+| 4   |         | | 1 | 1 | s1 | 4000 |
