@@ -17,6 +17,9 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
 * [INSERT INTO](#INSERT)
   * [INSERT MULTIPLE VALUES INTO A TABLE](#INSERT_MULTIPLE)
   * [INSERT DATA INTO MULTIPLE TABLES](#INSERT_MULTIPLE2)
+* [UPDATE](#UPDATE)
+  * [UPDATE using **subqueries** in WHERE](#UPDATE2)
+* [Create a copy of a table](#CreateCopyTable)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -320,4 +323,83 @@ VALUES(LAST_INSERT_ID(), 1, 11, 2.95),
 | order_id | customer_id  | status |       | order_id | product_id        | quantity | price |
 | 1        | 1            | 1      |       | 13       | 1                 | 1        | 2.95  |
 |          |              |        |       | 13       | 2                 | 3        | 0.50  |
+
 Cele 2 tabele sunt in relatie parent-child.
+
+---
+
+## <a name="UPDATE"></a>UPDATE
+```
+UPDATE pacienti
+SET Nume='Enache', Prenume='Constatin', IdSectie=4
+WHERE IdPacient=20;
+```
+#### Dacă nu scriem WHERE, se va modifica totul! (If we don't include WHERE clause, all the data will be modified!)
+```
+UPDATE invoices
+SET
+  payment = invoice*0.5
+  payment_date = due_date
+WHERE client_id IN(3,4);
+```
+
+### <a name="UPDATE2"></a>UPDATE using subqueries in WHERE
+Exemplu pentru un tabel care contine numele, orasul, etc ale persoanelor in alt tabel:
+```
+UPDATE invoices
+SET
+   payment = invoices_total * 0.5,
+   payment_date = due_date
+WHERE client_id IN
+  (SELECT client_id
+  FROM clients
+  WHERE city IN ('New York', 'Bucharest'));
+```
+Exemplu2:
+```
+UPDATE orders
+SET comments = 'Gold Customer'
+WHERE customer_id IN
+  (SELECT customer_id
+  FROM customers
+  WHERE points > 3000);
+```
+
+---
+
+## <a name="CreateCopyTable"></a>Create a copy of a table
+```
+CREATE TABLE Orders_archive AS
+SELECT * 
+FROM orders;
+```
+Practic (toata partea dupa AS/ALIAS) este un subquery.
+OBS: Copia tabelei create (arhiva) nu va avea id ca fiind "primary key" (nici AutoIncrement sau NotNull) => va trebui sa le modificam noi apoi.
+
+```
+CREATE TABLE orders_archive AS
+SELECT *
+FROM orders
+WHERE order_date >= '2019-01-01';
+```
+
+```
+TRUNCATE orders_archive; /* Sterge toate randurile din tabela !!! */
+INSERT INTO orders_archive
+SELECT *
+FROM orders
+WHERE date >= '2018-01-01';
+```
+OBS: In MySQL Workbench, don't forget to refresh the navigator.
+
+```
+CREATE TABLE invoices_archive AS
+SELECT
+  i.invoice_id
+  i.number
+  c.name AS client_name
+FROM invoices i
+JOIN clients c
+  USING(cliend_id)
+WHERE payment_date IS NOT NULL;
+```
