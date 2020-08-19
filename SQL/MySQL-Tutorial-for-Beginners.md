@@ -10,6 +10,7 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
   * [LIMIT](#SELECT_LIMIT)
 * [INNER JOIN](#INNERJOIN)
   * [JOIN Multiple Tables](#INNERJOIN_MULTIPLE)
+  * [COMPOUND JOIN](#INNERJOIN_COMPOUND)
 
 
 ## <a name="SELECT"></a>SELECT
