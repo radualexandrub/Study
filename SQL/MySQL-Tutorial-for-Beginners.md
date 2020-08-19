@@ -16,7 +16,7 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
 * [UNIONS](#UNIONS)
 * [INSERT INTO](#INSERT)
   * [INSERT MULTIPLE VALUES INTO A TABLE](#INSERT_MULTIPLE)
-  * [INSERT DATAINTO MULTIPLE TABLES](#INSERT_MULTIPLE2)
+  * [INSERT DATA INTO MULTIPLE TABLES](#INSERT_MULTIPLE2)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -277,7 +277,7 @@ UNION
 SELECT Name
 FROM Customers;
 ```
-OBS 2: Numaele coloanei afisate va aparea ca numele coloanei primei tabele
+OBS 2: Numele coloanei afisate va aparea ca numele coloanei primei tabele
 
 ---
 
@@ -289,7 +289,7 @@ INSERT INTO Customers(first_name, last_name, birth_date, address, city)
 ```
 ```
 INSERT INTO Pacienti(Nume, Prenume, Judet, IdSectie)
-  VALUES('Poepescu', 'Ion', 'Bacau', 3);
+  VALUES('Popescu', 'Ion', 'Bacau', 3);
 ```
 
 ### <a name="INSERT_MULTIPLE"></a>INSERT MULTIPLE VALUES INTO A TABLE
@@ -300,3 +300,24 @@ VALUES('Horia', 'Alex', 'Timisoara'),
 ```
 
 ### <a name="INSERT_MULTIPLE2"></a>INSERT DATAINTO MULTIPLE TABLES
+| orders           |   | order_items     |
+|------------------|---|-----------------|
+| (PK) order_id    |   | (PK) order_id   |
+| (FK) customer_id |   | (PK) product_id |
+| status           |   | quantity        |
+| comments         |   | unit_price      |
+```
+INSERT INTO orders(customer_id, status)
+VALUES(1, 1);
+
+INSERT INTO order_items
+VALUES(LAST_INSERT_ID(), 1, 11, 2.95),
+      (LAST_INSERT_ID(), 2, 3, 0.50);
+```
+**LAST_INSERT_ID()** = Functie care returneaza ultimul id al randului ultimei tabele in care am introdus
+| ###      | orders table | ###    | ===>> | ###      | order_items table | ###      | ###   |
+|----------|--------------|--------|-------|----------|-------------------|----------|-------|
+| order_id | customer_id  | status |       | order_id | product_id        | quantity | price |
+| 1        | 1            | 1      |       | 13       | 1                 | 1        | 2.95  |
+|          |              |        |       | 13       | 2                 | 3        | 0.50  |
+Cele 2 tabele sunt in relatie parent-child.
