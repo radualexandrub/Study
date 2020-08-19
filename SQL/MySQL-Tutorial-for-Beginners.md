@@ -13,6 +13,10 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
   * [COMPOUND JOIN](#INNERJOIN_COMPOUND)
 * [OUTTER JOIN](#OUTTERJOIN)
   * [USING](#USING)
+* [UNIONS](#UNIONS)
+* [INSERT INTO](#INSERT)
+  * [INSERT MULTIPLE VALUES INTO A TABLE](#INSERT_MULTIPLE)
+  * [INSERT DATAINTO MULTIPLE TABLES](#INSERT_MULTIPLE2)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -245,7 +249,7 @@ OBS: USING functioneaza si pentru chei compuse:
 SELECT *
 FROM order_items oi
 JOIN order_items_notes oin
-  USING(order_id, product_id)
+  USING(order_id, product_id);
 ```
 | order_items     |                  | order_items_notes |
 |-----------------|------------------|-------------------|
@@ -254,8 +258,45 @@ JOIN order_items_notes oin
 | price           |                  | (FK) order_id     |
 |                 |                  | (FK) product_id   |
 
-
+---
 
 ## <a name="UNIONS"></a>UNIONS
+Combine rows from multiple tables
+```
+SELECT Nume, Prenume
+FROM Pacienti
+UNION
+SELECT Nume, Buget
+FROM Sectii;
+```
+OBS 1: Numarul de coloane returnate din prima tabela trebuie sa fie egal cu numarul de coloane din a doua tabela
+```
+SELECT Nume as Full_Name
+FROM Shippers
+UNION
+SELECT Name
+FROM Customers;
+```
+OBS 2: Numaele coloanei afisate va aparea ca numele coloanei primei tabele
+
+---
+
+## <a name="INSERT"></a>INSERT INTO
+OBS: Ordinea contează (The order of attributes matters)
+```
+INSERT INTO Customers(first_name, last_name, birth_date, address, city)
+  VALUES('John', 'Smith', '1990-01-01', 'address1', 'city2');
 ```
 ```
+INSERT INTO Pacienti(Nume, Prenume, Judet, IdSectie)
+  VALUES('Poepescu', 'Ion', 'Bacau', 3);
+```
+
+### <a name="INSERT_MULTIPLE"></a>INSERT MULTIPLE VALUES INTO A TABLE
+```
+INSERT INTO pacienti(Nume, Prenume, Judet)
+VALUES('Horia', 'Alex', 'Timisoara'),
+      ('Popa', 'Raluca', 'Olt');
+```
+
+### <a name="INSERT_MULTIPLE2"></a>INSERT DATAINTO MULTIPLE TABLES
