@@ -1,6 +1,6 @@
 Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners (3h10m) - March 2019](https://www.youtube.com/watch?v=7S_tz1z_5bA) by **Programming with Mosh**.
 
-## Contents:
+# Contents:
 * [SELECT](#SELECT)
   * [IN, BETWEEN](#SELECT_IN)
   * [LIKE](#SELECT_LIKE)
@@ -32,7 +32,7 @@ SELECT *
 FROM Customers
 WHERE (birth_date > '1990-01-01' AND points > 1000) OR state = 'LA';
 ```
-### <a name="SELECT_IN"></a>IN, BETWEEN
+### <a name="SELECT_IN"></a>SELECT: IN, BETWEEN
 ```
 SELECT *
 FROM Customers
@@ -49,7 +49,7 @@ WHERE points BETWEEN 1000 AND 3000;
 WHERE points >= 1000 OR points <= 3000;
 */
 ```
-### <a name="SELECT_LIKE"></a>LIKE
+### <a name="SELECT_LIKE"></a>SELECT: LIKE
 Eg.: For a person whose last name starts with 'b'/'B' (it doesn't matter if it's lower or upper case):
 ```
 SELECT * FROM Customers WHERE last_name LIKE 'b%';
