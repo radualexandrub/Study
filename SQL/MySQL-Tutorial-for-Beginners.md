@@ -11,6 +11,8 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
 * [INNER JOIN](#INNERJOIN)
   * [JOIN Multiple Tables](#INNERJOIN_MULTIPLE)
   * [COMPOUND JOIN](#INNERJOIN_COMPOUND)
+* [OUTTER JOIN](#OUTTERJOIN)
+  * [USING](#USING)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -187,3 +189,73 @@ JOIN order_items_notes oin
   AND oi.product_id = oin.product_id;
 ```
 
+## <a name="OUTTERJOIN"></a>OUTTER JOIN
+Util pentru a afișa datele care au NULL la atributul cheie străină (in al doilea tabel)
+```
+SELECT *
+FROM Customers c
+LEFT JOIN Orders o
+  ON c.customers_id = o.customers_id
+ORDER BY c.customers_id;
+```
+| id | name     | order_id |
+|----|----------|----------|
+| 1  | Innes    | 7        |
+| 2  | Freddy   | NULL     |
+| 3  | Carolina | 2        |
+| 4  | Elka     | NULL     |
+
+```
+SELECT
+  c.customer_id
+  c.first_name
+  o.order_id
+FROM customers c
+LEFT JOIN orders o
+  ON c.customer_id = o.customer_id;
+  
+/* este echivalent cu */
+
+SELECT
+  c.customer_id
+  c.first_name
+  o.order_id
+FROM orders o
+RIGHT JOIN customers c
+  ON c.customer_id = o.customer_id;
+```
+OBS: Este de evitat folosirea RIGHT JOIN in special pentru mai mult de 2 tabele deoarece creeaza confuzie.
+
+## <a name="USING"></a>USING
+Folosit pentru 2 coloane cu exact acelasi nume (eg: customer_id) - coloane din 2 tabele diferite
+```
+SELECT * FROM Customers c
+LEFT JOIN Orders o
+  USING(customer_id);
+```
+
+```
+SELECT p.Nume, Prenume, P.IdSectie, s.Nume AS Nume_Sectie, Buget
+FROM pacienti p
+JOIN sectii s
+  USING(IdSectie);
+```
+OBS: USING functioneaza si pentru chei compuse:
+```
+SELECT *
+FROM order_items oi
+JOIN order_items_notes oin
+  USING(order_id, product_id)
+```
+| order_items     |                  | order_items_notes |
+|-----------------|------------------|-------------------|
+| (PK) order_id   |                  | (PK) oin_id       |
+| (PK) product_id |                  | attr_etc          |
+| price           |                  | (FK) order_id     |
+|                 |                  | (FK) product_id   |
+
+
+
+## <a name="UNIONS"></a>UNIONS
+```
+```
