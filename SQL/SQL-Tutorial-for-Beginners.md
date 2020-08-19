@@ -1,3 +1,5 @@
+Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners (3h10m) - March 2019](https://www.youtube.com/watch?v=7S_tz1z_5bA) by **Programming with Mosh**.
+
 ## SELECT
 ```
 SELECT * FROM Customers WHERE Name = 'Andrew';
