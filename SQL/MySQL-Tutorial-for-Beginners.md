@@ -9,6 +9,7 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
   * [ORDER BY](#SELECT_ORDERBY)
   * [LIMIT](#SELECT_LIMIT)
 * [INNER JOIN](#INNERJOIN)
+  * [JOIN Multiple Tables](#INNERJOIN_MULTIPLE)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -140,11 +141,48 @@ JOIN Pacienti ON Sectii.IdSectie = Paciennti.IdSectie;
 
 SELECT * FROM Pacienti
 JOIN Sectii ON Pacienti.IdSectie = Sectii.IdSectie;
-
 ```
 | IdPacient | Nume        | Prenume | IdSectie | IdSectie | Nume | Buget |
 | --------- | ----------- | ------- | -------- | -------- | --- | ----- |
-| 1   | Popescu    | Ana | 1 | 1 | s1 | 5500
-| 2   | Munteanu    | Alex | 3 | 3 | s3 | 6000
-| 3   |        | | 2 | 2 | s2 | 5200 |
-| 4   |         | | 1 | 1 | s1 | 4000 |
+| 1   | Popescu    | Ana | **1** | **1** | s1 | 5500
+| 2   | Munteanu    | Alex | **3** | **3** | s3 | 6000
+| 3   |     Dobre   | Cosmin | **2** | **2** | s2 | 5200 |
+| 4   |     Freeman | John | **1** | **1** | s1 | 4000 |
+
+If we use ALIAS (Obs: Daca o coloana are acelasi nume in cealalta tabelă, trebuie specificata din care tabela faci SELECT (ce coloană afisezi):
+```
+SELECT p.Nume, Prenume, p.IdSectie, s.Nume, Buget
+FROM pacienti p
+JOIN Sectii s on p.IdSectie = s.IdSectie;
+```
+**OBS:** Putem face JOIN si la tabele care se afla in _alte baze de date_ (different database)
+```
+SELECT * FROM order_items oi
+JOIN another_database.products p ON oi.product_id = p.product_id;
+```
+
+### <a name="INNERJOIN_MULTIPLE"></a>INNER JOIN: Multiple Tables
+```
+SELECT * ---o.order_id, o.order_date, c.name, os.name AS status
+FROM orders o
+JOIN customers c
+  ON o.customer_id = c.customer_id
+JOIN order_statuses os
+  ON o.status = OS.order_status_id;
+```
+
+### <a name="INNERJOIN_COMPOUND"></a>COMPOUND JOIN
+**INNER JOIN for COMPOSITE PRIMARY KEY --- chei primare compuse, care conțin cel puțin 2 atribute**
+| order_items |
+| ---------- |
+| (PK) order_id |
+| (PK) product_id |
+| quantity |
+| unit_price |
+```
+SELECT * FROM order_items oi
+JOIN order_items_notes oin
+  ON oi.order_id = oin.order_id
+  AND oi.product_id = oin.product_id;
+```
+
