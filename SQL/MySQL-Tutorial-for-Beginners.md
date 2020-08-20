@@ -20,6 +20,8 @@ Most of these notes are taken from online tutorial [MySQL Tutorial for Beginners
 * [UPDATE](#UPDATE)
   * [UPDATE using **subqueries** in WHERE](#UPDATE2)
 * [Create a copy of a table](#CreateCopyTable)
+* [DELETE FROM](#DELETE)
+* [GROUP BY](#GROUPBY)
 
 
 ## <a name="SELECT"></a>SELECT
@@ -309,6 +311,7 @@ VALUES('Horia', 'Alex', 'Timisoara'),
 | (FK) customer_id |   | (PK) product_id |
 | status           |   | quantity        |
 | comments         |   | unit_price      |
+
 ```
 INSERT INTO orders(customer_id, status)
 VALUES(1, 1);
@@ -334,7 +337,7 @@ UPDATE pacienti
 SET Nume='Enache', Prenume='Constatin', IdSectie=4
 WHERE IdPacient=20;
 ```
-#### Dacă nu scriem WHERE, se va modifica totul! (If we don't include WHERE clause, all the data will be modified!)
+> Dacă nu scriem WHERE, se va modifica totul! (If we don't include WHERE clause, all the data will be modified!)
 ```
 UPDATE invoices
 SET
@@ -403,3 +406,89 @@ JOIN clients c
   USING(cliend_id)
 WHERE payment_date IS NOT NULL;
 ```
+
+---
+
+## <a name="DELETE"></a>**DELETE FROM**
+```
+DELETE FROM invoices
+WHERE invoices_id = 1;
+```
+> OBS: Daca nu adaugăm clauza WHERE, se vor **șterge** toate rândurile din tabelă.
+
+Pentru cazul (in MySQL WorkBench):
+```
+DELETE FROM pacienti
+WHERE judet = 'Bacau';
+```
+Este foarte probabil să nu funcționeze deoarece MySQL execută update/delete în funcție de cheia primară.
+Vom avea eroare: *You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column*.
+Pentru a trece de această eroare putem schimba în setări MySQL WorkBench: _Edit -> Preferences -> Safe UPDATE (check)_
+
+Exemple DELETE folosind *subqueries*:
+```
+DELETE FROM invoices-table1
+WHERE client_id IN (
+  SELECT client_id
+  FROM clients-table2
+  WHERE name = 'Clint');
+```
+
+---
+
+## <a name="GROUPBY"></a>**GROUP BY**
+By default, GROUP BY lucrează cu *DISTINCT* (Nu se afișează dubluri)
+```
+SELECT * FROM Payment
+GROUP BY customer_id;
+```
+| customer_id | amount | payment_date |
+|-------------|--------|--------------|
+| 1           | 8.00   | 2011-07-22   |
+| 1           | 4.00   | 2011-07-23   |
+| 1           | 6.00   | 2011-07-26   |
+| 3           | 3.00   | 2011-08-24   |
+| 3           | 2.00   | 2011-08-25   |
+| 3           | 1.00   | 2011-08-25   |
+
+Exemplu care va grupa toate rândurile (clienții cu același ID) și va face suma pentru "amount"-ul fiecărui client:
+```
+SELECT customer_id, SUM(amount)
+FROM payment
+GROUP BY customer_id;
+```
+Va returna:
+| customer_id | sum(amount) |
+|-------------|--------|
+| 1           | 18.00   |
+| 3           | 6.00   |
+
+Alte exemple:
+```
+SELECT rating, COUNT(rating), FROM film
+GROUP BY rating;
+```
+
+```
+SELECT rating, AVG(rental_rate) FROM film
+GROUP BY rating;
+```
+
+> Aggregate functions: COUNT(), SUM(), AVG(), MIN(), MAX(), etc...
+
+
+**Alt exemplu:** Să se afișeze câți pacienți sunt la fiecare secție, precum și numele secției și bugetul secției:
+```
+SELECT S.Nume, S.Buget, COUNT(IdSectie) NumarPacienti
+FROM Pacienti P /*Deoarece lista cu pacienti contine repartizarea fiecaruia la o sectie; doar din tabela pacienti putem numara de cate ori se repeta o sectie anume*/
+JOIN Sectii S /*vrem sa afisam numele si bugetul sectiei*/
+  USING(IdSectie)
+GROUP BY IdSectie;
+```
+^^Aici: GROUP BY grupează și numără de câte ori apare IdSectie=4 apoi IdSectie=3, etc (pentru fiecare secție)
+| Nume | Buget | NumarPacienti |
+|------|-------|-------|
+| s1  | 5400   | 5   |
+| s2  | 6000   | 6   |
+| s3  | 5700   | 3   |
+| s4  | 4000   | 4   |
