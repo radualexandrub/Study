@@ -15,7 +15,7 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 	* [git push](#gitworkflow1_push)
 	* [git remote](#gitworkflow1_remote)
 	* [git pull](#gitworkflow1_pull)
-	* [Schema: Working Directory, Staging Area, Git Remote Repository](#gitworkflow1_schema)
+	* [**Schema: Working Directory, Staging Area, Git Remote Repository**](#gitworkflow1_schema)
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
 	* [Merge a branch: git merge (+mini-workflow)](#gitmerge)
@@ -156,7 +156,7 @@ git pull origin master
 # HEAD^ is short for HEAD^1, which means the one commit before HEAD. You could also do HEAD^2 for the commit before that one
 ```
 
-<a name="gitworkflow1_schema"></a>
+### <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
 
 ---
@@ -174,7 +174,7 @@ git branch
 git branch -v
 ```
 
-* <a name="gitmerge"></a>Merge a branch: git merge (mini-workflow)
+* <a name="gitmerge"></a>Merge a branch: git merge (mini-workflow)<br>
 If all your modifications to the code is great and passes all the (unit) tests, merge your branch with the master branch:
 ```bash
 git checkout master # change to master branch
@@ -184,7 +184,7 @@ git merge <my_new_branch_ive_worked_on>
 git push origin master
 ```
 
-* <a name="deletebranch"></a>Delete a branch (mini-workflow)
+* <a name="deletebranch"></a>Delete a branch (mini-workflow)<br>
 After you added the features from your branch and merged with master, you can **delete** your branch you worked on:
 ```bash
 git branch --merged
