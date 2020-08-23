@@ -18,7 +18,7 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 	* [Schema: Working Directory, Staging Area, Git Remote Repository](#gitworkflow1_schema)
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
-	* [Merge a branch: git merge](#gitmerge)
+	* [Merge a branch: git merge (+mini-workflow)](#gitmerge)
 	* [Delete a branch](#deletebranch)
 * [Git **Complete Workflow** - Work from another branch](#git_complete_workflow)
 
@@ -124,8 +124,9 @@ git log -2 # shows last 2 commits
 
 <a name="gitworkflow1_push"></a>
 ```bash
-git push origin master
-# git push <remote> <branch>
+git push -u origin master
+# git push -u <remote> <branch>
+# -u or --set-upstream is to save/add upstream (tracking) reference(the <remote> and <branch>), in order to just write "git push" without specifying again the <remote> and <branch> 
 ```
 
 <a name="gitworkflow1_remote"></a>
@@ -147,16 +148,74 @@ Get (locally) the last state (last changes/updates) of the project if someone ma
 git pull origin master
 ```
 
+If this error occurs when pulling: ***"your local changes to the following files would be overwritten by merge"*** and **you** want to **drop/overwrite all the changes made from the local repository and get the latest updates from the global repository**, use:
+```bash
+# Drop local changes, revert to the HEAD reference (last commit in the master branch)
+git checkout HEAD^ file/to/overwrite
+git pull origin master
+# HEAD^ is short for HEAD^1, which means the one commit before HEAD. You could also do HEAD^2 for the commit before that one
+```
+
 <a name="gitworkflow1_schema"></a>
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
 
 ---
 
-* [Create a new branch](#create_branch)
-	* [git branch, git checkout](#gitbranch)
-	* [Merge a branch: git merge](#gitmerge)
-	* [Delete a branch](#deletebranch)
-* [Git **Complete Workflow** - Work from another branch](#git_complete_workflow)
+### <a name="create_branch"></a>Create a new branch from CLI
+* <a name="gitbranch"></a>git branch, git checkout
+To create and move to a new branch:
+```bash
+git branch <new_branch_name>
+git checkout <new_branch_name>
+```
+Show all branches/active branch with:
+```bash
+git branch
+git branch -v
+```
 
+* <a name="gitmerge"></a>Merge a branch: git merge (mini-workflow)
+If all your modifications to the code is great and passes all the (unit) tests, merge your branch with the master branch:
+```bash
+git checkout master # change to master branch
+git pull origin master # get last updates before making any changes to master
+git branch --merged # show branches that are/aren't merged with master branch
+git merge <my_new_branch_ive_worked_on>
+git push origin master
+```
+
+* <a name="deletebranch"></a>Delete a branch (mini-workflow)
+After you added the features from your branch and merged with master, you can **delete** your branch you worked on:
+```bash
+git branch --merged
+git branch -d <my_branch_ive_worked_on> # locally delete the branch
+git branch -a # show all branches: we still have <my_branch> globally
+git push origin --delete <my_branch_ive_worked_on> # globally/definitely delete the branch
+```
+
+---
+
+### <a name="git_complete_workflow"></a>Git **Complete Workflow** - Work from another branch
+```bash
+git config --global user.name
+git config --global user.email
+git clone <url> <where_to_clone>
+git branch <my_new_branch_name>
+git checkout my_new_branch
+# (make changes to the code ...)
+git status
+git commit -m "Add @function in views.py | Solve bug in models.py that fixes #8"
+git push -u origin my_new_branch
+# (wait for unit tests to complete)
+# (if all unit tests pass, then do these)
+git checkout master
+git pull origin master
+git merge my_new_branch
+git push origin master
+# (now time to delete my_new_branch)
+git branch -d my_new_branch
+git brach -a
+git push origin --delete my_new_branch
+```
 
 
