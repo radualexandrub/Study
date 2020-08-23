@@ -114,7 +114,7 @@ git log -2 # shows last 2 commits
 ```
 
 <a name="gitworkflow1_schema"></a>
-<img src="GitWorkflowDiagram.png" width=1000>
+<img src="/GitWorkflowDiagram.png" width=1000>
 
 <a name="gitworkflow1_push"></a>
 ```bash
