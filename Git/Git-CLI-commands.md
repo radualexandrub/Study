@@ -7,12 +7,15 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 * [Set up global configuration variables](#setglobalvariables)
 * [***git init*** VS.  ***git clone***](#git_init_clone)
 * [git status](#gitstatus)
+* [git diff](#gitdiff)
 * [git workflow (on master branch)](#gitworkflow1)
 	* [git add -A](#gitworkflow1_add)
 	* [git commit](#gitworkflow1_commit)
 	* [git log](#gitworkflow1_log)
+	* [git push](#gitworkflow1_push)
+	* [git remote](#gitworkflow1_remote)
+	* [git pull](#gitworkflow1_pull)
 	* [Schema: Working Directory, Staging Area, Git Remote Repository](#gitworkflow1_schema)
-	* [git push](gitworkflow1_push)
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
 	* [Merge a branch: git merge](#gitmerge)
@@ -83,6 +86,12 @@ mystuff.txt
 ^^ These files won't show up anymore when calling ***git status***.
 Also, .gitignore should be included (_git add .gitignore_) to prevent a team collaborating on a project from committing generated cache files => don't add .gitignore to .gitignore itself lol.
 
+### <a name="gitdiff"></a>git diff
+Git diff shows the changes made to the code within modified files (git status shows only which files have been modified/created).
+```bash
+git diff
+```
+
 ---
 
 ### <a name="gitworkflow1"></a>Git workflow (on master branch)
@@ -113,13 +122,35 @@ git log
 git log -2 # shows last 2 commits
 ```
 
+<a name="gitworkflow1_push"></a>
+```bash
+git push origin master
+# git push <remote> <branch>
+```
+
+<a name="gitworkflow1_remote"></a>
+* Git remote shows all the remotes (github repositories) where you can push the last (local) commit. Git remote -v is for verbose (all info about the remotes).
+```bash
+git remote
+git remote -v
+```
+To add a remote:
+```bash
+git remote add origin https://github.com/username/projectname/.git
+# git remote add <new_branch_name> <link_to_repository>
+```
+OBS: When cloning a remote (a github repository) with git clone, a remote named "origin" will be available by default.
+
+<a name="gitworkflow1_pull"></a>
+Get (locally) the last state (last changes/updates) of the project if someone made changes on the global repository (the remote to github.com server):
+```bash
+git pull origin master
+```
+
 <a name="gitworkflow1_schema"></a>
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
 
-<a name="gitworkflow1_push"></a>
-```bash
-
-```
+---
 
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
