@@ -5,9 +5,10 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 ## Contents:
 * [git help](#githelp)
 * [Set up global configuration variables](#setglobalvariables)
-* [***git init*** VS.  ***git clone***](#git_init_clone)
+* [**git init** VS.  **git clone**](#git_init_clone)
 * [git status](#gitstatus)
 * [git diff](#gitdiff)
+
 * [git workflow (on master branch)](#gitworkflow1)
 	* [git add -A](#gitworkflow1_add)
 	* [git commit](#gitworkflow1_commit)
@@ -16,11 +17,15 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 	* [git remote](#gitworkflow1_remote)
 	* [git pull](#gitworkflow1_pull)
 	* [**Schema: Working Directory, Staging Area, Git Remote Repository**](#gitworkflow1_schema)
+
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
 	* [Merge a branch: git merge (+mini-workflow)](#gitmerge)
 	* [Delete a branch](#deletebranch)
+
 * [Git **Complete Workflow** - Work from another branch](#git_complete_workflow)
+
+* [Create a new repo from a locally existing/completed project (mini-workflow)](#git_workflow_newrepo)
 
 
 ---
@@ -49,7 +54,6 @@ git add --help
 * For ***name***: you can choose any name, it can be different from your github account
 * For ***email***: it must be the exact same email used on your github account
 ```bash
-# 
 git config --global user.name "John Doe" 
 git config --global user.email "JohnDoe97@gmail.com" 
 
@@ -94,7 +98,7 @@ git diff
 
 ---
 
-### <a name="gitworkflow1"></a>Git workflow (on master branch)
+## <a name="gitworkflow1"></a>Git workflow (on master branch)
 <a name="gitworkflow1_add"></a>
 * Add files to the staging area (= add all the files that are ready to be commited except the files from *.gitignore*)
 ```bash
@@ -156,12 +160,12 @@ git pull origin master
 # HEAD^ is short for HEAD^1, which means the one commit before HEAD. You could also do HEAD^2 for the commit before that one
 ```
 
-### <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
+## <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
 
 ---
 
-### <a name="create_branch"></a>Create a new branch from CLI
+## <a name="create_branch"></a>Create a new branch from CLI
 * <a name="gitbranch"></a>git branch, git checkout
 To create and move to a new branch:
 ```bash
@@ -195,7 +199,7 @@ git push origin --delete <my_branch_ive_worked_on> # globally/definitely delete 
 
 ---
 
-### <a name="git_complete_workflow"></a>Git **Complete Workflow** - Work from another branch
+## <a name="git_complete_workflow"></a>Git **Complete Workflow** - Work from another branch
 ```bash
 git config --global user.name
 git config --global user.email
@@ -218,4 +222,23 @@ git brach -a
 git push origin --delete my_new_branch
 ```
 
+---
 
+## <a name="git_workflow_newrepo"></a>Create a new repo from a locally existing/completed project (mini-workflow)
+* On GitHub.com website:
+	* Create a new repository (write name & description)
+	* (optional) Create a Readme.MD file
+* On CLI (locally):
+	* Open the terminal in that folder/project's path
+	* Write the following commands:
+```bash
+git init
+git remote add origin https://github.com/username/projectname/.git
+git remote -v
+git pull origin master # needed to update the commit history of new repo (especially if Readme.MD was created)
+git status
+git add -A
+git status
+git commit -m "Initial commit from local project"
+git push origin master
+```
