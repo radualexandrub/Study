@@ -159,6 +159,10 @@ git checkout HEAD^ file/to/overwrite
 git pull origin master
 # HEAD^ is short for HEAD^1, which means the one commit before HEAD. You could also do HEAD^2 for the commit before that one
 ```
+(Or, discard/give up all the changes and go back to last (local) commit)
+```bash
+git checkout -- .
+```
 
 ## <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
