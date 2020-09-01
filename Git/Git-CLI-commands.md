@@ -155,18 +155,20 @@ git pull origin master
 
 If this error occurs when pulling: ***"your local changes to the following files would be overwritten by merge"*** and **you** want to **drop/overwrite all the changes made from the local repository and get the latest updates from the global repository**, use:
 ```bash
-# Drop local changes, revert to the HEAD reference (last commit in the master branch)
-git checkout HEAD^ file/to/overwrite
+# Drop local changes, revert to the HEAD reference (last local commit in the master branch)
+git reset --hard # NEVER USE: git checkout HEAD^ file/to/overwrite
 git pull origin master
 # HEAD^ is short for HEAD^1, which means the one commit before HEAD. You could also do HEAD^2 for the commit before that one
 ```
-(Or, discard/give up all the changes and go back to last (local) commit)
+***Or, discard/give up all the changes (modified files) and go back to last (local) commit state of files:***
 ```bash
 git checkout -- . 
 ```
+NOTE: git checkout HEAD^ filename (will overwrite the file to the state of *commit before* last local commit in the master branch)
+NOTE: git checkout HEAD^ **without specifying a file** will **DROP THE WHOLE LAST COMMIT!!! and will revert to the commit before last commit** (however you will be in a detached head state branch, so you can revert this action by just changing back to master branch: git checkout master)
 NOTE: git checkout HEAD^1 is roughly the same as git reset HEAD^1, but:
 - Use reset if you want to undo staging of a modified file !!!
-- Use checkout if you want to discard changes to unstaged file/s !!! (however it is still possible to recover lost files with git reflog and cherry-pick if you're lucky, check
+- Use checkout if you want to discard changes to unstaged file/s !!! (however it is still possible to recover lost files with git reflog and cherry-pick, check
 [locally mistakes section](#mistakes_locally).
 
 ## <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
