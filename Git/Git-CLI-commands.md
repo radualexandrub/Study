@@ -28,11 +28,12 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 * [Create a new repo from a locally existing/completed project (mini-workflow)](#git_workflow_newrepo)
 
 * [**Locally Mistakes that could've been made**](#mistakes_locally)
-	* [Discard changes to a modified file/files with git checkout -- .](#mistake_1)
+	* [Discard changes to a modified file/files with `git checkout -- .`](#mistake_1)
 	* [We mess up a commit -m message; modify the last commit message without doing another commit](#mistake_2)
 	* [We forgot to add a file to the last commit](#mistake_3)
 	* [We made commits to the master branch instead of our working branch](#mistake_4)
-* [Types of git resets](#types_of_git_resets)
+	* [**Types of git resets**](#types_of_git_resets)
+	* [**Fatal mistake: we did a hard reset on some changes but we realised that we actually need them: `git reflog`**](#mistake_5)
 
 ---
 
@@ -276,7 +277,7 @@ git clean -fd # force directories
 ```
 
 ### <a name="mistake_2"></a>We mess up a commit -m message. We want to modify the last commit message without doing another commit
-**NOTE: The following commands in this section will change the hash of previous commits => THIS WILL CHANGE *GIT HISTORY* => IF OTHER PEOPLE WILL PULL THE CHANGES AFTER EXECUTING THESE COMMANDS, THE CHANGED HISTORY COULD CAUSE BIG PROBLEMS TO THEIR REPOSITORIES. We can only change git history when we're the only one owners of the repository.**
+**WARNING: The following commands in this section will change the hash of previous commits => THIS WILL CHANGE *GIT HISTORY* => IF OTHER PEOPLE WILL PULL THE CHANGES AFTER EXECUTING THESE COMMANDS, THE CHANGED HISTORY COULD CAUSE BIG PROBLEMS TO THEIR REPOSITORIES. We can only change git history when we're the only one owners of the repository.**
 
 ```bash
 git commit --amend -m "Corrected commit message"
@@ -308,10 +309,10 @@ git reset --hard 2e75207
 git log
 git clean -fd
 ```
-**NOTE: Again, this will change git history and will cause consequences when working in a team!!! I'll write some alternatives in next sections.**
+**WARNING: Again, this will change git history and will cause consequences when working in a team!!! I'll write some alternatives in next sections.**
 
-### <a name="types_of_git_resets"></a>Types of git resets
-#### SOFT RESET
+## <a name="types_of_git_resets"></a>Types of git resets
+#### ***SOFT RESET***
 ```bash
 git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
 git reset --soft 2e7520782
@@ -321,7 +322,7 @@ git status
 ```
 **Git soft reset** will set us back to the specified commit BUT will keep the modified and newly files from the unwanted commits (the ones we removed) in the ***staging area*** ("added files ready to be commited" area) - we still didn't lose our work, but we can discard with `git reset HEAD -- .`.
 
-#### MIXED RESET (DEFAULT)
+#### ***MIXED RESET*** (DEFAULT)
 ```bash
 git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
 git reset 2e7520782
@@ -331,7 +332,7 @@ git status
 ```
 **Git mixed/default reset** will set us back to the specified commit BUT will keep the modified and newly files from the unwanted commits (the ones we removed) in the ***working directory*** ("untracked files, before executing add -A" area) - we still didn't lose our work, but we can discard with `git checkout -- .`.
 
-#### HARD RESET
+#### ***HARD RESET***
 ```bash
 git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
 git reset --hard 2e7520782
@@ -343,3 +344,20 @@ git status
 However, hard reset will not affect untracked files (newly created files from the unwanted commits, but it's irelevant if we didn't create any new files). We can get rid of these untracked files with `git clean -fd`.<br>
 <br>
 NOTE: `git clean -fd` could be useful when we accidentaly unzip an arhive in a project directory (local repo) and we don't want to manually delete all the new files created.
+
+### <a name="mistake_5"></a>**Fatal mistake: We did a hard reset on some changes but we realised that we actually need them: `git reflog`**
+This "fix" is available if we screwed up with `git checkout HEAD^1` or `git reset --hard HEAD^`. (HEAD^ is short for/same with HEAD^1).<br>
+Luckily, git garbage collector (gc) collects/deletes (forever) lost commits after 30 days (IF WE DIDN'T ALREADY RAN `git gc` COMMAND).
+```bash
+git reflog
+# grab the hash before executed reset command
+git checkout 0c8189/hash
+git log # happily see our changes back 
+
+git branch
+# HOWEVER, we're in a detached head state - we are on a branch that would be trashed in the future, so we need to save those changes in a newly created branch
+git branch backup
+git checkout master
+git branch
+```
+Now we've successfully recovered our lost changes, we can merge the backup branch with master (`git merge backup`) **OR** if our changes are already in master branch (do check), we can delete the backup branch (`git branch -d backup`).
