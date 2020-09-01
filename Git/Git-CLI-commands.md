@@ -27,6 +27,7 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 
 * [Create a new repo from a locally existing/completed project (mini-workflow)](#git_workflow_newrepo)
 
+* [Locally Mistakes that could've been made](#mistakes_locally)
 
 ---
 
@@ -161,8 +162,12 @@ git pull origin master
 ```
 (Or, discard/give up all the changes and go back to last (local) commit)
 ```bash
-git checkout -- .
+git checkout -- . 
 ```
+NOTE: git checkout HEAD^1 is roughly the same as git reset HEAD^1, but:
+- Use reset if you want to undo staging of a modified file !!!
+- Use checkout if you want to discard changes to unstaged file/s !!! (however it is still possible to recover lost files with git reflog and cherry-pick if you're lucky, check
+<a name="mistakes_locally">locally mistakes section</a>.
 
 ## <a name="gitworkflow1_schema"></a>Schema: Working Directory, Staging Area, Git Remote Repository
 <img src="/Git/GitWorkflowDiagram.png" width=1000>
@@ -246,3 +251,7 @@ git status
 git commit -m "Initial commit from local project"
 git push origin master
 ```
+---
+---
+
+## <a name="mistakes_locally"></a>Locally Mistakes that could've been made
