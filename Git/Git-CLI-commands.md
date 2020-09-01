@@ -28,6 +28,11 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 * [Create a new repo from a locally existing/completed project (mini-workflow)](#git_workflow_newrepo)
 
 * [**Locally Mistakes that could've been made**](#mistakes_locally)
+	* [Discard changes to a modified file/files with git checkout -- .](#mistake_1)
+	* [We mess up a commit -m message; modify the last commit message without doing another commit](#mistake_2)
+	* [We forgot to add a file to the last commit](#mistake_3)
+	* [We made commits to the master branch instead of our working branch](#mistake_4)
+* [Types of git resets](#types_of_git_resets)
 
 ---
 
@@ -254,6 +259,87 @@ git commit -m "Initial commit from local project"
 git push origin master
 ```
 ---
----
 
 ## <a name="mistakes_locally"></a>Locally Mistakes that could've been made
+
+### <a name="mistake_1"></a>If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):
+```bash
+git checkout single_file.py
+```
+And if we want to discard all changes/modifications to our files:
+```bash
+git checkout -- .
+```
+Also, if we want to delete/get rid of untracked files (newly created files):
+```bash
+git clean -fd # force directories
+```
+
+### <a name="mistake_2"></a>We mess up a commit -m message. We want to modify the last commit message without doing another commit
+**NOTE: The following commands in this section will change the hash of previous commits => THIS WILL CHANGE *GIT HISTORY* => IF OTHER PEOPLE WILL PULL THE CHANGES AFTER EXECUTING THESE COMMANDS, THE CHANGED HISTORY COULD CAUSE BIG PROBLEMS TO THEIR REPOSITORIES. We can only change git history when we're the only one owners of the repository.**
+
+```bash
+git commit --amend -m "Corrected commit message"
+```
+
+### <a name="mistake_3"></a>We forgot to add a file to the last commit. We want the add the file without commiting again.
+```bash
+git add file.c # get the file in the staging area
+git commit --amend # this will add the new file to last commit, also it opens a log in Vim, exit with :wq
+git log --stat # show file changes in commits
+# The last commit hash will be changed, so the git history will be changed
+```
+
+### <a name="mistake_4"></a>We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch
+```bash
+# from master's branch
+git log
+# grab/copy (the first 6-7 characters of) the commit hash that we want to cherry-pick
+# change to our working branch
+git checkout [my-branch-name]
+git cherry-pick 1b818d3b
+git log
+
+# Now delete the commit from master
+git checkout master 
+git log
+# grab/copy the hash of the commit before our wrong commit
+git reset --hard 2e75207
+git log
+git clean -fd
+```
+**NOTE: Again, this will change git history and will cause consequences when working in a team!!! I'll write some alternatives in next sections.**
+
+### <a name="types_of_git_resets"></a>Types of git resets
+#### SOFT RESET
+```bash
+git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
+git reset --soft 2e7520782
+
+git log
+git status
+```
+**Git soft reset** will set us back to the specified commit BUT will keep the modified and newly files from the unwanted commits (the ones we removed) in the ***staging area*** ("added files ready to be commited" area) - we still didn't lose our work, but we can discard with `git reset HEAD -- .`.
+
+#### MIXED RESET (DEFAULT)
+```bash
+git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
+git reset 2e7520782
+
+git log
+git status
+```
+**Git mixed/default reset** will set us back to the specified commit BUT will keep the modified and newly files from the unwanted commits (the ones we removed) in the ***working directory*** ("untracked files, before executing add -A" area) - we still didn't lose our work, but we can discard with `git checkout -- .`.
+
+#### HARD RESET
+```bash
+git log # grab the hash of the commit we want to keep, the commits after that commit will be removed
+git reset --hard 2e7520782
+
+git log
+git status
+```
+**Git hard reset** will set us back to the specified commit AND will make all the changes in files to match the state that they were in the specified commit - we've lost our work.<br>
+However, hard reset will not affect untracked files (newly created files from the unwanted commits, but it's irelevant if we didn't create any new files). We can get rid of these untracked files with `git clean -fd`.<br>
+<br>
+NOTE: `git clean -fd` could be useful when we accidentaly unzip an arhive in a project directory (local repo) and we don't want to manually delete all the new files created.
