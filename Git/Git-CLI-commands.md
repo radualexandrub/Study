@@ -164,9 +164,9 @@ git pull origin master
 ```bash
 git checkout -- . 
 ```
-NOTE: git checkout HEAD^ filename (will overwrite the file to the state of *commit before* last local commit in the master branch)
-NOTE: git checkout HEAD^ **without specifying a file** will **DROP THE WHOLE LAST COMMIT!!! and will revert to the commit before last commit** (however you will be in a detached head state branch, so you can revert this action by just changing back to master branch: git checkout master)
-NOTE: git checkout HEAD^1 is roughly the same as git reset HEAD^1, but:
+NOTE1: git checkout HEAD^ filename (will overwrite the file to the state of *commit before* last local commit in the master branch)<br>
+NOTE2: git checkout HEAD^ **without specifying a file** will **DROP THE WHOLE LAST COMMIT!!! and will revert to the commit before last commit** (however you will be in a detached head state branch, so you can revert this action by just changing back to master branch: git checkout master)<br>
+NOTE3: git checkout HEAD^1 is roughly the same as git reset HEAD^1, but:
 - Use reset if you want to undo staging of a modified file !!!
 - Use checkout if you want to discard changes to unstaged file/s !!! (however it is still possible to recover lost files with git reflog and cherry-pick, check
 [locally mistakes section](#mistakes_locally).
