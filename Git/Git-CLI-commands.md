@@ -35,6 +35,8 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 	* [**Types of git resets**](#types_of_git_resets)
 	* [**Fatal mistake: we did a hard reset on some changes but we realised that we actually need them: `git reflog`**](#mistake_5)
 
+* [Undoing a commit: a mistake after pushing to remote server. Fix without **changing the git history**](#mistake_6)
+
 ---
 
 ### <a name="githelp"></a>git help
@@ -345,13 +347,13 @@ However, hard reset will not affect untracked files (newly created files from th
 <br>
 NOTE: `git clean -fd` could be useful when we accidentaly unzip an arhive in a project directory (local repo) and we don't want to manually delete all the new files created.
 
-### <a name="mistake_5"></a>**Fatal mistake: We did a hard reset on some changes but we realised that we actually need them: `git reflog`**
+## <a name="mistake_5"></a>**Fatal mistake: We did a hard reset on some changes but we realised that we actually need them: `git reflog`**
 This "fix" is available if we screwed up with `git checkout HEAD^1` or `git reset --hard HEAD^`. (HEAD^ is short for/same with HEAD^1).<br>
 Luckily, git garbage collector (gc) collects/deletes (forever) lost commits after 30 days (IF WE DIDN'T ALREADY RAN `git gc` COMMAND).
 ```bash
 git reflog
 # grab the hash before executed reset command
-git checkout 0c8189/hash
+git checkout [0c8189]
 git log # happily see our changes back 
 
 git branch
@@ -361,3 +363,16 @@ git checkout master
 git branch
 ```
 Now we've successfully recovered our lost changes, we can merge the backup branch with master (`git merge backup`) **OR** if our changes are already in master branch (do check), we can delete the backup branch (`git branch -d backup`).
+
+---
+
+## <a name="mistake_6"></a>Undoing a commit: a mistake after pushing to remote server. Fix **without changing the git history**
+Undo a commit (when other people already pulled the changes), without rewriting the git history. We use `git revert` to create a new commit on top that reverses the changes of earlier commits.
+```bash
+git log # select the commit hash THAT WE WANT TO UNDO (the wrong commit)
+git revert [1b818d3] # will also show a meesage in Vim, :wq to exit
+git log # you can see the new revert commit
+
+# You can also see the revert diff
+git diff [1b818d3] [hash from revert commit]
+```
