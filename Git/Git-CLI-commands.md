@@ -1,4 +1,4 @@
-Notes with ***Git CLI commands*** taken from online tutorials such as:
+Notes with ***Git CLI commands*** taken from on-line tutorials such as:
 * [Git Tutorials (1h24m) from **Corey Schafer**](https://www.youtube.com/playlist?list=PL-osiE80TeTuRUfjRe54Eea17-YfnOOAx)
 * [Git and GitHub (2h16m) from **The Coding Train**](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZF9C0YMKuns9sLDzK6zoiV)
 
@@ -9,7 +9,7 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 * [git status](#gitstatus)
 * [git diff](#gitdiff)
 
-* [git workflow (on master branch)](#gitworkflow1)
+* [git work-flow (on master branch)](#gitworkflow1)
 	* [git add -A](#gitworkflow1_add)
 	* [git commit](#gitworkflow1_commit)
 	* [git log](#gitworkflow1_log)
@@ -20,22 +20,24 @@ Notes with ***Git CLI commands*** taken from online tutorials such as:
 
 * [Create a new branch](#create_branch)
 	* [git branch, git checkout](#gitbranch)
-	* [Merge a branch: git merge (+mini-workflow)](#gitmerge)
+	* [Merge a branch: git merge (+mini-work-flow)](#gitmerge)
 	* [Delete a branch](#deletebranch)
 
-* [Git **Complete Workflow** - Work from another branch](#git_complete_workflow)
+* [Git **Complete Work-flow** - Work from another branch](#git_complete_workflow)
 
-* [Create a new repo from a locally existing/completed project (mini-workflow)](#git_workflow_newrepo)
+* [Create a new repo from a locally existing/completed project (mini-work-flow)](#git_workflow_newrepo)
 
 * [**Locally Mistakes that could've been made**](#mistakes_locally)
 	* [Discard changes to a modified file/files with `git checkout -- .`](#mistake_1)
 	* [We mess up a commit -m message; modify the last commit message without doing another commit](#mistake_2)
 	* [We forgot to add a file to the last commit](#mistake_3)
 	* [We made commits to the master branch instead of our working branch](#mistake_4)
-	* [**Types of git resets**](#types_of_git_resets)
-	* [**Fatal mistake: we did a hard reset on some changes but we realised that we actually need them: `git reflog`**](#mistake_5)
+	* [**Types of git resets (soft, mixed, hard)**](#types_of_git_resets)
+	* [**Fatal: we did a hard reset on some changes but we realized that we actually need them: `git reflog`**](#mistake_5)
 
-* [Undoing a commit: a mistake after pushing to remote server. Fix without **changing the git history**](#mistake_6)
+* [Undoing a commit after pushing to remote server. Fix without **changing the git history**](#mistake_6)
+
+* [Using the **`git stash`** command](#git_stash)
 
 ---
 
@@ -107,7 +109,7 @@ git diff
 
 ---
 
-## <a name="gitworkflow1"></a>Git workflow (on master branch)
+## <a name="gitworkflow1"></a>Git work-flow (on master branch)
 <a name="gitworkflow1_add"></a>
 * Add files to the staging area (= add all the files that are ready to be commited except the files from *.gitignore*)
 ```bash
@@ -237,7 +239,7 @@ git merge my_new_branch
 git push origin master
 # (now time to delete my_new_branch)
 git branch -d my_new_branch
-git brach -a
+git branch -a
 git push origin --delete my_new_branch
 ```
 
@@ -343,12 +345,12 @@ git log
 git status
 ```
 **Git hard reset** will set us back to the specified commit AND will make all the changes in files to match the state that they were in the specified commit - we've lost our work.<br>
-However, hard reset will not affect untracked files (newly created files from the unwanted commits, but it's irelevant if we didn't create any new files). We can get rid of these untracked files with `git clean -fd`.<br>
+However, hard reset will not affect untracked files (newly created files from the unwanted commits, but it's irrelevant if we didn't create any new files). We can get rid of these untracked files with `git clean -fd`.<br>
 <br>
-NOTE: `git clean -fd` could be useful when we accidentaly unzip an arhive in a project directory (local repo) and we don't want to manually delete all the new files created.
+NOTE: `git clean -fd` could be useful when we accidentally unzip an archive in a project directory (local repo) and we don't want to manually delete all the new files created.
 
-## <a name="mistake_5"></a>**Fatal mistake: We did a hard reset on some changes but we realised that we actually need them: `git reflog`**
-This "fix" is available if we screwed up with `git checkout HEAD^1` or `git reset --hard HEAD^`. (HEAD^ is short for/same with HEAD^1).<br>
+## <a name="mistake_5"></a>**Fatal: We did a hard reset on some changes but we realized that we actually need them: `git reflog` (or we deleted last commits)**
+This "fix" works if we screwed up with `git checkout HEAD^1` or `git reset --hard HEAD^`. (HEAD^ is short for/same with HEAD^1).<br>
 Luckily, git garbage collector (gc) collects/deletes (forever) lost commits after 30 days (IF WE DIDN'T ALREADY RAN `git gc` COMMAND).
 ```bash
 git reflog
@@ -366,13 +368,46 @@ Now we've successfully recovered our lost changes, we can merge the backup branc
 
 ---
 
-## <a name="mistake_6"></a>Undoing a commit: a mistake after pushing to remote server. Fix **without changing the git history**
+## <a name="mistake_6"></a>Undoing a commit after pushing to remote server. Fix **without changing the git history**
 Undo a commit (when other people already pulled the changes), without rewriting the git history. We use `git revert` to create a new commit on top that reverses the changes of earlier commits.
 ```bash
 git log # select the commit hash THAT WE WANT TO UNDO (the wrong commit)
-git revert [1b818d3] # will also show a meesage in Vim, :wq to exit
+git revert [1b818d3] # will also show a message in Vim, :wq to exit
 git log # you can see the new revert commit
 
 # You can also see the revert diff
 git diff [1b818d3] [hash from revert commit]
 ```
+
+---
+
+## <a name="git_stash"></a>Using the **`git stash`** command ("temporary" commits)
+Useful for changes that you are not ready to commit yet, but you need to switch branches (or revert back to another code) work temporarily in another part of the project.
+NOTE: If you don't commit your changes (modified files) and you switch to another branch, your code will be lost.
+
+```bash
+git branch my_branch
+git checkout my_branch
+# Make changes to the code, realize you have to switch branch for a moment
+git stash save "Worked on login function"
+# git diff / git status will show "working tree clean" -> after pushing to stash, all modifications to files are gone.
+
+# You can now switch branches / cherry-pick commits / work on other part of project, when you come back:
+# Option 1:
+git stash list
+git stash apply stash@{0} # after executing this, the saved stash will still be listed in stash list
+# Option 2:
+git stash pop # grabs the very first (top) stash, applies changes then drops that stash from stash list
+```
+You can also drop/delete stashes in stash list:
+```bash
+git stash list
+git stash drop stash@{2}
+
+# Or delete all the stashes in the list (assume that all those changes were junk/no longer needed)
+git stash clear
+```
+<br>
+NOTE: You can't merge two stashes (eg. `git stash pop` twice) -> will show *Error: files would be overwritten by merge, please commit your changes or stash them before you merge*.
+<br>
+NOTE: **The same stash list is accesible to every branch** => Useful scenario: If you've written all your changes to code in a wrong branch (master) you need to commit to another branch, just stash the changes `git stash save "Worked on login function"`, `git checkout another_branch`, then grab changes from stack (`stash apply stash@{?}`/`stash pop`).
