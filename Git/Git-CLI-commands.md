@@ -256,7 +256,7 @@ git push origin --delete my_new_branch
 git init
 git remote add origin https://github.com/username/projectname/.git
 git remote -v
-git pull origin master # needed to update the commit history of new repo (especially if Readme.MD was created)
+git pull origin master # needed to update the commit history of new repo (especially if Readme.MD or LICENSE was created)
 git status
 git add -A
 git status
