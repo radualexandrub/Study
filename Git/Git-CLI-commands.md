@@ -411,3 +411,15 @@ git stash clear
 NOTE: You can't merge two stashes (eg. `git stash pop` twice) -> will show *Error: files would be overwritten by merge, please commit your changes or stash them before you merge*.<br>
 
 NOTE: **The same stash list is accesible to every branch** => Useful scenario: If you've written all your changes to code in a wrong branch (master) you need to commit to another branch, just stash the changes `git stash save "Worked on login function"`, `git checkout another_branch`, then grab changes from stack (`stash apply stash@{?}`/`stash pop`).
+
+
+## Find me on my Social's
+***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>
+***My blog:*** [CodingTranquillity](https://codingtranquillity.herokuapp.com/)
+
+<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://www.mixcloud.com/radu-alexandru7" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/mixcloud.svg" alt="RaduAlexandru" height="28" width="28" /></a>&nbsp;&nbsp;
