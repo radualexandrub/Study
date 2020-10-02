@@ -8,7 +8,10 @@
   * [Create new files in `src/components/...`](#startworking)
   * [Add pre-made CSS style to our app:](#workaddstyle)
   * [Hook TodoAddForm.js to the App.js](#workform)
-  * ...
+  * [On `TodoList.js`](worktodolist)
+  * [Add State to `App.js` in order to input data](workaddstateinput)
+  * [Show todos in browser/UI (render them) + Complete and Delete](workshowtodos)
+  * [Filter/Show Todo items baed on select dropdown "all" / "completed" / "uncompleted"](workfiltertodos)
 * [COMPLETE CODE](#completecode)
   * [TodoAddForm.js](completeTodoAddForm)
   * [TodoList.js](completeTodoList)
@@ -377,7 +380,7 @@ const TodoAddForm = ({ setInputText, todos, setTodos, inputText }) => {
 ```
 - Now every time we write in our for and hit the + button, a new state will be created (see with React Chrome Extension)
 
-## <a name="workshowtodos"></a>Show todos in browser/UI (render them) (min33) + Complete and Delete (min48)
+## <a name="workshowtodos"></a>Show todos in browser/UI (render them) + Complete and Delete
 - In `TodoAddForm.js`, add `value={inputText}`:
 ```js
   return (
