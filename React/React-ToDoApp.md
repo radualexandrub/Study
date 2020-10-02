@@ -1,4 +1,5 @@
 # Build your first ToDo App with React and host it on GitHub Pages
+## View it live [here](https://radualexandrub.github.io/My-Study-Notes/React/todo/)
 ## Contents
 * [Installation & create-react-project](#installation)
 * [Useful extensions for VS Code](#vscodeextensions)
