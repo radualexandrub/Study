@@ -326,22 +326,36 @@ function App() {
       <TodoAddForm
         inputText={inputText}
         setInputText={setInputText}
+        todos={todos}
+        setTodos={setTodos}
       />
     </div>
 ```
 - Add in `TodoAddForm.js`:
 ```js
-const TodoAddForm = ({ setInputText }) => {
+const TodoAddForm = ({ setInputText, todos, setTodos, inputText }) => {
   const inputTextHandler = (e) => {
     // console.log(e.target.value);
     setInputText(e.target.value);
   };
-  
+  const submitTodoHandler = (e) => {
+    e.preventDefault(); // Prevent page from refreshing on submit
+    if (inputText !== "") {
+      setTodos([
+        ...todos,
+        {
+          id: Math.floor(Math.random() * 1000),
+          text: inputText,
+          completed: false,
+        },
+      ]);
+    }
+    setInputText("");
+  };
   ...
   return (
     <form>
       <input
-        value={inputText}
         onChange={inputTextHandler}
         type="text"
         className="todo-input"
@@ -360,9 +374,102 @@ const TodoAddForm = ({ setInputText }) => {
   );
   
 ```
+- Now every time we write in our for and hit the + button, a new state will be created (see with React Chrome Extension)
 
+## <a name="workshowtodos"></a>Show todos in browser/UI (render them) (min33) + Complete and Delete (min48)
+- In `TodoAddForm.js`, add `value={inputText}`:
+```js
+  return (
+    <form>
+      <input
+        value={inputText}
+        onChange={inputTextHandler}
+        type="text"
+        className="todo-input"
+      />
+   };
+```
+- In `TodoList.js`:
+```js
+import React from "react";
+import TodoItem from "./TodoItem";
 
+const TodoList = ({ todos, setTodos, filteredTodos }) => {
+  return (
+    <div className="todo-container">
+      <ul className="todo-list">
+        {filteredTodos.map((todo) => (
+          <TodoItem
+            setTodos={setTodos}
+            todos={todos}
+            key={todo.id}
+            text={todo.text}
+            id={todo.id}
+            todo={todo}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
 
+export default TodoList;
+```
+- And create `TodoItem.js` and add:
+```js
+import React from "react";
+
+const TodoItem = ({ text, todo, setTodos, todos }) => {
+  const deleteHandler = () => {
+    setTodos(todos.filter((el) => el.id !== todo.id));
+  };
+  const completeHandler = () => {
+    setTodos(
+      todos.map((item) => {
+        if (item.id === todo.id) {
+          return {
+            ...item,
+            completed: !item.completed,
+          };
+        }
+        return item;
+      })
+    );
+  };
+  return (
+    <div className="todo">
+      <li className={`todo-item ${todo.completed ? "completed" : ""}`}>
+        {text}
+      </li>
+      <button onClick={completeHandler} className="complete-btn">
+        <i className="fas fa-check"></i>
+      </button>
+      <button onClick={deleteHandler} className="trash-btn">
+        <i className="fas fa-trash"></i>
+      </button>
+    </div>
+  );
+};
+
+export default TodoItem;
+```
+- Add in `App.js`:
+```js
+  return (
+    <div className="App">
+      
+      ...
+      <TodoList
+        setTodos={setTodos}
+        todos={todos}
+        filteredTodos={filteredTodos}
+      />
+    </div>
+  );
+}
+```
+
+## <a name="workfiltertodos"></a>Filter/Show Todo items baed on select dropdown "all"/"completed"/"uncompleted"
 
 
 
