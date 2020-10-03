@@ -102,13 +102,13 @@ header,
 form {
   min-height: 15vh;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
 form input,
 form button {
   padding: 0.5rem;
-  width: min-content;
   font-size: 2rem;
   border: none;
   background: white;
