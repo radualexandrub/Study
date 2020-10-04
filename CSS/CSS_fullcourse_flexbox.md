@@ -1,16 +1,17 @@
-Notes taken from:
+## Credits / Notes taken from:
 - [CSS Full Course - including Flexbox and CSS Grid Tutorials 1h30m from ***freeCodeCamp***](https://www.youtube.com/watch?v=ieTHC78giGQ&list=WL&index=44&ab_channel=freeCodeCamp.org)
 - [w3schools - CSS Tutorial](https://www.w3schools.com/css/default.asp)
 - [tutorialspoint - CSS Tutorial](https://www.tutorialspoint.com/css/index.htm)
 - [CSS Flexbox Course 40min - freeCodeCamp](https://www.youtube.com/watch?v=-Wlt8NRtOpo&ab_channel=freeCodeCamp.org)
 
-- Other great resources:
-  - [CSS Crash Course For "Absolute" Beginners 1h30m - Traversy Media](https://www.youtube.com/watch?v=yfoY53QXEnI&ab_channel=TraversyMedia)
-  - More on Flexbox:
+Other great resources:
+- [CSS Crash Course For "Absolute" Beginners 1h30m - Traversy Media](https://www.youtube.com/watch?v=yfoY53QXEnI&ab_channel=TraversyMedia)
+- More on Flexbox:
     - [Complete guid to flexbox - CSS Tricks](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
     - [CSS Flexbox - w3schools](https://www.w3schools.com/css/css3_flexbox.asp)
     - [Basic concepts of flexbox - developer.mozilla](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
     - [Flexbox cheatsheet webpage with live examples by yoksel](https://yoksel.github.io/flex-cheatsheet/#section-flex-direction)
+    - [Understand ‘+’, ‘>’ and ‘~’ symbols in CSS Selector](https://techbrij.com/css-selector-adjacent-child-sibling)
 
 ## Contents
 * [Basics of CSS](#home)
@@ -31,7 +32,7 @@ Notes taken from:
 ## <a name="home"></a>Basics of CSS
 
 - There are [three ways of inserting a style sheet](https://www.w3schools.com/css/css_howto.asp): 
-  - External CSS:
+  - **External** CSS:
   ```HTML
     <head>
     <link rel="stylesheet" href="mystyle.css">
@@ -39,8 +40,8 @@ Notes taken from:
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/konpa/devicon@master/devicon.min.css">
     </head>
   ```
-  - Internal CSS: `<head><style>body{ color: gray; }</style></body>`
-  - Inline CSS: `<h1 style="color:purple; text-align:center;">This a nice heading, yes</h1>`
+  - **Internal** CSS: `<head><style>body{ color: gray; }</style></body>`
+  - **Inline** CSS: `<h1 style="color:purple; text-align:center;">This a nice heading, yes</h1>`
 
 - Use a CSS to Style ***tags***:<br/>
 Change all paragraph/headers text color using a `tag`:
@@ -133,7 +134,7 @@ p {
 <!-- If I list multiple fonts on font-family, it will render the first one if it's available (can be loaded from server/rendered by browser), if it's not, will render the second and so on -->
 ```
 
-- Sizing images:
+- [Sizing images](https://www.w3schools.com/css/css3_images.asp):
 ```CSS
 .large-image {
     width: 500px; // fixed size
@@ -223,23 +224,23 @@ Id is similar to a class except each element has its own id. We need to use a `#
 
 - <a name="absoluteunits"></a>***Absolute vs. Relative units in CSS***: (Also [this](https://www.w3schools.com/cssref/css_units.asp) may be useful)
 - **Absolute Lengths**: fixed, these will appear as exactly that size. Absolute length units are not recommended for use on screen, because screen sizes vary so much. However, they can be used if the output medium is known, such as for print layout.
-    - cm: centimeters
-    - mm: millimeters
-    - in: inches (1in = 96px = 2.54cm)
-    - px * : pixels (1px = 1/96th of 1in)
-    - pt: points (1pt = 1/72 of 1in)
-    - pc: picas (1pc = 12 pt)
+    - `cm`: centimeters
+    - `mm`: millimeters
+    - `in`: inches (1in = 96px = 2.54cm)
+    - `px *`: pixels (1px = 1/96th of 1in)
+    - `pt`: points (1pt = 1/72 of 1in)
+    - `pc`: picas (1pc = 12 pt)
 
 - **Relative Lengths**: length relative to another length property. Relative length units scale better between different rendering medium.
-    - em    Relative to the font-size of the element (2em means 2 times the size of the current font)   
-    - ex    Relative to the x-height of the current font (rarely used)  
-    - ch    Relative to the width of the "0" (zero) 
-    - rem   Relative to font-size of the root element   
-    - vw    Relative to 1% of the width of the viewport*    
-    - vh    Relative to 1% of the height of the viewport*   
-    - vmin  Relative to 1% of viewport's* smaller dimension 
-    - vmax  Relative to 1% of viewport's* larger dimension  
-    - %     Relative to the parent element
+    - `em`    Relative to the font-size of the element (2em means 2 times the size of the current font)   
+    - `ex`    Relative to the x-height of the current font (rarely used)  
+    - `ch`    Relative to the width of the "0" (zero) 
+    - `rem`   Relative to font-size of the root element   
+    - `vw`    Relative to 1% of the width of the viewport*    
+    - `vh`    Relative to 1% of the height of the viewport*   
+    - `vmin`  Relative to 1% of viewport's* smaller dimension 
+    - `vmax`  Relative to 1% of viewport's* larger dimension  
+    - `%`     Relative to the parent element
 
 Tip: The em and rem units are practical in creating perfectly scalable layout! Viewport = the browser window size. If the viewport is 50cm wide, 1vw = 0.5cm.
 
