@@ -9,3 +9,5 @@ A collection of my personal study notes from various courses, tutorials, article
 * [Git CLI commands](./Git/Git-CLI-commands.md)
 ### React
 * [Build your first ToDo App with React and host it on GitHub Pages](./React/React-ToDoApp.md)
+### HTML, CSS
+* [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
