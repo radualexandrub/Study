@@ -8,15 +8,15 @@
   * [Create new files in `src/components/...`](#startworking)
   * [Add pre-made CSS style to our app:](#workaddstyle)
   * [Hook TodoAddForm.js to the App.js](#workform)
-  * [On `TodoList.js`](worktodolist)
-  * [Add State to `App.js` in order to input data](workaddstateinput)
-  * [Show todos in browser/UI (render them) + Complete and Delete](workshowtodos)
-  * [Filter/Show Todo items baed on select dropdown "all" / "completed" / "uncompleted"](workfiltertodos)
+  * [On `TodoList.js`](#worktodolist)
+  * [Add State to `App.js` in order to input data](#workaddstateinput)
+  * [Show todos in browser/UI (render them) + Complete and Delete](#workshowtodos)
+  * [Filter/Show Todo items baed on select dropdown "all" / "completed" / "uncompleted"](#workfiltertodos)
 * [COMPLETE CODE](#completecode)
-  * [TodoAddForm.js](completeTodoAddForm)
-  * [TodoList.js](completeTodoList)
-  * [TodoItem.js](completeTodoItem)
-  * [App.js](completeApp)
+  * [TodoAddForm.js](#completeTodoAddForm)
+  * [TodoList.js](#completeTodoList)
+  * [TodoItem.js](#completeTodoItem)
+  * [App.js](#completeApp)
 * [Build your React App and deploy it on GitHub Pages](#buildapp)
 
 ---
@@ -693,7 +693,24 @@ export default App;
 ```bash
 npm run build
 ```
-- A new folder `build` is created, now you can create a GitHub repository and follow the steps there in order to push your build code to the new repository.
+- A new folder `build` is created, now you can create a GitHub repository and follow the steps there (or down bellow) in order to push your build to the new repository.
+```bash
+# On GitHub.com website:
+# Create a new repository (write name & description)
+# (optional) Create a Readme.MD file
+# On CLI (locally):
+# Open the terminal in that folder/project's path
+# Write the following commands:
+git init
+git remote add origin https://github.com/username/projectname/.git
+git remote -v
+git pull origin master # needed to update the commit history of new repo (especially if Readme.MD or LICENSE was created)
+git status
+git add -A
+git status
+git commit -m "Initial commit from local project"
+git push origin master
+```
 - In the new repository, click on settings and scroll down to GitHub Pages, choose Source and Branch Master and hit Save, your ToDo app will be now published.
 
 ## Credits:
