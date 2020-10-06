@@ -7,7 +7,7 @@
 
 
 
-### Where can I run JavaScript code?
+## Where can I run JavaScript code?
 1. Download a code editor (Sublime, VSCode, Brackets, Atom, Notepad++, WebStorm, [etc](https://www.freecodecamp.org/news/how-to-choose-a-javascript-code-editor/)), create file `index.html`, open it in browser (Chrome), and press `CTRL+SHIFT+J` to open the console:
 ```HTML
 <!-- index.html -->
@@ -31,7 +31,7 @@ Select `Tools->Build System->nodejs` and now you can run your `.js` file inside 
 5. Use [Stackblitz](https://stackblitz.com/), Create account, Log in, Create new project in JavaScript.
 
 
-### Variable names that starts with `$` or `_`
+## Variable names that starts with `$` or `_`
 JavaScript treats `$` and `_` as if they were letters of the alphabet, so identifiers containing `$` are valid variable names.<br/>
 Now multiple libraries are providing their own version of the $() function, so many now provide the option to turn off that definition in order to avoid clashes. Using the dollar sign is not very common in JavaScript, but professional programmers often use it as an alias for the main function in a JavaScript library. In the JavaScript library jQuery, for instance, the main function $ is used to select HTML elements. In jQuery `$("p")`; means "select all p elements".
 <br/><br/>
@@ -45,7 +45,7 @@ Since JavaScript treats underscore as a letter, identifiers containing _ are val
 Note that again, as with $, the use of _ is merely a convention and is not enforced by JavaScript itself.
 
 
-### Declaring variables with `var`, `let`, `const`
+## Declaring variables with `var`, `let`, `const`
 ES2015 introduced two important new JavaScript keywords: let and const, before that only `var` was availale to use.
 - `var` can be used globally in the entire document/entire enclosing function.
 - `let` is defined within it's scope (or to the immediate enclosing block denoted by `{ }` / or `let` is `block-scoped`):
@@ -73,7 +73,7 @@ const x = 10;
 ```
 
 
-### JS Data Types
+## JS Data Types
 [JavaScript has dynamic types](https://www.w3schools.com/js/js_datatypes.asp). This means that the same variable can be used to hold different data types.
 ```js
 var x;           // Now x is undefined
@@ -186,7 +186,7 @@ const snoopy = new Dog();
 snoopy.bark() // alert("woof!")
 ```
 
-### JS Operators
+## JS Operators
 - `+` Addition
 ```js
 x = 10 + 5;// x = 10
@@ -250,6 +250,7 @@ x = 5 * '10'; // x = 50
 | \*\*=        | x \*\*= y    | x = x \*\* y |
 
 - [JavaScript Comparison Operators](https://www.w3schools.com/js/js_operators.asp)
+
 | Operator | Description                       |
 |----------|-----------------------------------|
 | ==       | equal to                          |
@@ -263,6 +264,7 @@ x = 5 * '10'; // x = 50
 | ?        | ternary operator                  |
 
 - [JavaScript Logical Operators](https://www.w3schools.com/js/js_operators.asp)
+
 | Operator | Description |
 |----------|-------------|
 | &&       | logical and |
@@ -270,7 +272,8 @@ x = 5 * '10'; // x = 50
 | !        | logical not |
 
 
-### Strings and Strings methods
+## Strings and Strings methods
+
 - Escape characters in strings:
 | CODE     | OUTPUT                        |
 |----------|-------------------------------|
@@ -330,3 +333,21 @@ console.log("Please locate where 'locate' occurs!".search("locate")); // 7 is th
 - 
 - 
 - 
+
+6. `replace()` method replaces a specified value with another value in a string
+
+7. `toUpperCase()`, `toLowerCase()`
+
+8. `concat()`
+
+9. `trim()`
+
+10. Extracting String Characters: `charAt()`, `charCodeAt()`
+
+11. `split()` Convert a String to an Array
+
+
+- More on strings:
+	- [w3schools Javascript strings](https://www.w3schools.com/js/js_string_methods.asp)
+	- [w3schools complete string reference](https://www.w3schools.com/jsref/jsref_obj_string.asp)
+	- [All strings methods listed from developer.mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
