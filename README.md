@@ -10,7 +10,7 @@ A collection of my personal study notes from various courses, tutorials, article
 * [Git CLI commands](./Git/Git-CLI-commands.md)
 
 ### JavaScript
-* [Learn JavaScript - Full Course for Beginners and w3schools](./JavaScript/JavaScriptBeginners.md)
+* [JavaScript (freeCodeCamp and w3schools) - Full Course for Beginners (to advanced)](./JavaScript/JavaScriptBeginners.md)
 
 ### React
 * [Build your first ToDo App with React and host it on GitHub Pages](./React/React-ToDoApp.md)
