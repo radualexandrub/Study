@@ -11,6 +11,7 @@ A collection of my personal study notes from various courses, tutorials, article
 
 ### JavaScript
 * [JavaScript (freeCodeCamp and w3schools) - Full Course for Beginners (to advanced)](./JavaScript/JavaScriptBeginners.md)
+* [JavaScript Events, Promises, DOM, AJAX, JSON - coming soon]
 
 ### React
 * [Build your first ToDo App with React and host it on GitHub Pages](./React/React-ToDoApp.md)
