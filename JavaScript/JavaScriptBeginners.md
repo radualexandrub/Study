@@ -15,13 +15,9 @@
 
 - [Numbers: Decimal, Hexadecimal, Octal, Binary, Infinity and Number Methods `toFixed`/`toPrecision`](#NumbersDecimalHexadecimalEtc)
 - [JavaScript `if else`, `switch`, `for`, `for in`, `for of` loop, `while`, `do/while` loop, `break`](#JavaScriptIfElseSwitchFor)
-  - [`if else`](#JSIfElse)
-  - [`switch`](#JSSwitch)
-  - [`for` loops](#JSforloop)
-  - [`for...in`](#Jsforin)
-  - [`for...of`](#Jsforof)
-  - [`while` loop](#JSwhileloop)
-  - [`break` and `continue`](#JsBreakandContinue)
+  - [`if else`](#JSIfElse), [`switch`](#JSSwitch)
+  - [`for`](#JSforloop), [`for...in`](#Jsforin), [`for...of`](#Jsforof)
+  - [`while`](#JSwhileloop), [`break` and `continue`](#JsBreakandContinue)
 - [Arrays and Array methods: `shift`/`unshift`, `push`/`pop`, `splice`/`slice`, `includes`](#ArraysandArryasMethods)
   - [Array `sort()`](#ArraySort)
 - [JavaScript Functions](#JsFunctionsHoistingandReturn)
@@ -31,11 +27,13 @@
   - [Making a simple counter function with a button](#JsMakeaSimpleCounter)
   - [JavaScript function closures](#JsfunctionClosures)
 - [The `Rest` operator (`...`) and `Spread` (`...`) operator](#RestOperatorandSpreadOperator)
-- [Arrays and Array iteration methods: `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`](#ArraysAndArrayIteration)
+- [Arrays and Array iteration methods](#ArraysAndArrayIteration)
+  - [`forEach`](#ArrayforEach), [`map`](#Arraymap), [`filter`](#ArrayFilter), [`reduce`](#ArrayReduce), [`every`](#ArrayEvery), [`some`](#ArraySome), [`indexOf`](#ArrayIndexOf), [`find`](#ArrayFind), [`findIndex`](#ArrayFindIndex)
+
 - [Using Destructuring Assignment to Assign Variables from Objects](#UsingDestructurinAssignment)
 - [Create Concise Object Literal Declarations using Simple Fields](#ConciseObjectLiteralDeclarations)
 - [Write Concise Declarative Functions](#ConciseDeclarativeFunctions)
-- [JavaScript Generators Functions (`yield`)](#JsGeneratorFunctions)
+- [JavaScript Generator Function* (`yield`)](#JsGeneratorFunctions)
 
 
 ## <a name="WhereCanRun">Where can I run JavaScript code?</a>
@@ -544,7 +542,7 @@ One more example using Template Literals vs. not using them:
 
 ```js
 const count = 3
-const user = 'Ben Doe'
+const user = 'Benny Doe'
 const span = 2
 
 function pluralize(text, count) {
@@ -1483,7 +1481,7 @@ console.log(arr); // [3, 4, 5, 6, 7]
 
 
 ## <a name="ArraysAndArrayIteration">[Arrays and Array iteration methods](https://www.w3schools.com/js/js_array_iteration.asp): `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`</a>
-1. `Array.forEach()` method calls a function (a callback function) once for each element
+1. <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
 
 ```js
 var txt = "";
@@ -1507,7 +1505,7 @@ Note that the function takes 3 arguments, some can be optional but must respect 
 - The item `index`
 - The `array` itself
 
-2. `Array.map()` method creates a new array by performing a function on each array element
+2. <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
 - The map() method does not execute the function for array elements without values.
 - The map() method does not change the original array.
 
@@ -1539,7 +1537,7 @@ Another example of using `map` to convert strings numbers to numbers:
 ['1', '7', '11'].map(parseInt) // [1, NaN, 3]
 ```
 
-3. `Array.filter()` method creates a new array with array elements that passes a test
+3. <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -1565,7 +1563,7 @@ var squareNumbers = numbers.filter(val => Number.isInteger(val)).map(x => x ** 2
 console.log(squareNumbers); // [ 16, 144, 36, 4 ]
 ```
 
-4. `Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
+4. <a name="ArrayReduce"></a>`Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
 - `reduce()` method works from left-to-right in the array. 
 - `reduceRight()` does exactly the same but works from right-to-left in the array.
 - Note that the function takes 4 arguments with the same exact names, even `total`:
@@ -1613,7 +1611,7 @@ var sumEven = numbers.filter(e => !(e % 2))
 sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 ```
 
-5. `Array.every()` method check if all array values pass a test
+5. <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -1627,7 +1625,7 @@ allOver18 = all([_ > 18 for _ in numbers]) // False
 // [_ > 18 for _ in numbers] returns [True, False, False, False, True]
 ```
 
-6. `Array.some()` method check if some array values pass a test
+6. <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -1638,7 +1636,7 @@ var someOver18 = numbers.some((value) => {return value > 18}); // true
 someOver18 = any([_ > 18 for _ in numbers]) // True
 ```
 
-7. `Array.indexOf(item[, start])` method searches an array for an element value and returns its position
+7. <a name="ArrayIndexOf"></a>`Array.indexOf(item[, start])` method searches an array for an element value and returns its position
 - `Array.lastIndexOf(item[, start])` returns the position of the last occurrence of the specified element.
 - *start* is optional: where to start the search; negative values will start at the given position counting from the end, and search to the end.
 
@@ -1650,7 +1648,7 @@ var a = fruits.indexOf("Apple"); // 1
 fruits.index('Apple') // 1
 ```
 
-8. `Array.find()` returns the value of the first array element that passes a test function
+8. <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];
@@ -1663,7 +1661,7 @@ function myFunction(value, index, array) {
 var first = numbers.find(e => e > 18); // 25
 ```
 
-9. `Array.findIndex()` method returns the index of the first array element that passes a test function
+9. <a name="ArrayFindIndex"></a>`Array.findIndex()` method returns the index of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];
@@ -1799,8 +1797,38 @@ const bicycle = {
 
 
 
-## <a name="JsGeneratorFunctions">JavaScript [Generators Functions (`yield`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield)</a>
+## <a name="JsGeneratorFunctions">JavaScript [Generator Function* (`yield`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield)</a>
+The yield keyword is used to pause and resume a generator function  (`function*`). Syntax: `[retrievedValue] = yield [expression]`
 
+```js
+function* foo(index) {
+  while (index < 2) {
+    yield index;
+    index++;
+  }
+}
+
+const iterator = foo(0);
+
+console.log(iterator.next().value); // expected output: 0
+console.log(iterator.next().value); // expected output: 1
+```
+
+```js
+/* Another example */
+function* countAppleSales () {
+  let saleList = [3, 7, 5];
+  for (let i = 0; i < saleList.length; i++) {
+    yield saleList[i];
+  }
+};
+
+let appleStore = countAppleSales()  // Generator { }
+console.log(appleStore.next())      // { value: 3, done: false }
+console.log(appleStore.next())      // { value: 7, done: false }
+console.log(appleStore.next())      // { value: 5, done: false }
+console.log(appleStore.next())      // { value: undefined, done: true }
+```
 
 ## Find me on Social
 ***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>

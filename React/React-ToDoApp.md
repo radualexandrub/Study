@@ -30,6 +30,10 @@ npx create-react-app my-app-name
 ```
 `npx` will not install create-react-app on our system. You can [install create-react-app globally on system](https://create-react-app.dev/docs/getting-started/), but then updates are required, while npx always uses the latest version.. 
 
+
+
+
+
 ## <a name="vscodeextensions"></a>Useful extensions for VS Code and Google Chrome
 #### For [Visual Studio Code](https://code.visualstudio.com/) ([VSCode keyboard shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf))
 - [ES7 React/Redux/GraphQL/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
@@ -39,10 +43,17 @@ npx create-react-app my-app-name
   {
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
     }
   }
   ```
+- Go to your `settings.json` and check/add:
+```JSON
+"emmet.includeLanguages": {
+  "javascript": "javascriptreact"
+},
+```
 - (optional) [Rainbow Brackets](https://marketplace.visualstudio.com/items?itemName=2gua.rainbow-brackets)
 - (optional) [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
   ```JSON
@@ -72,7 +83,7 @@ import logo from '.logo.svg';
 ...
 // And <header>..</header> with everything inside it, keep only return(<div ClassName="App"></div>);
 ```
-- Delete everything from `App.css`
+- Delete everything from `App.css` (or delete it completely and remove import)
 
 ## <a name="startworking"></a>Create new files in `src/components/...`
 - Create a new folder in `todo-app/src` called `components`, and create these files:
