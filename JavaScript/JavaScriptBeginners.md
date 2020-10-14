@@ -562,6 +562,31 @@ const result = count + ' ' + pluralize('blog post', count)
 const result = `${count} ${pluralize('blog post', count)} were written by ${name} in a span of ${span} ${pluralize('week', span)}.`
 ```
 
+Another example using Template Literals:
+
+```js
+const result = {
+  success: ["max-length", "no-amd", "prefer-arrow-functions"],
+  failure: ["no-var", "var-on-top", "linebreak"],
+  skipped: ["no-extra-semi", "no-dup-keys"]
+};
+
+function makeList(arr) {
+  const failureItems = [];
+  for (let i = 0; i < arr.length; i++) {
+    failureItems.push(`<li class="text-warning">${arr[i]}</li>`)
+  }
+  return failureItems;
+}
+
+const failuresList = makeList(result.failure);
+/*
+  ['<li class="text-warning">no-var</li>',
+  '<li class="text-warning">var-on-top</li>',
+  '<li class="text-warning">linebreak</li>']
+*/
+```
+
 - More on strings:
     - [w3schools Javascript strings](https://www.w3schools.com/js/js_string_methods.asp)
     - [w3schools complete string reference](https://www.w3schools.com/jsref/jsref_obj_string.asp)
@@ -596,6 +621,17 @@ var y = 0b1110; y.toString(16) // 'e' (why lowercase tho)
 var z = 0xF; z.toString(10) // '15'
 // Convert HEX -> BIN
 var z = 0xF; z.toString(2) // '1111'
+```
+
+We can also convert using `parseInt()`:
+
+```js
+// Another method to convert BIN -> DEC using parseInt()
+var x = parseInt("11", 2); // x = 3
+var x = parseInt("110", 2); // x = 6
+
+// HEX -> DEC
+console.log(parseInt("f", 16));// x =  15
 ```
 
 - `Infinity` (or `-Infinity`) is the value JavaScript will return if you calculate a number outside the largest possible number.
@@ -1709,24 +1745,43 @@ const maxOfTomorrow = localForecast.today.max;
 console.log(maxOfTomorrow) // 21
 ```
 
+- Use Destructuring to swap variables:
+
+```js
+var a = 3, b = 7;
+[b, a] = [a, b]; // a = 7, b = 3
+```
+
+- Use Destructuring to remove/store first two elements from an array:
+
+```js
+const source = [1,2,3,4,5];
+
+const [, , ...arr] = source; // arr = [3,4,5]
+const [a, b, ...arr] = source; // a = 1, b = 2, arr = [3,4,5]
+```
+
 - Use Destructuring Assignment to pass to a function's parameters only some of the properties of an object:<br/>
 This is commonly used with **API calls**, when we are getting information from an AJAX/API request that have a lot of information that we need, and we can use destructuring to get only what we need to work with.
 
 ```js
 /* Instead of passing the whole object like this: */
 const stats = {
-  max: 56.76;
-  std_deviation: 4.34;
+  max: 56.78,
+  standard_deviation: 4.34,
   median: 34.54,
-  min: -0.75;
-  average: 35.84;
+  mode: 23.87,
+  min: -0.75,
+  average: 35.85
 };
 
-const half = (function() {
-  return function half(stats) {
-    return (stats.max + stats.min) / 2.0;
-  };
-})();
+// const half = (function() {
+//   return function half(stats) {
+//     return (stats.max + stats.min) / 2.0;
+//   };
+// })();
+
+const half = (stats) => (stats.max + stats.min) / 2.0; // 28.015
 
 console.log(stats);
 console.log(half(stats));
@@ -1735,18 +1790,21 @@ console.log(half(stats));
 ```js
 /* We can pass only the parameters we need */
 const stats = {
-  max: 56.76;
-  std_deviation: 4.34;
+  max: 56.78,
+  standard_deviation: 4.34,
   median: 34.54,
-  min: -0.75;
-  average: 35.84;
+  mode: 23.87,
+  min: -0.75,
+  average: 35.85
 };
 
-const half = (function() {
-  return function half( {min, max} ) {
-    return (stats.max + stats.min) / 2.0;
-  };
-})();
+// const half = (function() {
+//   return function half( {min, max} ) {
+//     return (max + min) / 2.0;
+//   };
+// })();
+
+const half = ({max, min}) => (max + min) / 2.0; // 28.015
 ```
 
 

@@ -9,6 +9,12 @@
 
 
 
+
+## Requirements:
+- Some JavaScript Knowledge, you can refer to my [JavaScript Notes](../JavaScript/JavaScriptBeginners.md)
+- Installation of Node.js and a Text Editor, you can follow [my first React notes here](../React/React-ToDoApp.md)
+
+
 ## NPM Basics and Create-React-App
 - `npm init` - creates package.json (manifest) file and list dependencies<br/>
 When we share/upload a Node app to GitHub, we usually just include `package.json`, without large-sized `node_modules` folder where all the files from the installed modules are stored. To restore the `node_modules` folder, we just need to run `npm install` in our local project.
@@ -157,7 +163,7 @@ Our component structure will look like this:
 ## Add CSS to our React components (from index.css or in JSX)
 
 ```CSS
-// index.css
+/* index.css */
 * {
   margin: 0;
   padding: 0;
@@ -274,7 +280,7 @@ function BookList() {
 }
 ```
 This will be the result so far:<br/>
-<img src="./ReactFundamentals01.jpg" width=500>
+<p align="center"><img src="./ReactFundamentals01.jpg" width=500></p>
 
 <br/><br/>
 Also, inside our `Book` function, if we don't want to repeat `props` var name, we can use ***JavaScript Destructuring***:
@@ -386,7 +392,12 @@ function BookList() {
   return (
     <section className="booklist">
       {books.map((book) => {
-        return <Book title={book.title} img={book.img} author={book.author} />;
+        return 
+          <Book 
+            title={book.title}
+            img={book.img}
+            author={book.author} 
+          />;
       })}
     </section>
   );
@@ -404,6 +415,219 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
+We can also use the ***Spread operator*** (`...`) inside our `BookList` main component, without modifying our `Book` function:
+
+```js
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book) => {
+        return 
+          <Book 
+
+            {...book} 
+          />;
+      })}
+    </section>
+  );
+}
+```
 
 
-## Warning: Each child in a list should have a unique "key" prop
+
+## Solve warning: Each child in a list should have a unique "key" prop
+React uses the `key` property create a relationship between the component and the DOM element, so each object should have an `id`. [The library uses this relationship to determine whether or not the component should be re-rendered](https://sentry.io/answers/unique-key-prop/).
+
+```js
+// index.js
+// We just need to add an id to each object in our array
+var books = [
+  {
+    id: 1,
+    title: "The Brothers Karamazov",
+    ...
+  },
+];
+
+// Then add key={book.id} as a return in our arrow function inside BookList()
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book) => {
+        return 
+          <Book 
+            key={book.id}
+            {...book} 
+          />;
+      })}
+    </section>
+  );
+}
+```
+
+
+
+
+
+
+
+
+## React Event Basics
+Complete List of events from documentation: [here](https://reactjs.org/docs/events.html).<br/>
+The main two components of an event is: **attribute** and **eventHandler**.
+
+- ***onClick*** event:
+Add a `<button>` with an `onClick` event, and a new `const (arrow) function` to handle that event:
+
+```js
+const Book = ({ img, title, author }) => {
+  const clickHandler = () => {
+    alert(title);
+  };
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+      <button type="button" onClick={clickHandler}>
+        See description
+      </button>
+    </article>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentals02.jpg" width=700></p>
+
+[But what happens if we want to pass an argument to our outside Handler function (timestamp:3h5m)?](https://youtu.be/4UZrsTqkcW4?t=11121) The Handler functions (with a passed argument) will execute all at once when first opening the page! To solve this we need to pass an arrow function with the argument we want as an argument:
+
+```js
+// Our Handler function is outside our Book() component
+const complexClickHandler = (author) => {
+  alert(author);
+};
+
+const Book = ({ img, title, author }) => {
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+      <button type="button" onClick={() => complexClickHandler(author)}>
+        See description
+      </button>
+    </article>
+  );
+};
+```
+
+- ***onMouseOver*** event:
+
+```js
+const Book = ({ img, title, author }) => {
+  const clickHandler = () => {
+    console.log(title);
+  };
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+      <button type="button" onMouseOver={clickHandler}>
+        See description
+      </button>
+    </article>
+  );
+};
+```
+
+
+
+
+
+
+
+## Import and Export modules (JavaScript ES6)
+
+We can split our functionalities in separate files instead of putting them all together in `index.js`.<br/>
+We can create a new folder `./src/components` with `BookItem.js`, and a new file `booksData.js` where we'll store our dummy data books (array)
+  - `./src/components/BookItem.js`
+  - `./src/booksData.js`
+
+In `./src/booksData.js` we will cut and paste our array and add `export`:
+
+```js
+// booksData.js
+export const books = [
+  {
+    id: 1,
+    title: "The Brothers Karamazov",
+    author: "Fyodor Dostoevsky",
+    img:
+      "https://images-na.ssl-images-amazon.com/images/I/51FIyYKsCXL._SX333_BO1,204,203,200_.jpg",
+  },
+  {
+    id: 2,
+    title: "12 Rules for Life",
+    author: "Jordan B. Peterson",
+    img:
+      "https://images-na.ssl-images-amazon.com/images/I/41LtJtWn9OL._SX331_BO1,204,203,200_.jpg",
+  },
+  {
+    id: 3,
+    title: "Beyond Good and Evil",
+    author: "Friedrich Nietzsche",
+    img:
+      "https://images-na.ssl-images-amazon.com/images/I/412Nd1QaikL._SX322_BO1,204,203,200_.jpg",
+  },
+  {
+    id: 4,
+    title: "Atomic Habits",
+    author: "James Clear",
+    img:
+      "https://images-na.ssl-images-amazon.com/images/I/412gUd3iiKL._SX331_BO1,204,203,200_.jpg",
+  },
+];
+```
+
+In `./src/components/BookItem.js` we will have:
+
+```js
+import React from "react";
+
+const Book = ({ img, title, author }) => {
+  const clickHandler = () => {
+    alert(title);
+  };
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h2>{title}</h2>
+      <h4>{author}</h4>
+      <button type="button" onClick={clickHandler}>
+        See description
+      </button>
+    </article>
+  );
+};
+
+export default Book;
+
+```
+
+Note, we can only have ***one*** `default export` per `.js` file. However, it is good practice to keep the component name `Book` same as our `.js` file name (here we have `BookItem.js` instead of `Book.js`)<br/><br/>
+
+In our main `./src/index.js` we will import these new files (for `.js` files, we don't have to specify the extension):
+
+```js
+// index.js
+import {books} from './booksData'
+import Book from "./components/BookItem";
+import "./index.css";
+```
+
+Note that we use ***curly brackets {}*** for exports that aren't `default` (like our `books` array from our `booksData.js`).
+
+
+

@@ -10,8 +10,8 @@ A collection of my personal study notes from various courses, tutorials, article
 * [JavaScript Events, Promises, DOM, AJAX, JSON - coming soon]
 
 #### React
-* [Build your first ToDo App with React and host it on GitHub Pages](./React/React-ToDoApp.md)
-
+* [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
+* [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
 
 
 
