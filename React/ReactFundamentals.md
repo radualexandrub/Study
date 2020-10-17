@@ -280,7 +280,7 @@ function BookList() {
 }
 ```
 This will be the result so far:<br/>
-<p align="center"><img src="./ReactFundamentals01.jpg" width=500></p>
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals01.jpg" width=500></p>
 
 <br/><br/>
 Also, inside our `Book` function, if we don't want to repeat `props` var name, we can use ***JavaScript Destructuring***:
@@ -497,7 +497,7 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
-<p align="center"><img src="./ReactFundamentals02.jpg" width=700></p>
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals02.jpg" width=700></p>
 
 [But what happens if we want to pass an argument to our outside Handler function (timestamp:3h5m)?](https://youtu.be/4UZrsTqkcW4?t=11121) The Handler functions (with a passed argument) will execute all at once when first opening the page! To solve this we need to pass an arrow function with the argument we want as an argument:
 
@@ -631,3 +631,1010 @@ Note that we use ***curly brackets {}*** for exports that aren't `default` (like
 
 
 
+
+
+
+## Basic React Hooks: `useState` and `useEffect`
+- [Other examples of hooks](https://reactjs.org/docs/hooks-reference.html): `useContext/Context API`, `useReducer`, `useCallback`, `useMemo`, `useRef`, `useImerativeHandle`, `useLayoutEffect`.
+- More React concepts: `Conditional Rendering`, `Forms`, `Prop Drilling`, `React Router`
+
+## `useState`
+
+By default, if I try to change the `<h2>{title}</h2>` title directly using a Handler function (by clicking a button), the component **will not re-render** with the new title.
+
+```js
+const ErrorExample = () => {
+  let title = 'random title';
+
+  const handleClick = () => {
+    title = 'hello people';
+    console.log(title);
+  };
+  return (
+    <React.Fragment>
+      <h2>{title}</h2>
+      <button type='button' onClick={handleClick}>
+        change title
+      </button>
+    </React.Fragment>
+  );
+};
+```
+
+Therefore we need to use `useState()`.<br/>
+`usetState()` returns two parameters: 
+- the value given from its parameter and a special function which **will be used as a handler**.
+
+  ```js
+  const UseStateBasics = () => {
+    console.log(useState('hello')); // the Parameter could be a number/string/boolean/array/etc
+    const value = useState()[0]; // value = 'hello'
+    const handler = useState()[1]; // a function
+    console.log(value, handler);
+  };
+  ```
+
+Therefore, in order to change our `<h2>` title by pressing a button (call the Handler function) and **re-render** the component, we must import and use `useState`
+
+```js
+import React, { useState } from 'react';
+
+const UseStateBasics = () => {
+  const [text, setText] = useState('random title'); // We used array destructuring
+  const handleClick = () => {
+    setText('hello world');
+  };
+
+  return (
+    <React.Fragment>
+      <h1>{text}</h1>
+      <button type='button' onClick={handleClick}>
+        change title
+      </button>
+    </React.Fragment>
+  );
+};
+
+export default UseStateBasics;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals03.jpg" width=500></p>
+
+However, there are some **rules** while using `useState()` (or other hooks):
+- the hook functions name starts with `use` (`useState`, `useEffect`, `useRef`, `useReducer`, `useCallback`, etc)
+- component function name must be uppercase (here we used a component named `UseStateBasics`)
+- hooks functions must be invoked inside function/component body
+- we don't call hooks conditionally
+- name convention for the returned function Handler from a hook (`useState`) should be `setSth`
+
+
+
+
+### `useState` Array with Data objects Example
+
+We'll have a list of items coming from a dummy data:
+  - we are rendering/showing each element from the list
+  - we have a button that will render a clear list (with all items removed)
+  - each item has a button next to it to its removal
+    - don't forget that we need to pass an arrow function in order to call the handler (from useState) only when we are pressing the button, if we called the handler directly, the handler will be executed for all items after opening/refreshing the page.
+
+```js
+const data = [
+  { id: 1, name: 'john' },
+  { id: 2, name: 'peter' },
+  { id: 3, name: 'susan' },
+  { id: 4, name: 'anna' },
+];
+
+import React from 'react';
+
+const UseStateArray = () => {
+  const [people, setPeople] = React.useState(data); // We pass an array with objects
+
+  const removeItem = (id) => {
+    // We filter the array and showing all the items that don't have the matching id set as parameter
+    let newPeople = people.filter(  (person) => person.id !== id  );
+    setPeople(newPeople);
+  };
+  return (
+    <div>
+      {people.map((person) => {
+        const { id, name } = person;
+        return (
+          <div key={id} className='item'>
+            <h4>{name}</h4>
+            <button onClick={() => removeItem(id)}>remove</button> // arrow function that returns a call to handler
+          </div>
+        );
+      })}
+      <button className='btn' onClick={() => setPeople([])}> // We render an empty array for our re-rendered empty list
+        clear items
+      </button>
+    <div/>
+  );
+};
+
+export default UseStateArray;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals04.jpg" width=900></p>
+
+Also, as we will see in **Counter example**, we can write our `removeItem` function in order to be more explicit, by writing another sub-function as parameter when calling `setPeople` handler:
+
+```js
+const UseStateArray = () => {
+  const [people, setPeople] = React.useState(data);
+
+  const removeItem = (id) => {
+    setPeople((oldPeople) => {
+      let newPeople = oldPeople.filter( (person) => person.id !== id );
+      return newPeople;
+    });
+  };
+
+  return ( 
+    <div>...</div>
+  )
+```
+
+
+
+
+### `useState` with a single object example
+
+The problem while using a single object and we want to change (and display with re-render) a property, the whole object will disappear
+
+```js
+/* BAD EXAMPLE */
+const UseStateObject = () => {
+  const [person, setPerson] = useState({
+    name: 'peter',
+    age: 24,
+    message: 'random message',
+  });
+  const changeMessage = () => {
+    setPerson('hello world');  // THIS WILL NOT WORK, It will wipe out the data
+    // SEE PICTURE BELLOW
+  };
+  return (
+    <>
+      <h3>{person.name}</h3>
+      <h3>{person.age}</h3>
+      <h4>{person.message}</h4>
+      <button className='btn' onClick={changeMessage}>
+        change message
+      </button>
+    </>
+  );
+};
+/* BAD EXAMPLE */
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals05.jpg" width=500></p>
+
+```js
+const UseStateObject = () => {
+  const [person, setPerson] = useState({
+    name: 'peter',
+    age: 24,
+    message: 'random message',
+  });
+
+  /* METHOD 2 - We create a setHandler for every property */
+  // const [name,setName] = useState('peter')
+  // const [age,setAge] = useState(24)
+  // const [message,setMessage] = useState('random message')
+
+  const changeMessage = () => {
+    /* METHOD 1 */
+    // We use the spread operator to leave the old values as they are, but we'll only change the message
+    setPerson({ ...person, message: 'hello world' });
+
+    /* METHOD 2 */
+    // setMessage('hello world')
+  };
+
+  return (
+    <>
+      <h3>{person.name}</h3>
+      <h3>{person.age}</h3>
+      <h4>{person.message}</h4>
+      <button className='btn' onClick={changeMessage}>
+        change message
+      </button>
+    </>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals06.jpg" width=500></p>
+
+
+
+
+### `useState` simple Counter example
+
+Preparing our UI and setting initial value `0` in our `useState()`:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals07.jpg" width=600></p>
+
+Complete code:
+
+```js
+import React, { useState } from 'react';
+
+const UseStateCounter = () => {
+  const [value, setValue] = useState(0);
+
+  const reset = () => {
+    setValue(0);
+  };
+
+  return (
+    <>
+      <section style={{ margin: '4rem 0' }}>
+        <h2>regular counter</h2>
+        <h1>{value}</h1>
+        <button className='btn' onClick={() => setValue(value - 1)}>
+          Decrease
+        </button>
+        <button className='btn' onClick={reset}>
+          Reset
+        </button>
+        <button className='btn' onClick={() => setValue(value + 1)}>
+          Increase
+        </button>
+      </section>
+     </>
+  );
+};
+
+export default UseStateCounter;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals08.jpg" width=400></p>
+
+
+
+### `useState` complex Counter example with a delay of two seconds:
+
+We are using JavaScript's built-in `setTimer(value, milisec)` function, where we pass `value=setValueHandler` and `milisec=2000` (eg: from `setTimer(2, 2000)` to `setTimer( ()=>{setValue(value+1)}, 2000)`).
+
+```js
+const UseStateCounter = () => {
+  const [value, setValue] = useState(0);
+
+/* // THIS WILL NOT WORK IF USER WILL PRESS THE BUTTON MULTIPLE TIMES WITHIN 2 SECONDS
+  const complexIncrease = () => {
+    setTimeout(() => {
+      setValue(value + 1); // setValue function is asynchronous, if we click 3 times within 2s it will take only the current value
+      }, 2000);
+  };
+*/
+
+  const complexIncrease = () => {
+    setTimeout(() => {
+      setValue((prevState) => { // Instead of passing directly the current value
+        return prevState + 1;   // we pass another function
+      });
+    }, 2000);
+  };
+
+  return (
+    <>
+      <section style={{ margin: "4rem 0" }}>
+        <h2>more complex counter</h2>
+        <h1>{value}</h1>
+        <button className="btn" onClick={complexIncrease}>
+          increase later
+        </button>
+      </section>
+    </>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals09.jpg" width=400></p>
+
+
+
+
+## [`useEffect`](https://reactjs.org/docs/hooks-reference.html#useeffect)
+
+`useEffect` function will run (by default) after every re-render (after every call of a `setHandler` function returned from the `useState()` hook).<br/>
+<br/>
+
+Simple example: Every time we increase a counter by clicking a button, **we will change our page title with the current counter value**:
+
+```js
+import React, { useState, useEffect } from 'react';
+
+const UseEffectBasics = () => {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    // console.log('call useEffect');
+    if (value > 0) {
+      document.title = `New Messages(${value})`;
+    }
+  });
+
+  // console.log('render component');
+  return (
+    <>
+      <h1>{value}</h1>
+      <button className='btn' onClick={() => setValue(value + 1)}>
+        click me
+      </button>
+    </>
+  );
+};
+
+export default UseEffectBasics;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals10.jpg" width=400></p>
+
+### `useEffect` second parameter: trigger an effect conditionally
+
+However, we can fire an ***effect*** conditionally. For example, if we add an empty array as second argument, the effect from our `useEffect` hook will run only when page loads/refresh.
+
+```js
+const UseEffectBasics = () => {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (value > 0) {
+      document.title = `New Messages(${value})`;
+    }
+  }, []); // Adding empty array will make useEffect trigger only on first page load/refresh
+
+  useEffect(() => {
+    if (value > 0) {
+      document.title = `New Messages(${value})`;
+    }
+  }, [value]); // Here useEffect will trigger every time "value" changes
+
+  /* In the first example (without a second parameter), 
+  useEffect triggered every time we re-rendered the component AND on first page load/refresh !!! */
+  ...
+```
+
+**NOTE:** We can have ***as many useEffect functions*** as we want inside a component.
+
+
+### `useEffect` Cleanup Function
+
+Without a return on `useEffect`, the function `window.addEvenListener` will trigger every time we resize the window without removing it with `window.removeEventListener`... However we can return an arrow function with the `window.removeEventListener` as a clean-up after every effect.
+
+```js
+const UseEffectCleanup = () => {
+  const [size, setSize] = useState(window.innerWidth);
+
+  const checkSize = () => {
+    setSize(window.innerWidth);
+  };
+
+  useEffect(() => {
+    console.log('useEffect');
+    window.addEventListener('resize', checkSize);
+    return () => {
+      console.log('cleanup');
+      window.removeEventListener('resize', checkSize);
+    };
+  }, []);
+  console.log('render');
+  return (
+    <>
+      <h1>window</h1>
+      <h2>{size} PX</h2>
+    </>
+  );
+};
+```
+
+
+### `useEffect` to fetch data (eg. GitHub users)
+
+We will render in real-time the data (users) we fetch from an API.
+
+```js
+import React, { useState, useEffect } from 'react';
+const url = 'https://api.github.com/users';
+
+const UseEffectFetchData = () => {
+  const [users, setUsers] = useState([]);
+
+  const getUsers = async () => {
+    const response = await fetch(url);
+    const users = await response.json();
+    setUsers(users);
+    // console.log(users);
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []); // IT IS VERY IMPORTANT TO RENDER THE LIST OF USER'S ONLY ON FIRST PAGE RELOAD
+  // OR ELSE WE WILL CALL getUsers METHOD INFINITELY (this infinite loop will crash our browser)
+  return (
+    <>
+      <h3>github users</h3>
+      <ul className='users'>
+        {users.map((user) => {
+          const { id, login, avatar_url, html_url } = user;
+          return (
+            <li key={id}>
+              <img src={avatar_url} alt={login} />
+              <div>
+                <h4>{login}</h4>
+                <a href={html_url}>profile</a>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
+
+export default UseEffectFetchData;
+
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals11.jpg" width=800></p>
+
+
+
+
+
+
+
+<br/>
+
+## Conditional [Component] Rendering - Display specific content based on conditions with multiple returns
+
+```js
+import React, { useState, useEffect } from 'react';
+const url = 'https://api.github.com/users/radualexandrub';
+const MultipleReturns = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useState('default user');
+
+  useEffect(() => {
+    fetch(url)
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status <= 299) {
+          return resp.json();
+        } else {
+          setIsLoading(false);
+          setIsError(true);
+          throw new Error(resp.statusText);
+        }
+      })
+      .then((user) => {
+        const { loginName } = user;
+        setUser(loginName);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div>
+        <h1>Error....</h1>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <h1>{user}</h1>
+    </div>
+  );
+};
+
+export default MultipleReturns;
+```
+
+
+## JS short-circuit evaluation (return values with a condition) and Ternary operator
+
+In React we are not allowed to write in JSX an `if` statement:
+
+```js
+/* BAD EXAMPLE - won't work*/
+const MyComponent = () => {
+  return <div>
+    {if(condition) {console.log("Can't log that")}}
+  </div>
+};
+/* BAD EXAMPLE */
+```
+
+But we can use ***short-circuit evaluation***:
+
+```js
+const MyComponent = () => {
+  const [text, setText] = useState(''); // empty string (equivalent of false)
+  const firstValue = text || 'hello world'; // will return 'hello world'
+  const secondValue = text && 'hello world'; // will return ''
+
+  return <div>
+    <h1>{firstValue}</h1>
+    <h1>value : {secondValue}</h1>
+  </div>
+};
+```
+
+This will display:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals12.jpg" width=300></p>
+
+And **this is how we are going to use it in JSX**:
+
+```js
+// Let's say we will receive a text from a server call
+// But if the text is empty, we'll directly show something else in JSX
+const MyComponent = () => {
+  const [text, setText] = useState(''); // empty string (equivalent of false)
+
+  return <div>
+    <h1>{text || "Text is empty, John Doe"}</h1>
+    {/*Or, if the text is true, we want to display something else*/}
+    <h1>{text && "Text is not empty (is true) so we'll display sth else"}</h1>
+  </div>
+};
+```
+
+However, we can also use **ternary operator** (`condition ? trueBlock : falseBlock`)
+
+```js
+import React from "react";
+
+const MyComponent = () => {
+  const [isError, setisError] = React.useState(false);
+
+  return (
+    <div>
+      {isError ? (
+        <h1>Error...</h1>
+      ) : (
+        <div>
+          <h2>No error. Yay.</h2>
+          <p>John Doe or other Data</p>
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+When `isError === false`, this will render:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals13.jpg" width=300></p>
+
+
+
+<br/>
+
+## Show/Hide components with a button
+
+```js
+import React, { useState, useEffect } from 'react';
+
+const ShowHide = () => {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <button className='btn' onClick={() => setShow(!show)}>
+        show/hide
+      </button>
+      {show && <Item />}
+    </>
+  );
+};
+
+const Item = () => {
+  const [size, setSize] = useState(window.innerWidth);
+  const checkSize = () => {
+    setSize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener('resize', checkSize);
+    // We need a cleanup function every time we toggle the button
+    return () => {
+      window.removeEventListener('resize', checkSize);
+    };
+  }, []);
+
+  return (
+    <div style={{ marginTop: '2rem' }}>
+      <h1>Window</h1>
+      <h2>size : {size}</h2>
+    </div>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals14.jpg" width=600></p>
+
+
+
+<br/>
+
+## Forms in React
+
+### Form basics in React (User input) and `preventDefault`
+
+Display a form:
+
+```js
+const NonFunctionalForm = () => {
+  return (
+    <>
+      <article>
+        <form className="form">
+          <div className="form-control">
+            <label htmlFor="firstName">Name: </label>
+            <input type="text" id="firstName" name="firstName"></input>
+          </div>
+
+          <div className="form-control">
+            <label htmlFor="email">Email: </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+            />
+          </div>
+          <button type="submit">Add Person</button>
+        </form>
+      </article>
+    </>
+  );
+};
+```
+
+Will render:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals15.jpg" width=500></p>
+
+We have **two methods** for submitting a form:
+1. We include `onSubmit={handleSubmitFunction}` on our `<form>` tag.
+2. OR; We include `onClick={handleSubmitFunction}` on out `<button>` tag.
+
+[Form onSubmit is a more correct approach, for the simple reason that a form can also be submitted with the `ENTER` key, and not just by clicking the submit button.](https://stackoverflow.com/questions/6908187/form-onsubmit-versus-submit-button-onclick) However if we have multiple buttons ofc we'll choose the later option.
+
+<br/>
+
+All good.<br/>
+However after we write our `handleSubmit` function, the **default behavior** of JavaScript (React included) **is to refresh/reload the page**.
+
+```js
+/* BAD EXAMPLE */
+const FunctionalForm = () => {
+  const handleSubmit = (e) => { // e = event object parameter
+    console.log("hello"); // WILL NOT WORK
+  }; // The page will log "hello" for a short period then will refresh/reload and will not log anything
+
+  return (
+    <>
+      <article>
+        <form className="form" onSubmit={handleSubmit}> // NOTE that we don't call the function with ()
+          ...
+    </>
+  );
+};
+```
+
+We need to overwrite the **default behavior** with `preventDefault()`. Now the page will not reload after pressing ENTER/button and will log 'hello'. ([More about the **event object**](https://www.w3schools.com/jsref/obj_event.asp))
+
+```js
+const FunctionalForm = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("hello"); 
+  };
+  ...
+```
+
+### Controlled inputs (functional form)
+
+We can now add `value`s to our `<input>` fields, and also declare/define some `const` variables for each **default** value using again `useState()` (Obvious note: the *value* of the input depends on the value of *useState*). <br/>
+We also need to specify and define an `onChange` method in each field's `<input>`, that has an `event (e)` parameter which is returned as parameter as `e.target.value` to our `setName` function/handler.
+
+```js
+const FunctionalForm = () => {
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(firstName, email);
+  };
+
+  return (
+    <>
+      <article>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label htmlFor="firstName">Name: </label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            ></input>
+          </div>
+          <div className="form-control">
+            <label htmlFor="email">Email: </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <button type="submit">Add Person</button>
+        </form>
+      </article>
+    </>
+  );
+};
+```
+
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals16.jpg" width=600></p>
+
+
+
+### Add elements to a list via Form (step-by-step)
+
+- We define an empty List/Array `const [peopleList, setPeopleList] = useState([]);` and we will also check them to not be empty in our `handleSubmit()` function
+- We create an object in our `handleSubmit()`:
+
+  ```js
+  const FunctionalForm = () => {
+    const [firstName, setFirstName] = useState('');
+    const [email, setEmail] = useState('');
+    const [peopleList, setPeopleList] = useState([]);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (firstName && email) {
+        // console.log(`${firstName}: ${email}`);
+        const person = { firstName: firstName, email: email };
+      }
+    };
+  ...
+  ```
+  However, if the object's keys matches the variables names (that holds the values), we can re-write (refactor) in a shorter way (JS ES6):
+
+  ```js
+    ...
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (firstName && email) {
+        const person = { firstName, email };
+      }
+    };
+    ...
+  ```
+- Then we add our new object to our `peopleList` array (along with the already-existing elements in that array using the `Spread` operator `...`)
+- Then we call `setFirstName` and `setEmail` with an empty string as parameter (After user presses submit button, the form will "clear"/the text added in the form fields will be re-rendered as empty strings)
+
+  ```js
+    ...
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (firstName && email) {
+        const person = { firstName, email };
+        setPeopleList((peopleList) => {
+          return [...peopleList, person];
+        });
+        setFirstName('');
+        setEmail('');
+      }
+    };
+    ...
+  ```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals17.jpg" width=500></p>
+
+- Now we can display the people we have in our `peopleList` array. We will iterate over each value using `map()`
+
+  ```js
+  <article>
+    <form>
+      ...
+    </form>
+    // Keep in mind that using `index` here is not suitable for a list where we want to remove items, we'll fix this later
+    {peopleList.map((person, index) => {
+      const { id, firstName, email } = person;
+      return (
+        <div className="item">
+          <h4>{firstName}</h4>
+          <p>{email}</p>
+        </div>
+      );
+    })}
+  </article>
+  ```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals18.jpg" width=400></p>
+
+- But now, React will throw the warning: ***Each child in a list should have a unique "key" prop***.<br/>
+We can add an `id` in various ways: 
+    - using `Math.random()` function (`0.5822776560245544`)
+    - using `new Date().getTime().toString()` (`1602953600928`)
+    - using a [npm package `uuid`](https://www.npmjs.com/package/uuid): `npm install uuid`, `import { v4 as uuidv4 } from 'uuid';
+    uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`<br/>
+
+  We'll add this new `id` on our `handleSubmit` function when we create our `person` object.
+
+- We'll also add this id as a `key` when we're iterating (displaying/rendering) the objects within our `peopleList` array.<br/>
+
+Our complete component will look like this:
+
+```js
+const FunctionalForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [peopleList, setPeopleList] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (firstName && email) {
+      const person = { id: new Date().getTime.toString(), firstName, email };
+      setPeopleList((peopleList) => {
+        return [...peopleList, person];
+      });
+      setFirstName('');
+      setEmail('');
+    }
+  };
+
+  return (
+    <>
+      <article>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label htmlFor="firstName">Name: </label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <label htmlFor="email">Email: </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <button type="submit">Add Person</button>
+        </form>
+        {peopleList.map((person) => {
+          const { id, firstName, email } = person;
+          return (
+            <div className="item" key={id}>
+              <h4>{firstName}</h4>
+              <p>{email}</p>
+            </div>
+          );
+        })}
+      </article>
+    </>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals19.jpg" width=500></p>
+
+
+
+
+### Form with multiple inputs (lots of inputs)
+
+The previous form with only 2 inputs (name and email) have lots of code, especially because we are calling the `setFunction` on every subcomponent (every field).<br/><br/>
+
+- This time we'll define our `person` object outside our `handleSubmit` handler function: `const [person, setPerson] = useState({firstName: '', lastName: '', email:'', age:''})`
+- We will also write a `handleChange` method to handle the `onChange` property of each form field.
+- And also add `Person.property` as a `value` to each input field.
+
+```js
+const FunctionalForm = () => {
+  const [person, setPerson] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    age: '',
+  });
+  const [peopleList, setPeopleList] = useState([]);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPerson({ ...person, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (person.firstName && person.lastName && person.email && person.age) {
+      const newPerson = { ...person, id: new Date().getTime().toString() };
+      setPeopleList([...peopleList, newPerson]);
+      setPerson({ firstName: '', lastName: '', email: '', age: '' });
+    }
+  };
+
+  return (
+    <>
+      <article>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label htmlFor="firstName">First Name: </label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={person.firstName}
+              onChange={handleChange}
+            />
+            <label htmlFor="lastName">Last Name: </label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={person.lastName}
+              onChange={handleChange}
+            />
+            <label htmlFor="email">Email: </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={person.email}
+              onChange={handleChange}
+            />
+            <label htmlFor="age">Age: </label>
+            <input
+              type="text"
+              id="age"
+              name="age"
+              value={person.age}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit">Add Person</button>
+        </form>
+        {peopleList.map((person) => {
+          const { id, firstName, lastName, email, age } = person;
+          return (
+            <div className="item" key={id}>
+              <h4>
+                {firstName} {lastName}
+              </h4>
+              <p>{age} years old</p>
+              <p>{email}</p>
+            </div>
+          );
+        })}
+      </article>
+    </>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals20.jpg" width=500></p>

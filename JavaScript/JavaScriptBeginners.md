@@ -34,6 +34,11 @@
 - [Create Concise Object Literal Declarations using Simple Fields](#ConciseObjectLiteralDeclarations)
 - [Write Concise Declarative Functions](#ConciseDeclarativeFunctions)
 - [JavaScript Generator Function* (`yield`)](#JsGeneratorFunctions)
+- [JavaScript Classes](#JavaScriptClasses)
+  - [Using class Syntax to Define a Constructor Function](#UsingClassSyntaxtoDef)
+  - [Using getters and setters to Control Access to an Object](#UsingGettersSetters)
+  - [JavaScript Class Inheritance](#JSClassInheritance)
+  - [Class Hoisting](#JSClassHoisting)
 
 
 ## <a name="WhereCanRun">Where can I run JavaScript code?</a>
@@ -1887,6 +1892,206 @@ console.log(appleStore.next())      // { value: 7, done: false }
 console.log(appleStore.next())      // { value: 5, done: false }
 console.log(appleStore.next())      // { value: undefined, done: true }
 ```
+
+
+
+
+
+## <a name="JavaScriptClasses"></a>JavaScript Classes
+
+> JavaScript is object-oriented, but is not a *class-based* object-oriented language like Java, C++, C#. Class-based OOP languages are a subset of the larger family of OOP languages which also include prototype-based languages like JavaScript. JavaScript is both an object-oriented as well as a functional programming language.
+
+Class Syntax:
+
+```js
+class ClassName {
+  constructor(parameters) { ... }
+  get getter() { ... }
+  set setter(parameter) { ... }
+  method_1() { ... }
+  method_2() { ... }
+  method_3() { ... }
+}
+```
+
+### <a name="UsingClassSyntaxtoDef"></a>[Using class Syntax to Define a Constructor Function](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-class-syntax-to-define-a-constructor-function)
+
+It should be noted that the `class` syntax is just syntax, and not a full-fledged class-based implementation of an object-oriented paradigm, unlike in languages such as Java, Python, Ruby, etc.<br/>
+
+In ES5, we usually define a constructor function and use the `new` keyword to instantiate an object:
+
+```js
+var SpaceShuttle = function(targetPlanet){
+  this.targetPlanet = targetPlanet;
+}
+var zeus = new SpaceShuttle('Jupiter');
+```
+
+The `class` syntax simply replaces the constructor function creation:
+
+```js
+class SpaceShuttle {
+  constructor(targetPlanet) {
+    this.targetPlanet = targetPlanet;
+  }
+}
+const zeus = new SpaceShuttle('Jupiter');
+console.log(zeus); // SpaceShuttle { targetPlanet: 'Jupiter' }
+```
+
+^^ The `class` keyword declares a function, to which a **constructor** is added. This constructor is invoked when `new` is called to create a new object.<br/>
+
+One more example:
+
+```js
+class Vegetable {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+const carrot = new Vegetable('carrot');
+console.log(carrot.name); // will display 'carrot'
+```
+
+[Mooore examples](https://www.w3schools.com/js/js_class_intro.asp):
+
+```js
+class Car {
+  constructor(name, year) {
+    this.name = name;
+    this.year = year;
+  }
+  age() {
+    let date = new Date();
+    return date.getFullYear() - this.year;
+  }
+}
+
+myCar = new Car("Ford", 2014);
+document.getElementById("demo").innerHTML =
+"My car is " + myCar.age() + " years old.";
+```
+
+### <a name="UsingGettersSetters"></a>[Using getters and setters to Control Access to an Object](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-getters-and-setters-to-control-access-to-an-object)
+
+You can obtain values from an object (**get**) and **set** the value of a property within an object.
+- Getter functions are meant to simply return (get) the value of an object's private variable to the user without the user directly accessing the private variable.
+- Setter functions are meant to modify/update (set) the value of an object's private variable based on the value passed into the setter function. This change could involve calculations, or even overwriting the previous value completely.
+
+```js
+/* Example 1 */
+class Book {
+  constructor(author) {
+    this._author = author;
+  }
+  // getter
+  get writer() {
+    return this._author;
+  }
+  // setter
+  set writer(updatedAuthor) {
+    this._author = updatedAuthor;
+  }
+}
+const novel = new Book('anonymous');
+console.log(novel.writer);  // anonymous
+novel.writer = 'newAuthor';
+console.log(novel.writer);  // newAuthor
+```
+
+**Note**: It is *convention* to write the name of a private variable with an underscore (`_`). However, that doesn't make a variable private.
+
+```js
+/* Example 2 */
+class Thermostat {
+    constructor(fahrenheit_temp) {
+        this._temp = fahrenheit_temp;
+    }
+    get temperature() {
+        return 5/9 * (this._temp - 32);
+    }
+    set temperature(new_temp) {
+        this._temp = new_temp;
+    }
+}
+
+const thermos = new Thermostat(76); // Setting in Fahrenheit scale
+let temp = thermos.temperature; // 24.44 in Celsius
+thermos.temperature = 26;
+temp = thermos.temperature; // 26 in Celsius
+```
+
+
+### <a name="JSClassInheritance"></a>[JavaScript Class Inheritance](https://www.w3schools.com/js/js_class_inheritance.asp)
+
+To create a class inheritance, use the `extends` keyword. A class created with a class inheritance inherits all the methods from another class:
+
+```js
+class Car {
+  constructor(brand) {
+    this.carname = brand;
+  }
+  present() {
+    return 'I have a ' + this.carname;
+  }
+}
+
+class Model extends Car {
+  constructor(brand, mod) {
+    super(brand);
+    this.model = mod;
+  }
+  show() {
+    return this.present() + ', it is a ' + this.model;
+  }
+}
+
+mycar = new Model("Ford", "Mustang");
+document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it is a Mustang
+```
+
+^^ The `super()` method refers to the parent class. By calling the `super()` method in the constructor method, we call the parent's constructor method and gets access to the parent's properties and methods.
+
+> Inheritance is useful for code reusability: reuse properties and methods of an existing class when you create a new class.
+
+### <a name="JSClassHoisting"></a>[Class Hoisting](https://www.w3schools.com/js/js_class_inheritance.asp)
+
+Unlike functions, and other JavaScript declarations, class declarations are not hoisted. That means that you must declare a class before you can use it:
+
+```js
+// !! You cannot use the class yet. !!
+// mycar = new Car("Ford")
+// This would raise an error.
+
+class Car {
+  constructor(brand) {
+    this.carname = brand;
+  }
+}
+
+//Now you can use the class:
+mycar = new Car("Ford")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Find me on Social
 ***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>

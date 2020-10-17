@@ -315,9 +315,336 @@ print(myorder.format(quantity, itemno, price))
 
 
 
-## Python Sets
+
+
+
+## Python `if else` , `for _ in range(len())`, `for _ in iterable`, `while`, `break`, `continue`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Python Collection data types (data structures)
 Python Data Structure Types:
-- sets: `{"cherry", "apple", "banana"}` with *curly brackets {}*
-- tuples: `("cherry", "apple", "banana")` with *round brackets ()*
-- lists: `["cherry", "apple", "banana"]` with *square brackets []*
+- sets: `{"cherry", "apple", "banana"}` with *curly brackets {}* or with `set(any_iterable)` or `set([list])`
+- tuples: `("cherry", "apple", "banana")` with *round brackets ()* or with `tuple(any_iterable)` or `tuple([list])`
 - dictionaries: `{"name": "John", "age": 36, 404:"Error"}` with *curly brackets {}*
+- lists: `["cherry", "apple", "banana"]` with *square brackets []*
+
+| Collection Type | Properties                                               |
+|-----------------|----------------------------------------------------------|
+| Set             | unordered and unindexed. No duplicate members.           |
+| Dictionary      | unordered, changeable and indexed. No duplicate members. |
+| Tuple           | ordered and unchangeable. Allows duplicate members.      |
+| List            | ordered and changeable. Allows duplicate members.        |
+
+
+
+
+
+## Python Sets
+
+A set is a collection which is unordered and unindexed, meaning that the order doesn't matter in a set and you cannot be sure in which order the items will appear.
+- Sets are not subscriptable (they can't be accessed with an index/key or `[ ]`). 
+- They don't have a `sort()` attribute.
+- Sets doesn't contain duplicates, you can't have 2 or more of a same value.
+
+```python
+mySet = {1, 2, 2, 3, 3, "yes", "no", "yes"}
+# or
+mySet = set([1, 2, 2, 3, 3, "yes", "no", "yes"])
+print(mySet) # {1, 2, 3, 'no', 'yes'}
+type (mySet) # set
+
+# You can find all set methods by declaring a set and calling dir() on it
+dir(mySet)
+```
+
+### Sets methods:
+
+- Elements can be accessed only with a `for` loop
+
+```python
+mySet = {"apple", "banana", "cherry"}
+
+for x in mySet:
+  print(x)
+``` 
+
+- We cannot change items in a set but we can add elements one by one with `add()`
+
+```python
+mySet.add("orange")
+print(mySet) # {'apple', 'banana', 'cherry', 'orange'}
+```
+
+- Or we can add multiple items using `update()`
+
+```python
+mySet.update(["mango", "grapes"])
+print(mySet) # {'apple', 'banana', 'cherry', 'grapes', 'mango', 'orange'}
+
+# Note that the elements are not pushed to the end of the set 
+# but rather sorted alphabetically or in ascending order
+numberSet = {5, 3, 2, 55, 32}
+print(numberSet) # {2, 3, 5, 32, 55}
+```
+
+- Get the length of a set with `len()`
+
+- We can remove items in a set by using `discard()` (Note that a remove() method doesn't exist)
+
+```python
+mySet = {"apple", "banana", "cherry"}
+mySet.discard("banana")
+```
+
+- Remove the last item in a set with `pop()`
+
+```python
+mySet = {"apple", "banana", "cherry"}
+x = mySet.pop() # x = 'cherry'
+print(mySet) # {"apple", "banana"}
+```
+
+- `clear()` method empties a set (removes every element)
+
+```python
+mySet.clear()
+print(mySet) # set()
+```
+
+- We can join two sets using `union()`
+
+```python
+set1 = {"c", "d" , "e", 3}
+set2 = {1, 'a', 2, 3}
+
+set3 = set1.union(set2) # set3 = {1, 2, 3, 'a', 'c', 'd', 'e'}
+set2 = set1.union(set2) # set2 = {1, 2, 3, 'a', 'c', 'd', 'e'}
+```
+
+- We can intersect sets using `intersection()`
+
+```python
+odds = set([1,3,5,7,9])
+primes = set([2,3,5,7])
+
+primes.intersection(odds) # {2}
+```
+
+- [All sets methods](https://www.w3schools.com/python/python_sets.asp):
+
+| Method                        | Description                                                                    |
+|-------------------------------|--------------------------------------------------------------------------------|
+| add()                         | Adds an element to the set                                                     |
+| clear()                       | Removes all the elements from the set                                          |
+| copy()                        | Returns a copy of the set                                                      |
+| difference()                  | Returns a set containing the difference between two or more sets               |
+| difference_update()           | Removes the items in this set that are also included in another, specified set |
+| discard()                     | Remove the specified item                                                      |
+| intersection()                | Returns a set, that is the intersection of two other sets                      |
+| intersection_update()         | Removes the items in this set that are not present in other, specified set(s)  |
+| isdisjoint()                  | Returns whether two sets have a intersection or not                            |
+| issubset()                    | Returns whether another set contains this set or not                           |
+| issuperset()                  | Returns whether this set contains another set or not                           |
+| pop()                         | Removes an element from the set                                                |
+| remove()                      | Removes the specified element                                                  |
+| symmetric_difference()        | Returns a set with the symmetric differences of two sets                       |
+| symmetric_difference_update() | inserts the symmetric differences from this set and another                    |
+| union()                       | Return a set containing the union of sets                                      |
+| update()                      | Update the set with the union of this set and others                           |
+
+
+
+
+
+
+
+## Python Dictionaries
+
+A dictionary is a collection which is **unordered**, **changeable** and **indexed**. Dictionaries are written with curly brackets, and they have keys and values.
+
+```python
+myDict = {
+  "name": "Alex",
+  2: 'Hello',
+  "years": [1964. 1972]
+}
+print(thisdict)
+
+# We can also create a dictionary using dict()
+blogPost = dict(message="Hi", language="English")
+```
+
+### Dictionary methods
+
+- In a Dictionary, we can access items and change values by keys using `[]`:
+
+```python
+myDict["name"] # 'Alex'
+myDict["years"] # [1964. 1972]
+myDict[2] # 'Hello'
+
+myDict["name"] = "Ed"
+```
+
+- Loop through dictionary's key names and access their values:
+
+```python
+for key in myDict:
+	print(key) # 'name' ...
+	print(myDict[key]) # 'Ed' ...
+```
+
+- Loop through both keys and values, by using the `items()` method:
+
+```python
+for key, value in myDict.items():
+	print(key) # 'name' ...
+	print(value) # 'Ed' ...
+```
+
+- Check if a key exists in a dictionary with `in`: `"name" in myDict` will return `True`
+
+- Check dictionary length with `len()`: `print(len(myDict))`
+
+- Adding an item to the dictionary is done by using a new index key and assigning a value to it:
+
+```python
+recipeArticle = {
+  "title": "How to cook cookies",
+  "ingredients": ['flour', 'milk', 'eggs']
+}
+recipeArticle["subtitle"] = "Cook delicious cookies in just an hour"
+print(thisdict)
+```
+
+- Removing elements by a specific key name using `pop()`
+
+```python
+recipeArticle.pop('ingredients')
+```
+
+- Remove the last inserted item with `popitem()`
+
+- Empty a dictionary with `myDict.clear()`
+
+- Make a copy of a dictionary with the `copy()` method, or using directly the `dict()` function
+
+```python
+myDict2 = myDict.copy()
+
+# same as
+myDict2 = dict(myDict)
+```
+
+- Nested Dictionaries:
+
+```python
+myfamily = {
+  "child1" : {
+    "name" : "Andrew",
+    "year" : 2004
+  },
+  "child2" : {
+    "name" : "Tobias",
+    "year" : 2007
+  },
+  "child3" : {
+    "name" : "Linus",
+    "year" : 2011
+  }
+}
+```
+
+
+
+
+
+## Python Tuples
+
+A tuple is a collection which is ordered and unchangeable. In Python tuples are written with round brackets.
+
+- We can access tuple elements with their index numbers using `[]`:
+
+```python
+myTuple = ("apple", "banana", "cherry")
+print(myTuple[1]) # "banana"
+
+print(myTuple[-1]) # "cherry" (-1 refers to last item)
+print(myTuple[-2]) # "banana" (-2 refers to second last item)
+
+anotherTuple = ("apple", "banana", "cherry", "orange", "kiwi", "melon", "mango")
+print(anotherTuple[2:5]) # ('cherry', 'orange', 'kiwi')
+
+print(anotherTuple[3:]) # ('orange', 'kiwi', 'melon', 'mango')
+print(anotherTuple[:3]) # ('apple', 'banana', "cherry")
+print(anotherTuple[2:]) # ('cherry', 'orange', 'kiwi', 'melon', 'mango')
+print(anotherTuple[:2]) # ('apple', 'banana')
+```
+
+- Iterate through a tuple:
+
+```python
+for item in myTuple:
+	print(item)
+
+for i in range(0, len(myTuple)):
+	print(myTuple[i])
+```
+
+- **Once created, we cannot *add* or *remove* items in a tuple !!** Tuples are unchangeable.
+
+- We can multiple tuples using `+` operator:
+
+```python
+tuple1 = ("a", "b" , "c")
+tuple2 = ('a', 1, 2, 3)
+
+tuple3 = tuple1 + tuple2
+print(tuple3) # ('a', 'b', 'c', 'a', 1, 2, 3)
+```
+
+- We can return the number of times a specific element repeats in a tuple with `count()`
+
+```python
+monTuple = ('un', 'deux', 'trois', 'un', 'quatre', 'trois', 'trois')
+monTuple.count('trois') # 3
+monTuple.count('un') # 2
+```
+
+- Search in a tuple for a specified value and return the position with `index()`
+
+```python
+monTuple.index('trois') # 2
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Python Lists
+Python lists could be seen as *Arrays* from JavaScript's perspective.
