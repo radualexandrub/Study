@@ -46,6 +46,8 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 
+### Takes these notes offline!
+- You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
 
 
 ## Find more about me on:

@@ -1541,12 +1541,12 @@ const FunctionalForm = () => {
 };
 ```
 
-<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals19.jpg" width=500></p>
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals19.jpg" width=600></p>
 
 
 
 
-### Form with multiple inputs (lots of inputs)
+### Complete Form with multiple inputs (lots of inputs)
 
 The previous form with only 2 inputs (name and email) have lots of code, especially because we are calling the `setFunction` on every subcomponent (every field).<br/><br/>
 
@@ -1638,3 +1638,17 @@ const FunctionalForm = () => {
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals20.jpg" width=500></p>
+
+
+
+
+
+
+
+
+## React Hooks
+
+## `useRef` - using Uncontrolled inputs in a Form
+
+- `useRef` is similar as `useState`: it preserves the values between the renders. But unlike useState, `useRef` DOES NOT trigger re-render!!! It is commonly used for targeting DOM nodes/elements.
+

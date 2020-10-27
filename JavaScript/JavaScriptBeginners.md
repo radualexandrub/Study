@@ -8,9 +8,12 @@
 - [Variable names that starts with `$` or `_`](#variablenamesthatstarts)
 - [JS Data Types](#JSDataTypes)
 - [JS Operators `+` `-` `*` `**` `/` `%` `++` `--` and Comparisons](#JSOperators)
-- [Strings, Strings methods and Template Literals](#StringsStringsMethodsTemplateLiterals)
+
+- [**Strings**, **Strings methods** and Template Literals](#StringsStringsMethodsTemplateLiterals)
   - [`length`](#stringlength), [`indexOf`](#stringindexof), [`search`](#stringsearch), [`slice/substring/substr`](#stringSliceSubstringSubstr), [`replace`](#stringReplace), [`toUpper/Lower`](#stringToUpperCaseToLower)
   - [`concat`](#stringConcat), [`trim`](#stringTrim), [`split`](#stringSplit)
+  - [`repeat`](#stringRepeat)
+  - [`includes`](#stringIncludes), [`match`](#stringMatch)
   - [`template literals`](#stringTemplateLiterals)
 
 - [Numbers: Decimal, Hexadecimal, Octal, Binary, Infinity and Number Methods `toFixed`/`toPrecision`](#NumbersDecimalHexadecimalEtc)
@@ -18,14 +21,18 @@
   - [`if else`](#JSIfElse), [`switch`](#JSSwitch)
   - [`for`](#JSforloop), [`for...in`](#Jsforin), [`for...of`](#Jsforof)
   - [`while`](#JSwhileloop), [`break` and `continue`](#JsBreakandContinue)
-- [Arrays and Array methods: `shift`/`unshift`, `push`/`pop`, `splice`/`slice`, `includes`](#ArraysandArryasMethods)
+
+- [More on `objects`](#MoreOnObjects)
+- [**Arrays** and **Array methods**: `shift`/`unshift`, `push`/`pop`, `splice`/`slice`, `includes`](#ArraysandArryasMethods)
   - [Array `sort()`](#ArraySort)
+
 - [JavaScript Functions](#JsFunctionsHoistingandReturn)
   - [Returning values and Function Hoisting](#JsFunctionsHoistingandReturn)
   - [`Arrow functions`](#JsArrowFunctions)
   - [`this` operator](#JsThisOperator)
   - [Making a simple counter function with a button](#JsMakeaSimpleCounter)
   - [JavaScript function closures](#JsfunctionClosures)
+
 - [The `Rest` operator (`...`) and `Spread` (`...`) operator](#RestOperatorandSpreadOperator)
 - [Arrays and Array iteration methods](#ArraysAndArrayIteration)
   - [`forEach`](#ArrayforEach), [`map`](#Arraymap), [`filter`](#ArrayFilter), [`reduce`](#ArrayReduce), [`every`](#ArrayEvery), [`some`](#ArraySome), [`indexOf`](#ArrayIndexOf), [`find`](#ArrayFind), [`findIndex`](#ArrayFindIndex)
@@ -49,7 +56,7 @@
     console.log("hello, world");
 </script>
 ```
-2. Download and install [Node.js](https://nodejs.org/en/download/), install+open Sublime Text, go to `Tools->Build System->New build system`, paste this [this](https://pawelgrzybek.com/javascript-console-in-sublime-text/) and save it as `nodejs.sublime-build`:
+2. Download and install [Node.js](https://nodejs.org/en/download/), install + open Sublime Text, go to `Tools->Build System->New build system`, paste this [this](https://pawelgrzybek.com/javascript-console-in-sublime-text/) and save it as `nodejs.sublime-build`:
 ```
 {
   "cmd": ["C:/Program Files/nodejs/node.exe", "$file"],
@@ -63,6 +70,8 @@ Select `Tools->Build System->nodejs` and now you can run your `.js` file inside 
 4. Use [Scrimba.com](https://scrimba.com/), Create account, Log in, press `+` button, select `javascript template` and `playground`.
 
 5. Use [Stackblitz](https://stackblitz.com/), Create account, Log in, Create new project in JavaScript.
+
+6. Install + Open Visual Studio Code and install [Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 
 ## <a name="declaringvariables">Declaring variables with `var`, `let`, `const`</a>
@@ -527,6 +536,35 @@ txt.split(''); // [ 'a', 'b', 'c', 'd', 'e', 'f' ]
 // If the separator is omitted, the returned array will contain the whole string in index [0].
 txt.split(); // [ 'abcdef' ]
 ```
+
+12. <a name="stringRepeat"></a>`repeat(nr_of_times)` returns the string repeated
+
+```js
+let str = "Hello";
+str.repeat(3); // 'HelloHelloHello'
+```
+
+13. String `includes`, `match`
+
+- <a name="stringIncludes"></a>`includes(substring)` checks if a string includes a substring 
+
+```js
+var str = "Hello world, welcome to the universe.";
+str.includes("world"); // true
+```
+
+- <a name="stringMatch"></a>`match` method searches a string for a match against a regular expression, and returns the matches, as an Array object
+
+```js
+var str = "The rain in SPAIN stays mainly in the plain"; 
+str.match(/ain/g); // [ 'ain', 'ain', 'ain' ]
+```
+
+Note: If the regular expression does not include the `g` modifier (to perform a *global* search), the `match()` method will return only **the first match** in the string. This method returns `null` if no match is found.
+
+
+
+
 
 - <a name="stringTemplateLiterals"></a>**Create Strings using Template Literals**:
 
@@ -1003,6 +1041,264 @@ for (i = 0; i < 6; i++) {
 ```
 
 
+## <a name="MoreOnObjects"></a>More on `objects`:
+
+- Return the current value of `apples` property:
+
+```js
+let foods = {
+  apples: 25,
+  oranges: 32,
+  plums: 28
+}
+console.log(foods['apples']); // 25
+console.log(foods.apples); // 25
+```
+
+- Assign the value 45 to the `busy` property of the nested `onlineStatus` object, we use dot notation to reference the property:
+
+```js
+let userActivity = {
+  id: 23894201352,
+  date: 'January 1, 2017',
+  data: {
+    totalUsers: 51,
+    online: 42
+  }
+};
+userActivity.data.online = 45;
+userActivity['data']['online'] = 45;
+// Both methods work
+```
+
+- Use the `delete` keyword to remove the oranges, plums, and strawberries keys from the foods object:
+
+```js
+let foods = {
+  apples: 25,
+  oranges: 32,
+  plums: 28,
+  bananas: 13,
+  grapes: 35,
+  strawberries: 27
+};
+
+delete foods.oranges;
+delete foods.plums;
+delete foods.strawberries;
+console.log(foods); // { apples: 25, bananas: 13, grapes: 35 }
+
+delete foods;
+console.log(foods); // { apples: 25, bananas: 13, grapes: 35 } IT DOESN'T DELETE THE OBJECT
+```
+
+- Return the number of users whose `online` property is set to `true` using a `for...in` statement:
+
+```js
+true + true // 2
+
+users = {
+  Alan: {
+    online: false
+  },
+  Jeff: {
+    online: true
+  },
+  Sarah: {
+    online: false
+  }
+}
+
+function countOnline(usersObj) {
+  let cnt = 0;
+  for (let user in usersObj) {
+    cnt += (usersObj[user]['online'])
+  }
+  return cnt;
+}
+
+console.log(countOnline(users)) // 1
+```
+
+- Return an array containing all the properties in the object it receives as an argument using `Object.keys()`:
+
+```js
+let users = {
+  Alan: {
+    age: 27,
+    online: false
+  },
+  Jeff: {
+    age: 32,
+    online: true
+  },
+  Sarah: {
+    age: 48,
+    online: false
+  }
+};
+
+console.log(Object.keys(users));// [ 'Alan', 'Jeff', 'Sarah' ]
+```
+
+- Function that takes a `user` object and adds the name of the `friend` argument to the array stored in user.data.friends and returns that array.
+
+```js
+let user = {
+  name: 'Kenneth',
+  age: 28,
+  data: {
+    username: 'kennethCodesAllDay',
+    joinDate: 'March 26, 2016',
+    organization: 'freeCodeCamp',
+    friends: [
+      'Sam',
+      'Kira',
+      'Tomo'
+    ],
+    location: {
+      city: 'San Francisco',
+      state: 'CA',
+      country: 'USA'
+    }
+  }
+};
+
+function addFriend(userObj, friend) {
+  userObj.data.friends.push(friend);
+  return userObj.data.friends
+}
+
+console.log(addFriend(user, 'Pete')); // [ 'Sam', 'Kira', 'Tomo', 'Pete' ]
+```
+
+
+- Object Methods:
+
+```js
+let duck = {
+  name: "Aflac",
+  numLegs: 2,
+  sayName: function() {return "The name of this duck is " + this.name + ".";}
+  sayLegs: () => {return `This duck has ${this.numLegs} legs.`;}
+};
+duck.sayName(); // "The name of this duck is Aflac."
+```
+
+- Object constructors (they are different - syntax wise - than ***class*** constructors)
+
+```js
+function Dog() {
+  this.name = "Albert";
+  this.color = "brown";
+  this.numLegs = 3;
+  // "this" inside the constructor always refers to the object being created
+}
+
+let whiteDoggie = new Dog();
+whiteDoggie.color = 'white';
+```
+
+Ofc we can extend our constructors to receive argument and pass values while we creating a new object:
+
+```js
+function Dog(name, color) {
+  this.name = name;
+  this.color = color;
+}
+let terrier = new Dog('Coco', 'white');
+
+// We can also verify an object's constructor with instanceof (name without with camelCase...)
+console.log(terrier instanceof Dog); // => true
+```
+
+- Extract an object's own properties:
+
+```js
+function Bird(name) {
+  this.name = name;
+  this.numLegs = 2;
+}
+let canary = new Bird("Tweety");
+
+let ownProps = [];
+for (let property in canary) {
+  if(canary.hasOwnProperty(property)) {
+    ownProps.push(property);
+  }
+}
+console.log(ownProps); // [ 'name', 'numLegs' ]
+```
+
+- Use Prototype Properties to Reduce Duplicate Code<br/>
+Since numLegs will probably have the same value for all instances of Bird, you essentially have a duplicated variable numLegs inside each Bird instance.
+
+```js
+console.log(duck.numLegs);  // prints 2
+console.log(canary.numLegs);  // prints 2
+// We can solve with prototype
+function Bird(name) {
+  this.name = name; // own property
+  Bird.prototype.numLegs = 2; // Note we don't use this (that's a own property, not a prototype)
+}
+Bird.prototype.numLegs = 2; // We can also define our prototype property outside our constructor
+
+/* Extract an object "own properties" and "prototype properties" */
+let ownProps = [];
+let prototypeProps = [];
+for (let property in duck) {
+  if(duck.hasOwnProperty(property)) {
+    ownProps.push(property);
+  } else {
+    prototypeProps.push(property);
+  }
+}
+console.log(ownProps); // prints ["name"]
+console.log(prototypeProps); // prints ["numLegs"]
+```
+
+We can also find out what kind of object we have using `myNewObj.constructor === ObjectConstructorFunction`..
+
+```js
+let duck = new Bird();
+let beagle = new Dog();
+
+console.log(duck.constructor === Bird);  //prints true
+console.log(beagle.constructor === Dog);  //prints true
+```
+
+- [Add methods as prototypes](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/object-oriented-programming/remember-to-set-the-constructor-property-when-changing-the-prototype):
+
+```js
+function Dog(name) {
+  this.name = name;
+}
+
+Dog.prototype = {
+  constructor: Dog, // we also need to define the constructor property
+  numLegs: 2, 
+  eat: function() {
+    console.log("nom nom nom");
+  },
+  describe: function() {
+    console.log("My name is " + this.name);
+  }
+};
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1042,6 +1338,9 @@ fruits.splice(2, 0, "Lemon", "Kiwi");
 // first parameter (2) defines the position where new elements should be added (spliced in).
 // second parameter (0) defines how many elements should be removed.
 // rest of the parameters ("Lemon" , "Kiwi") define the new elements to be added.
+/* NOTE: splice method modifies the array after execution, and returns the removed elements*/
+
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits.splice(0, 1);        // Removes the first element of fruits
 
 
@@ -1547,7 +1846,7 @@ Note that the function takes 3 arguments, some can be optional but must respect 
 - The `array` itself
 
 2. <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
-- The map() method does not execute the function for array elements without values.
+- The map() method does not execute the function for array's elements without values.
 - The map() method does not change the original array.
 
 ```js
@@ -1561,11 +1860,11 @@ console.log(numbers2) // [ 90, 8, 18, 32, 50 ]
 
 // or using js arrow function
 var numbers2 = numbers1.map((value) => {return 2 * value});
-
-
-// In Python we would use list comprehension:
+```
+```python
+# In Python we would use list comprehension:
 numbers2 = [2 * _ for _ in numbers1]
-// or map and lambda function
+# or map and lambda function
 numbers2 = list(map(lambda _: 2 * _, numbers1))
 ```
 
@@ -1577,6 +1876,28 @@ Another example of using `map` to convert strings numbers to numbers:
 // WRONG Method of doing it:
 ['1', '7', '11'].map(parseInt) // [1, NaN, 3]
 ```
+
+**Note**: The differences between `forEach` and `map` are:
+- `Array.prototype.forEach()` — executes a provided function once for each array element and doesn’t actually return anything (undefined). `forEach` does mutate/modifies each element of the array called upon.
+- `Array.prototype.map()` — creates a new array with the results of calling a provided function on every element in the calling array, without modifying the original array.
+
+```js
+let arr = [1, 2, 3, 4, 5];
+arr.forEach((num, index) => {
+    return arr[index] = num * 2;
+});
+console.log(arr); // [2, 4, 6, 8, 10]
+```
+```js
+let arr = [1, 2, 3, 4, 5];
+let doubled = arr.map(num => {
+    return num * 2;
+});
+console.log(arr); // [1, 2, 3, 4, 5]
+console.log(doubled); // [2, 4, 6, 8, 10]
+```
+
+- Performance-wise: `map()` could be up to 70% faster than `forEach()` on massive arrays.
 
 3. <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
 
@@ -1591,11 +1912,13 @@ console.log(over18) // [ 45, 25 ]
 
 // or using js arrow function
 var over18 = numbers.filter((value) => {return value > 18;});
-
-
-// In Python we could use list comprehension:
+```
+```python
+# In Python we could use list comprehension:
 over18 = [_ for _ in numbers if _ > 18]
 ```
+
+Another example:
 
 ```js
 // Compute the square root of integers only (not floats)
@@ -1612,8 +1935,8 @@ console.log(squareNumbers); // [ 16, 144, 36, 4 ]
     - The item `value`
     - The item `index`
     - The `array` itself
-```js
 
+```js
 var numbers = [45, 4, 9, 16, 25];
 var nrSum = numbers.reduce(myFunction);
 
@@ -1624,9 +1947,9 @@ console.log(nrSum); // 99
 
 // or using js arrow function
 var nrSum = numbers.reduce((total, value) => {return total + value});
-
-
-// In Python, we can use sum(Array)
+```
+```python
+# In Python, we can use sum(Array)
 nrSum = sum(numbers) 
 ```
 Soo, if we want to add only the numbers that are >18?
@@ -1638,17 +1961,19 @@ var sumOver18 = numbers.filter((value) => {return value > 18;})
 // or
 var sumOver18 = numbers.filter(e => e > 18)
                         .reduce((total, value) => {return total + value});
-
-// or in Python using list comprehension and sum()
+```
+```python
+# or in Python using list comprehension and sum()
 sumOver18 = sum([_ for _ in numbers if _ > 18])
 ```
 What if we want sum of even numbers?
 ```js
 var numbers = [45, 4, 9, 16, 25];
 var sumEven = numbers.filter(e => !(e % 2))
-                        .reduce((total, value) => {return total + value}); // 20
-
-// and Python?
+                      .reduce((total, value) => {return total + value}); // 20
+```
+```python
+# and Python?
 sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 ```
 
@@ -1658,12 +1983,12 @@ sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 var numbers = [45, 4, 9, 16, 25];
 var allOver18 = numbers.every((value, index, array) => {return value > 18});
 console.log(allOver18) // false
-
-
-// In Python we would use all() and list comprehension
-allOver18 = all([_ > 18 for _ in numbers]) // False
-// all() returns True if every element in the list is True
-// [_ > 18 for _ in numbers] returns [True, False, False, False, True]
+```
+```python
+# In Python we would use all() and list comprehension
+allOver18 = all([_ > 18 for _ in numbers]) # False
+# all() returns True if every element in the list is True
+# [_ > 18 for _ in numbers] returns [True, False, False, False, True]
 ```
 
 6. <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
@@ -1671,9 +1996,9 @@ allOver18 = all([_ > 18 for _ in numbers]) // False
 ```js
 var numbers = [45, 4, 9, 16, 25];
 var someOver18 = numbers.some((value) => {return value > 18}); // true
-
-
-// In Python we would use any() and list comprehension
+```
+```python
+# In Python we would use any() and list comprehension
 someOver18 = any([_ > 18 for _ in numbers]) // True
 ```
 
@@ -1687,6 +2012,13 @@ var a = fruits.indexOf("Apple"); // 1
 
 // in Python we would use index
 fruits.index('Apple') // 1
+fruits.index('Orange') // 2
+fruits.indexOf('dates'); // returns -1 if element is not present in array
+
+function quickCheck(arr, elem) {
+  return (arr.indexOf(elem) != -1) ? true : false
+}
+console.log(quickCheck(['squash', 'onions', 'shallots'], 'mushrooms')); // false
 ```
 
 8. <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
@@ -2073,8 +2405,6 @@ class Car {
 //Now you can use the class:
 mycar = new Car("Ford")
 ```
-
-
 
 
 

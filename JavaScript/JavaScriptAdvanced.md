@@ -84,3 +84,18 @@ makeServerRequest.catch(error => {
 	- [w3schools JavaScript Regex](https://www.w3schools.com/js/js_regexp.asp)
 	
 > Note: each language has different regular expressions. [Python's regex is different than JavaScript's](https://stackoverflow.com/questions/636485/whats-different-between-python-and-javascript-regular-expressions) ([Regular Expression Flavor Comparison](http://web.archive.org/web/20130830063653/http://www.regular-expressions.info:80/refflavors.html)).
+
+
+
+
+
+
+
+
+
+
+## JavaScript DOM (Document Object Model)
+
+Credits/Notes from:
+- [[2h] JavaScript DOM Crash Course 2017 - from Traversy Media](https://www.youtube.com/playlist?list=PLillGF-RfqbYE6Ik_EuXA2iZFcE082B3s)
+- [JS HTML DOM - from w3schools](https://www.w3schools.com/js/js_htmldom.asp)
