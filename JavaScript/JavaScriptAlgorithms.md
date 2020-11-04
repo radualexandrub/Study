@@ -1,18 +1,22 @@
-## Contents
-- JavaScript Random Algorithms
+# JavaScript Algorithms. Contents:
+
+- **freeCodeCamp Basic Algorithm Scripting:**
   - [Reverse a string](#algorithmReverseString)
   - [Factorialize a number!](#algoFactorializeNumber)
   - [Return the length of the longest word in a sentence](#algoReturnLengthLongestWord)
   - [Check if a string ends with the given target substring](#algoCheckStringatEnd)
   - [Title Case a Sentence](#algoTitleCaseSentence)
   - [Array Slice and Concat: Copy each element of the first array into the second array, in order, inserting elements at index n of the second array](#algoArraySliceAndConcat)
+  - [Remove all falsy values from an Array](#algoRemoveFalsy)
+  - [Check if string1 contains all the letters from string2](#algoCheckIfStringContains)
+  - [Chonky Monkey: Split an array into groups of a specific length an return it as two-dimensional array](#algoChonkyMonkey)
 
+- **freeCodeCamp Intermediate Algorithm Scripting:**
+  - [Sum All Numbers in a Range](#algSumAllNumbersInRange)
+  - [Difference Two Arrays Symmetrically](#algDifferenceTwoArrays)
+  - [Seek and Destroy: Remove all elements from the first argument (an Array) that have the same values as the next arguments](#algSeekAndDestroy)
 
-
-
-
-
-## JavaScript Random Algorithms
+# freeCodeCamp Basic Algorithm Scripting
 
 ## <a name="algorithmReverseString"></a>[Reverse a string](https://www.freecodecamp.org/news/how-to-reverse-a-string-in-javascript-in-3-different-ways-75e4763c68cb/)
 
@@ -185,7 +189,8 @@ function frankenSplice(arr1, arr2, n) {
 frankenSplice([1, 2, 3], [4, 5, 6], 1); // [ 4, 1, 2, 3, 5, 6 ]
 ```
 
-## <a name="algoRemoveAllFalsy"></a>Remove all falsy values from an Array (Remove elements from array that doesn't respect condition)
+
+## <a name="algoRemoveFalsy"></a>Remove all falsy values from an Array (Remove elements from array that doesn't respect condition)
 
 - `bouncer([7, "ate", "", false, 9])` should return `[7, "ate", 9]`
 - `bouncer([false, null, 0, NaN, undefined, ""])` should return `[]`
@@ -216,9 +221,9 @@ function bouncer(arr) {
 ```
 
 
+<br/>
 
-
-## Check if string1 contains all the letters from string2
+## <a name="algoCheckIfStringContains">Check if string1 contains all the letters from string2</a>
 
 - `["hello", "Hello"]` returns `true` because all of the letters in the second string are present in the first, ignoring case
 - `["Alien", "line"]` returns `true` because all of the letters in "line" are present in "Alien"
@@ -265,10 +270,9 @@ function mutation(arr) {
 }
 ```
 
+<br/>
 
-
-
-## Chonky Monkey: Split an array into groups of a specific length an return it as two-dimensional array
+## <a name="algoChonkyMonkey">Chonky Monkey: Split an array into groups of a specific length an return it as two-dimensional array</a>
 
 My solution using `for` with a `step` increment and `slice()`:
 
@@ -314,3 +318,266 @@ function chunkArrayInGroups(arr, size) {
 - Otherwise, we push to `temp`, push `temp` to the result variable and reset `temp` to an empty array.
 - Next, if `temp` isn’t an empty array, we push it to `result`.
 - Finally, we return the value of `result`.
+
+
+
+
+
+<br/>
+
+# freeCodeCamp Intermediate Algorithm Scripting
+
+## <a name="algSumAllNumbersInRange">Sum All Numbers in a Range</a>
+
+As input, we pass an array of two numbers. [Return the sum of those two numbers plus the sum of all the numbers between them. The lowest number will not always come first](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/sum-all-numbers-in-a-range).
+
+Erhmm, my not-so-proud solution:
+
+```js
+function sumAll(arr) {
+  arr.sort((a, b) => a - b);
+  let sum = 0;
+  for (let i = arr[0]; i <= arr[1]; i++) {
+    sum += i;
+  }
+  return sum;
+}
+sumAll([1, 4]); // 1 + 2 + 3 + 4 = 10
+sumAll([5, 10]) // 45
+```
+
+There are [a lot of methods to create a `range` function like in Python](https://stackoverflow.com/questions/3895478/does-javascript-have-a-method-like-range-to-generate-a-range-within-the-supp), but I think they're overcomplicated...
+
+Other solutions:
+1. [freeCodeCamp](https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-sum-all-numbers-in-a-range/16083) solution using `Math.max()` and `Math.min()`:
+
+```js
+function sumAll(arr) {
+  var max = Math.max(arr[0], arr[1]);
+  var min = Math.min(arr[0], arr[1]);
+  var temp = 0;
+  for (var i = min; i <= max; i++) {
+    temp += i;
+  }
+  return temp;
+}
+```
+
+2. freeCodeCamp solution using _The Arithmetic Progression Summing formula for calculating the sum of a continuous range:<br/>`(startNum + endNum) * numCount / 2`._
+
+```js
+const sumAll = arr => {
+  const startNum = arr[0];
+  const endNum = arr[1];
+
+  // Get the count of numbers between the two numbers by subtracting them and add 1 to the absolute value.
+  // ex. There are |1-4| + 1 = 4, (1, 2, 3, 4), 4 numbers between 1 and 4.
+  const numCount = Math.abs(startNum - endNum) + 1;
+
+  // Using Arithmetic Progression Summing formula
+  const sum = ((startNum + endNum) * numCount) / 2;
+  return sum;
+};
+```
+
+3. freeCodeCamp solution using a spread `...arr` operator:
+
+```js
+function sumAll(arr) {
+  var sum = 0;
+  for (var i = Math.min(...arr); i <= Math.max(...arr); i++) {
+    sum += i;
+  }
+  return sum;
+}
+```
+
+In ***Python*** we'll just use:
+
+```python
+# Python
+sumAll = lambda arr: sum(range(min(arr), max(arr) + 1))
+sumAll([5, 10]) # 45
+```
+
+
+<br/>
+
+## <a name="algDifferenceTwoArrays">Difference Two Arrays Symmetrically</a>
+
+Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, [return the symmetric difference of the two arrays](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/diff-two-arrays).
+
+- `[1, "calf", 3, "piglet"], [1, "calf", 3, 4]` should return `["piglet", 4]`.
+- `[1, 2, 3, 5], [1, 2, 3, 4, 5]` should return `[4]`
+- `[1, "calf", 3, "piglet"], [7, "filly"]` should return `[1, "calf", 3, "piglet", 7, "filly"]`
+- `["andesite", "grass", "dirt", "dead shrub"], ["andesite", "grass", "dirt", "dead shrub"]` should return `[]`
+
+My not-so-proud (ugly) first solution:
+
+```js
+function diffArray(arr1, arr2) {
+  let arr = [];
+  for (let i = 0; i < arr2.length; i++) {
+    if (!(arr1.includes(arr2[i]))) {
+      arr.push(arr2[i]);
+    }
+  }
+  for (let i = 0; i < arr1.length; i++) {
+    if (!(arr2.includes(arr1[i]))) {
+      arr.push(arr1[i]);
+    }
+  }
+  return arr;
+}
+
+console.log(diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5])); // [ 4 ]
+console.log(diffArray([1, "calf", 3, "piglet"], [1, "calf", 3, 4])); // [ 4, 'piglet' ]
+```
+
+My second (idea) solution (much better): 
+
+```js
+function diffArray(arr1, arr2) {
+  return arr1.filter(elem => !(arr2.includes(elem)))
+          .concat(arr2.filter(elem => !(arr1.includes(elem))))
+}
+```
+
+Nice, this is the [freeCodeCamp's _declarative_ solution](https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-diff-two-arrays/16008):
+
+```js
+function diffArray(arr1, arr2) {
+  return arr1
+    .concat(arr2)
+    .filter(item => !arr1.includes(item) || !arr2.includes(item));
+}
+```
+
+Another freeCodeCamp _declarative_ solution, using a function in a function and `indexOf()`:
+
+```js
+function diffArray(arr1, arr2) {
+  return [...diff(arr1, arr2), ...diff(arr2, arr1)];
+
+  function diff(a, b) {
+    return a.filter(item => b.indexOf(item) === -1);
+  }
+}
+```
+
+In ***Python***, we can use `union` and `difference` on `set` data types
+
+```python
+# Python
+arr1 = set([1, "calf", 3, "piglet"])
+arr2 = set([1, "calf", 3, 4])
+
+arrUnion = arr1.union(arr2) # {1, 3, 4, 'calf', 'piglet'}
+arrUnion.difference(arr1).union(arrUnion.difference(arr2)) # {4, 'piglet'}
+```
+
+Or:
+
+```python
+# Python
+def diffArray(arr1, arr2):
+    return [_ for _ in arr1 if _ not in arr2] + [_ for _ in arr2 if _ not in arr1]
+
+print(diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5])) # [4]
+print(diffArray([1, "calf", 3, "piglet"], [1, "calf", 3, 4])) # ['piglet', 4]
+
+```
+
+
+<br/>
+
+## <a name="algSeekAndDestroy">Seek and Destroy: Remove all elements from the first argument (an Array) that have the same values as the next arguments</a>
+
+You will be provided with an initial array (the first argument in the destroyer function), followed by one or more arguments. [Remove all elements from the initial array that are of the same value as these arguments](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/intermediate-algorithm-scripting/seek-and-destroy). Note: You have to use the arguments object.
+
+- `destroyer([1, 2, 3, 1, 2, 3], 2, 3)` should return `[1, 1]`
+- `destroyer([3, 5, 1, 2, 2], 2, 3, 5)` should return `[1]`
+- `destroyer(["tree", "hamburger", 53], "tree", 53)` should return `["hamburger"]`
+
+<br/>
+
+> [Examples of using the `arguments` object in a function:](https://www.w3schools.com/js/js_function_parameters.asp)
+
+```js
+/* Example 1: Sum of the all input values */
+x = sumAll(1, 123, 500, 115, 44, 88);
+
+function sumAll() {
+  let sum = 0;
+  for (let i = 0; i < arguments.length; i++) {
+    sum += arguments[i];
+  }
+  return sum;
+}
+
+/* Example 2: Find max element of the all input values */
+x = findMax(1, 123, 500, 115, 44, 88);
+
+function findMax() {
+  let max = -Infinity;
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] > max) {
+      max = arguments[i];
+    }
+  }
+  return max;
+}
+```
+
+<br/>
+
+***My first (and really nice) solution:***
+
+```js
+function destroyer() {
+  // console.log(arguments); // { '0': [ 1, 2, 3, 1, 2, 3 ], '1': 2, '2': 3 }
+  let [arr, ...arrRemovals] = arguments;
+  return arr.filter(elem => !(arrRemovals.includes(elem)));
+}
+
+console.log(destroyer([1, 2, 3, 1, 2, 3], 2, 3)); // [ 1, 1 ]
+```
+
+_[freeCodeCamp's almost the same solution but without using `arguments` object](https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-seek-and-destroy/16046):_
+
+```js
+function destroyer(arr) {
+  var args = Array.from(arguments).slice(1);
+  return arr.filter(function(val) {
+    return !args.includes(val);
+  });
+}
+```
+
+_Or freeCodeCamp's one-liner solution:_
+
+```js
+const destroyer = (arr, ...valsToRemove) => arr.filter(elem => !valsToRemove.includes(elem));
+```
+
+<br/>
+
+What if we solved this in ***Python***?
+
+```python
+# Python
+def destroyer(*args):
+  # print(args) # ([1, 2, 3, 1, 2, 3], 2, 3)
+  arr, *arrRemoval = args
+  return [_ for _ in arr if _ not in arrRemoval]
+```
+
+Or ***Python*** _one-liner_?
+
+```python
+# Python
+destroyer = lambda arr, *arrRemoval: [_ for _ in arr if _ not in arrRemoval]
+
+print(destroyer([1, 2, 3, 1, 2, 3], 2, 3))  # [ 1, 1 ]
+print(destroyer(["tree", "hamburger", 53], "tree", 53)) # ['hamburger']
+```

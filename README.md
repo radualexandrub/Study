@@ -7,7 +7,12 @@ A collection of my personal study notes from various courses, tutorials, article
 
 #### JavaScript
 * [JavaScript Full Course for Beginners (to advanced) - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
-* [JavaScript Promises, Forms, Events, DOM, AJAX, JSON - coming soon]
+* [JavaScript Promises, Forms, Events, DOM, AJAX, JSON - coming soon](./JavaScript/JavaScriptAdvanced.md)
+* [Regular Expressions (Regex) in JavaScript - coming soon](./JavaScript/JavaScriptRegex.md)
+* [Programming Paradigms in JavaScript, with lots of examples:](./JavaScript/JavaScriptFunctionalProgramming.md)
+  * [JavaScript Functional Programming](./JavaScript/JavaScriptFunctionalProgramming.md)
+  * [JavaScript Object Oriented Programming (OOP) - coming soon]
+* [JavaScript Algorithms from solving freeCodeCamp & HackerRank challenges](./JavaScript/JavaScriptAlgorithms.md)
 
 #### React
 * [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
@@ -46,7 +51,7 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 
-### Takes these notes offline!
+## Takes these notes offline!
 - You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
 
 

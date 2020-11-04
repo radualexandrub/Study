@@ -17,6 +17,7 @@
   - [`template literals`](#stringTemplateLiterals)
 
 - [Numbers: Decimal, Hexadecimal, Octal, Binary, Infinity and Number Methods `toFixed`/`toPrecision`](#NumbersDecimalHexadecimalEtc)
+  - [Convert string to integer with `parseInt()`](#parseIntStringtoInt)
 - [JavaScript `if else`, `switch`, `for`, `for in`, `for of` loop, `while`, `do/while` loop, `break`](#JavaScriptIfElseSwitchFor)
   - [`if else`](#JSIfElse), [`switch`](#JSSwitch)
   - [`for`](#JSforloop), [`for...in`](#Jsforin), [`for...of`](#Jsforof)
@@ -34,7 +35,7 @@
   - [JavaScript function closures](#JsfunctionClosures)
 
 - [The `Rest` operator (`...`) and `Spread` (`...`) operator](#RestOperatorandSpreadOperator)
-- [Arrays and Array iteration methods](#ArraysAndArrayIteration)
+- [**Arrays** and **Array iteration methods**](#ArraysAndArrayIteration)
   - [`forEach`](#ArrayforEach), [`map`](#Arraymap), [`filter`](#ArrayFilter), [`reduce`](#ArrayReduce), [`every`](#ArrayEvery), [`some`](#ArraySome), [`indexOf`](#ArrayIndexOf), [`find`](#ArrayFind), [`findIndex`](#ArrayFindIndex)
 
 - [Using Destructuring Assignment to Assign Variables from Objects](#UsingDestructurinAssignment)
@@ -666,7 +667,7 @@ var z = 0xF; z.toString(10) // '15'
 var z = 0xF; z.toString(2) // '1111'
 ```
 
-We can also convert using `parseInt()`:
+<a name="parseIntStringtoInt">We can also convert using `parseInt()`:</a>
 
 ```js
 // Another method to convert BIN -> DEC using parseInt()
@@ -676,6 +677,8 @@ var x = parseInt("110", 2); // x = 6
 // HEX -> DEC
 console.log(parseInt("f", 16));// x =  15
 ```
+
+[Differences between `parseInt()` and `Number()` to convert String->Int](https://thisthat.dev/number-constructor-vs-parse-int)
 
 - `Infinity` (or `-Infinity`) is the value JavaScript will return if you calculate a number outside the largest possible number.
 
@@ -879,7 +882,7 @@ document.getElementById("demo").innerHTML = text;
 </body>
 ```
 
-#### <a name="JSforloop">[`for` loops](https://www.w3schools.com/js/js_loop_for.asp)</a>
+#### <a name="JSforloop">[Loops](https://www.w3schools.com/js/js_loop_for.asp)</a>
 - `for` - loops through a block of code a number of times
 - `for/in` - loops through the properties of an object
 - `for/of` - loops through the values of an iterable object
@@ -1368,24 +1371,39 @@ var fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits.sort();        // Sorts array alphabetically
 fruits.reverse();     // Then reverse the order of the elements
 ```
-JS strikes again: By default, the sort() function sorts values as strings. This works well for strings ("Apple" comes before "Banana"). However, if numbers are sorted as strings, "25" is bigger than "100", because "2" is bigger than "1". Because of this, the sort() method will produce incorrect result when sorting numbers.<br/>
-You can fix this by providing a compare function:
+
+By default, the `sort()` function sorts values as strings (_JavaScript's default sorting method is by string Unicode point value, which may return unexpected results_). This works well for strings ("Apple" comes before "Banana"). However, if numbers are sorted as strings, "25" is bigger than "100", because "2" is bigger than "1". Because of this, the sort() method will produce incorrect result when sorting numbers.<br/>
+
+We can fix this by providing a compare function:
 
 ```js
 var numArray = [140000, 104, 99];
 numArray.sort(function(a, b) { return a - b; }); // ascending
 
-// Or, with ES6, you can use arrow functins - more on those later
+// Or, with ES6, you can use arrow functions
 numArray.sort((a, b) => a - b); // For ascending sort
 numArray.sort((a, b) => b - a); // For descending sort
 ```
-Sort an array in random order:
+
+With a _comparing_ function, we can also sort an array of strings from Z to A (unalphabetical) **without** using `reverse()`
+
+```js
+// Sort an array from Z to A (unalphabetical) without using reverse()
+arr = ['Zach', 'Adrian', 'John', 'A', 'B', 'C', 'D'];
+arr.sort(function(a, b) {
+    return a === b ? 0 : a < b ? 1 : -1;
+});
+console.log(arr); // [ 'Zach', 'John', 'D', 'C', 'B', 'Adrian', 'A' ]
+
+```
+
+Sort a numeric array in random order:
 
 ```js
 var points = [40, 100, 1, 5, 25, 10];
 points.sort(function(a, b){return 0.5 - Math.random()});
 ```
-Find the max/min number in an Array wusing `Math.max()`:
+Find the max/min number in an Array using `Math.max()`:
 
 ```js
 Math.max.apply(null, numArray);
@@ -1456,6 +1474,8 @@ objs.sort(function(a, b) {
     return a.last_nom.localeCompare(b.last_nom)
 });
 ```
+
+***Note on `.sort()` method:*** `sort()` method changes the order of the elements in the original array (_it mutates the array in place_). 
 
 
 
@@ -1821,7 +1841,7 @@ console.log(arr); // [3, 4, 5, 6, 7]
 
 
 ## <a name="ArraysAndArrayIteration">[Arrays and Array iteration methods](https://www.w3schools.com/js/js_array_iteration.asp): `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`</a>
-1. <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
+### <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
 
 ```js
 var txt = "";
@@ -1845,7 +1865,7 @@ Note that the function takes 3 arguments, some can be optional but must respect 
 - The item `index`
 - The `array` itself
 
-2. <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
+### <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
 - The map() method does not execute the function for array's elements without values.
 - The map() method does not change the original array.
 
@@ -1875,7 +1895,14 @@ Another example of using `map` to convert strings numbers to numbers:
 
 // WRONG Method of doing it:
 ['1', '7', '11'].map(parseInt) // [1, NaN, 3]
+
+// And also, we need to use Number() or parseFloat() for numbers that are not integers
+console.log(['1', '7.2', '11.98', '3.1415'].map(n => parseInt(n))); // [ 1, 7, 11, 3 ]
+console.log(['1', '7.2', '11.98', '3.1415'].map(n => Number(n))); // [ 1, 7.2, 11.98, 3.1415 ]
+console.log(['1', '7.2', '11.98', '3.1415'].map(n => parseFloat(n))); // [ 1, 7.2, 11.98, 3.1415 ]
 ```
+
+**Note**: See [the difference between `Number()` and `parseFloat()`](https://stackoverflow.com/questions/12227594/which-is-better-numberx-or-parsefloatx)
 
 **Note**: The differences between `forEach` and `map` are:
 - `Array.prototype.forEach()` — executes a provided function once for each array element and doesn’t actually return anything (undefined). `forEach` does mutate/modifies each element of the array called upon.
@@ -1883,10 +1910,16 @@ Another example of using `map` to convert strings numbers to numbers:
 
 ```js
 let arr = [1, 2, 3, 4, 5];
-arr.forEach((num, index) => {
+let doubled = arr.forEach((num, index) => {
     return arr[index] = num * 2;
 });
 console.log(arr); // [2, 4, 6, 8, 10]
+console.log(doubled); // undefined
+
+// NOTE: We can't use forEach() with an arrow function that receives the element directly
+let arr = [1, 2, 3, 4, 5];
+arr.forEach(value => value * 2);
+console.log(arr); // returns [ 1, 2, 3, 4, 5 ] !!!
 ```
 ```js
 let arr = [1, 2, 3, 4, 5];
@@ -1899,7 +1932,7 @@ console.log(doubled); // [2, 4, 6, 8, 10]
 
 - Performance-wise: `map()` could be up to 70% faster than `forEach()` on massive arrays.
 
-3. <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
+### <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -1927,7 +1960,17 @@ var squareNumbers = numbers.filter(val => Number.isInteger(val)).map(x => x ** 2
 console.log(squareNumbers); // [ 16, 144, 36, 4 ]
 ```
 
-4. <a name="ArrayReduce"></a>`Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
+```js
+// Same example but in 2 methods:
+arr.filter(val => Number.isInteger(val) && val >= 0)
+   .map(val => val**2);
+
+// is the same as (here we use curly brackets and return)
+arr.filter((val) => {return Number.isInteger(val) && val >= 0})
+   .map((val) => {return val ** 2});
+```
+
+### <a name="ArrayReduce"></a>`Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
 - `reduce()` method works from left-to-right in the array. 
 - `reduceRight()` does exactly the same but works from right-to-left in the array.
 - Note that the function takes 4 arguments with the same exact names, even `total`:
@@ -1977,7 +2020,7 @@ var sumEven = numbers.filter(e => !(e % 2))
 sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 ```
 
-5. <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
+### <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -1991,7 +2034,7 @@ allOver18 = all([_ > 18 for _ in numbers]) # False
 # [_ > 18 for _ in numbers] returns [True, False, False, False, True]
 ```
 
-6. <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
+### <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -2002,7 +2045,7 @@ var someOver18 = numbers.some((value) => {return value > 18}); // true
 someOver18 = any([_ > 18 for _ in numbers]) // True
 ```
 
-7. <a name="ArrayIndexOf"></a>`Array.indexOf(item[, start])` method searches an array for an element value and returns its position
+### <a name="ArrayIndexOf"></a>`Array.indexOf(item[, start])` method searches an array for an element value and returns its position
 - `Array.lastIndexOf(item[, start])` returns the position of the last occurrence of the specified element.
 - *start* is optional: where to start the search; negative values will start at the given position counting from the end, and search to the end.
 
@@ -2021,7 +2064,7 @@ function quickCheck(arr, elem) {
 console.log(quickCheck(['squash', 'onions', 'shallots'], 'mushrooms')); // false
 ```
 
-8. <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
+### <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];
@@ -2034,7 +2077,7 @@ function myFunction(value, index, array) {
 var first = numbers.find(e => e > 18); // 25
 ```
 
-9. <a name="ArrayFindIndex"></a>`Array.findIndex()` method returns the index of the first array element that passes a test function
+### <a name="ArrayFindIndex"></a>`Array.findIndex()` method returns the index of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];

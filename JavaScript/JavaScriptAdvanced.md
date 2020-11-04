@@ -77,21 +77,6 @@ makeServerRequest.catch(error => {
 
 
 
-## JavaScript Regular Expressions (regex)
-
-- References:
-	- [freeCodeCamp JavaScript Regex](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/regular-expressions/)
-	- [w3schools JavaScript Regex](https://www.w3schools.com/js/js_regexp.asp)
-	
-> Note: each language has different regular expressions. [Python's regex is different than JavaScript's](https://stackoverflow.com/questions/636485/whats-different-between-python-and-javascript-regular-expressions) ([Regular Expression Flavor Comparison](http://web.archive.org/web/20130830063653/http://www.regular-expressions.info:80/refflavors.html)).
-
-
-
-
-
-
-
-
 
 
 ## JavaScript DOM (Document Object Model)

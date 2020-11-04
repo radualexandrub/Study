@@ -23,6 +23,14 @@
   - [Matrix statistic functions: min, max, sum, mean, median, standard deviation, variance](#MatrixStatisticFunc)
   - [Trigonometric functions](#TrigonometricFunction)
 
+<br/>
+
+Conventions:
+- NumPy - `import numpy as np` (used for data preprocessing)
+- Pandas - `import pandas as pd` (used for data cleaning)
+- Matplotlib - `import matplotlib.pyplot as plt` (used for data visualization)
+- Seaborn - `import seaborn as sns` (used for data visualization)
+
 ## NumPy introduction
 
 ```python

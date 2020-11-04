@@ -446,6 +446,16 @@ primes = set([2,3,5,7])
 primes.intersection(odds) # {2}
 ```
 
+- Difference of a two sets with `difference()`
+
+```python
+# Python
+a = {1, 3, 5, 7, 8, 9} # type(a) returns <class 'set'>
+b = {2, 4, 6, 7, 8, 9, 10}
+a.difference(b) # {1, 3, 5}
+b.difference(a) # {2, 4, 6, 10}
+```
+
 - [All sets methods](https://www.w3schools.com/python/python_sets.asp):
 
 | Method                        | Description                                                                    |
