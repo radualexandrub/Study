@@ -428,10 +428,11 @@ Example: Count the number of alphanumeric characters in various quotes and strin
 'Coding!'.match(/\W/); // Returns ["!"]
 ```
 
-`/\W/` Matches any non-word character. This includes spaces and punctuation, but not underscores. It’s equivalent to `/[^A-Za-z0-9_]/`:
+`/\W/` Matches any non-word character. This includes spaces and punctuation, but not underscores.<br/>It’s equivalent to `/[^A-Za-z0-9_]/`. If you want to exclude underscore too, use `/[^A-Za-z0-9]/`.
 
 ```js
 'Hello World, I-am code'.split(/\W/); // [ 'Hello', 'World', 'I', 'am', 'code' ]
+"0_0 (: /-\ :) 0-0".replace(/[^A-Za-z0-9]/g, "") // 0000
 ```
 
 ### `\d` Match All Digits

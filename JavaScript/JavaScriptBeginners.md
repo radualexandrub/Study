@@ -74,8 +74,8 @@ Select `Tools->Build System->nodejs` and now you can run your `.js` file inside 
 
 6. Install + Open Visual Studio Code and install [Live Server Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
-
 ## <a name="declaringvariables">Declaring variables with `var`, `let`, `const`</a>
+
 ES2015 introduced two important new JavaScript keywords: let and const, before that only `var` was availale to use.
 - `var` can be used globally in the entire document/entire enclosing function.
 - `let` is defined within it's scope (or to the immediate enclosing block denoted by `{ }` / or `let` is `block-scoped`):
@@ -254,7 +254,44 @@ const snoopy = new Dog();
 snoopy.bark() // alert("woof!")
 ```
 
+<br/>
+
+### Check data types in JS
+
+```js
+/* Undefined */
+typeof undefined === 'undefined'; // true
+typeof declaredButUndefinedVariable === 'undefined'; // true
+typeof undeclaredVariable === 'undefined'; // true
+
+/* Numbers */
+typeof 4.42 // 'number'
+typeof 5 === "number" // true
+typeof(42) === 'number' // true
+typeof Infinity === 'number' // true
+typeof NaN === 'number'; // true, despite being "Not-A-Number"
+
+/* Strings */
+typeof 'Hello' // 'string'
+typeof 'Hello' === 'string' // true
+typeof '' === 'string' // true
+typeof '1' === 'string'; // true, note that a number within a string is still typeof string
+typeof String(1) === 'string'; // true, String converts anything into a string, safer than toString
+
+/* Booleans */
+typeof true // "boolean"
+typeof false === "boolean" // true
+typeof Boolean(1) === 'boolean'; // Boolean() will convert values based on if they're truthy or falsy
+typeof !!(1) === 'boolean'; // two calls of the ! (logical NOT) operator are equivalent to Boolean()
+typeof null === 'object' // true
+```
+
+[More examples here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
+
+
+
 ## <a name="JSOperators">JS Operators `+` `-` `*` `**` `/` `%` `++` `--` and Comparisons</a>
+
 - `+` Addition
 
 ```js
