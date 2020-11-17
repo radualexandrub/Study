@@ -1,0 +1,27 @@
+{
+    // Daca ai Kite Auto-Completion instalat pe PC:
+    "disable_anaconda_completion": true,
+    "display_signatures": false,
+
+
+    "auto_formatting": true,
+    "auto_formatting_timeout": 5,
+    "autoformat_ignore":
+    [
+        "E309",
+        "E302",
+        "W191", //pastraza tabs in loc de spaces
+        "E101", //pastraza tabs in loc de spaces, reindent all lines
+        "E111" //pastraza tabs in loc de spaces, indent all lines
+    ],
+    "pep8_ignore": // ignore warnings gen
+    [
+        "E501",
+        "E309",
+        "E302",
+        "W191"
+    ],
+    "anaconda_linter_underlines": false,
+    "anaconda_linter_mark_style": "none",
+    "swallow_startup_errors": true
+}

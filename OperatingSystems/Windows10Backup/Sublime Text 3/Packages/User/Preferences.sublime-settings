@@ -1,0 +1,34 @@
+{
+	"added_words":
+	[
+		"domnule",
+		"",
+		"Judecäƒtorul",
+		"Aè™a",
+		"Tovaräƒè™ul",
+		"Judecäƒtorul",
+		"Ascultäƒ",
+		"zise",
+		"Nelder",
+		"repo",
+		"reflog",
+		"config",
+		"github",
+		"Convolutional",
+		"app"
+	],
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+	"dictionary": "Packages/Language - English/en_US.dic",
+	"font_size": 11,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"ignored_words":
+	[
+		""
+	],
+	"theme": "Adaptive.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"vintageous_use_ctrl_keys": true
+}

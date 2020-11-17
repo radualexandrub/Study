@@ -1,0 +1,29 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Anaconda",
+		"BracketHighlighter",
+		"C Improved",
+		"C++ Completions",
+		"C++ Snippets",
+		"Clang Format",
+		"Color Highlight",
+		"Color Highlighter",
+		"Django",
+		"Django Syntax",
+		"HTML5",
+		"HTMLBeautify",
+		"LaTeXTab",
+		"LaTeXTools",
+		"Macroptimize",
+		"Package Control",
+		"Python Debugger",
+		"SideBarEnhancements",
+		"SublimeCodeIntel",
+		"SublimeREPL"
+	]
+}

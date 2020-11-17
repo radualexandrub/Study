@@ -1,0 +1,181 @@
+[
+	{
+		"args":
+		{
+			"characters": "int"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " main"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "($0)"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"characters": "int"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " argc"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": ","
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " char"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " *ar"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": "gv"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "[$0]"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"characters": " "
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "{$0}"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+		},
+		"command": "run_macro_file"
+	},
+	{
+		"args":
+		{
+			"characters": "\n\nreturn"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " 0;"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"characters": "\n"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args": null,
+		"command": "reindent"
+	},
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args": null,
+		"command": "left_delete"
+	},
+	{
+		"args":
+		{
+			"characters": "\n"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args": null,
+		"command": "reindent"
+	}
+]

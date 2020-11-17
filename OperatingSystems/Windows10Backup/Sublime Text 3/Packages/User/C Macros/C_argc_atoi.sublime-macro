@@ -1,0 +1,315 @@
+[
+	{
+		"args":
+		{
+			"characters": "if"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " "
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "($0)"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"characters": "argc"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " =>"
+		},
+		"command": "insert"
+	},
+	{
+		"args": null,
+		"command": "left_delete"
+	},
+	{
+		"args": null,
+		"command": "left_delete"
+	},
+	{
+		"args":
+		{
+			"characters": ">="
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " 2"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"characters": "\nn"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " ="
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"characters": " atoi"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "($0)"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"characters": "argv"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "[$0]"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"characters": "1"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"characters": ";"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"by": "characters",
+			"forward": true
+		},
+		"command": "move"
+	}
+]
