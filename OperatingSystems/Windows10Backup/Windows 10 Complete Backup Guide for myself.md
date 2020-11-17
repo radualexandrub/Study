@@ -19,8 +19,9 @@
 - Flashback Express Recorder: https://www.flashbackrecorder.com/express/
 - Audacity (portable): https://www.audacityteam.org/
 - [Mathpix snipping tool](https://mathpix.com/)
-- [MathType 7](https://www.dessci.com/en/products/mathtype/) (CHECK FOR LICENSE)
-- [Microsoft Teams](https://www.microsoft.com/en/microsoft-365/microsoft-teams/group-chat-software) and [Zoom](https://zoom.us/download)
+- [MathType 7](https://www.dessci.com/en/products/mathtype/) [CHECK FOR LICENSE]
+- [Microsoft Teams](https://www.microsoft.com/en/microsoft-365/microsoft-teams/group-chat-software)
+- [Zoom](https://zoom.us/download)
 - Steam: https://store.steampowered.com/about/
 - Epic Games Launcher: https://www.epicgames.com/store/en-US/download
 - Discord: https://discord.com/download
@@ -45,14 +46,13 @@
 - Git and Git GUI: https://git-scm.com/downloads
 - Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
 - [Postgre SQL](https://www.postgresql.org/download/) and/or [MySQL](https://dev.mysql.com/downloads/installer/)
-  - Store the password safely!
+  - Store the passwords safely!
 - Node.js: https://nodejs.org/en/
   - It also should be added to `Environment Variables -> System variables -> Path -> Edit -> C:\Program Files\nodejs\`
 - Android Studio and SDK: https://developer.android.com/studio#downloads
 - FileZilla Client: https://filezilla-project.org/download.php?platform=win64
 - Kite: https://www.kite.com/
 - [CodeBlocks?](http://www.codeblocks.org/downloads)
-- Anaconda (Python, Spyder, Jupyter): https://www.anaconda.com/products/individual
 
 ### Others, optional
 
@@ -61,6 +61,217 @@
 - Redragon K530 Draconic keyboard sofftware: https://www.redragonzone.com/pages/download
 - BalenaEtcher Portable: https://www.balena.io/etcher/
 - NVidia Drivers: https://www.nvidia.com/Download/index.aspx
+
+<br/>
+
+## Anaconda (Python, Spyder, Jupyter)
+
+Download here: https://www.anaconda.com/products/individual
+
+After installing Anaconda distribution, restart PC & check Path(s) in Environment Variables:
+
+![Environment Variables](G:\1Proiecte\Git-My-Study-Notes\OperatingSystems\Windows10Backup\win10img\img04.png)
+
+Main commands in Anaconda Prompt (or Cmd Prompt): 
+
+```bash
+conda
+python --version
+
+# List all created conda environments
+conda env list
+
+# create a new Anaconda Environment
+conda create --name my_env_name
+
+# switch to another environment
+activate my_env_name
+
+# check which conda packages are installed in the current conda environment
+conda list
+
+# check Python pip modules installed in the current conda environment
+pip freeze
+
+# install a Python module via conda
+conda install module_name
+# or
+conda install -c conda-forge module_name
+
+# remove a Python module installed via conda
+conda remove module_name
+
+# install a Python module via pip (not recommended, should be avoided)
+pip install module_name
+
+# remove a Python module installed via pip
+pip uninstall module_name
+
+# update all currently installed conda packages
+conda update --all
+
+# clean all caches from packages
+conda clean --packages
+```
+
+Also, it's not recommended to install packages/modules in you `Base` Anaconda Environment!
+
+<br/>
+
+### Creating an environment for Machine Learning
+
+- Create `tf` environment (or any other name you like)
+
+```bash
+conda create --name tf
+activate tf
+```
+
+- Check all the current installed modules
+
+```bash
+conda list
+pip freeze
+```
+
+- Install [Jupyter Notebook](https://jupyter.org/install)
+
+```bash
+conda install -c conda-forge notebook
+
+# Open with
+>> jupyter notebook
+```
+
+- Install [Spyder](https://anaconda.org/anaconda/spyder) [optional]
+
+```bash
+conda install -c anaconda spyder
+
+# Open with
+>> spyder
+```
+
+- Install Numpy, [Matplotlib](https://anaconda.org/conda-forge/matplotlib), [Pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
+
+```bash
+conda install numpy
+conda install -c conda-forge matplotlib
+conda install pandas
+```
+
+- Install [OpenCV](conda install -c conda-forge opencv)
+
+```bash
+conda install -c conda-forge opencv
+
+# check if properly installed
+python -c "import cv2; print(cv2.__version__)"
+```
+
+- Install [Pillow](https://anaconda.org/anaconda/pillow)
+
+```bash
+conda install -c anaconda pillow
+```
+
+- Install [scikit-image](https://scikit-image.org/docs/dev/install.html)
+
+```bash
+conda install scikit-image
+```
+
+- Install [scikit-learn](https://scikit-learn.org/0.17/install.html)
+
+```bash
+conda install scikit-learn
+
+# or (if the above doesn't work)
+conda install -c anaconda scikit-learn
+```
+
+- [Optional] Install [Keras](https://anaconda.org/conda-forge/keras)
+
+```bash
+conda install -c conda-forge keras
+```
+
+- [Optional] Install [Seaborn](https://anaconda.org/anaconda/seaborn)
+
+```bash
+conda install -c anaconda seaborn
+```
+
+- Finally, clean packages installation caches
+
+```bash
+conda clean -p
+# same as
+conda clean --packages
+# or 
+conda clean --all
+# check "conda clean -h" for help
+```
+
+- Also keep in mind it's recommended to install packages via `conda` package manager. In extreme cases, where a module can't be found via `conda`, it can be installed via `pip` (package installer for Python).
+
+<br/>
+
+### Creating Tensorflow GPU environment (NVidia)
+
+Source [here](https://towardsdatascience.com/tensorflow-gpu-installation-made-easy-use-conda-instead-of-pip-52e5249374bc) (`tensorflow-gpu` will automatically install the right versions for `cudnn`, `cudatoolkit`)
+
+- Create `tf_gpu` environment and also install `tensorflow-gpu`
+
+```bash
+conda create --name tf_gpu tensorflow-gpu 
+```
+
+- Test the new environment
+
+```bash
+activate tf_gpu
+python
+import tensorflow as tf
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+```
+
+- It should display your current graphics card name and memory
+- Install the packages/modules listened in the previous `tf` environment
+
+<br/>
+
+### Creating a Django environment
+
+It depends from app to app:
+
+- Create new environment
+
+```bash
+conda create -n django_app
+```
+
+- You can either install all the modules from a `dependencies.txt` file
+
+```bash
+pip install dependencies.txt
+```
+
+- Or you can have a fresh install of Django (it's recommended to install all the modules via pip, in case of deployment to a Linux machine that doesn't use Anaconda Distribution)
+
+```bash
+pip install Django
+
+# Other modules
+pip install django-ckedtior
+pip install django-crispy-forms
+pip install pillow
+pip install django-googledrive-storage
+pip install django-heroku
+pip install gunicorn
+```
+
+
 
 <br/>
 
@@ -328,5 +539,5 @@ These settings are found in `User/AppData/Roaming/Sublime Text 3/Packages/User` 
 
 My current script - Tuesday, November 17, 2020
 
-[Hotkeys_Basic_stuff.ahk](./AutoHotKey/Hotjeys_Basic_stuff.ahk)
+[Hotkeys_Basic_stuff.ahk](./AutoHotKey/Hotkeys_Basic_stuff.ahk)
 
