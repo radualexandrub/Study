@@ -53,6 +53,7 @@
 - FileZilla Client: https://filezilla-project.org/download.php?platform=win64
 - Kite: https://www.kite.com/
 - [CodeBlocks?](http://www.codeblocks.org/downloads)
+- [Article on How to properly install Java JDK 13 on Windows + Eclipse 2020](https://www.guru99.com/install-java.html)
 
 ### Others, optional
 
@@ -70,13 +71,14 @@ Download here: https://www.anaconda.com/products/individual
 
 After installing Anaconda distribution, restart PC & check Path(s) in Environment Variables:
 
-![Environment Variables](G:\1Proiecte\Git-My-Study-Notes\OperatingSystems\Windows10Backup\win10img\img04.png)
+![Environment Variables](./win10img/img04.png)
 
-Main commands in Anaconda Prompt (or Cmd Prompt): 
+Main commands in Anaconda Prompt (or Cmd Prompt) [[more here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)]: 
 
 ```bash
 conda
 python --version
+python -c "print('Hello World')"
 
 # List all created conda environments
 conda env list
@@ -112,6 +114,10 @@ conda update --all
 
 # clean all caches from packages
 conda clean --packages
+
+# remove conda environment
+conda remove --name myenv --all
+conda env list
 ```
 
 Also, it's not recommended to install packages/modules in you `Base` Anaconda Environment!
