@@ -124,7 +124,7 @@ Also, it's not recommended to install packages/modules in you `Base` Anaconda En
 
 <br/>
 
-### Creating an environment for Machine Learning
+### Creating an environment for Image Processing/Machine Learning applications
 
 - Create `tf` environment (or any other name you like)
 
@@ -158,13 +158,28 @@ conda install -c anaconda spyder
 >> spyder
 ```
 
-- Install Numpy, [Matplotlib](https://anaconda.org/conda-forge/matplotlib), [Pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
+- NumPy is usually installed by default, check with: `python -c "import numpy as np; print(np.__version__)"`
 
 ```bash
 conda install numpy
+```
+
+- Install [Matplotlib](https://anaconda.org/conda-forge/matplotlib)
+
+```bash
 conda install -c conda-forge matplotlib
+```
+
+Check with `python -c "import matplotlib; import matplotlib; print(matplotlib.__version__)"`
+Matplotlib also installs: `pillow`, `pyqt`, and `jpeg`
+
+- Install [Pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
+
+```bash
 conda install pandas
 ```
+
+Check with `python -c "import pandas as pd; print(pd.__version__)"`
 
 - Install [OpenCV](conda install -c conda-forge opencv)
 
@@ -175,7 +190,7 @@ conda install -c conda-forge opencv
 python -c "import cv2; print(cv2.__version__)"
 ```
 
-- Install [Pillow](https://anaconda.org/anaconda/pillow)
+- Install [Pillow](https://anaconda.org/anaconda/pillow) (Matplotlib installs Pillow by default, no need to run this)
 
 ```bash
 conda install -c anaconda pillow
@@ -187,6 +202,8 @@ conda install -c anaconda pillow
 conda install scikit-image
 ```
 
+Check with: `python -c "import skimage; print(skimage.__version__)"`
+
 - Install [scikit-learn](https://scikit-learn.org/0.17/install.html)
 
 ```bash
@@ -196,16 +213,20 @@ conda install scikit-learn
 conda install -c anaconda scikit-learn
 ```
 
+Check with: `python -c "import sklearn; sklearn.show_versions()"`
+
 - [Optional] Install [Keras](https://anaconda.org/conda-forge/keras)
 
 ```bash
 conda install -c conda-forge keras
+python -c "import keras; print(keras.__version__)"
 ```
 
 - [Optional] Install [Seaborn](https://anaconda.org/anaconda/seaborn)
 
 ```bash
 conda install -c anaconda seaborn
+python -c "import seaborn as sns; print(sns.__version__)"
 ```
 
 - Finally, clean packages installation caches
