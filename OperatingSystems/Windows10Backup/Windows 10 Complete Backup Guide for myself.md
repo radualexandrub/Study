@@ -227,6 +227,8 @@ conda clean --all
 
 Source [here](https://towardsdatascience.com/tensorflow-gpu-installation-made-easy-use-conda-instead-of-pip-52e5249374bc) (`tensorflow-gpu` will automatically install the right versions for `cudnn`, `cudatoolkit`)
 
+- Check your Nvidia Driver Version (it should be greater than v390.0), if not, [update to the latest NVidia Drivers](https://www.nvidia.com/Download/index.aspx)
+
 - Create `tf_gpu` environment and also install `tensorflow-gpu`
 
 ```bash
@@ -239,10 +241,14 @@ conda create --name tf_gpu tensorflow-gpu
 activate tf_gpu
 python
 import tensorflow as tf
-sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(log_device_placement=True)) # Tensorflow V2
+
+
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True)) # Tensorflow V1, deprecated in V2
 ```
 
 - It should display your current graphics card name and memory
+- Check current installed packages with `conda list` or/and `pip freeze`
 - Install the packages/modules listened in the previous `tf` environment
 
 <br/>
@@ -298,6 +304,20 @@ pip install gunicorn
   - [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
   - [Rainbow Brackets](https://marketplace.visualstudio.com/items?itemName=2gua.rainbow-brackets)
   - [VS Color Pickler](https://marketplace.visualstudio.com/items?itemName=lihui.vs-color-picker)
+  
+My Visual Studio Code current settings (`CTRL+SHIFT+P` -> select `Preferences: Open Settings (JSON)`):
+
+```json
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  }
+}
+```
 
 - TexStudio & LaTeX ([install tutorial](https://www.youtube.com/watch?v=TWRP_94eock&ab_channel=MasterProdigy))
 
@@ -331,6 +351,8 @@ pip install gunicorn
 <br/>
 
 ## Sublime Text
+
+Download [Sublime Text](https://www.sublimetext.com/3)
 
 ### My Sublime Text settings / preferences
 
@@ -543,7 +565,7 @@ These settings are found in `User/AppData/Roaming/Sublime Text 3/Packages/User` 
 
 ## AutoHotKey
 
+Download [AutoHotKey](https://www.autohotkey.com/)
+
 My current script - Tuesday, November 17, 2020
-
 [Hotkeys_Basic_stuff.ahk](./AutoHotKey/Hotkeys_Basic_stuff.ahk)
-
