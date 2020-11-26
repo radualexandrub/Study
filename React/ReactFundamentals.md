@@ -9,8 +9,8 @@
 
 
 
-
 ## Requirements:
+
 - Some JavaScript Knowledge, you can refer to my [JavaScript Notes](../JavaScript/JavaScriptBeginners.md)
 - Installation of Node.js and a Text Editor, you can follow [my first React notes here](../React/React-ToDoApp.md)
 
@@ -1476,7 +1476,7 @@ We can add an `id` in various ways:
     - using `Math.random()` function (`0.5822776560245544`)
     - using `new Date().getTime().toString()` (`1602953600928`)
     - using a [npm package `uuid`](https://www.npmjs.com/package/uuid): `npm install uuid`, `import { v4 as uuidv4 } from 'uuid';
-    uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`<br/>
+      uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`<br/>
 
   We'll add this new `id` on our `handleSubmit` function when we create our `person` object.
 
@@ -1645,10 +1645,1293 @@ const FunctionalForm = () => {
 
 
 
-
 ## React Hooks
 
-## `useRef` - using Uncontrolled inputs in a Form
+### `useRef` - using Uncontrolled inputs in a Form
 
-- `useRef` is similar as `useState`: it preserves the values between the renders. But unlike useState, `useRef` DOES NOT trigger re-render!!! It is commonly used for targeting DOM nodes/elements.
+- `useRef` is similar to (works like) `useState`: it preserves the values between the renders. But unlike useState, `useRef` DOES NOT trigger re-render!!! It is commonly used for targeting DOM nodes/elements.
+
+```javascript
+import React, { useRef } from "react";
+
+const UseRefBasics = () => {
+  const refContainer = useRef(null); // null as default value
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(refContainer.current.value);
+  };
+    
+  return (
+    <>
+      <form className="form" onSubmit={handleSubmit}>
+        <div>
+          <input type="text" ref={refContainer} /> // add the ref attribute
+        </div>
+        <button type="submit">submit</button>
+      </form>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <div className="container">
+      <UseRefBasics />
+    </div>
+  );
+}
+
+export default App;
+```
+
+NOTE: We are not sending a controlled input (We don't have the *state* value that is reflected in the form's input) -> We also don't call anymore a `onChange` with a `handleChange` (or `(e) => setName(e.target.value)`) method every time we type something in the (form's) input.
+
+By using `useRef()` and adding `ref={refContainer}` property we can grab the value in the input form (after "submit" button was clicked) and store in the `refContainer.current.value`
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals21.jpg" width=600></p>
+
+<br/>
+
+Here's an example where we use `useRef` to target DOM elements (stored in `divContainer.current`). Since `useRef` doesn't trigger re-render, we can use `useEffect()`.
+
+```javascript
+import React, { useRef, useEffect } from "react";
+
+const UseRefBasics = () => {
+  const refContainer = useRef(null);
+  const divContainer = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(refContainer.current.value);
+  };
+
+  useEffect(() => {
+    console.log(divContainer.current);
+    refContainer.current.focus();
+  });
+
+  return (
+    <>
+      <form className="form" onSubmit={handleSubmit}>
+        <div>
+          <input type="text" ref={refContainer} />
+        </div>
+        <button type="submit">submit</button>
+      </form>
+      <div ref={divContainer}>Hello World</div>
+    </>
+  );
+};
+```
+
+As soon as we focus on the form's input, we can retrieve a specific *DOM element* (`<div>Hello World</div>` in this example), and do whatever we want with *it*. (Note that it doesn't trigger re-render and will also retrieve the DOM element only once)
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals22.jpg" width=600></p>
+
+<br/>
+
+### `useReducer` - Complete example
+
+For simple apps like ToDo's we can use `useState`. But as an app gets more complicated we use `useReducer` as it will make the code more structured.
+
+We will use a similar example as the [Form with controlled inputs using `useState()`](#controlled-inputs-functional-form), but we will refactor it in order to use `useReducer` instead of `useState`:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals24.jpg" width=900></p>
+
+
+
+For this example we will use 3 separate files placed in a folder named "userReducerExample". An `index.js` file placed in a folder will act as a main JavaScript file where all the other components within it's folder are imported.<br/>We can import (in our `App.js`) a folder that contains a `index.js` file by just specifying the path to that folder (it will be automatically interpreted as we were to type `./FolderPath/index.js`).
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals23.jpg" width=900></p>
+
+<br/>
+
+`useReducer` always takes as parameters:
+
+- a function `reducer()` that has two arguments: `state` and `action` (this function **must** always return a state in all for every case)
+- a `defaultState` object that contains, in this example:
+  - the people list of persons objects (empty list by default)
+  - a Boolean variable `isModalOpen` for the current state of modal (false by default)
+  - a `modalContent` variable with the default string of "hello world"
+
+For our Modal (`Modal.js`) we will return a `<div>` with `{modalContent}` message:
+
+```javascript
+// ./useReducerExample/Modal.js
+import React, { useEffect } from 'react';
+const Modal = ({ modalContent }) => {
+  return (
+    <div className='modal'>
+      <p>{modalContent}</p>
+    </div>
+  );
+};
+export default Modal;
+```
+
+ Let's first write a simple (basic) example using `useReducer` that uses dummy data:
+
+```javascript
+import React, { useState, useReducer } from "react";
+import Modal from "./useReducerExample/Modal";
+
+const reducer = (state, action) => {};
+const defaultState = {
+  people: [
+    { id: 1, name: "john" },
+    { id: 2, name: "peter" },
+    { id: 3, name: "anna" },
+  ],
+  isModalOpen: true,
+  modalContent: "hello world",
+};
+
+const MyIndex = () => {
+  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name) {
+    } else {
+    }
+  };
+
+  return (
+    <>
+      {state.isModalOpen && <Modal modalContent={state.modalContent} />}
+      <div>
+        <form onSubmit={handleSubmit} className="form">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <button className="btn" type="submit">
+            Add person
+          </button>
+        </form>
+        {state.people.map((person) => {
+          return (
+            <div key={person.id}>
+              <h4>{person.name}</h4>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <div className="container">
+      <MyIndex />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Will render:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals25.jpg" width=900></p>
+
+(Monday, November 23, 2020)
+
+So, by using `useReducer` we will have a state (as an object) that has multiple properties (eg. people list, modal state, modal message). With`useReducer` I can update these properties by using `dispatch` every time a specific `action` happens.
+
+([Complete explanation for following code here: React Full Course 7h37m](https://youtu.be/4UZrsTqkcW4?t=27429))
+
+Code to just **add and display** an item to a list using `useReducer()`:
+
+```javascript
+const reducer = (state, action) => {
+  if (action.type === "ADD_ITEM") {
+    const newItems = [...state.people, action.payload];
+    return {
+      ...state,
+      people: newItems,
+      isModalOpen: true,
+      modalContent: "Item added",
+    };
+  } else if (action.type === "NO_VALUE") {
+    return {
+      ...state,
+      isModalOpen: true,
+      modalContent: "Can't add empty values!",
+    };
+  }
+
+  throw new Error("No matching action type in useReducer");
+};
+const defaultState = {
+  people: [],
+  isModalOpen: false,
+  modalContent: "hello world",
+};
+
+const MyIndex = () => {
+  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name) {
+      const newItem = { id: new Date().getTime().toString(), name };
+      dispatch({ type: "ADD_ITEM", payload: newItem });
+      setName("");
+    } else {
+      dispatch({ type: "NO_VALUE" });
+    }
+  };
+
+  return (
+    <>
+      {state.isModalOpen && <Modal modalContent={state.modalContent} />}
+      <div>
+        <form onSubmit={handleSubmit} className="form">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <button className="btn" type="submit">
+            Add person
+          </button>
+        </form>
+        {state.people.map((person) => {
+          return (
+            <div key={person.id}>
+              <h4>{person.name}</h4>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals26.jpg" width=900></p>
+
+<br/>
+
+### useReducer - Complete example code
+
+**Complete code for adding, displaying, removing and also closing modal (Complete example)**:
+
+```js
+// ./useReducerExample/Modal.js
+import React, { useEffect } from "react";
+const Modal = ({ modalContent, closeModal }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      closeModal();
+    }, 3000);
+  });
+  return (
+    <div className="modal">
+      <p>{modalContent}</p>
+    </div>
+  );
+};
+export default Modal;
+```
+
+
+
+```js
+// ./useReducerExample/reducer.js
+export const reducer = (state, action) => {
+  if (action.type === "ADD_ITEM") {
+    const newPeople = [...state.people, action.payload];
+    return {
+      ...state,
+      people: newPeople,
+      isModalOpen: true,
+      modalContent: "item added",
+    };
+  }
+  if (action.type === "NO_VALUE") {
+    return { ...state, isModalOpen: true, modalContent: "please enter value" };
+  }
+  if (action.type === "CLOSE_MODAL") {
+    return { ...state, isModalOpen: false };
+  }
+  if (action.type === "REMOVE_ITEM") {
+    const newPeople = state.people.filter(
+      (person) => person.id !== action.payload
+    );
+    return {
+      ...state,
+      isModalOpen: true,
+      modalContent: "item removed",
+      people: newPeople,
+    };
+  }
+  throw new Error("no matching action type");
+};
+```
+
+
+
+```js
+// ./useReducerExample/index.js
+import React, { useState, useReducer } from "react";
+import Modal from "./Modal";
+import { reducer } from "./reducer";
+
+const defaultState = {
+  people: [],
+  isModalOpen: false,
+  modalContent: "",
+};
+const Index = () => {
+  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name) {
+      const newItem = { id: new Date().getTime().toString(), name };
+      dispatch({ type: "ADD_ITEM", payload: newItem });
+      setName("");
+    } else {
+      dispatch({ type: "NO_VALUE" });
+    }
+  };
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
+  };
+  return (
+    <>
+      {state.isModalOpen && (
+        <Modal closeModal={closeModal} modalContent={state.modalContent} />
+      )}
+      <form onSubmit={handleSubmit} className="form">
+        <div>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <button type="submit">add </button>
+      </form>
+      {state.people.map((person) => {
+        return (
+          <div key={person.id} className="item">
+            <h4>{person.name}</h4>
+            <button
+              onClick={() =>
+                dispatch({ type: "REMOVE_ITEM", payload: person.id })
+              }
+            >
+              remove
+            </button>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+export default Index;
+```
+
+
+
+```js
+// ./App.js
+import React, { useState, useReducer } from "react";
+import Final from "./useReducerExample";
+
+function App() {
+  return (
+    <div className="container">
+      <Final />
+    </div>
+  );
+}
+
+export default App;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals27.jpg" width=400></p>
+
+<br/>
+
+### Prop Drilling
+
+We'll replicate the [`useState` Array with Data objects Example](#usestate-array-with-data-objects-example).
+
+We use **prop drilling** to pass data from one part of a React Component tree to another by going through other parts that do not need the data [(they only help in passing it around)](https://medium.com/javascript-in-plain-english/how-to-avoid-prop-drilling-in-react-using-component-composition-c42adfcdde1b). In this example, we pass the "remove person function" from the Main component (`const PropDrilling`) to the `const List` component (that doesn't need the function) and finally to the `const SinglePerson` component. 
+
+```js
+import React, { useState } from "react";
+
+const data = [
+  { id: 1, name: "john" },
+  { id: 2, name: "peter" },
+  { id: 3, name: "susan" },
+  { id: 4, name: "anna" },
+];
+
+const PropDrilling = () => {
+  const [people, setPeople] = useState(data);
+  const removePerson = (id) => {
+    setPeople((people) => {
+      return people.filter((person) => person.id !== id);
+    });
+  };
+  return (
+    <section>
+      <h3>prop drilling</h3>
+      <List people={people} removePerson={removePerson} />
+    </section>
+  );
+};
+
+const List = ({ people, removePerson }) => {
+  return (
+    <>
+      {people.map((person) => {
+        return (
+          <SinglePerson
+            key={person.id}
+            {...person}
+            removePerson={removePerson}
+          />
+        );
+      })}
+    </>
+  );
+};
+
+const SinglePerson = ({ id, name, removePerson }) => {
+  return (
+    <div className="item">
+      <h4>{name}</h4>
+      <button onClick={() => removePerson(id)}>remove</button>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div className="container">
+      <PropDrilling />
+    </div>
+  );
+}
+
+export default App;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals28.jpg" width=700></p>
+
+Note that **prop drilling** method isn't efficient if we have a lot of components that we need to pass. It's also inefficient if we are passing data between more than 2-3 levels (eg. we need to pass data between 10 or 15 other levels).
+
+As an alternative to prop drilling, we can use **Context API** (`useContext`) or **React Redux** (however, Redux is used for more complex cases).
+
+<br/>
+
+### `useContext` - Context API
+
+[(React Full Course 2020 - 8h14m)](https://youtu.be/4UZrsTqkcW4?t=29678)
+
+Context API is used to avoid prop drilling. [Context is designed to share data that can be considered “global” for a tree of React components, such as the current authenticated user, theme, or preferred language.](https://reactjs.org/docs/context.html)
+
+We'll refactor the [example used earlier for Prop Drilling](#prop-drilling).
+
+First we need to [Create a Context object](https://reactjs.org/docs/context.html#reactcreatecontext): `const PersonContext = React.createContext();` Once we set up a `createContext` object we get two components: **the Provider** and **the Consumer**.
+
+We need now to find our *root component* (in this example it will be `const ContextAPI`) and **wrap** the return of this root component in `<PersonContext.Provider> ... </PersonContext.Provider>`. The `Provider` has a `value` property where we can put the component we want to pass (in this example the `removePerson` function). 
+
+```js
+const PersonContext = React.createContext();
+
+const ContextAPI = () => {
+  const [people, setPeople] = useState(data);
+  const removePerson = (id) => {
+    setPeople((people) => {
+      return people.filter((person) => person.id !== id);
+    });
+  };
+  return (
+    <PersonContext.Provider value={{ removePerson }}>
+      <h3>Context API / useContext</h3>
+      <List people={people}/>
+    </PersonContext.Provider>
+  ); // Reminder: first pair of brackets {} are for JS Code in JSX,
+     // second pair of {} are for removePerson object
+};
+```
+
+After that, we can go to the component (final destination) where we'll use `removePerson` function (`singlePerson` in this example) and pass in the *Context Object* (`PersonContext`) using `useContext()`:
+
+```js
+const List = ({ people }) => {
+  return (
+    <>
+      {
+          people.map((person) => {return (<SinglePerson key={person.id} {...person}/>);})
+      }
+    </>
+  );
+}; // Note that we only pass people in this List component, without removePerson
+
+const SinglePerson = ({ id, name }) => {
+  const { removePerson } = useContext(PersonContext);
+
+  return (
+    <div className="item">
+      <h4>{name}</h4>
+      <button onClick={() => removePerson(id)}>remove</button>
+    </div>
+  );
+};
+```
+
+<br/>
+
+We can also pass the `people` list of objects (using `useContext`) to the `const List` component (see complete code bellow).
+
+---
+
+***Complete code (with both removePerson and people objects passed using Context API):***
+
+```js
+import React, { useState, useContext } from "react";
+
+const data = [
+  { id: 1, name: "john" },
+  { id: 2, name: "peter" },
+  { id: 3, name: "susan" },
+  { id: 4, name: "anna" },
+];
+
+const PersonContext = React.createContext();
+
+const ContextAPI = () => {
+  const [people, setPeople] = useState(data);
+  const removePerson = (id) => {
+    setPeople((people) => {
+      return people.filter((person) => person.id !== id);
+    });
+  };
+  return (
+    <PersonContext.Provider value={{ removePerson, people }}>
+      <h3>Context API / useContext</h3>
+      <List />
+    </PersonContext.Provider>
+  );
+};
+
+const List = () => {
+  const mainData = useContext(PersonContext);
+  console.log(mainData);
+  return (
+    <>
+      {mainData.people.map((person) => {
+        return <SinglePerson key={person.id} {...person} />;
+      })}
+    </>
+  );
+};
+
+const SinglePerson = ({ id, name }) => {
+  const { removePerson } = useContext(PersonContext);
+  return (
+    <div className="item">
+      <h4>{name}</h4>
+      <button onClick={() => removePerson(id)}>remove</button>
+    </div>
+  );
+};
+
+function App() {
+  return (<div className="container"><ContextAPI /></div>);
+}
+export default App;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals29.jpg" width=700></p>
+
+
+
+<br/>
+
+## React Custom Hooks
+
+(Tuesday, November 24, 2020)
+
+[Building your own Hooks lets you extract component logic into reusable functions.](https://reactjs.org/docs/hooks-custom.html).
+
+[A **custom hook** allows you to extract some components logic into a reusable function. A **custom hook** is a Javascript function that starts with use and that call can other **hooks**. Remember that components and **hooks** are functions, so we are really not creating any new concepts here](https://dev.to/damcosset/how-to-create-custom-hooks-in-react-44nd). [Custom hooks means fewer keystrokes and less repetitive code](https://blog.bitsrc.io/writing-your-own-custom-hooks-4fbcf77e112e).
+
+Other way of saying it: Custom hooks allow us to re-use functionalities like fetching data (eg. fetch data and [display a message indicating that a friend is online or not](https://reactjs.org/docs/hooks-custom.html)), saving to local storage, [increasing a counter and updating the title of the page](https://blog.bitsrc.io/writing-your-own-custom-hooks-4fbcf77e112e) (eg. `(3) New Messages`), extract and display images from an [API like Unsplash](https://unsplash.com/developers), etc.
+
+### `useFetch`
+
+[(React Full Course 2020 - 8h26m)](https://youtu.be/4UZrsTqkcW4?t=30384). More examples on creating your custom `useFetch` [here](https://medium.com/swlh/usefetch-a-custom-react-hook-36d5f5819d8) or [here](https://medium.com/better-programming/learn-to-create-your-own-usefetch-react-hook-9cc31b038e53)
+
+In this example we'll create a custom hook that fetches data (JSON) from an URL (from an API) and also returns `loading` state (true/false).
+
+```js
+import { useState, useEffect } from "react";
+
+const useFetch = (url) => {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+    const response = await fetch(url);
+    const products = await response.json();
+    setProducts(products);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, [url]); // useEffect will trigger on first page reload
+  // and whenever the url variable is changed
+
+  return { loading, products };
+};
+```
+
+Obviously we can put this new custom hook (`const useFetch()` function) in a separate file like `useFetch.js`.
+
+Here's an example how we will call this newly created custom hook:
+
+```js
+const url = "https://course-api.netlify.app/api/javascript-store-products";
+const CustomHookExample = () => {
+  const { loading, products } = useFetch(url);
+  console.log(products);
+
+  return (
+    <div>
+      <h2>{loading ? "Loading..." : "Products"}</h2>
+    </div>
+  );
+};
+```
+
+Once all the data is fetched from the API, it will display a "Products" strings, and we'll also have all the fetched data in our `products` 
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals30.jpg" width=700></p>
+
+However, (in this example) we need to use a hook called [`useCallback`](https://reactjs.org/docs/hooks-reference.html#usecallback) in order to [memoize](https://stackoverflow.com/questions/45242851/why-memoization-instead-of-memorization) the data and prevent unnecessary renders. [We also need to include `getProducts` in our `useEffect`](https://reactjs.org/docs/hooks-faq.html#is-it-safe-to-omit-functions-from-the-list-of-dependencies).
+
+---
+
+***Complete code***
+
+```js
+// ./useFetch.js
+import { useState, useEffect, useCallback } from "react";
+
+export const useFetch = (url) => {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+
+  const getProducts = useCallback(async () => {
+    const response = await fetch(url);
+    const products = await response.json();
+    setProducts(products);
+    setLoading(false);
+  }, [url]);
+
+  useEffect(() => {
+    getProducts();
+  }, [url, getProducts]);
+  return { loading, products };
+};
+```
+
+```js
+// ./App.js
+import React from "react";
+import { useFetch } from "./useFetch";
+
+const url = "https://course-api.netlify.app/api/javascript-store-products";
+const CustomHookExample = () => {
+  const { loading, products } = useFetch(url);
+  console.log(products);
+
+  return (
+    <div>
+      <h2>{loading ? "Loading..." : "Products"}</h2>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div className="container">
+      <CustomHookExample />
+    </div>
+  );
+}
+
+export default App;
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals31.jpg" width=700></p>
+
+<br/>
+
+
+
+## React PropTypes
+
+[Typechecking With PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html): As your app grows, you can catch a lot of bugs with type checking. For some applications, you can use JavaScript extensions like [Flow](https://flow.org/) or [TypeScript](https://www.typescriptlang.org/) to typecheck your whole application. But even if you don’t use those, React has some built-in type checking abilities. To run type checking on the props for a component, you can assign the special `propTypes` property,
+
+---
+
+In this example we'll use the `useFetch` custom hook made in the previous example. We will retrieve data from an API such as *name, price* and *image* of a Product (eg. furniture).
+
+```json
+[
+  {
+    "id": "recmg2a1ctaEJNZhu",
+    "name": "utopia sofa",
+    "image": {
+      "url": "https://dl.airtable.com/.attachments/6ac7f7b55d505057317534722e5a9f03/9183491e/product-3.jpg"
+    },
+    "price": 39.95
+  },
+  {
+    "id": "recvKMNR3YFw0bEt3",
+    "name": "entertainment center",
+    "image": {
+      "url": "https://dl.airtable.com/.attachments/da5e17fd71f50578d525dd5f596e407e/d5e88ac8/product-2.jpg"
+    },
+    "price": 29.98
+  },
+  {
+    "id": "recxaXFy5IW539sgM",
+    "name": "albany sectional",
+    "image": {
+      "url": "https://dl.airtable.com/.attachments/05ecddf7ac8d581ecc3f7922415e7907/a4242abc/product-1.jpeg"
+    },
+    "price": 10.99
+  },
+  {
+    "id": "recyqtRglGNGtO4Q5",
+    "name": "leather sofa",
+    "image": {
+      "url": "https://dl.airtable.com/.attachments/3245c726ee77d73702ba8c3310639727/f000842b/product-5.jpg"
+    },
+    "price": 9.99
+  },
+  { "id": "recNWGyP7kjFhSqw3", "name": "sofa set" }
+]
+```
+
+We will use PropTypes to check if every fetched Product (data) has the required properties used in our application (and also if it's not null). Eg., in JavaScript if we try to display a image from an URL but the URL is empty (null, or the image URL property of that Product object does not exist) we get an error: `TypeError: Cannot read property 'url' of undefined` (other way of saying: even if 99% of fetched data have all the properties, if one data will not have one, the app will crash).
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals32.jpg" width=900></p>
+
+We are going to handle these situations using PropTypes, checking all the props of each fetched data. We can also manually check each Product using `console.log();`, but `PropTypes` will check automatically each data. Each data (Product in this example) has a `.propTypes` property by default (without needing to import anything), that we can further define with the properties we want to check using the imported `PropTypes`:
+
+```js
+import PropTypes from 'prop-types';
+
+const Product = ({image, name, price}) => {
+  ...  
+};
+
+Product.propTypes = {
+    image: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals33.jpg" width=900></p>
+
+Now, to handle the undefined properties, we can either set ***default props*** OR use [***short-circuit operators*** presented earlier](#js-short-circuit-evaluation-return-values-with-a-condition-and-ternary-operator)
+
+### Solving undefined properties with Default Props
+
+Default Props are straightforward. Just define our data's (Product's) `defaultProps` property:
+
+```js
+import defaultImage from "./assets/default-image.jpeg";
+
+Product.defaultProps = {
+    name: "Product name missing",
+    price: 0.00,
+    image: defaultImage
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals34.jpg" width=900></p>
+
+But, we still have a problem: image property is an object (that further contains a `url` property with the link to the image). We cannot initialize the `url` property of the `image` object using `.defaultProps`. Therefore, we will use short-circuit operators.
+
+### Solving undefined properties using short-circuit operators
+
+For `price` and `name` we straightforward write an alternative value. For `image` object, we first check if the property image.url exists, if not, then the image might be undefined; if the image is undefined, we take the `defaultImage` path.
+
+```js
+import defaultImage from "./assets/default-image.jpeg";
+
+const Product = ({ image, name, price }) => {
+  const imageUrl = image && image.url;
+  return (
+    <article className="product">
+      <img src={imageUrl || defaultImage} alt={name || "Product name missing"} />
+      <h4>{name || "Product name missing"}</h4>
+      <p>${price || 0.0}</p>
+    </article>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals35.jpg" width=700></p>
+
+---
+
+***Complete Code:***
+
+```js
+import React from "react";
+import { useFetch } from "./useFetch";
+import PropTypes from "prop-types";
+import defaultImage from "./assets/default-image.jpeg";
+
+const Product = ({ image, name, price }) => {
+  const imageUrl = image && image.url;
+  return (
+    <article className="product">
+      <img src={imageUrl || defaultImage} alt={name} />
+      <h4>{name || "Product name missing"}</h4>
+      <p>${price || 0.0}</p>
+    </article>
+  );
+};
+
+Product.propTypes = {
+  image: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+};
+// Product.defaultProps = {
+//   name: "Product name missing",
+//   price: 0.0,
+//   image: defaultImage,
+// };
+
+const url = "https://course-api.netlify.app/api/react-prop-types-example";
+const Index = () => {
+  const { products } = useFetch(url);
+  return (
+    <div>
+      <h2>products</h2>
+      {/* <img src={defaultImage} /> */}
+      <section className="products">
+        {products.map((product) => {
+          return <Product key={product.id} {...product} />;
+        })}
+      </section>
+    </div>
+  );
+};
+
+function App() { return (<div className="container"> <Index /> </div>); }
+export default App;
+```
+
+<br/>
+
+## React Router
+
+[(React Full Course 9h01m)](https://youtu.be/4UZrsTqkcW4?t=32445) - (Wednesday, November 25, 2020)
+
+https://reactrouter.com/web/guides/quick-start
+
+Instead of going to the server and request each web page user navigates, React Router sets up a routing on the client side without page refreshing. Each new web page will load instantly, without refresh (without going to the server to fetch the data).
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals36.gif" width=800></p>
+
+However, React doesn't have a built-in Routing, so we'll use an **external** package, namely [**React Router**](https://reactrouter.com/), that can be installed with `npm`:
+
+```bash
+npm install react-router-dom
+```
+
+We can now find the package in our `./package.json`
+
+```json
+"react-router-dom": "^5.2.0",
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals37.jpg" width=800></p>
+
+Each separate **simple/static page** (`.js`) will return some JSX code:
+
+```js
+// ./SeparateFolder/Home.js
+import React from 'react';
+const Home = () => {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <p>shake and bake</p>
+    </div>
+  );
+};
+export default Home;
+```
+
+```js
+// ./SeparateFolder/About.js
+import React from 'react';
+const About = () => {
+  return (
+    <div>
+      <h1>About Page</h1>
+    </div>
+  );
+};
+export default About;
+```
+
+### Routing Basics
+
+First thing we need to do is to import in our main `index.js` our React Router components.
+
+Then, in our main component of `index.js` we need to wrap everything inside `return ()` in `<Router> </Router>`.
+
+```js
+// ./SeparateFolder/index.js
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// pages
+import Home from "./Home";
+import About from "./About";
+
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Route path="/">
+        <Home />
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+    </Router>
+  );
+};
+
+export default MainIndexReactRouter;
+```
+
+For each specific component (page), we need to set a `<Route> </Route>`, where we specify a `path=` prop where we will write the URL for that page (eg. `path="/"` for home page, `path="/about"` for about page). Then, inside our `<Route></Route>`, we display the component (page) that we imported.
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals38.jpg" width=700></p>
+
+However, there is a problem when we are trying to access and display the About page: namely, we can also see the Home Page. **By default in React Router, if a path matches two (or more) other paths, it will display both components** (`/` URL is somehow included in `/about`, or: `/about` also matches `/`).
+
+In order to fix that, we need to add the **`exact` prop**: `<Route exact path='/'> <Home/> </Route>`. If we are going to have nested components (pages), eg. `./blog/post/1`, `./blog/recipe/4`, we can add the `exact` prop to each page/route.
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals39.jpg" width=700></p>
+
+```js
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+    </Router>
+  );
+};
+```
+
+<br/>
+
+### Error and Switch Component
+
+If we have set up 3 routes (eg. Home, Index, People), but we are accessing a page that hasn't been set up: React (Router) will display an empty page. With an Error component, we can display a page that tells the user the specific page doesn't exist, providing a link to return to the home page (more like a 404 error page).
+
+First, we need to create an Error page component (`Error.js`):
+
+```js
+// ./SeparateFolder/Error.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+const Error = () => {
+  return (
+    <div>
+      <h1>Error Page</h1>
+      <Link to='/' className='btn'>
+        Go back to Home
+      </Link>
+    </div>
+  );
+};
+export default Error;
+```
+
+In `index.js`, if we want to set up a Router for an Error page, we need to write a star (`*`) to our `path` component:<br/>`<Route path="*"> <Error /> </Route>`<br/>A star (`*`) means that it will always match anything else.
+
+```js
+// ./SeparateFolder/index.js
+import Error from "./Error";
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="*">
+        <Error />
+      </Route>
+    </Router>
+  );
+};
+// ^Bad implementation
+```
+
+But, now we have a problem almost like the one before: Every time we go to an existing page (Home, About), the Error page will also be displayed because it's URL always matches:
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals40.jpg" width=700></p>
+
+We can't use `exact` prop to solve this issue, but we will use a `Switch` component. Therefore, we will place all of our router within a `<Switch> </Switch>`:
+
+```js
+// ./SeparateFolder/index.js
+import Home from "./Home";
+import Error from "./Error";
+
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="*">
+          <Error />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+// ^Good implementation
+```
+
+With a `Switch` component, only the first URL that matches will display the (page) component.
+
+<br/>
+
+### Navbar and Link
+
+We can create a navbar with multiple accessible link using `<Navbar />` component.
+
+First, we need to create a `Navbar.js` component page, where we will import a `Link` component from `'react-router-dom'`, and we will add `<Link to="/..."> PageName </Link>` to every other page/component:
+
+```js
+// ./SeparateFolder/Navbar.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+const Navbar = () => {
+  return (
+    <nav>
+      <ul className="nav-links">
+        <li>
+          <Link to='/'>Home</Link>
+        </li>
+        <li>
+          <Link to='/about'>About</Link>
+        </li>
+        <li>
+          <Link to='/people'>People</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+export default Navbar;
+```
+
+Now, in `index,js` we just need to import and add `<Navbar />` (add before `Switch` and Routes!):<br/>Note that Navbar will be displayed on every page!
+
+```js
+// ./SeparateFolder/index.js
+import Navbar from "./Navbar";
+
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="*">
+          <Error />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+```
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals41.jpg" width=700></p>
+
+<br/>
+
+### Lists: URL Params and Placeholder
+
+We can display a list of object as usual using `useState()`, AND we can also set some placeholders (links) to each item (object in that list), that when clicked, it can further display details (that we will write) by opening a separate page (without refreshing):
+
+```js
+// ./SeparateFolder/People.js
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { data } from '../../../data';
+
+const People = () => {
+  const [people, setPeople] = useState(data);
+  return (
+    <div>
+      <h1>People Page</h1>
+      {people.map((person) => {
+        return (
+          <div key={person.id} className='item'>
+            <h4>{person.name}</h4>
+            <Link to={`/person/${person.id}`}>See More</Link>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+export default People;
+```
+
+```js
+// data.js
+export const data = [
+  { id: 1, name: 'john' },
+  { id: 2, name: 'peter' },
+  { id: 3, name: 'susan' },
+  { id: 4, name: 'anna' },
+];
+```
+
+Add `People.js` to `index.js` AND also add<br/>`<Route path="/person/:id" children={<Person />}></Route>` (you can choose any name instead of `/person/`, just remember when you're using it on each individual item in `People.js`):
+
+```js
+// ./SeparateFolder/index.js
+import People from "./People";
+import Person from "./Person";
+
+const MainIndexReactRouter = () => {
+  return (
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/people">
+          <People />
+        </Route>
+        <Route path="/person/:id" children={<Person />}></Route>
+        <Route path="*">
+          <Error />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+```
+
+Now let's create `Person.js`:
+
+```js
+// ./SeparateFolder/Person.js
+import React, { useState, useEffect } from 'react';
+import { data } from '../../../data';
+import { Link, useParams } from 'react-router-dom';
+
+const Person = () => {
+  const [name, setName] = useState('default name');
+  const { id } = useParams();
+
+  useEffect(() => {
+    const newPerson = data.find((person) => person.id === parseInt(id));
+    setName(newPerson.name);
+  }, []);
+
+  return (
+    <div>
+      <h1>{name}</h1>
+      <Link to='/people' className='btn'>
+        Back To People
+      </Link>
+    </div>
+  );
+};
+
+export default Person;
+```
+
+- We also import `data.js` here (we have `data.js` in both `People.js` and `Person.js`)
+- `useParams` will allow us to access the parameters, BUT: all the returned parameters will have the `typeof` a `string`. [`useParams` returns an object of key/value pairs of URL parameters. Use it to access `match.params` of the current `<Route>`.](https://reactrouter.com/web/api/Hooks/useparams)
+- We use `useEffect` (triggered once the component initially renders, by specifying `[ ]` as 2nd parameter) to change displayed name by the item's `id`, retrieved with `useParams`. We'll use `find()` in order to get the current object in our `data` by it's `id` (where `id` is parsed from String to Integer), then we call `SetName` with the retrieved object's name.
+
+<p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals42.jpg" width=900></p>
+
+However, if we are trying to access a person that doesn't exist in our data, we get `TypeError: Cannot read property 'name' of undefined`
+
+We can solve this issue by using short-circuit operators, [as we saw earlier](#solving-undefined-properties-using-short-circuit-operators).
+
+```js
+const Person = () => {
+  const [name, setName] = useState("Default name");
+  const { id } = useParams();
+
+  useEffect(() => {
+    const newPerson = data.find((person) => person.id === parseInt(id));
+    const nameDefault = newPerson && newPerson.name;
+    setName(nameDefault || "Person not found");
+  }, []);
+  return (
+    <div>
+      <h1>{name}</h1>
+      <Link to="/people" className="btn">
+        Back To People
+      </Link>
+    </div>
+  );
+};
+```
+
+<br/>
+
+---
+
+---
+
+<br/>
+
+## React Performance Optimization
+
+([React Full Course 9h38m](https://youtu.be/4UZrsTqkcW4?t=34684)) (Wednesday, November 25, 2020)
+
+"React is fast by default", therefore there is not really a priority to optimize every application. Optimizing a React app should be the last task after finalizing a project.
+
+Also, optimizations add their own costs: they're using more memory (memoizing - caching results - remembering) or more computational power. ([When to useMemo and useCallback - Kent C. Dodds](https://kentcdodds.com/blog/usememo-and-usecallback))
 
