@@ -1,0 +1,40 @@
+# List all created conda environments
+conda env list
+
+# remove conda environment
+conda remove --name myenv --all
+
+# check which conda packages are installed in the current conda environment
+conda list
+
+# check Python pip modules installed in the current conda environment
+pip freeze
+
+# remove a Python module installed via conda
+conda remove module_name
+
+# remove a Python module installed via pip
+pip uninstall module_name
+
+##############################################
+
+# Create tf environment (or any other name you like)
+conda create --name tf
+activate tf
+
+conda install -c conda-forge notebook
+conda install -c anaconda spyder
+conda install numpy
+conda install -c conda-forge matplotlib
+conda install pandas
+conda install -c conda-forge opencv
+conda install -c anaconda pillow
+conda install scikit-image
+conda install scikit-learn
+
+conda install -c conda-forge keras
+conda install -c conda-forge dlib
+
+
+
+conda clean --all

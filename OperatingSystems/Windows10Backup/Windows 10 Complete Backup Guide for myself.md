@@ -242,6 +242,12 @@ conda clean --all
 
 - Also keep in mind it's recommended to install packages via `conda` package manager. In extreme cases, where a module can't be found via `conda`, it can be installed via `pip` (package installer for Python).
 
+IMPORTANT: If your current activated environment doesn't show up when running `jupyter notebook` from CLI: 
+
+- run `conda install ipykernel`
+- then add manually the new kernel to Jupyter Notebook using<br/>`python -m ipykernel install --user --name your_env_name --display-name "Python (your_env_name)"`
+- when running a `ipynb` file in Jupyter, click on `Kernel` (navbar) -> `Change Kernel` -> Select your new kernel.
+
 <br/>
 
 ### Creating Tensorflow GPU environment (NVidia)
@@ -271,6 +277,11 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True)) # Tensorflow
 - It should display your current graphics card name and memory
 - Check current installed packages with `conda list` or/and `pip freeze`
 - Install the packages/modules listened in the previous `tf` environment
+
+IMPORTANT: If your current activated environment doesn't show up when running `jupyter notebook` from CLI: 
+
+- run `conda install ipykernel`
+- then add manually the new kernel to Jupyter Notebook using<br/>`python -m ipykernel install --user --name tf_gpu --display-name "Python (tf_gpu)"`
 
 <br/>
 
@@ -326,6 +337,7 @@ pip install gunicorn
   - [Rainbow Brackets](https://marketplace.visualstudio.com/items?itemName=2gua.rainbow-brackets)
   - [VS Color Pickler](https://marketplace.visualstudio.com/items?itemName=lihui.vs-color-picker)
   
+
 My Visual Studio Code current settings (`CTRL+SHIFT+P` -> select `Preferences: Open Settings (JSON)`):
 
 ```json

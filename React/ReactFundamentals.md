@@ -2659,7 +2659,7 @@ const MainIndexReactRouter = () => {
 
 <br/>
 
-### Error and Switch Component
+### 404 Error and Switch Component
 
 If we have set up 3 routes (eg. Home, Index, People), but we are accessing a page that hasn't been set up: React (Router) will display an empty page. With an Error component, we can display a page that tells the user the specific page doesn't exist, providing a link to return to the home page (more like a 404 error page).
 
