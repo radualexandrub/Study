@@ -1,32 +1,82 @@
 # React Fundamentals
 
 ## Credits / Notes taken from:
+
 - [10h7m Full React Course 2020 - Fundamentals, Hooks, Context API, React Router, Custom Hooks from freeCodeCamp](https://youtu.be/4UZrsTqkcW4)
 - [w3schools React Tutorial](https://www.w3schools.com/react/default.asp)
 - [React Official Documentation](https://www.w3schools.com/react/default.asp)
 
 ## Contents
 
-
+- [React Fundamentals](#react-fundamentals)
+  - [Credits / Notes taken from:](#credits--notes-taken-from)
+  - [Contents](#contents)
+  - [Requirements:](#requirements)
+  - [NPM Basics and Create-React-App](#npm-basics-and-create-react-app)
+  - [Hello World (First component) in React](#hello-world-first-component-in-react)
+  - [Nested components](#nested-components)
+  - [Add CSS to our React components (from index.css or in JSX)](#add-css-to-our-react-components-from-indexcss-or-in-jsx)
+  - [JavaScript JSX, variables and props](#javascript-jsx-variables-and-props)
+  - [Props: `children` keyword as parameter in function component](#props-children-keyword-as-parameter-in-function-component)
+  - [Rewrite our dummy data as a simple list of objects and Iterate through it with `map()`](#rewrite-our-dummy-data-as-a-simple-list-of-objects-and-iterate-through-it-with-map)
+  - [Solve warning: Each child in a list should have a unique "key" prop](#solve-warning-each-child-in-a-list-should-have-a-unique-key-prop)
+  - [React Event Basics](#react-event-basics)
+  - [Import and Export modules (JavaScript ES6)](#import-and-export-modules-javascript-es6)
+  - [Basic React Hooks: `useState` and `useEffect`](#basic-react-hooks-usestate-and-useeffect)
+  - [`useState`](#usestate)
+    - [`useState` Array with Data objects Example](#usestate-array-with-data-objects-example)
+    - [`useState` with a single object example](#usestate-with-a-single-object-example)
+    - [`useState` simple Counter example](#usestate-simple-counter-example)
+    - [`useState` complex Counter example with a delay of two seconds:](#usestate-complex-counter-example-with-a-delay-of-two-seconds)
+  - [`useEffect`](#useeffect)
+    - [`useEffect` second parameter: trigger an effect conditionally](#useeffect-second-parameter-trigger-an-effect-conditionally)
+    - [`useEffect` Cleanup Function](#useeffect-cleanup-function)
+    - [`useEffect` to fetch data (eg. GitHub users)](#useeffect-to-fetch-data-eg-github-users)
+  - [Conditional [Component] Rendering - Display specific content based on conditions with multiple returns](#conditional-component-rendering---display-specific-content-based-on-conditions-with-multiple-returns)
+  - [JS short-circuit evaluation (return values with a condition) and Ternary operator](#js-short-circuit-evaluation-return-values-with-a-condition-and-ternary-operator)
+  - [Show/Hide components with a button](#showhide-components-with-a-button)
+  - [Forms in React](#forms-in-react)
+    - [Form basics in React (User input) and `preventDefault`](#form-basics-in-react-user-input-and-preventdefault)
+    - [Controlled inputs (functional form)](#controlled-inputs-functional-form)
+    - [Add elements to a list via Form (step-by-step)](#add-elements-to-a-list-via-form-step-by-step)
+    - [Complete Form with multiple inputs (lots of inputs)](#complete-form-with-multiple-inputs-lots-of-inputs)
+  - [React Hooks](#react-hooks)
+    - [`useRef` - using Uncontrolled inputs in a Form](#useref---using-uncontrolled-inputs-in-a-form)
+    - [`useReducer` - Complete example](#usereducer---complete-example)
+    - [useReducer - Complete example code](#usereducer---complete-example-code)
+    - [Prop Drilling](#prop-drilling)
+    - [`useContext` - Context API](#usecontext---context-api)
+  - [React Custom Hooks](#react-custom-hooks)
+    - [`useFetch`](#usefetch)
+  - [React PropTypes](#react-proptypes)
+    - [Solving undefined properties with Default Props](#solving-undefined-properties-with-default-props)
+    - [Solving undefined properties using short-circuit operators](#solving-undefined-properties-using-short-circuit-operators)
+  - [React Router](#react-router)
+    - [Routing Basics](#routing-basics)
+    - [404 Error and Switch Component](#404-error-and-switch-component)
+    - [Navbar and Link](#navbar-and-link)
+    - [Lists: URL Params and Placeholder](#lists-url-params-and-placeholder)
+  - [React Performance Optimization](#react-performance-optimization)
 
 ## Requirements:
 
 - Some JavaScript Knowledge, you can refer to my [JavaScript Notes](../JavaScript/JavaScriptBeginners.md)
 - Installation of Node.js and a Text Editor, you can follow [my first React notes here](../React/React-ToDoApp.md)
 
-
 ## NPM Basics and Create-React-App
+
 - `npm init` - creates package.json (manifest) file and list dependencies<br/>
-When we share/upload a Node app to GitHub, we usually just include `package.json`, without large-sized `node_modules` folder where all the files from the installed modules are stored. To restore the `node_modules` folder, we just need to run `npm install` in our local project.
+  When we share/upload a Node app to GitHub, we usually just include `package.json`, without large-sized `node_modules` folder where all the files from the installed modules are stored. To restore the `node_modules` folder, we just need to run `npm install` in our local project.
 - `npm install <package_name> --save` - Install package locally (default) and add to package.json<br/>
-Example: `npm install bootstrap --save`
+  Example: `npm install bootstrap --save`
 - `npm install <package_name> -g` - Install package globally (access it anywhere, not only current project)<br/>
-Example: `sudo npm install gatsby-cli -g`
+  Example: `sudo npm install gatsby-cli -g`
 - `npm install <package_name> --save-dev` (used only in development, for testing, once we ship the application into production, the package is not longer needed)
-<br/><br/>
-- `npx create-react-app my-app` will do all the *"heavy lifting"* for your Node/React application, it will install automatically (locally) all the dependencies needed for a React application. Create-React-App uses [Babel](https://babeljs.io/) behind the scenes.
+  <br/><br/>
+- `npx create-react-app my-app` will do all the _"heavy lifting"_ for your Node/React application, it will install automatically (locally) all the dependencies needed for a React application. Create-React-App uses [Babel](https://babeljs.io/) behind the scenes.
 
 ## Hello World (First component) in React
+
 - You can delete these files: `App.css`, `App.js`, `App.test.js`, `index.css`, `logo.svg`, `serviceWorked` and `setupTests`
 - Keep in mind that our main component is `<div id="root">` from our `./public/index.html`
 - You cand delete everything in index.js and write:
@@ -54,9 +104,10 @@ ReactDom.render(<Greeting/>, document.getElementById('root'));
 ```
 
 If we have more elements (tags), we can write:
+
 ```js
-import React from 'react'
-import ReactDom from 'react-dom'
+import React from "react";
+import ReactDom from "react-dom";
 
 function Greeting() {
   return (
@@ -69,16 +120,18 @@ function Greeting() {
 // Or (under the hood):
 const Greeting = () => {
   return React.createElement(
-    'div',
-    {}, 
-    React.createElement('h1', {}, 'Hello World')
+    "div",
+    {},
+    React.createElement("h1", {}, "Hello World")
   );
 };
 
-ReactDom.render(<Greeting/>, document.getElementById('root'));
+ReactDom.render(<Greeting />, document.getElementById("root"));
 ```
+
 We observe than using JSX (first method) is easier and more readable for making components.<br/>
 **Short JSX Rules:**
+
 - We must return a single element (only one `<div></div>` or a `section`/`article`/`React Fragment`)
 - Use camelCase for html attributes
 - Use `className` instead of `class`
@@ -105,12 +158,15 @@ const Message = () => {
 
 ReactDOM.render(<Greeting />, document.getElementById("root"));
 ```
+
 Our component structure will look like this:
+
 - Greeting (Main)
   - Person
   - Message
 
 **A real-world simple example with nested components**:
+
 ```js
 // index.js
 import React from "react";
@@ -148,7 +204,9 @@ const BookAuthor = () => {
 
 ReactDOM.render(<BookList />, document.getElementById("root"));
 ```
+
 Our component structure will look like this:
+
 - BookList
   - Book
     - BookTitle
@@ -156,9 +214,6 @@ Our component structure will look like this:
   - Book
     - BookTitle
     - BookAuthor
-
-
-
 
 ## Add CSS to our React components (from index.css or in JSX)
 
@@ -197,12 +252,15 @@ body {
 ```
 
 Then we import `index.css` in our `index.js`
+
 ```js
 import "./index.css"; // "../" means previous folder; "./" is current/same folder
 
 function BookList() {
   return (
-    <section className="booklist"> // Add className to each of our components
+    <section className="booklist">
+      {" "}
+      // Add className to each of our components
       <Book />
       <Book />
     </section>
@@ -212,28 +270,27 @@ function BookList() {
 // Or we can add CSS directly into our JSX code as an object
 // one pair of brackes is for JavaScript, another pair is for object {{}}
 const BookTitle = () => {
-  return <h2 style={{ color: "#263B44FF", marginTop: "0.25rem"}}>
-    12 Rules for Life
-  </h2>;
+  return (
+    <h2 style={{ color: "#263B44FF", marginTop: "0.25rem" }}>
+      12 Rules for Life
+    </h2>
+  );
 };
-
 ```
 
-
-
-
 ## JavaScript JSX, variables and props
+
 We can write variables inside or outside of function components:
+
 ```js
 const title = "The Brothers Karamazov";
-const img = "https://images-na.ssl-images-amazon.com/images/I/51FIyYKsCXL._SX333_BO1,204,203,200_.jpg"
+const img =
+  "https://images-na.ssl-images-amazon.com/images/I/51FIyYKsCXL._SX333_BO1,204,203,200_.jpg";
 const Book = () => {
   const author = "Fyodor Dostoevsky";
   return (
     <article className="book">
-      <img
-        src={img} alt=''
-      />
+      <img src={img} alt="" />
       <h2>{title}</h2>
       <h4>{author.toUpperCase()}</h4>
       <p>{6 + 6}</p>
@@ -241,6 +298,7 @@ const Book = () => {
   );
 };
 ```
+
 <br/><br/>
 However,<br/>
 
@@ -250,15 +308,14 @@ However,<br/>
 const Book = (props) => {
   return (
     <article className="book">
-      <img
-        src={props.img} alt=''
-      />
+      <img src={props.img} alt="" />
       <h2>{props.title}</h2>
       <h4>{props.author}</h4>
     </article>
   );
 };
 ```
+
 And we pass the parameters we want inside our main/upper component (`BookList` here) as an object:
 
 ```js
@@ -279,11 +336,13 @@ function BookList() {
   );
 }
 ```
+
 This will be the result so far:<br/>
+
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals01.jpg" width=500></p>
 
 <br/><br/>
-Also, inside our `Book` function, if we don't want to repeat `props` var name, we can use ***JavaScript Destructuring***:
+Also, inside our `Book` function, if we don't want to repeat `props` var name, we can use **_JavaScript Destructuring_**:
 
 ```js
 const Book = (props) => {
@@ -311,11 +370,8 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
+## Props: `children` keyword as parameter in function component
 
-
-
-
-## Props: `children` keyword as parameter in function component 
 If we add more properties directly in our Main Component ("BookList" here) without naming them, we can include a `children` parameter in our "Book" sub-component function (in order to render it):
 
 ```js
@@ -323,7 +379,8 @@ If we add more properties directly in our Main Component ("BookList" here) witho
 var secondBook = {
   title: "12 Rules for Life",
   author: "Jordan B. Peterson",
-  img: "https://images-na.ssl-images-amazon.com/images/I/41LtJtWn9OL._SX331_BO1,204,203,200_.jpg",
+  img:
+    "https://images-na.ssl-images-amazon.com/images/I/41LtJtWn9OL._SX331_BO1,204,203,200_.jpg",
 };
 
 function BookList() {
@@ -360,11 +417,8 @@ const Book = ({ img, title, author, children }) => {
 };
 ```
 
-
-
-
-
 ## Rewrite our dummy data as a simple list of objects and Iterate through it with `map()`
+
 We can put all our books objects in a simple (global) `Array [ ]` called `books`:
 
 ```js
@@ -392,12 +446,8 @@ function BookList() {
   return (
     <section className="booklist">
       {books.map((book) => {
-        return 
-          <Book 
-            title={book.title}
-            img={book.img}
-            author={book.author} 
-          />;
+        return;
+        <Book title={book.title} img={book.img} author={book.author} />;
       })}
     </section>
   );
@@ -415,27 +465,23 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
-We can also use the ***Spread operator*** (`...`) inside our `BookList` main component, without modifying our `Book` function:
+We can also use the **_Spread operator_** (`...`) inside our `BookList` main component, without modifying our `Book` function:
 
 ```js
 function BookList() {
   return (
     <section className="booklist">
       {books.map((book) => {
-        return 
-          <Book 
-
-            {...book} 
-          />;
+        return;
+        <Book {...book} />;
       })}
     </section>
   );
 }
 ```
 
-
-
 ## Solve warning: Each child in a list should have a unique "key" prop
+
 React uses the `key` property create a relationship between the component and the DOM element, so each object should have an `id`. [The library uses this relationship to determine whether or not the component should be re-rendered](https://sentry.io/answers/unique-key-prop/).
 
 ```js
@@ -454,10 +500,10 @@ function BookList() {
   return (
     <section className="booklist">
       {books.map((book) => {
-        return 
-          <Book 
+        return
+          <Book
             key={book.id}
-            {...book} 
+            {...book}
           />;
       })}
     </section>
@@ -465,19 +511,13 @@ function BookList() {
 }
 ```
 
-
-
-
-
-
-
-
 ## React Event Basics
+
 Complete List of events from documentation: [here](https://reactjs.org/docs/events.html).<br/>
 The main two components of an event is: **attribute** and **eventHandler**.
 
-- ***onClick*** event:
-Add a `<button>` with an `onClick` event, and a new `const (arrow) function` to handle that event:
+- **_onClick_** event:
+  Add a `<button>` with an `onClick` event, and a new `const (arrow) function` to handle that event:
 
 ```js
 const Book = ({ img, title, author }) => {
@@ -521,7 +561,7 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
-- ***onMouseOver*** event:
+- **_onMouseOver_** event:
 
 ```js
 const Book = ({ img, title, author }) => {
@@ -542,18 +582,13 @@ const Book = ({ img, title, author }) => {
 };
 ```
 
-
-
-
-
-
-
 ## Import and Export modules (JavaScript ES6)
 
 We can split our functionalities in separate files instead of putting them all together in `index.js`.<br/>
 We can create a new folder `./src/components` with `BookItem.js`, and a new file `booksData.js` where we'll store our dummy data books (array)
-  - `./src/components/BookItem.js`
-  - `./src/booksData.js`
+
+- `./src/components/BookItem.js`
+- `./src/booksData.js`
 
 In `./src/booksData.js` we will cut and paste our array and add `export`:
 
@@ -613,28 +648,23 @@ const Book = ({ img, title, author }) => {
 };
 
 export default Book;
-
 ```
 
-Note, we can only have ***one*** `default export` per `.js` file. However, it is good practice to keep the component name `Book` same as our `.js` file name (here we have `BookItem.js` instead of `Book.js`)<br/><br/>
+Note, we can only have **_one_** `default export` per `.js` file. However, it is good practice to keep the component name `Book` same as our `.js` file name (here we have `BookItem.js` instead of `Book.js`)<br/><br/>
 
 In our main `./src/index.js` we will import these new files (for `.js` files, we don't have to specify the extension):
 
 ```js
 // index.js
-import {books} from './booksData'
+import { books } from "./booksData";
 import Book from "./components/BookItem";
 import "./index.css";
 ```
 
-Note that we use ***curly brackets {}*** for exports that aren't `default` (like our `books` array from our `booksData.js`).
-
-
-
-
-
+Note that we use **_curly brackets {}_** for exports that aren't `default` (like our `books` array from our `booksData.js`).
 
 ## Basic React Hooks: `useState` and `useEffect`
+
 - [Other examples of hooks](https://reactjs.org/docs/hooks-reference.html): `useContext/Context API`, `useReducer`, `useCallback`, `useMemo`, `useRef`, `useImerativeHandle`, `useLayoutEffect`.
 - More React concepts: `Conditional Rendering`, `Forms`, `Prop Drilling`, `React Router`
 
@@ -644,16 +674,16 @@ By default, if I try to change the `<h2>{title}</h2>` title directly using a Han
 
 ```js
 const ErrorExample = () => {
-  let title = 'random title';
+  let title = "random title";
 
   const handleClick = () => {
-    title = 'hello people';
+    title = "hello people";
     console.log(title);
   };
   return (
     <React.Fragment>
       <h2>{title}</h2>
-      <button type='button' onClick={handleClick}>
+      <button type="button" onClick={handleClick}>
         change title
       </button>
     </React.Fragment>
@@ -662,12 +692,13 @@ const ErrorExample = () => {
 ```
 
 Therefore we need to use `useState()`.<br/>
-`usetState()` returns two parameters: 
+`usetState()` returns two parameters:
+
 - the value given from its parameter and a special function which **will be used as a handler**.
 
   ```js
   const UseStateBasics = () => {
-    console.log(useState('hello')); // the Parameter could be a number/string/boolean/array/etc
+    console.log(useState("hello")); // the Parameter could be a number/string/boolean/array/etc
     const value = useState()[0]; // value = 'hello'
     const handler = useState()[1]; // a function
     console.log(value, handler);
@@ -677,18 +708,18 @@ Therefore we need to use `useState()`.<br/>
 Therefore, in order to change our `<h2>` title by pressing a button (call the Handler function) and **re-render** the component, we must import and use `useState`
 
 ```js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const UseStateBasics = () => {
-  const [text, setText] = useState('random title'); // We used array destructuring
+  const [text, setText] = useState("random title"); // We used array destructuring
   const handleClick = () => {
-    setText('hello world');
+    setText("hello world");
   };
 
   return (
     <React.Fragment>
       <h1>{text}</h1>
-      <button type='button' onClick={handleClick}>
+      <button type="button" onClick={handleClick}>
         change title
       </button>
     </React.Fragment>
@@ -701,22 +732,21 @@ export default UseStateBasics;
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals03.jpg" width=500></p>
 
 However, there are some **rules** while using `useState()` (or other hooks):
+
 - the hook functions name starts with `use` (`useState`, `useEffect`, `useRef`, `useReducer`, `useCallback`, etc)
 - component function name must be uppercase (here we used a component named `UseStateBasics`)
 - hooks functions must be invoked inside function/component body
 - we don't call hooks conditionally
 - name convention for the returned function Handler from a hook (`useState`) should be `setSth`
 
-
-
-
 ### `useState` Array with Data objects Example
 
 We'll have a list of items coming from a dummy data:
-  - we are rendering/showing each element from the list
-  - we have a button that will render a clear list (with all items removed)
-  - each item has a button next to it to its removal
-    - don't forget that we need to pass an arrow function in order to call the handler (from useState) only when we are pressing the button, if we called the handler directly, the handler will be executed for all items after opening/refreshing the page.
+
+- we are rendering/showing each element from the list
+- we have a button that will render a clear list (with all items removed)
+- each item has a button next to it to its removal
+  - don't forget that we need to pass an arrow function in order to call the handler (from useState) only when we are pressing the button, if we called the handler directly, the handler will be executed for all items after opening/refreshing the page.
 
 ```js
 const data = [
@@ -772,13 +802,10 @@ const UseStateArray = () => {
     });
   };
 
-  return ( 
+  return (
     <div>...</div>
   )
 ```
-
-
-
 
 ### `useState` with a single object example
 
@@ -788,12 +815,12 @@ The problem while using a single object and we want to change (and display with 
 /* BAD EXAMPLE */
 const UseStateObject = () => {
   const [person, setPerson] = useState({
-    name: 'peter',
+    name: "peter",
     age: 24,
-    message: 'random message',
+    message: "random message",
   });
   const changeMessage = () => {
-    setPerson('hello world');  // THIS WILL NOT WORK, It will wipe out the data
+    setPerson("hello world"); // THIS WILL NOT WORK, It will wipe out the data
     // SEE PICTURE BELLOW
   };
   return (
@@ -801,7 +828,7 @@ const UseStateObject = () => {
       <h3>{person.name}</h3>
       <h3>{person.age}</h3>
       <h4>{person.message}</h4>
-      <button className='btn' onClick={changeMessage}>
+      <button className="btn" onClick={changeMessage}>
         change message
       </button>
     </>
@@ -815,9 +842,9 @@ const UseStateObject = () => {
 ```js
 const UseStateObject = () => {
   const [person, setPerson] = useState({
-    name: 'peter',
+    name: "peter",
     age: 24,
-    message: 'random message',
+    message: "random message",
   });
 
   /* METHOD 2 - We create a setHandler for every property */
@@ -828,7 +855,7 @@ const UseStateObject = () => {
   const changeMessage = () => {
     /* METHOD 1 */
     // We use the spread operator to leave the old values as they are, but we'll only change the message
-    setPerson({ ...person, message: 'hello world' });
+    setPerson({ ...person, message: "hello world" });
 
     /* METHOD 2 */
     // setMessage('hello world')
@@ -839,7 +866,7 @@ const UseStateObject = () => {
       <h3>{person.name}</h3>
       <h3>{person.age}</h3>
       <h4>{person.message}</h4>
-      <button className='btn' onClick={changeMessage}>
+      <button className="btn" onClick={changeMessage}>
         change message
       </button>
     </>
@@ -848,9 +875,6 @@ const UseStateObject = () => {
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals06.jpg" width=500></p>
-
-
-
 
 ### `useState` simple Counter example
 
@@ -861,7 +885,7 @@ Preparing our UI and setting initial value `0` in our `useState()`:
 Complete code:
 
 ```js
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const UseStateCounter = () => {
   const [value, setValue] = useState(0);
@@ -872,20 +896,20 @@ const UseStateCounter = () => {
 
   return (
     <>
-      <section style={{ margin: '4rem 0' }}>
+      <section style={{ margin: "4rem 0" }}>
         <h2>regular counter</h2>
         <h1>{value}</h1>
-        <button className='btn' onClick={() => setValue(value - 1)}>
+        <button className="btn" onClick={() => setValue(value - 1)}>
           Decrease
         </button>
-        <button className='btn' onClick={reset}>
+        <button className="btn" onClick={reset}>
           Reset
         </button>
-        <button className='btn' onClick={() => setValue(value + 1)}>
+        <button className="btn" onClick={() => setValue(value + 1)}>
           Increase
         </button>
       </section>
-     </>
+    </>
   );
 };
 
@@ -893,8 +917,6 @@ export default UseStateCounter;
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals08.jpg" width=400></p>
-
-
 
 ### `useState` complex Counter example with a delay of two seconds:
 
@@ -904,7 +926,7 @@ We are using JavaScript's built-in `setTimer(value, milisec)` function, where we
 const UseStateCounter = () => {
   const [value, setValue] = useState(0);
 
-/* // THIS WILL NOT WORK IF USER WILL PRESS THE BUTTON MULTIPLE TIMES WITHIN 2 SECONDS
+  /* // THIS WILL NOT WORK IF USER WILL PRESS THE BUTTON MULTIPLE TIMES WITHIN 2 SECONDS
   const complexIncrease = () => {
     setTimeout(() => {
       setValue(value + 1); // setValue function is asynchronous, if we click 3 times within 2s it will take only the current value
@@ -914,8 +936,9 @@ const UseStateCounter = () => {
 
   const complexIncrease = () => {
     setTimeout(() => {
-      setValue((prevState) => { // Instead of passing directly the current value
-        return prevState + 1;   // we pass another function
+      setValue((prevState) => {
+        // Instead of passing directly the current value
+        return prevState + 1; // we pass another function
       });
     }, 2000);
   };
@@ -936,9 +959,6 @@ const UseStateCounter = () => {
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals09.jpg" width=400></p>
 
-
-
-
 ## [`useEffect`](https://reactjs.org/docs/hooks-reference.html#useeffect)
 
 `useEffect` function will run (by default) after every re-render (after every call of a `setHandler` function returned from the `useState()` hook).<br/>
@@ -947,7 +967,7 @@ const UseStateCounter = () => {
 Simple example: Every time we increase a counter by clicking a button, **we will change our page title with the current counter value**:
 
 ```js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const UseEffectBasics = () => {
   const [value, setValue] = useState(0);
@@ -962,7 +982,7 @@ const UseEffectBasics = () => {
   return (
     <>
       <h1>{value}</h1>
-      <button className='btn' onClick={() => setValue(value + 1)}>
+      <button className="btn" onClick={() => setValue(value + 1)}>
         click me
       </button>
     </>
@@ -976,7 +996,7 @@ export default UseEffectBasics;
 
 ### `useEffect` second parameter: trigger an effect conditionally
 
-However, we can fire an ***effect*** conditionally. For example, if we add an empty array as second argument, the effect from our `useEffect` hook will run only when page loads/refresh.
+However, we can fire an **_effect_** conditionally. For example, if we add an empty array as second argument, the effect from our `useEffect` hook will run only when page loads/refresh.
 
 ```js
 const UseEffectBasics = () => {
@@ -993,13 +1013,12 @@ const UseEffectBasics = () => {
     }
   }, [value]); // Here useEffect will trigger every time "value" changes
 
-  /* In the first example (without a second parameter), 
+  /* In the first example (without a second parameter),
   useEffect triggered every time we re-rendered the component AND on first page load/refresh !!! */
   ...
 ```
 
-**NOTE:** We can have ***as many useEffect functions*** as we want inside a component.
-
+**NOTE:** We can have **_as many useEffect functions_** as we want inside a component.
 
 ### `useEffect` Cleanup Function
 
@@ -1014,14 +1033,14 @@ const UseEffectCleanup = () => {
   };
 
   useEffect(() => {
-    console.log('useEffect');
-    window.addEventListener('resize', checkSize);
+    console.log("useEffect");
+    window.addEventListener("resize", checkSize);
     return () => {
-      console.log('cleanup');
-      window.removeEventListener('resize', checkSize);
+      console.log("cleanup");
+      window.removeEventListener("resize", checkSize);
     };
   }, []);
-  console.log('render');
+  console.log("render");
   return (
     <>
       <h1>window</h1>
@@ -1031,14 +1050,13 @@ const UseEffectCleanup = () => {
 };
 ```
 
-
 ### `useEffect` to fetch data (eg. GitHub users)
 
 We will render in real-time the data (users) we fetch from an API.
 
 ```js
-import React, { useState, useEffect } from 'react';
-const url = 'https://api.github.com/users';
+import React, { useState, useEffect } from "react";
+const url = "https://api.github.com/users";
 
 const UseEffectFetchData = () => {
   const [users, setUsers] = useState([]);
@@ -1057,7 +1075,7 @@ const UseEffectFetchData = () => {
   return (
     <>
       <h3>github users</h3>
-      <ul className='users'>
+      <ul className="users">
         {users.map((user) => {
           const { id, login, avatar_url, html_url } = user;
           return (
@@ -1076,28 +1094,21 @@ const UseEffectFetchData = () => {
 };
 
 export default UseEffectFetchData;
-
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals11.jpg" width=800></p>
-
-
-
-
-
-
 
 <br/>
 
 ## Conditional [Component] Rendering - Display specific content based on conditions with multiple returns
 
 ```js
-import React, { useState, useEffect } from 'react';
-const url = 'https://api.github.com/users/radualexandrub';
+import React, { useState, useEffect } from "react";
+const url = "https://api.github.com/users/radualexandrub";
 const MultipleReturns = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [user, setUser] = useState('default user');
+  const [user, setUser] = useState("default user");
 
   useEffect(() => {
     fetch(url)
@@ -1142,7 +1153,6 @@ const MultipleReturns = () => {
 export default MultipleReturns;
 ```
 
-
 ## JS short-circuit evaluation (return values with a condition) and Ternary operator
 
 In React we are not allowed to write in JSX an `if` statement:
@@ -1157,18 +1167,20 @@ const MyComponent = () => {
 /* BAD EXAMPLE */
 ```
 
-But we can use ***short-circuit evaluation***:
+But we can use **_short-circuit evaluation_**:
 
 ```js
 const MyComponent = () => {
-  const [text, setText] = useState(''); // empty string (equivalent of false)
-  const firstValue = text || 'hello world'; // will return 'hello world'
-  const secondValue = text && 'hello world'; // will return ''
+  const [text, setText] = useState(""); // empty string (equivalent of false)
+  const firstValue = text || "hello world"; // will return 'hello world'
+  const secondValue = text && "hello world"; // will return ''
 
-  return <div>
-    <h1>{firstValue}</h1>
-    <h1>value : {secondValue}</h1>
-  </div>
+  return (
+    <div>
+      <h1>{firstValue}</h1>
+      <h1>value : {secondValue}</h1>
+    </div>
+  );
 };
 ```
 
@@ -1182,13 +1194,15 @@ And **this is how we are going to use it in JSX**:
 // Let's say we will receive a text from a server call
 // But if the text is empty, we'll directly show something else in JSX
 const MyComponent = () => {
-  const [text, setText] = useState(''); // empty string (equivalent of false)
+  const [text, setText] = useState(""); // empty string (equivalent of false)
 
-  return <div>
-    <h1>{text || "Text is empty, John Doe"}</h1>
-    {/*Or, if the text is true, we want to display something else*/}
-    <h1>{text && "Text is not empty (is true) so we'll display sth else"}</h1>
-  </div>
+  return (
+    <div>
+      <h1>{text || "Text is empty, John Doe"}</h1>
+      {/*Or, if the text is true, we want to display something else*/}
+      <h1>{text && "Text is not empty (is true) so we'll display sth else"}</h1>
+    </div>
+  );
 };
 ```
 
@@ -1219,20 +1233,18 @@ When `isError === false`, this will render:
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals13.jpg" width=300></p>
 
-
-
 <br/>
 
 ## Show/Hide components with a button
 
 ```js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ShowHide = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <button className='btn' onClick={() => setShow(!show)}>
+      <button className="btn" onClick={() => setShow(!show)}>
         show/hide
       </button>
       {show && <Item />}
@@ -1246,15 +1258,15 @@ const Item = () => {
     setSize(window.innerWidth);
   };
   useEffect(() => {
-    window.addEventListener('resize', checkSize);
+    window.addEventListener("resize", checkSize);
     // We need a cleanup function every time we toggle the button
     return () => {
-      window.removeEventListener('resize', checkSize);
+      window.removeEventListener("resize", checkSize);
     };
   }, []);
 
   return (
-    <div style={{ marginTop: '2rem' }}>
+    <div style={{ marginTop: "2rem" }}>
       <h1>Window</h1>
       <h2>size : {size}</h2>
     </div>
@@ -1263,8 +1275,6 @@ const Item = () => {
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals14.jpg" width=600></p>
-
-
 
 <br/>
 
@@ -1287,11 +1297,7 @@ const NonFunctionalForm = () => {
 
           <div className="form-control">
             <label htmlFor="email">Email: </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-            />
+            <input type="text" id="email" name="email" />
           </div>
           <button type="submit">Add Person</button>
         </form>
@@ -1306,6 +1312,7 @@ Will render:
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals15.jpg" width=500></p>
 
 We have **two methods** for submitting a form:
+
 1. We include `onSubmit={handleSubmitFunction}` on our `<form>` tag.
 2. OR; We include `onClick={handleSubmitFunction}` on out `<button>` tag.
 
@@ -1339,14 +1346,14 @@ We need to overwrite the **default behavior** with `preventDefault()`. Now the p
 const FunctionalForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello"); 
+    console.log("hello");
   };
   ...
 ```
 
 ### Controlled inputs (functional form)
 
-We can now add `value`s to our `<input>` fields, and also declare/define some `const` variables for each **default** value using again `useState()` (Obvious note: the *value* of the input depends on the value of *useState*). <br/>
+We can now add `value`s to our `<input>` fields, and also declare/define some `const` variables for each **default** value using again `useState()` (Obvious note: the _value_ of the input depends on the value of _useState_). <br/>
 We also need to specify and define an `onChange` method in each field's `<input>`, that has an `event (e)` parameter which is returned as parameter as `e.target.value` to our `setName` function/handler.
 
 ```js
@@ -1391,10 +1398,7 @@ const FunctionalForm = () => {
 };
 ```
 
-
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals16.jpg" width=600></p>
-
-
 
 ### Add elements to a list via Form (step-by-step)
 
@@ -1416,6 +1420,7 @@ const FunctionalForm = () => {
     };
   ...
   ```
+
   However, if the object's keys matches the variables names (that holds the values), we can re-write (refactor) in a shorter way (JS ES6):
 
   ```js
@@ -1428,6 +1433,7 @@ const FunctionalForm = () => {
     };
     ...
   ```
+
 - Then we add our new object to our `peopleList` array (along with the already-existing elements in that array using the `Spread` operator `...`)
 - Then we call `setFirstName` and `setEmail` with an empty string as parameter (After user presses submit button, the form will "clear"/the text added in the form fields will be re-rendered as empty strings)
 
@@ -1453,10 +1459,9 @@ const FunctionalForm = () => {
 
   ```js
   <article>
-    <form>
-      ...
-    </form>
-    // Keep in mind that using `index` here is not suitable for a list where we want to remove items, we'll fix this later
+    <form>...</form>
+    // Keep in mind that using `index` here is not suitable for a list where we want
+    to remove items, we'll fix this later
     {peopleList.map((person, index) => {
       const { id, firstName, email } = person;
       return (
@@ -1471,12 +1476,8 @@ const FunctionalForm = () => {
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals18.jpg" width=400></p>
 
-- But now, React will throw the warning: ***Each child in a list should have a unique "key" prop***.<br/>
-We can add an `id` in various ways: 
-    - using `Math.random()` function (`0.5822776560245544`)
-    - using `new Date().getTime().toString()` (`1602953600928`)
-    - using a [npm package `uuid`](https://www.npmjs.com/package/uuid): `npm install uuid`, `import { v4 as uuidv4 } from 'uuid';
-      uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`<br/>
+- But now, React will throw the warning: **_Each child in a list should have a unique "key" prop_**.<br/>
+  We can add an `id` in various ways: - using `Math.random()` function (`0.5822776560245544`) - using `new Date().getTime().toString()` (`1602953600928`) - using a [npm package `uuid`](https://www.npmjs.com/package/uuid): `npm install uuid`, `import { v4 as uuidv4 } from 'uuid'; uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'`<br/>
 
   We'll add this new `id` on our `handleSubmit` function when we create our `person` object.
 
@@ -1486,8 +1487,8 @@ Our complete component will look like this:
 
 ```js
 const FunctionalForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
   const [peopleList, setPeopleList] = useState([]);
 
   const handleSubmit = (e) => {
@@ -1497,8 +1498,8 @@ const FunctionalForm = () => {
       setPeopleList((peopleList) => {
         return [...peopleList, person];
       });
-      setFirstName('');
-      setEmail('');
+      setFirstName("");
+      setEmail("");
     }
   };
 
@@ -1543,9 +1544,6 @@ const FunctionalForm = () => {
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals19.jpg" width=600></p>
 
-
-
-
 ### Complete Form with multiple inputs (lots of inputs)
 
 The previous form with only 2 inputs (name and email) have lots of code, especially because we are calling the `setFunction` on every subcomponent (every field).<br/><br/>
@@ -1557,10 +1555,10 @@ The previous form with only 2 inputs (name and email) have lots of code, especia
 ```js
 const FunctionalForm = () => {
   const [person, setPerson] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    age: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: "",
   });
   const [peopleList, setPeopleList] = useState([]);
 
@@ -1575,7 +1573,7 @@ const FunctionalForm = () => {
     if (person.firstName && person.lastName && person.email && person.age) {
       const newPerson = { ...person, id: new Date().getTime().toString() };
       setPeopleList([...peopleList, newPerson]);
-      setPerson({ firstName: '', lastName: '', email: '', age: '' });
+      setPerson({ firstName: "", lastName: "", email: "", age: "" });
     }
   };
 
@@ -1639,12 +1637,6 @@ const FunctionalForm = () => {
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals20.jpg" width=500></p>
 
-
-
-
-
-
-
 ## React Hooks
 
 ### `useRef` - using Uncontrolled inputs in a Form
@@ -1661,7 +1653,7 @@ const UseRefBasics = () => {
     e.preventDefault();
     console.log(refContainer.current.value);
   };
-    
+
   return (
     <>
       <form className="form" onSubmit={handleSubmit}>
@@ -1685,7 +1677,7 @@ function App() {
 export default App;
 ```
 
-NOTE: We are not sending a controlled input (We don't have the *state* value that is reflected in the form's input) -> We also don't call anymore a `onChange` with a `handleChange` (or `(e) => setName(e.target.value)`) method every time we type something in the (form's) input.
+NOTE: We are not sending a controlled input (We don't have the _state_ value that is reflected in the form's input) -> We also don't call anymore a `onChange` with a `handleChange` (or `(e) => setName(e.target.value)`) method every time we type something in the (form's) input.
 
 By using `useRef()` and adding `ref={refContainer}` property we can grab the value in the input form (after "submit" button was clicked) and store in the `refContainer.current.value`
 
@@ -1726,7 +1718,7 @@ const UseRefBasics = () => {
 };
 ```
 
-As soon as we focus on the form's input, we can retrieve a specific *DOM element* (`<div>Hello World</div>` in this example), and do whatever we want with *it*. (Note that it doesn't trigger re-render and will also retrieve the DOM element only once)
+As soon as we focus on the form's input, we can retrieve a specific _DOM element_ (`<div>Hello World</div>` in this example), and do whatever we want with _it_. (Note that it doesn't trigger re-render and will also retrieve the DOM element only once)
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals22.jpg" width=600></p>
 
@@ -1739,8 +1731,6 @@ For simple apps like ToDo's we can use `useState`. But as an app gets more compl
 We will use a similar example as the [Form with controlled inputs using `useState()`](#controlled-inputs-functional-form), but we will refactor it in order to use `useReducer` instead of `useState`:
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals24.jpg" width=900></p>
-
-
 
 For this example we will use 3 separate files placed in a folder named "userReducerExample". An `index.js` file placed in a folder will act as a main JavaScript file where all the other components within it's folder are imported.<br/>We can import (in our `App.js`) a folder that contains a `index.js` file by just specifying the path to that folder (it will be automatically interpreted as we were to type `./FolderPath/index.js`).
 
@@ -1760,10 +1750,10 @@ For our Modal (`Modal.js`) we will return a `<div>` with `{modalContent}` messag
 
 ```javascript
 // ./useReducerExample/Modal.js
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 const Modal = ({ modalContent }) => {
   return (
-    <div className='modal'>
+    <div className="modal">
       <p>{modalContent}</p>
     </div>
   );
@@ -1771,7 +1761,7 @@ const Modal = ({ modalContent }) => {
 export default Modal;
 ```
 
- Let's first write a simple (basic) example using `useReducer` that uses dummy data:
+Let's first write a simple (basic) example using `useReducer` that uses dummy data:
 
 ```javascript
 import React, { useState, useReducer } from "react";
@@ -1940,8 +1930,6 @@ const Modal = ({ modalContent, closeModal }) => {
 export default Modal;
 ```
 
-
-
 ```js
 // ./useReducerExample/reducer.js
 export const reducer = (state, action) => {
@@ -1974,8 +1962,6 @@ export const reducer = (state, action) => {
   throw new Error("no matching action type");
 };
 ```
-
-
 
 ```js
 // ./useReducerExample/index.js
@@ -2040,8 +2026,6 @@ const Index = () => {
 export default Index;
 ```
 
-
-
 ```js
 // ./App.js
 import React, { useState, useReducer } from "react";
@@ -2066,7 +2050,7 @@ export default App;
 
 We'll replicate the [`useState` Array with Data objects Example](#usestate-array-with-data-objects-example).
 
-We use **prop drilling** to pass data from one part of a React Component tree to another by going through other parts that do not need the data [(they only help in passing it around)](https://medium.com/javascript-in-plain-english/how-to-avoid-prop-drilling-in-react-using-component-composition-c42adfcdde1b). In this example, we pass the "remove person function" from the Main component (`const PropDrilling`) to the `const List` component (that doesn't need the function) and finally to the `const SinglePerson` component. 
+We use **prop drilling** to pass data from one part of a React Component tree to another by going through other parts that do not need the data [(they only help in passing it around)](https://medium.com/javascript-in-plain-english/how-to-avoid-prop-drilling-in-react-using-component-composition-c42adfcdde1b). In this example, we pass the "remove person function" from the Main component (`const PropDrilling`) to the `const List` component (that doesn't need the function) and finally to the `const SinglePerson` component.
 
 ```js
 import React, { useState } from "react";
@@ -2147,7 +2131,7 @@ We'll refactor the [example used earlier for Prop Drilling](#prop-drilling).
 
 First we need to [Create a Context object](https://reactjs.org/docs/context.html#reactcreatecontext): `const PersonContext = React.createContext();` Once we set up a `createContext` object we get two components: **the Provider** and **the Consumer**.
 
-We need now to find our *root component* (in this example it will be `const ContextAPI`) and **wrap** the return of this root component in `<PersonContext.Provider> ... </PersonContext.Provider>`. The `Provider` has a `value` property where we can put the component we want to pass (in this example the `removePerson` function). 
+We need now to find our _root component_ (in this example it will be `const ContextAPI`) and **wrap** the return of this root component in `<PersonContext.Provider> ... </PersonContext.Provider>`. The `Provider` has a `value` property where we can put the component we want to pass (in this example the `removePerson` function).
 
 ```js
 const PersonContext = React.createContext();
@@ -2162,22 +2146,22 @@ const ContextAPI = () => {
   return (
     <PersonContext.Provider value={{ removePerson }}>
       <h3>Context API / useContext</h3>
-      <List people={people}/>
+      <List people={people} />
     </PersonContext.Provider>
   ); // Reminder: first pair of brackets {} are for JS Code in JSX,
-     // second pair of {} are for removePerson object
+  // second pair of {} are for removePerson object
 };
 ```
 
-After that, we can go to the component (final destination) where we'll use `removePerson` function (`singlePerson` in this example) and pass in the *Context Object* (`PersonContext`) using `useContext()`:
+After that, we can go to the component (final destination) where we'll use `removePerson` function (`singlePerson` in this example) and pass in the _Context Object_ (`PersonContext`) using `useContext()`:
 
 ```js
 const List = ({ people }) => {
   return (
     <>
-      {
-          people.map((person) => {return (<SinglePerson key={person.id} {...person}/>);})
-      }
+      {people.map((person) => {
+        return <SinglePerson key={person.id} {...person} />;
+      })}
     </>
   );
 }; // Note that we only pass people in this List component, without removePerson
@@ -2200,7 +2184,7 @@ We can also pass the `people` list of objects (using `useContext`) to the `const
 
 ---
 
-***Complete code (with both removePerson and people objects passed using Context API):***
+**_Complete code (with both removePerson and people objects passed using Context API):_**
 
 ```js
 import React, { useState, useContext } from "react";
@@ -2252,14 +2236,16 @@ const SinglePerson = ({ id, name }) => {
 };
 
 function App() {
-  return (<div className="container"><ContextAPI /></div>);
+  return (
+    <div className="container">
+      <ContextAPI />
+    </div>
+  );
 }
 export default App;
 ```
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals29.jpg" width=700></p>
-
-
 
 <br/>
 
@@ -2320,7 +2306,7 @@ const CustomHookExample = () => {
 };
 ```
 
-Once all the data is fetched from the API, it will display a "Products" strings, and we'll also have all the fetched data in our `products` 
+Once all the data is fetched from the API, it will display a "Products" strings, and we'll also have all the fetched data in our `products`
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals30.jpg" width=700></p>
 
@@ -2328,7 +2314,7 @@ However, (in this example) we need to use a hook called [`useCallback`](https://
 
 ---
 
-***Complete code***
+**_Complete code_**
 
 ```js
 // ./useFetch.js
@@ -2384,15 +2370,13 @@ export default App;
 
 <br/>
 
-
-
 ## React PropTypes
 
 [Typechecking With PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html): As your app grows, you can catch a lot of bugs with type checking. For some applications, you can use JavaScript extensions like [Flow](https://flow.org/) or [TypeScript](https://www.typescriptlang.org/) to typecheck your whole application. But even if you don’t use those, React has some built-in type checking abilities. To run type checking on the props for a component, you can assign the special `propTypes` property,
 
 ---
 
-In this example we'll use the `useFetch` custom hook made in the previous example. We will retrieve data from an API such as *name, price* and *image* of a Product (eg. furniture).
+In this example we'll use the `useFetch` custom hook made in the previous example. We will retrieve data from an API such as _name, price_ and _image_ of a Product (eg. furniture).
 
 ```json
 [
@@ -2442,7 +2426,7 @@ We are going to handle these situations using PropTypes, checking all the props 
 import PropTypes from 'prop-types';
 
 const Product = ({image, name, price}) => {
-  ...  
+  ...
 };
 
 Product.propTypes = {
@@ -2454,7 +2438,7 @@ Product.propTypes = {
 
 <p align="center"><img src="./ReactFundamentalsImg/ReactFundamentals33.jpg" width=900></p>
 
-Now, to handle the undefined properties, we can either set ***default props*** OR use [***short-circuit operators*** presented earlier](#js-short-circuit-evaluation-return-values-with-a-condition-and-ternary-operator)
+Now, to handle the undefined properties, we can either set **_default props_** OR use [**_short-circuit operators_** presented earlier](#js-short-circuit-evaluation-return-values-with-a-condition-and-ternary-operator)
 
 ### Solving undefined properties with Default Props
 
@@ -2464,9 +2448,9 @@ Default Props are straightforward. Just define our data's (Product's) `defaultPr
 import defaultImage from "./assets/default-image.jpeg";
 
 Product.defaultProps = {
-    name: "Product name missing",
-    price: 0.00,
-    image: defaultImage
+  name: "Product name missing",
+  price: 0.0,
+  image: defaultImage,
 };
 ```
 
@@ -2485,7 +2469,10 @@ const Product = ({ image, name, price }) => {
   const imageUrl = image && image.url;
   return (
     <article className="product">
-      <img src={imageUrl || defaultImage} alt={name || "Product name missing"} />
+      <img
+        src={imageUrl || defaultImage}
+        alt={name || "Product name missing"}
+      />
       <h4>{name || "Product name missing"}</h4>
       <p>${price || 0.0}</p>
     </article>
@@ -2497,7 +2484,7 @@ const Product = ({ image, name, price }) => {
 
 ---
 
-***Complete Code:***
+**_Complete Code:_**
 
 ```js
 import React from "react";
@@ -2543,7 +2530,14 @@ const Index = () => {
   );
 };
 
-function App() { return (<div className="container"> <Index /> </div>); }
+function App() {
+  return (
+    <div className="container">
+      {" "}
+      <Index />{" "}
+    </div>
+  );
+}
 export default App;
 ```
 
@@ -2577,7 +2571,7 @@ Each separate **simple/static page** (`.js`) will return some JSX code:
 
 ```js
 // ./SeparateFolder/Home.js
-import React from 'react';
+import React from "react";
 const Home = () => {
   return (
     <div>
@@ -2591,7 +2585,7 @@ export default Home;
 
 ```js
 // ./SeparateFolder/About.js
-import React from 'react';
+import React from "react";
 const About = () => {
   return (
     <div>
@@ -2667,13 +2661,13 @@ First, we need to create an Error page component (`Error.js`):
 
 ```js
 // ./SeparateFolder/Error.js
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 const Error = () => {
   return (
     <div>
       <h1>Error Page</h1>
-      <Link to='/' className='btn'>
+      <Link to="/" className="btn">
         Go back to Home
       </Link>
     </div>
@@ -2742,20 +2736,20 @@ First, we need to create a `Navbar.js` component page, where we will import a `L
 
 ```js
 // ./SeparateFolder/Navbar.js
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav>
       <ul className="nav-links">
         <li>
-          <Link to='/'>Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to='/about'>About</Link>
+          <Link to="/about">About</Link>
         </li>
         <li>
-          <Link to='/people'>People</Link>
+          <Link to="/people">People</Link>
         </li>
       </ul>
     </nav>
@@ -2797,9 +2791,9 @@ We can display a list of object as usual using `useState()`, AND we can also set
 
 ```js
 // ./SeparateFolder/People.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { data } from '../../../data';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { data } from "../../../data";
 
 const People = () => {
   const [people, setPeople] = useState(data);
@@ -2808,7 +2802,7 @@ const People = () => {
       <h1>People Page</h1>
       {people.map((person) => {
         return (
-          <div key={person.id} className='item'>
+          <div key={person.id} className="item">
             <h4>{person.name}</h4>
             <Link to={`/person/${person.id}`}>See More</Link>
           </div>
@@ -2823,10 +2817,10 @@ export default People;
 ```js
 // data.js
 export const data = [
-  { id: 1, name: 'john' },
-  { id: 2, name: 'peter' },
-  { id: 3, name: 'susan' },
-  { id: 4, name: 'anna' },
+  { id: 1, name: "john" },
+  { id: 2, name: "peter" },
+  { id: 3, name: "susan" },
+  { id: 4, name: "anna" },
 ];
 ```
 
@@ -2862,12 +2856,12 @@ Now let's create `Person.js`:
 
 ```js
 // ./SeparateFolder/Person.js
-import React, { useState, useEffect } from 'react';
-import { data } from '../../../data';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { data } from "../../../data";
+import { Link, useParams } from "react-router-dom";
 
 const Person = () => {
-  const [name, setName] = useState('default name');
+  const [name, setName] = useState("default name");
   const { id } = useParams();
 
   useEffect(() => {
@@ -2878,7 +2872,7 @@ const Person = () => {
   return (
     <div>
       <h1>{name}</h1>
-      <Link to='/people' className='btn'>
+      <Link to="/people" className="btn">
         Back To People
       </Link>
     </div>
@@ -2934,4 +2928,3 @@ const Person = () => {
 "React is fast by default", therefore there is not really a priority to optimize every application. Optimizing a React app should be the last task after finalizing a project.
 
 Also, optimizations add their own costs: they're using more memory (memoizing - caching results - remembering) or more computational power. ([When to useMemo and useCallback - Kent C. Dodds](https://kentcdodds.com/blog/usememo-and-usecallback))
-
