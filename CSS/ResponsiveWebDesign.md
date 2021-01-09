@@ -2729,6 +2729,20 @@ Here's an example of a media query that returns the content when the device's wi
 @media (min-height: 350px) { /* CSS Rules */ }
 ```
 
+```css
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+```
+
 The CSS inside the media query is applied only if the media type matches that of the device being used.
 
 <br/>
@@ -3420,14 +3434,246 @@ For example, by setting the `display` and `grid-template-columns` properties of 
 
 [Challenge Objective](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-tribute-page)
 
-My Solution:
+My Solution (on [codepen.io](https://codepen.io/radualexandrub/pen/poEZQgM)) - Saturday, January 09, 2021:
 
 <iframe height="417" style="width: 100%;" scrolling="no" title="Fork Me! FCC: Test Suite Template" src="https://codepen.io/radualexandrub/embed/poEZQgM?height=417&theme-id=dark&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
   See the Pen <a href='https://codepen.io/radualexandrub/pen/poEZQgM'>Fork Me! FCC: Test Suite Template</a> by Radu-Alexandru B
   (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
+or:
+
+<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="poEZQgM" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="freeCodeCamp Responsive01: Tribute Page">
+  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/poEZQgM">
+  freeCodeCamp Responsive01: Tribute Page</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
 <br/>
+
+
+
+### Build a Survey Form
+
+[View the challenge here](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-survey-form)
+
+[View freeCodeCamp's solution](https://codepen.io/freeCodeCamp/pen/VPaoNP?editors=1100)
+
+Survey Form without any CSS:
+
+```html
+<head>
+  <title>Survey From</title>
+</head>
+
+<body>
+  <main class="container">
+    
+    <header>
+      <h1 id="title">User's Experience Survey Form</h1>
+      <p id="description">Welcome and thank you for taking your time to help us improve our App.<br />We will make sure that every answer counts!</p>
+    </header>
+
+    <form id="survey-form">
+      <div class="form-group">
+        <label id="name-label" for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" required />
+      </div>
+
+      <div class="form-group">
+        <label id="email-label" for="email">Email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required />
+      </div>
+
+      <div class="form-group">
+        <label id="number-label" for="number">Age<span class="clue">(optional)</span></label>
+        <input type="number" name="age" id="number" min="10" max="99" class="form-control" placeholder="Enter your age" />
+      </div>
+
+      <div class="form-group">
+        <p>Which option best describes your current role?</p>
+        <select id="dropdown" name="role" class="form-control" required>
+          <option disabled selected value>Select current role</option>
+          <option value="student">Student</option>
+          <option value="learner">Full Time Learner</option>
+          <option value="part-job">Part Time Job</option>
+          <option value="job">Full Time Job</option>
+          <option value="freelance-job">Freelancer</option>
+          <option value="preferNo">Prefer not to say</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <p>How would you rate our service so far?</p>
+        <label><input name="user-rating" value="5" type="radio" class="input-radio" checked />5 stars</label>
+        <label><input name="user-rating" value="4" type="radio" class="input-radio" />4 stars</label>
+        <label><input name="user-rating" value="3" type="radio" class="input-radio" />3 stars</label>
+        <label><input name="user-rating" value="2" type="radio" class="input-radio" />2 stars</label>
+        <label><input name="user-rating" value="1" type="radio" class="input-radio" />1 star</label>
+      </div>
+
+      <div class="form-group">
+        <p>Would you recommend our service to any of your friends?</p>
+        <label>
+          <input name="user-recommend" value="definitely" type="radio" class="input-radio" checked />Definitely</label>
+        <label>
+          <input name="user-recommend" value="maybe" type="radio" class="input-radio" />Maybe</label>
+        <label><input name="user-recommend" value="no" type="radio" class="input-radio" />No</label>
+      </div>
+
+      <div class="form-group">
+        <p>
+          What would you like to see improved?
+          <span class="clue">(Check all that apply)</span>
+        </p>
+
+        <label><input name="prefer" value="front-end-projects" type="checkbox" class="input-checkbox" />Front-end Projects</label>
+        <label>
+          <input name="prefer" value="back-end-projects" type="checkbox" class="input-checkbox" />Back-end Projects</label>
+        <label><input name="prefer" value="data-visualization" type="checkbox" class="input-checkbox" />Data Visualization</label>
+        <label><input name="prefer" value="challenges" type="checkbox" class="input-checkbox" />Challenges</label>
+        <label><input name="prefer" value="open-source-community" type="checkbox" class="input-checkbox" />Open Source Community</label>
+        <label><input name="prefer" value="gitter-help-rooms" type="checkbox" class="input-checkbox" />Gitter help rooms</label>
+        <label><input name="prefer" value="videos" type="checkbox" class="input-checkbox" />Videos</label>
+        <label><input name="prefer" value="city-meetups" type="checkbox" class="input-checkbox" />City Meetups</label>
+        <label><input name="prefer" value="wiki" type="checkbox" class="input-checkbox" />Wiki</label>
+        <label><input name="prefer" value="forum" type="checkbox" class="input-checkbox" />Forum</label>
+        <label><input name="prefer" value="additional-courses" type="checkbox" class="input-checkbox" />Additional Courses</label>
+      </div>
+
+      <div class="form-group">
+        <p>Any comments or suggestions?</p>
+        <textarea id="comments" class="input-textarea" name="comment" placeholder="Enter your comment here..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" id="submit" class="submit-button">
+          Submit
+        </button>
+      </div>
+    </form>
+    
+  </main>
+</body>
+```
+
+<center>
+
+![Survey Complete Form HTML](./Responsive48.jpg)
+
+</center>
+
+If we import Bootstrap:
+
+```html
+<head>
+  <title>Survey From</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+```
+
+<center>
+
+![Survey Complete Form HTML](./Responsive48Bootstrap.jpg)
+
+</center>
+
+My solution (without Bootstrap) - Saturday, January 09, 2021:
+
+<iframe height="432" style="width: 100%;" scrolling="no" title="FCC Responsive02 - Survey Form" src="https://codepen.io/radualexandrub/embed/ExgpOrw?height=432&theme-id=dark&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/radualexandrub/pen/ExgpOrw'>FCC Responsive02 - Survey Form</a> by Radu-Alexandru B
+  (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+
+
+<p class="codepen" data-height="432" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="ExgpOrw" style="height: 432px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="FCC Responsive02 - Survey Form">
+  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/ExgpOrw">
+  FCC Responsive02 - Survey Form</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+
+
+<br/>
+
+### Build a Product Landing Page
+
+[View the challenge here](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-product-landing-page)
+
+[freeCodeCamp's solution](https://codepen.io/freeCodeCamp/full/RKRbwL)
+
+**HTML5 Starter Template - Boilerplate:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Product Landing Page</title>
+  <meta name="description" content="A mockup of a Product Landing Page">
+  <meta name="author" content="Radu-Alexandru B">
+  
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?" />
+  <link rel="apple-touch-icon" href="/favicon.png?" />
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</head>
+
+<body>
+  
+  <!-- Navigation -->
+  <nav>
+
+  </nav>
+  
+  <!-- Page Header -->
+  <header>
+		<h1>    
+    </h1>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <section>
+
+    </section>
+
+    <section>
+
+    </section>
+    
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+
+  </footer>
+</body>
+```
+
+<br/>
+
+My Solution:
+
+<iframe height="419" style="width: 100%;" scrolling="no" title="FCC Responsive03: Product Landing Page" src="https://codepen.io/radualexandrub/embed/JjRBxoQ?height=419&theme-id=dark&default-tab=html,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/radualexandrub/pen/JjRBxoQ'>FCC Responsive03: Product Landing Page</a> by Radu-Alexandru B
+  (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+
+
+<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="JjRBxoQ" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="FCC Responsive03: Product Landing Page">
+  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/JjRBxoQ">
+  FCC Responsive03: Product Landing Page</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 
 
