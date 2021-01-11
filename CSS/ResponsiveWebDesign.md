@@ -8,6 +8,62 @@
 
 ## Contents
 
+- [Responsive Web Design Certification - freeCodeCamp](#responsive-web-design-certification---freecodecamp)
+  - [Credits / Notes taken from:](#credits--notes-taken-from)
+  - [Contents](#contents)
+  - [Basic HTML and HTML5](#basic-html-and-html5)
+    - [Declare the Doctype of an HTML Document](#declare-the-doctype-of-an-html-document)
+    - [Link to Internal Sections of a Page with Anchor Elements](#link-to-internal-sections-of-a-page-with-anchor-elements)
+    - [Lists](#lists)
+    - [Input Text Fields](#input-text-fields)
+    - [Forms, Submit Button and Required fields](#forms-submit-button-and-required-fields)
+    - [Radio Buttons](#radio-buttons)
+    - [Checkboxes, value attribute and check by default](#checkboxes-value-attribute-and-check-by-default)
+  - [Basic CSS](#basic-css)
+    - [Use a CSS Class to Style an Element](#use-a-css-class-to-style-an-element)
+    - [Import a Google Font](#import-a-google-font)
+    - [Size images and add border](#size-images-and-add-border)
+    - [Give a Background Color to a div Element](#give-a-background-color-to-a-div-element)
+    - [Use an id Attribute to Style an Element](#use-an-id-attribute-to-style-an-element)
+    - [Priorities and Orders in CSS - Overriding styles](#priorities-and-orders-in-css---overriding-styles)
+    - [Use Attribute Selectors to Style Elements](#use-attribute-selectors-to-style-elements)
+    - [Adjust padding and margin of an element](#adjust-padding-and-margin-of-an-element)
+    - [Absolute Units versus Relative Units](#absolute-units-versus-relative-units)
+    - [CSS Variables](#css-variables)
+    - [Colors in CSS](#colors-in-css)
+  - [Applied Visual Design](#applied-visual-design)
+    - [Text Alignment and Formatting in CSS](#text-alignment-and-formatting-in-css)
+    - [Box shadow and opacity of Elements](#box-shadow-and-opacity-of-elements)
+    - [Text transform (uppercase, lowercase) and font size](#text-transform-uppercase-lowercase-and-font-size)
+    - [Relative Position, offsets, Absolute Position, Fixed Position](#relative-position-offsets-absolute-position-fixed-position)
+    - [Center an Element Horizontally Using the margin Property](#center-an-element-horizontally-using-the-margin-property)
+    - [Gradual CSS Linear Gradient](#gradual-css-linear-gradient)
+    - [CSS Transform Property: scale, move, rotate and skew](#css-transform-property-scale-move-rotate-and-skew)
+    - [More Complex Shape Using CSS, ::before and ::after pseudo-elements](#more-complex-shape-using-css-before-and-after-pseudo-elements)
+    - [CSS Animations, @keyframes and Animation Properties](#css-animations-keyframes-and-animation-properties)
+    - [CSS Transitions](#css-transitions)
+  - [Applied Accessibility](#applied-accessibility)
+    - [Alt attribute on images and Headings](#alt-attribute-on-images-and-headings)
+    - [Main, Header, Article, Section, Nav, Footer tags](#main-header-article-section-nav-footer-tags)
+    - [Audio Element, Figure Element, Label Element](#audio-element-figure-element-label-element)
+    - [Date Picker as Input](#date-picker-as-input)
+    - [Custom CSS to improve Accessibility](#custom-css-to-improve-accessibility)
+    - [Anchor links, accesskey and tabindex](#anchor-links-accesskey-and-tabindex)
+  - [Responsive Web Design Principles](#responsive-web-design-principles)
+    - [Media Queries](#media-queries)
+    - [Make images responsive](#make-images-responsive)
+    - [Viewport units for responsive typography](#viewport-units-for-responsive-typography)
+  - [CSS Flexbox](#css-flexbox)
+    - [Flexbox container](#flexbox-container)
+    - [Flexbox items](#flexbox-items)
+  - [CSS Grid](#css-grid)
+  - [Responsive Web Design Projects](#responsive-web-design-projects)
+    - [Build a Tribute Page](#build-a-tribute-page)
+    - [Build a Survey Form](#build-a-survey-form)
+    - [Build a Product Landing Page](#build-a-product-landing-page)
+    - [Technical Documentation Page](#technical-documentation-page)
+    - [Personal Portfolio Webpage](#personal-portfolio-webpage)
+
 <br/>
 
 <hr/>
@@ -22,7 +78,7 @@ HTML5 (released on 28 October 2014) introduces more descriptive HTML tags. These
 
 <center>
 
-![Semantic Elements in HTML](./Responsive01.jpg)
+![Semantic Elements in HTML](./ResponsiveFCC/Responsive01.jpg)
 
 </center>
 
@@ -31,20 +87,37 @@ These tags give a descriptive structure to your HTML, make your HTML easier to r
 ```html
 <h2>CatPhotoApp</h2>
 <main>
-    <p>Kitty ipsum dolor sit amet, shed everywhere shed everywhere stretching attack your ankles chase the red dot, hairball run catnip eat the grass sniff.</p>
-    <p>Purr jump eat the grass rip the couch scratched sunbathe, shed everywhere rip the couch sleep in the sink fluffy fur catnip scratched.</p>
-    <a href="#"><img src="https://bit.ly/fcc-relaxing-cat" alt="A business cat wearing a necktie."></a>
-    <p>
-        View more <a target="_blank" href="https://freecatphotoapp.com">cat photos</a>
-    </p>
-    <!-- the value "_blank" specifies to open the link in a new tab -->
+  <p>
+    Kitty ipsum dolor sit amet, shed everywhere shed everywhere stretching
+    attack your ankles chase the red dot, hairball run catnip eat the grass
+    sniff.
+  </p>
+  <p>
+    Purr jump eat the grass rip the couch scratched sunbathe, shed everywhere
+    rip the couch sleep in the sink fluffy fur catnip scratched.
+  </p>
+  <a href="#"
+    ><img
+      src="https://bit.ly/fcc-relaxing-cat"
+      alt="A business cat wearing a necktie."
+  /></a>
+  <p>
+    View more
+    <a target="_blank" href="https://freecatphotoapp.com">cat photos</a>
+  </p>
+  <!-- the value "_blank" specifies to open the link in a new tab -->
 </main>
 ```
 
 ```html
 <section>
-<h1>WWF</h1>
-<p>The World Wide Fund for Nature (WWF) is an international organization working on issues regarding the conservation, research and restoration of the environment, formerly named the World Wildlife Fund. WWF was founded in 1961.</p>
+  <h1>WWF</h1>
+  <p>
+    The World Wide Fund for Nature (WWF) is an international organization
+    working on issues regarding the conservation, research and restoration of
+    the environment, formerly named the World Wildlife Fund. WWF was founded in
+    1961.
+  </p>
 </section>
 ```
 
@@ -90,7 +163,7 @@ Unordered `ul` and ordered `ol` lists
 ```html
 <h2>CatPhotoApp</h2>
 <main>
-  <p>Click here to view more <a href="#">cat photos</a>.</p>  
+  <p>Click here to view more <a href="#">cat photos</a>.</p>
   <p>Things cats love:</p>
   <ul>
     <li>cat nip</li>
@@ -111,12 +184,12 @@ Unordered `ul` and ordered `ol` lists
 `input` elements are a convenient way to get input from your user. You can also set placeholders that is displayed before your user has inputted anything.
 
 ```html
-<input type="text" placeholder="cat photo URL">
+<input type="text" placeholder="cat photo URL" />
 ```
 
 <center>
 
-![Cat and submit html form](./Responsive02.jpg)
+![Cat and submit html form](./ResponsiveFCC/Responsive02.jpg)
 
 </center>
 
@@ -125,9 +198,9 @@ Unordered `ul` and ordered `ol` lists
 You can build web forms that actually submit data to a server using nothing more than pure HTML. You can do this by specifying an action on your `form` element.
 
 ```html
-  <form action="https://freecatphotoapp.com/submit-cat-photo">
-    <input type="text" placeholder="cat photo URL">
-  </form>
+<form action="https://freecatphotoapp.com/submit-cat-photo">
+  <input type="text" placeholder="cat photo URL" />
+</form>
 ```
 
 If user presses ENTER key after writing in input, the text will be submitted to the `url` in `action` attribute.
@@ -146,15 +219,15 @@ We can also use HTML5 to Require a Field
 You can require specific form fields so that your user will not be able to submit your form until he or she has filled them out. For example, if you wanted to make a text input field required, you can just add the attribute `required` within your `input` element, like this: `<input type="text" required>`
 
 ```html
-  <form action="https://freecatphotoapp.com/submit-cat-photo">
-    <input type="text" placeholder="cat photo URL" required/>
-    <button type="submit">Submit</button>
-  </form>
+<form action="https://freecatphotoapp.com/submit-cat-photo">
+  <input type="text" placeholder="cat photo URL" required />
+  <button type="submit">Submit</button>
+</form>
 ```
 
 <center>
 
-![HTML Form Required Field](./Responsive03.jpg)
+![HTML Form Required Field](./ResponsiveFCC/Responsive03.jpg)
 
 </center>
 
@@ -169,38 +242,36 @@ Each of your radio buttons can be nested within its own `label` element. By wrap
 All related radio buttons should have the same `name` attribute to create a radio button group. By creating a radio group, selecting any single radio button will automatically deselect the other buttons within the same group ensuring only one answer is provided by the user.
 
 ```html
-<label> 
-  <input type="radio" name="indoor-outdoor">Indoor 
-</label>
+<label> <input type="radio" name="indoor-outdoor" />Indoor </label>
 ```
 
 It is considered best practice to set a `for` attribute on the `label` element, with a value that matches the value of the `id` attribute of the `input` element. This allows assistive technologies to create a linked relationship between the label and the child `input` element:
 
 ```html
-<label for="indoor"> 
-  <input id="indoor" type="radio" name="indoor-outdoor">Indoor 
+<label for="indoor">
+  <input id="indoor" type="radio" name="indoor-outdoor" />Indoor
 </label>
 ```
 
 Example:
 
 ```html
-  <form action="https://freecatphotoapp.com/submit-cat-photo">
-    <input type="text" placeholder="cat photo URL" required>
-    
-    <label for="indoor"> 
-      <input id="indoor" type="radio" name="indoor-outdoor"/> Indoor
-    </label>
-    <label for="indoor"> 
-      <input id="outdoor" type="radio" name="indoor-outdoor"/> Outdoor
-    </label>
-    <button type="submit">Submit</button>
-  </form>
+<form action="https://freecatphotoapp.com/submit-cat-photo">
+  <input type="text" placeholder="cat photo URL" required />
+
+  <label for="indoor">
+    <input id="indoor" type="radio" name="indoor-outdoor" /> Indoor
+  </label>
+  <label for="indoor">
+    <input id="outdoor" type="radio" name="indoor-outdoor" /> Outdoor
+  </label>
+  <button type="submit">Submit</button>
+</form>
 ```
 
 <center>
 
-![HTML Radio Buttons](./Responsive04.jpg)
+![HTML Radio Buttons](./ResponsiveFCC/Responsive04.jpg)
 
 </center>
 
@@ -209,38 +280,36 @@ Another example:
 ```html
 <!DOCTYPE html>
 <html>
-<body>
+  <body>
+    <h1>Display Radio Buttons</h1>
 
-<h1>Display Radio Buttons</h1>
+    <form action="/action_page.php">
+      <p>Please select your gender:</p>
+      <input type="radio" id="male" name="gender" value="male" />
+      <label for="male">Male</label><br />
+      <input type="radio" id="female" name="gender" value="female" />
+      <label for="female">Female</label><br />
+      <input type="radio" id="other" name="gender" value="other" />
+      <label for="other">Other</label>
 
-<form action="/action_page.php">
-  <p>Please select your gender:</p>
-  <input type="radio" id="male" name="gender" value="male">
-  <label for="male">Male</label><br>
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">Female</label><br>
-  <input type="radio" id="other" name="gender" value="other">
-  <label for="other">Other</label>
+      <br />
 
-  <br>  
-
-  <p>Please select your age:</p>
-  <input type="radio" id="age1" name="age" value="30">
-  <label for="age1">0 - 30</label><br>
-  <input type="radio" id="age2" name="age" value="60">
-  <label for="age2">31 - 60</label><br>  
-  <input type="radio" id="age3" name="age" value="100">
-  <label for="age3">61 - 100</label><br><br>
-  <input type="submit" value="Submit">
-</form>
-
-</body>
+      <p>Please select your age:</p>
+      <input type="radio" id="age1" name="age" value="30" />
+      <label for="age1">0 - 30</label><br />
+      <input type="radio" id="age2" name="age" value="60" />
+      <label for="age2">31 - 60</label><br />
+      <input type="radio" id="age3" name="age" value="100" />
+      <label for="age3">61 - 100</label><br /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
 </html>
 ```
 
 <center>
 
-![HTML Radio Buttons](./Responsive05.jpg)
+![HTML Radio Buttons](./ResponsiveFCC/Responsive05.jpg)
 
 </center>
 
@@ -260,14 +329,14 @@ Example:
 
 ```html
 <label for="energetic">
-    <input type="checkbox" id="good" name="personality"/> Energetic
+  <input type="checkbox" id="good" name="personality" /> Energetic
 </label>
 <label for="loving">
-    <input type="checkbox" id="good" name="personality"/> Loving
+  <input type="checkbox" id="good" name="personality" /> Loving
 </label>
 <label for="cute">
-    <input type="checkbox" id="good" name="personality"/> Cute
-</label> 
+  <input type="checkbox" id="good" name="personality" /> Cute
+</label>
 <button type="submit">Submit</button>
 ```
 
@@ -275,13 +344,13 @@ Another Example:
 
 ```html
 <form action="/action_page.php">
-  <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-  <label for="vehicle1"> I have a bike</label><br>
-  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-  <label for="vehicle2"> I have a car</label><br>
-  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-  <label for="vehicle3"> I have a boat</label><br><br>
-  <input type="submit" value="Submit">
+  <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+  <label for="vehicle1"> I have a bike</label><br />
+  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car" />
+  <label for="vehicle2"> I have a car</label><br />
+  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat" />
+  <label for="vehicle3"> I have a boat</label><br /><br />
+  <input type="submit" value="Submit" />
 </form>
 ```
 
@@ -303,33 +372,47 @@ When a form gets submitted, the data is sent to the server and includes entries 
 
 ```html
 <label for="indoor">
-  <input id="indoor" value="indoor" type="radio" name="indoor-outdoor">Indoor
+  <input id="indoor" value="indoor" type="radio" name="indoor-outdoor" />Indoor
 </label>
 <label for="outdoor">
-  <input id="outdoor" value="outdoor" type="radio" name="indoor-outdoor">Outdoor
+  <input
+    id="outdoor"
+    value="outdoor"
+    type="radio"
+    name="indoor-outdoor"
+  />Outdoor
 </label>
 ```
 
 Here, you have two `radio` inputs. When the user submits the form with the `indoor` option selected, the form data will include the line: `indoor-outdoor=indoor`. This is from the `name` and `value` attributes of the "indoor" input.
 
-*If you omit the `value` attribute, the submitted form data uses the default value, which is `on`. In this scenario, if the user clicked the "indoor" option and submitted the form, the resulting form data would be `indoor-outdoor=on`, which is not useful. So the `value` attribute needs to be set to something to identify the option.*
+_If you omit the `value` attribute, the submitted form data uses the default value, which is `on`. In this scenario, if the user clicked the "indoor" option and submitted the form, the resulting form data would be `indoor-outdoor=on`, which is not useful. So the `value` attribute needs to be set to something to identify the option._
 
 ```html
-<label for="loving"><input id="loving" value="loving" type="checkbox" name="personality"> Loving</label>
-<label for="lazy"><input id="lazy" value="lazy" type="checkbox" name="personality"> Lazy</label>
-<label for="energetic"><input id="energetic" value="energetic" type="checkbox" name="personality"> Energetic</label><br/>
+<label for="loving"
+  ><input id="loving" value="loving" type="checkbox" name="personality" />
+  Loving</label
+>
+<label for="lazy"
+  ><input id="lazy" value="lazy" type="checkbox" name="personality" />
+  Lazy</label
+>
+<label for="energetic"
+  ><input id="energetic" value="energetic" type="checkbox" name="personality" />
+  Energetic</label
+><br />
 ```
 
 <br/>
 
 **Check Radio Buttons and Checkboxes by Default**
 
-You can set a checkbox or radio button to be checked by default using the `checked` attribute. 
+You can set a checkbox or radio button to be checked by default using the `checked` attribute.
 
 To do this, just add the word "checked" to the inside of an input element:
 
 ```html
-<input type="radio" name="test-name" checked>
+<input type="radio" name="test-name" checked />
 ```
 
 <br/>
@@ -344,8 +427,11 @@ To do this, just add the word "checked" to the inside of an input element:
 
   ```html
   <head>
-    <link rel="stylesheet" href="mystyle.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/konpa/devicon@master/devicon.min.css">
+    <link rel="stylesheet" href="mystyle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/konpa/devicon@master/devicon.min.css"
+    />
   </head>
   ```
 
@@ -392,7 +478,7 @@ h2 {
 
 <center>
 
-![Set Font Family in CSS](./Responsive06.jpg)
+![Set Font Family in CSS](./ResponsiveFCC/Responsive06.jpg)
 
 </center>
 
@@ -417,8 +503,8 @@ Family names are case-sensitive and need to be wrapped in quotes if there is a s
 ```css
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans" rel="stylesheet">
 h2 {
-  font-family: 'Open Sans', sans-serif;
-}    
+  font-family: "Open Sans", sans-serif;
+}
 ```
 
 Also, there are several default fonts that are available in all browsers. These generic font families include `monospace`, `serif` and `sans-serif`. When one font isn't available, you can tell the browser to "degrade" to another font.
@@ -434,7 +520,7 @@ p {
 ### Size images and add border
 
 ```html
-<style>  
+<style>
   h2 {
     font-family: Lobster, monospace;
   }
@@ -451,7 +537,7 @@ p {
 
 <center>
 
-![Add border to image CSS](./Responsive07.jpg)
+![Add border to image CSS](./ResponsiveFCC/Responsive07.jpg)
 
 </center>
 
@@ -459,16 +545,16 @@ You can also specify `border-radius` using a percentage (eg. `50%` for making an
 
 ```css
 .thick-green-border {
-    border-color: green;
-    border-width: 10px;
-    border-style: solid;
-    border-radius: 50%;
+  border-color: green;
+  border-width: 10px;
+  border-style: solid;
+  border-radius: 50%;
 }
 ```
 
 <center>
 
-![Add border to image CSS](./Responsive08.jpg)
+![Add border to image CSS](./ResponsiveFCC/Responsive08.jpg)
 
 </center>
 
@@ -485,13 +571,13 @@ For example, if you wanted an element's background color to be `green`, you'd pu
 Note: There is no difference between `background` and `background-color` properties when applied with a color value. `background` is shorthand to combine many background tags into one line, like this: `background: #ffffff url("img_tree.png") no-repeat right top;`. More specifically, [`background`](https://developer.mozilla.org/en-US/docs/Web/CSS/background) actually is a shorthand for:
 
 > ```css
-> background-color  
-> background-image  
-> background-position  
-> background-repeat  
-> background-attachment  
-> background-clip  
-> background-origin  
+> background-color
+> background-image
+> background-position
+> background-repeat
+> background-attachment
+> background-clip
+> background-origin
 > background-size
 > ```
 
@@ -531,14 +617,13 @@ will be green!
 
 ```css
 body {
-    background-image: url(photo.jpg);
-    background-color: purple;
-    background-blend-mode: screen;
+  background-image: /urlResponsiveFCC(photo.jpg);
+  background-color: purple;
+  background-blend-mode: screen;
 }
-
 ```
 
-![CSS blend mode for background](./Responsive08background.jpg)
+![CSS blend mode for background](./ResponsiveFCC/Responsive08background.jpg)
 
 Other resources:
 
@@ -553,12 +638,8 @@ Other resources:
 One cool thing about `id` attributes is that, like classes, you can style them using CSS. However, an `id` is not reusable and should only be applied to one element. An `id` also has a higher specificity (importance) than a class so if both are applied to the same element and have conflicting styles, the styles of the `id` will be applied.
 
 ```html
-#green-bg-form {
-  background-color: green;
-}
-<form id="green-bg-form">
-    ...
-</form>
+#green-bg-form { background-color: green; }
+<form id="green-bg-form">...</form>
 ```
 
 ### Priorities and Orders in CSS - Overriding styles
@@ -571,25 +652,25 @@ Examples:
 
 - id attribute overrides class declarations and body inheritance:
 
-![Override Class Declarations by ID](./Responsive12.jpg)
+![Override Class Declarations by ID](./ResponsiveFCC/Responsive12.jpg)
 
 - inline styles overrides ids, class declarations, and body inheritance
 
-![inline Styles overrides ids, class declarations, and body inheritance](./Responsive13.jpg)
+![inline Styles overrides ids, class declarations, and body inheritance](./ResponsiveFCC/Responsive13.jpg)
 
 - override all styles by using `!important`
 
-![override all styles by using !important](./Responsive14.jpg)
+![override all styles by using !important](./ResponsiveFCC/Responsive14.jpg)
 
 ### Use Attribute Selectors to Style Elements
 
 Instead of `id` or `class` attributes (known as ID and class selectors), we can use `[attr=value]` attribute selector to style elements. This selector matches and styles elements with a specific attribute value.
 
 ```css
-[type='radio'] {
+[type="radio"] {
   margin: 20px 0px 20px 0px;
 }
-[type='checkbox'] {
+[type="checkbox"] {
   margin: 10px 0px 15px 0px;
 }
 ```
@@ -601,46 +682,46 @@ All HTML elements are essentially little rectangles. Three important properties 
 An element's `padding` controls the amount of space between the element's content and its `border`. When you increase the blue box's `padding`, it will increase the distance (`padding`) between the text and the border around it.
 
 ```css
-  .red-box {
-    background-color: crimson;
-    color: #fff;
-    padding: 20px;
-  }
+.red-box {
+  background-color: crimson;
+  color: #fff;
+  padding: 20px;
+}
 
-  .blue-box {
-    background-color: blue;
-    color: #fff;
-    padding: 10px;
-  }
+.blue-box {
+  background-color: blue;
+  color: #fff;
+  padding: 10px;
+}
 ```
 
-<center> 
+<center>
 
-![Padding](./Responsive09.jpg)
+![Padding](./ResponsiveFCC/Responsive09.jpg)
 
 </center>
 
 An element's `margin` controls the amount of space between an element's `border` and surrounding elements. When you increase the blue box's `margin`, it will increase the distance between its border and surrounding elements.
 
 ```css
-  .red-box {
-    background-color: crimson;
-    color: #fff;
-    padding: 20px;
-    margin: 20px;
-  }
+.red-box {
+  background-color: crimson;
+  color: #fff;
+  padding: 20px;
+  margin: 20px;
+}
 
-  .blue-box {
-    background-color: blue;
-    color: #fff;
-    padding: 20px;
-    margin: 10px;
-  }
+.blue-box {
+  background-color: blue;
+  color: #fff;
+  padding: 20px;
+  margin: 10px;
+}
 ```
 
-<center> 
+<center>
 
-![Padding](./Responsive10.jpg)
+![Padding](./ResponsiveFCC/Responsive10.jpg)
 
 </center>
 
@@ -688,24 +769,14 @@ An element's `margin` controls the amount of space between an element's `border`
 An element's `margin` controls the amount of space between an element's `border` and surrounding elements. If you set an element's `margin` to a negative value, the element will grow larger.
 
 ```html
-  .red-box {
-    background-color: crimson;
-    color: #fff;
-    padding: 20px;
-    margin: -15px;
-  }
-
-  .blue-box {
-    background-color: blue;
-    color: #fff;
-    padding: 20px;
-    margin: 20px;
-  }
+.red-box { background-color: crimson; color: #fff; padding: 20px; margin: -15px;
+} .blue-box { background-color: blue; color: #fff; padding: 20px; margin: 20px;
+}
 ```
 
-<center> 
+<center>
 
-![Padding](./Responsive11.jpg)
+![Padding](./ResponsiveFCC/Responsive11.jpg)
 
 </center>
 
@@ -723,7 +794,7 @@ Instead of specifying an element's `padding-top`, `padding-right`, `padding-bott
 
 ### Absolute Units versus Relative Units
 
-The two main types of length units are absolute and relative. 
+The two main types of length units are absolute and relative.
 
 Absolute units tie to physical units of length. For example, `in` and `mm` refer to inches and millimeters, respectively. Absolute length units approximate the actual measurement on a screen, but there are some differences depending on a screen's resolution.
 
@@ -741,10 +812,10 @@ Relative units, such as `em` or `rem`, are relative to another length value. For
   - `ex` Relative to the x-height of the current font (rarely used)
   - `ch` Relative to the width of the "0" (zero)
   - `rem` Relative to font-size of the root element
-  - `vw` Relative to 1% of the width of the viewport*
-  - `vh` Relative to 1% of the height of the viewport*
-  - `vmin` Relative to 1% of viewport's* smaller dimension
-  - `vmax` Relative to 1% of viewport's* larger dimension
+  - `vw` Relative to 1% of the width of the viewport\*
+  - `vh` Relative to 1% of the height of the viewport\*
+  - `vmin` Relative to 1% of viewport's\* smaller dimension
+  - `vmax` Relative to 1% of viewport's\* larger dimension
   - `%` Relative to the parent element
 
 <br/>
@@ -778,7 +849,10 @@ Variables in CSS are declared/defined with two dashes `--` in front of their nam
   .right-cheek {
     top: 15%;
     left: 35%;
-    background: var(--penguin-belly, white); // white is an attached fallback value if the variable could not be accessed
+    background: var(
+      --penguin-belly,
+      white
+    ); // white is an attached fallback value if the variable could not be accessed
     width: 60%;
     height: 70%;
     border-radius: 70% 70% 60% 60%;
@@ -993,18 +1067,18 @@ Or we can use **hue, saturation, and lightness**:
     background-color: white;
   }
   header {
-    background-color: #09A7A1;
+    background-color: #09a7a1;
     color: white;
     padding: 0.25em;
   }
   h2 {
-    color: #09A7A1;
+    color: #09a7a1;
   }
   button {
-    background-color: #FF790E;
+    background-color: #ff790e;
   }
   footer {
-    background-color: #09A7A1;
+    background-color: #09a7a1;
     color: white;
     padding: 0.5em;
   }
@@ -1015,22 +1089,33 @@ Or we can use **hue, saturation, and lightness**:
 <main>
   <article>
     <h2>Machine Learning in the Kitchen</h2>
-    <p>Join this two day workshop that walks through how to implement cutting-edge snack-getting algorithms with a command line interface. Coding usually involves writing exact instructions, but sometimes you need your computer to execute flexible commands, like <code>fetch Pringles</code>.</p>
+    <p>
+      Join this two day workshop that walks through how to implement
+      cutting-edge snack-getting algorithms with a command line interface.
+      Coding usually involves writing exact instructions, but sometimes you need
+      your computer to execute flexible commands, like
+      <code>fetch Pringles</code>.
+    </p>
     <button>Sign Up</button>
   </article>
   <article>
     <h2>Bisection Vegetable Chopping</h2>
-    <p>This week-long retreat will level-up your coding ninja skills to actual ninja skills. No longer is the humble bisection search limited to sorted arrays or coding interview questions, applying its concepts in the kitchen will have you chopping carrots in O(log n) time before you know it.</p>
+    <p>
+      This week-long retreat will level-up your coding ninja skills to actual
+      ninja skills. No longer is the humble bisection search limited to sorted
+      arrays or coding interview questions, applying its concepts in the kitchen
+      will have you chopping carrots in O(log n) time before you know it.
+    </p>
     <button>Sign Up</button>
   </article>
 </main>
-<br>
+<br />
 <footer>&copy; 2018 FCC Kitchen</footer>
 ```
 
 <center>
 
-![From black to color using CSS](./Responsive23.jpg)
+![From black to color using CSS](./ResponsiveFCC/Responsive23.jpg)
 
 </center>
 
@@ -1086,23 +1171,36 @@ Example:
   <div class="cardContent">
     <div class="cardText">
       <h4>Google</h4>
-      <p>Google was founded by Larry Page and Sergey Brin while they were Ph.D. students at <strong>Stanford University</strong>.</p>
+      <p>
+        Google was founded by Larry Page and Sergey Brin while they were Ph.D.
+        students at <strong>Stanford University</strong>.
+      </p>
     </div>
     <div class="cardLinks">
-      <a href="https://en.wikipedia.org/wiki/Larry_Page" target="_blank" class="links">Larry Page</a><br><br>
-      <a href="https://en.wikipedia.org/wiki/Sergey_Brin" target="_blank" class="links">Sergey Brin</a>
+      <a
+        href="https://en.wikipedia.org/wiki/Larry_Page"
+        target="_blank"
+        class="links"
+        >Larry Page</a
+      ><br /><br />
+      <a
+        href="https://en.wikipedia.org/wiki/Sergey_Brin"
+        target="_blank"
+        class="links"
+        >Sergey Brin</a
+      >
     </div>
   </div>
 </div>
 ```
 
-![Text Align Property CSS](./Responsive15.jpg)
+![Text Align Property CSS](./ResponsiveFCC/Responsive15.jpg)
 
 **Text Formatting**
 
 - **bold**: `<strong>Bold Text</strong>` or CSS property: `font-weight: bold;`
 - <u>underlined</u>: `<u>Underlined Text</u>` or CSS property: `text-decoration: underline;`
-- *italic*: `<em>Italic Text</em>` or using CSS property: `font-style: italic;`
+- _italic_: `<em>Italic Text</em>` or using CSS property: `font-style: italic;`
 - <s>strikethrough</s>: `<s>Strikethrough Text</s>` or CSS prop: `text-decoration: line-through;`
 
 ### Box shadow and opacity of Elements
@@ -1120,11 +1218,11 @@ The `blur-radius` and `spread-radius` values are optional.
 Multiple box-shadows can be created by using commas to separate properties of each `box-shadow` element. Here's an example of the CSS to create multiple shadows with some blur, at mostly-transparent black colors:
 
 ```css
-box-shadow: offset-x, offset-y, blur-radius(opt), spread-radius(opt), color
+box-shadow: offset-x, offset-y, blur-radius(opt), spread-radius(opt), color;
 ```
 
 ```css
-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 ```
 
 Example of `box-shadow` applied on a card with `id="thumbnail"`:
@@ -1145,7 +1243,7 @@ Example of `box-shadow` applied on a card with `id="thumbnail"`:
     color: black;
   }
   #thumbnail {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   }
   .fullCard {
     width: 245px;
@@ -1165,18 +1263,33 @@ Example of `box-shadow` applied on a card with `id="thumbnail"`:
   <div class="cardContent">
     <div class="cardText">
       <h4>Alphabet</h4>
-      <hr>
-      <p><em>Google was founded by Larry Page and Sergey Brin while they were <u>Ph.D. students</u> at <strong>Stanford University</strong>.</em></p>
+      <hr />
+      <p>
+        <em
+          >Google was founded by Larry Page and Sergey Brin while they were
+          <u>Ph.D. students</u> at <strong>Stanford University</strong>.</em
+        >
+      </p>
     </div>
     <div class="cardLinks">
-      <a href="https://en.wikipedia.org/wiki/Larry_Page" target="_blank" class="links">Larry Page</a><br><br>
-      <a href="https://en.wikipedia.org/wiki/Sergey_Brin" target="_blank" class="links">Sergey Brin</a>
+      <a
+        href="https://en.wikipedia.org/wiki/Larry_Page"
+        target="_blank"
+        class="links"
+        >Larry Page</a
+      ><br /><br />
+      <a
+        href="https://en.wikipedia.org/wiki/Sergey_Brin"
+        target="_blank"
+        class="links"
+        >Sergey Brin</a
+      >
     </div>
   </div>
 </div>
 ```
 
-![box-card in CSS](./Responsive16.jpg)
+![box-card in CSS](./ResponsiveFCC/Responsive16.jpg)
 
 **Opacity of an Element**
 
@@ -1188,9 +1301,9 @@ The `opacity` property in CSS is used to adjust the opacity, or conversely, the 
 
 ```css
 .links {
-    text-align: left;
-    color: black;
-    opacity: 0.7;
+  text-align: left;
+  color: black;
+  opacity: 0.7;
 }
 ```
 
@@ -1219,7 +1332,7 @@ The `opacity` property in CSS is used to adjust the opacity, or conversely, the 
 
 <center>
 
-![Moon only using CSS](./Responsive28.jpg)
+![Moon only using CSS](./ResponsiveFCC/Responsive28.jpg)
 
 </center>
 
@@ -1253,7 +1366,7 @@ h5: 12.8px (0.8em)
 h6: 11.2px (0.7em)
 ```
 
-Default font sizes from `html.css` with the default style of Mozilla Firefox: 
+Default font sizes from `html.css` with the default style of Mozilla Firefox:
 
 ```css
 h1 {
@@ -1266,7 +1379,7 @@ h3 {
   font-size: 1.17em;
 }
 h4 {
-  font-size: 1.00em;
+  font-size: 1em;
 }
 
 h5 {
@@ -1278,7 +1391,7 @@ h6 {
 }
 ```
 
-![Default HTML Font Size](./Responsive17.jpg)
+![Default HTML Font Size](./ResponsiveFCC/Responsive17.jpg)
 
 We can modify all those values with:
 
@@ -1305,7 +1418,7 @@ h6 {
 }
 ```
 
-![Different Text Sizes in CSS](./Responsive18.jpg)
+![Different Text Sizes in CSS](./ResponsiveFCC/Responsive18.jpg)
 
 **Font weight**
 
@@ -1313,32 +1426,32 @@ The `font-weight` property sets how thick or thin characters are in a section of
 
 ```css
 h1 {
-    font-size: 68px;
-    font-weight: 800;
+  font-size: 68px;
+  font-weight: 800;
 }
 h2 {
-    font-size: 52px;
-    font-weight: 600;
+  font-size: 52px;
+  font-weight: 600;
 }
 h3 {
-    font-size: 40px;
-    font-weight: 500;
+  font-size: 40px;
+  font-weight: 500;
 }
 h4 {
-    font-size: 32px;
-    font-weight: 400;
+  font-size: 32px;
+  font-weight: 400;
 }
 h5 {
-    font-size: 21px;
-    font-weight: 300;
+  font-size: 21px;
+  font-weight: 300;
 }
 h6 {
-    font-size: 14px;
-    font-weight: 200;
+  font-size: 14px;
+  font-weight: 200;
 }
 ```
 
-![Font weight CSS](./Responsive19.jpg)
+![Font weight CSS](./ResponsiveFCC/Responsive19.jpg)
 
 **Font size of a paragraph and space between lines with line-height**
 
@@ -1349,17 +1462,15 @@ p {
 }
 ```
 
-![line-height in CSS](./Responsive20.jpg)
-
-
+![line-height in CSS](./ResponsiveFCC/Responsive20.jpg)
 
 ### Relative Position, offsets, Absolute Position, Fixed Position
 
 Block-level items automatically start on a new line (think headings, paragraphs, and divs) while inline items sit within surrounding content (like images or spans). The default layout of elements in this way is called the normal flow of a document, but CSS offers the position property to override it.
 
-When the position of an element is set to `relative`, it allows you to specify how CSS should move it *relative* to its current position in the normal flow of the page.
+When the position of an element is set to `relative`, it allows you to specify how CSS should move it _relative_ to its current position in the normal flow of the page.
 
-Changing an element's position to relative does not remove it from the normal flow - other elements around it still behave as if that item were in its default position. **Note:** Positioning gives you a lot of flexibility and power over the visual layout of a page. It's good to remember that no matter the position of elements, the underlying HTML markup should be organized and make sense when read from top to bottom. 
+Changing an element's position to relative does not remove it from the normal flow - other elements around it still behave as if that item were in its default position. **Note:** Positioning gives you a lot of flexibility and power over the visual layout of a page. It's good to remember that no matter the position of elements, the underlying HTML markup should be organized and make sense when read from top to bottom.
 
 The following example moves the paragraph 10 pixels away from the bottom:
 
@@ -1372,7 +1483,7 @@ p {
 
 The following example moves the paragraph 15 pixels away from the top:
 
-![Relative position in CSS](./Responsive21.jpg)
+![Relative position in CSS](./ResponsiveFCC/Responsive21.jpg)
 
 **Relatively Positioned Element with CSS Offsets**
 
@@ -1390,7 +1501,7 @@ Use CSS offsets to move the `h2` 15 pixels to the right and 10 pixels up:
 h2 {
   position: relative;
   left: 15px;
-  bottom: 10px; 
+  bottom: 10px;
 }
 ```
 
@@ -1400,9 +1511,9 @@ h2 {
 
 `absolute` property locks the element in place relative to its parent container. Unlike the `relative` position, `absolute` removes the element from the normal flow of the document, so surrounding items ignore it. The CSS offset properties (top or bottom and left or right) are used to adjust the position.
 
-One nuance with absolute positioning is **that it will be locked relative to its closest *positioned* ancestor.** If you forget to add a position rule to the parent item, (this is typically done using `position: relative;`), the browser will keep looking up the chain and ultimately default to the body tag.
+One nuance with absolute positioning is **that it will be locked relative to its closest _positioned_ ancestor.** If you forget to add a position rule to the parent item, (this is typically done using `position: relative;`), the browser will keep looking up the chain and ultimately default to the body tag.
 
-Absolute position is commonly used for *search box*.
+Absolute position is commonly used for _search box_.
 
 <br/>
 
@@ -1412,7 +1523,7 @@ Absolute position is commonly used for *search box*.
 
 **One key difference between the `fixed` and `absolute` positions is that an element with a fixed position won't move when the user scrolls.**
 
-Fixed position is commonly used for *Navigation bar*.
+Fixed position is commonly used for _Navigation bar_.
 
 ```html
 <style>
@@ -1452,7 +1563,7 @@ Fixed position is commonly used for *Navigation bar*.
 </body>
 ```
 
-![Navbar with fixed position](./Responsive22.jpg)
+![Navbar with fixed position](./ResponsiveFCC/Responsive22.jpg)
 
 ### Center an Element Horizontally Using the margin Property
 
@@ -1499,7 +1610,7 @@ Another example:
     width: 70%;
     height: 400px;
     margin: 50px auto;
-    background: linear-gradient(35deg, #CCFFFF, #FFCCCC);
+    background: linear-gradient(35deg, #ccffff, #ffcccc);
   }
 </style>
 
@@ -1508,13 +1619,13 @@ Another example:
 
 <center>
 
-![Linear Gradient CSS](./Responsive24.jpg)
+![Linear Gradient CSS](./ResponsiveFCC/Responsive24.jpg)
 
 </center>
 
 More examples:
 
-![Complementary Colors Linear Gradient](./Responsive25.jpg)
+![Complementary Colors Linear Gradient](./ResponsiveFCC/Responsive25.jpg)
 
 CSS Gradient Tools:
 
@@ -1529,11 +1640,11 @@ CSS Gradient Tools:
 
 ```html
 <style>
-  div{
+  div {
     border-radius: 20px;
     width: 70%;
     height: 400px;
-    margin:  50 auto;
+    margin: 50 auto;
     background: repeating-linear-gradient(
       90deg,
       yellow 0px,
@@ -1547,15 +1658,15 @@ CSS Gradient Tools:
 <div></div>
 ```
 
-![CSS Linear Gradient to Create a Striped Element](./Responsive26.jpg)
+![CSS Linear Gradient to Create a Striped Element](./ResponsiveFCC/Responsive26.jpg)
 
 ```html
 <style>
-  div{
+  div {
     border-radius: 20px;
     width: 70%;
     height: 400px;
-    margin:  50 auto;
+    margin: 50 auto;
     background: repeating-linear-gradient(
       45deg,
       yellow 0px,
@@ -1569,11 +1680,9 @@ CSS Gradient Tools:
 <div></div>
 ```
 
-
-
 **Subtle Pattern as a Background Image using a PNG Texture**
 
-One way to add texture and interest to a background and have it stand out more is to add a subtle pattern. 
+One way to add texture and interest to a background and have it stand out more is to add a subtle pattern.
 
 ```css
 body {
@@ -1592,12 +1701,13 @@ body {
   background: radial-gradient(
     circle,
     rgba(70, 184, 167, 1) 0%,
-    rgba(55, 80, 219, 1), 100%
+    rgba(55, 80, 219, 1),
+    100%
   );
 }
 ```
 
-![Radial Gradient in CSS](./Responsive25RadialGradient.jpg)
+![Radial Gradient in CSS](./ResponsiveFCC/Responsive25RadialGradient.jpg)
 
 <br/>
 
@@ -1610,12 +1720,8 @@ The `transform` property has a variety of functions that let you scale, move, ro
   div {
     width: 70%;
     height: 100px;
-    margin:  50px auto;
-    background: linear-gradient(
-      53deg,
-      #ccfffc,
-      #ffcccf
-    );
+    margin: 50px auto;
+    background: linear-gradient(53deg, #ccfffc, #ffcccf);
   }
   div:hover {
     transform: scale(1.1);
@@ -1640,7 +1746,7 @@ The following code skews the element with the id of `bottom` by 24 degrees along
   div {
     width: 70%;
     height: 100px;
-    margin:  50px auto;
+    margin: 50px auto;
   }
   #top {
     background-color: red;
@@ -1656,7 +1762,7 @@ The following code skews the element with the id of `bottom` by 24 degrees along
 <div id="bottom"></div>
 ```
 
-![Skew elements in CSS](./Responsive27.jpg)
+![Skew elements in CSS](./ResponsiveFCC/Responsive27.jpg)
 
 ### More Complex Shape Using CSS, ::before and ::after pseudo-elements
 
@@ -1717,7 +1823,7 @@ Complete example for a heart shape:
 <div class="heart"></div>
 ```
 
-![Heart shape using CSS](./Responsive29.jpg)
+![Heart shape using CSS](./ResponsiveFCC/Responsive29.jpg)
 
 <br/>
 
@@ -1734,7 +1840,7 @@ The animation properties control how the animation should behave and the `@keyfr
 - [animation-fill-mode](https://www.w3schools.com/cssref/css3_pr_animation-fill-mode.asp)
 - [animation-play-state](https://www.w3schools.com/cssref/css3_pr_animation-play-state.asp)
 
-*[(Link to w3schools.com - CSS Animations)](https://www.w3schools.com/css/css3_animations.asp)*
+_[(Link to w3schools.com - CSS Animations)](https://www.w3schools.com/css/css3_animations.asp)_
 
 `animation-name` sets the name of the animation, which is later used by `@keyframes` to tell CSS which rules go with which animations.
 
@@ -1766,7 +1872,8 @@ You can also [combine starting and ending properties](https://css-tricks.com/sni
 
 ```css
 @keyframes fontbulger {
-  0%, 100% {
+  0%,
+  100% {
     font-size: 10px;
   }
   50% {
@@ -1786,7 +1893,7 @@ If we just apply keyframes to a button, after the animation-duration, the color 
   button {
     border-radius: 5px;
     color: white;
-    background-color: #0F5897;
+    background-color: #0f5897;
     padding: 5px 10px 8px 10px;
   }
   button:hover {
@@ -1805,7 +1912,7 @@ If we just apply keyframes to a button, after the animation-duration, the color 
 
 <center>
 
-![Button CSS animation using keyframes](./Responsive30.gif)
+![Button CSS animation using keyframes](./ResponsiveFCC/Responsive30.gif)
 
 </center>
 
@@ -1853,7 +1960,7 @@ When elements have a specified `position`, such as `fixed` or `relative`, the CS
 <div id="rect"></div>
 ```
 
-![Movement Using CSS Animation](./Responsive31.gif)
+![Movement Using CSS Animation](./ResponsiveFCC/Responsive31.gif)
 
 <br/>
 
@@ -1863,24 +1970,19 @@ The `animation-iteration-count` property specifies the number of times an animat
 
 ```html
 <style>
-
   #ball {
     width: 100px;
     height: 100px;
     margin: 50px auto;
     position: relative;
     border-radius: 50%;
-    background: linear-gradient(
-      35deg,
-      #ccffff,
-      #ffcccc
-    );
+    background: linear-gradient(35deg, #ccffff, #ffcccc);
     animation-name: bounce;
     animation-duration: 1s;
     animation-iteration-count: infinite;
   }
 
-  @keyframes bounce{
+  @keyframes bounce {
     0% {
       top: 0px;
     }
@@ -1899,7 +2001,7 @@ The `animation-iteration-count` property specifies the number of times an animat
 
 <center>
 
-![CSS Bouncing Ball](./Responsive32.gif)
+![CSS Bouncing Ball](./ResponsiveFCC/Responsive32.gif)
 
 </center>
 
@@ -1975,7 +2077,6 @@ The `heart:before` and `heart:after` selectors do not need any animation propert
       transform: scale(0.6) rotate(-45deg);
     }
   }
-
 </style>
 <div class="back"></div>
 <div class="heart"></div>
@@ -1983,7 +2084,7 @@ The `heart:before` and `heart:after` selectors do not need any animation propert
 
 <center>
 
-![CSS Heartbeat](./Responsive33.gif)
+![CSS Heartbeat](./ResponsiveFCC/Responsive33.gif)
 
 </center>
 
@@ -2008,14 +2109,9 @@ Example from freeCodeCamp:
 
 ```html
 <style>
-
   .balls {
     border-radius: 50%;
-    background: linear-gradient(
-      35deg,
-      #ccffff,
-      #ffcccc
-    );
+    background: linear-gradient(35deg, #ccffff, #ffcccc);
     position: fixed;
     width: 50px;
     height: 50px;
@@ -2025,15 +2121,15 @@ Example from freeCodeCamp:
     animation-iteration-count: infinite;
   }
   #ball1 {
-    left:27%;
+    left: 27%;
     animation-timing-function: linear;
   }
   #ball2 {
-    left:56%;
+    left: 56%;
     animation-timing-function: ease-out;
   }
   #ball3 {
-    left:80%;
+    left: 80%;
   }
 
   @keyframes bounce {
@@ -2044,7 +2140,6 @@ Example from freeCodeCamp:
       top: 249px;
     }
   }
-
 </style>
 
 <div class="balls" id="ball1"></div>
@@ -2054,7 +2149,7 @@ Example from freeCodeCamp:
 
 <center>
 
-![Animation timing function in CSS](./Responsive34.gif)
+![Animation timing function in CSS](./ResponsiveFCC/Responsive34.gif)
 
 </center>
 
@@ -2106,26 +2201,26 @@ To create a transition effect, you must specify two things:
 
 ```html
 <style>
-div {
-  width: 100px;
-  height: 100px;
-  background: red;
-  transition: width 1s;
-}
+  div {
+    width: 100px;
+    height: 100px;
+    background: red;
+    transition: width 1s;
+  }
 
-// The transition effect will start when the specified CSS property (width) changes value.
-// We will change the value of width by using :hover
+  // The transition effect will start when the specified CSS property (width) changes value.
+  // We will change the value of width by using :hover
 
-div:hover {
-  width: 300px;
-}
+  div:hover {
+    width: 300px;
+  }
 </style>
 <div></div>
 ```
 
 <center>
 
-![CSS Transition Div Width](./Responsive35.gif)
+![CSS Transition Div Width](./ResponsiveFCC/Responsive35.gif)
 
 </center>
 
@@ -2160,11 +2255,21 @@ The transition-timing-function property can have the following values:
 [Example from w3schools](https://www.w3schools.com/css/tryit.asp?filename=trycss3_transition_speed)
 
 ```css
-#div1 {transition-timing-function: linear;}
-#div2 {transition-timing-function: ease;}
-#div3 {transition-timing-function: ease-in;}
-#div4 {transition-timing-function: ease-out;}
-#div5 {transition-timing-function: ease-in-out;}
+#div1 {
+  transition-timing-function: linear;
+}
+#div2 {
+  transition-timing-function: ease;
+}
+#div3 {
+  transition-timing-function: ease-in;
+}
+#div4 {
+  transition-timing-function: ease-out;
+}
+#div5 {
+  transition-timing-function: ease-in-out;
+}
 ```
 
 **Delay the Transition Effect**
@@ -2175,7 +2280,7 @@ The `transition-delay` property specifies a delay (in seconds) for the transitio
 
 ```css
 div {
- transition-delay: 1s;
+  transition-delay: 1s;
 }
 ```
 
@@ -2184,7 +2289,7 @@ div {
 [Example:](https://www.w3schools.com/css/tryit.asp?filename=trycss3_transition_transform)
 
 ```css
-<style> 
+<style>
 div {
   width: 100px;
   height: 100px;
@@ -2203,7 +2308,7 @@ div:hover {
 
 <center>
 
-![CSS Rotate Transition](./Responsive36.gif)
+![CSS Rotate Transition](./ResponsiveFCC/Responsive36.gif)
 
 </center>
 
@@ -2249,7 +2354,7 @@ Having accessible web content is an ongoing challenge. A great resource for your
 `Alt` text describes the content of the image and provides a text-alternative for it. This helps in cases where the image fails to load or can't be seen by a user. It's also used by search engines to understand what an image contains to include it in search results.
 
 ```html
-<img src="importantLogo.jpeg" alt="Company logo">
+<img src="importantLogo.jpeg" alt="Company logo" />
 ```
 
 People with visual impairments rely on screen readers to convert web content to an audio interface. They won't get information if it's only presented visually. For images, screen readers can access the `alt` attribute and read its contents to deliver key information.
@@ -2261,7 +2366,7 @@ However, [sometimes images are grouped with a caption already describing them](h
 n situations when an image is already explained with text content, or does not add meaning to a page, the `img` still needs an `alt` attribute, but it can be set to an empty string.
 
 ```html
-<img src="visualDecoration.jpeg" alt="">
+<img src="visualDecoration.jpeg" alt="" />
 ```
 
 Background images usually fall under the 'decorative' label as well. However, they are typically applied with CSS rules, and therefore not part of the markup screen readers process.
@@ -2272,15 +2377,15 @@ Background images usually fall under the 'decorative' label as well. However, th
 
 **Hierarchical Relationships of Content with Headings**
 
-Headings (`h1` through `h6` elements) are workhorse tags that help provide structure and labeling to your content. Screen readers can be set to read only the headings on a page so the user gets a summary. 
+Headings (`h1` through `h6` elements) are workhorse tags that help provide structure and labeling to your content. Screen readers can be set to read only the headings on a page so the user gets a summary.
 
 Headings with equal (or higher) rank start new implied sections, headings with lower rank start subsections of the previous one.
 
-***As an example, a page with an `h2` element followed by several subsections labeled with `h4` tags would confuse a screen reader user. With six choices, it's tempting to use a tag because it looks better in a browser, but you can use CSS to edit the relative sizing.***
+**_As an example, a page with an `h2` element followed by several subsections labeled with `h4` tags would confuse a screen reader user. With six choices, it's tempting to use a tag because it looks better in a browser, but you can use CSS to edit the relative sizing._**
 
-*One final point, each page should always have one (and only one) `h1` element, which is the main subject of your content. This and the other headings are used in part by search engines to understand the topic of the page.*
+_One final point, each page should always have one (and only one) `h1` element, which is the main subject of your content. This and the other headings are used in part by search engines to understand the topic of the page._
 
-*Note*: Google Lighthouse Analysis will tell if you don't use Headings in a correctly hierarchical structure.
+_Note_: Google Lighthouse Analysis will tell if you don't use Headings in a correctly hierarchical structure.
 
 Good example:
 
@@ -2314,9 +2419,13 @@ The `article` sectioning element is used to wrap independent, self-contained con
 The `section` element is also new with HTML5, and has a slightly different semantic meaning than `article`. An `article` is for standalone content, and a `section` is for grouping thematically related content. They can be used within each other, as needed. For example, if a book is the `article`, then each chapter is a `section`. When there's no relationship between groups of content, then use a `div`.
 
 ```html
-<div> - groups content
-<section> - groups related content
-<article> - groups independent, self-contained content
+<div>
+  - groups content
+  <section>
+    - groups related content
+    <article>- groups independent, self-contained content</article>
+  </section>
+</div>
 ```
 
 Example:
@@ -2326,12 +2435,21 @@ Example:
 <main>
   <article>
     <h2>The Garfield Files: Lasagna as Training Fuel?</h2>
-    <p>The internet is littered with varying opinions on nutritional paradigms, from catnip paleo to hairball cleanses. But let's turn our attention to an often overlooked fitness fuel, and examine the protein-carb-NOM trifecta that is lasagna...</p>
+    <p>
+      The internet is littered with varying opinions on nutritional paradigms,
+      from catnip paleo to hairball cleanses. But let's turn our attention to an
+      often overlooked fitness fuel, and examine the protein-carb-NOM trifecta
+      that is lasagna...
+    </p>
   </article>
 
   <article>
     <h2>Defeating your Foe: the Red Dot is Ours!</h2>
-    <p>Felines the world over have been waging war on the most persistent of foes. This red nemesis combines both cunning stealth and lightning speed. But chin up, fellow fighters, our time for victory may soon be near...</p>
+    <p>
+      Felines the world over have been waging war on the most persistent of
+      foes. This red nemesis combines both cunning stealth and lightning speed.
+      But chin up, fellow fighters, our time for victory may soon be near...
+    </p>
   </article>
 </main>
 ```
@@ -2342,13 +2460,13 @@ The next HTML5 element that adds semantic meaning and improves accessibility is 
 
 `header` shares the embedded landmark feature you saw with `main`, allowing assistive technologies to quickly navigate to that content.
 
-**Note:** The `header` is meant for use in the `body` tag of your HTML document. This is different than the `head` element, which contains the page's title, meta information, etc. 
+**Note:** The `header` is meant for use in the `body` tag of your HTML document. This is different than the `head` element, which contains the page's title, meta information, etc.
 
 Example:
 
 ```html
 <head>
-    <title>Camper Cat Adventures</title>
+  <title>Camper Cat Adventures</title>
 </head>
 
 <body>
@@ -2359,7 +2477,9 @@ Example:
   <main>
     <section id="stealth">
       <h2>Stealth &amp; Agility Training</h2>
-      <article><h3>Climb foliage quickly using a minimum spanning tree approach</h3></article>
+      <article>
+        <h3>Climb foliage quickly using a minimum spanning tree approach</h3>
+      </article>
       <article><h3>No training is NP-complete without parkour</h3></article>
     </section>
   </main>
@@ -2374,7 +2494,7 @@ The `nav` element is another HTML5 item with the embedded landmark feature for e
 
 ```html
 <head>
-    <title>Camper Cat Adventures</title>
+  <title>Camper Cat Adventures</title>
 </head>
 
 <body>
@@ -2389,25 +2509,35 @@ The `nav` element is another HTML5 item with the embedded landmark feature for e
       </ul>
     </nav>
   </header>
-    
+
   <main>
     <section id="stealth">
       <h2>Stealth &amp; Agility Training</h2>
-      <article><h3>Climb foliage quickly using a minimum spanning tree approach</h3></article>
+      <article>
+        <h3>Climb foliage quickly using a minimum spanning tree approach</h3>
+      </article>
       <article><h3>No training is NP-complete without parkour</h3></article>
     </section>
     <section id="weapons">
       <h2>Weapons Training</h2>
-      <article><h3>Swords: the best tool to literally divide and conquer</h3></article>
-      <article><h3>Breadth-first or depth-first in multi-weapon training?</h3></article>
+      <article>
+        <h3>Swords: the best tool to literally divide and conquer</h3>
+      </article>
+      <article>
+        <h3>Breadth-first or depth-first in multi-weapon training?</h3>
+      </article>
     </section>
     <section id="weapons">
       <h2>Weapons Training</h2>
-      <article><h3>Swords: the best tool to literally divide and conquer</h3></article>
-      <article><h3>Breadth-first or depth-first in multi-weapon training?</h3></article>
+      <article>
+        <h3>Swords: the best tool to literally divide and conquer</h3>
+      </article>
+      <article>
+        <h3>Breadth-first or depth-first in multi-weapon training?</h3>
+      </article>
     </section>
   </main>
-    
+
   <footer>&copy; 2018 Camper Cat</footer>
 </body>
 ```
@@ -2430,7 +2560,10 @@ The `audio` tag supports the `controls` attribute. This shows the browser defaul
 <main>
   <p>A sound clip of Zersiax's screen reader in action.</p>
   <audio controls>
-    <source src="https://s3.amazonaws.com/freecodecamp/screen-reader.mp3" type="audio/mpeg"/>
+    <source
+      src="https://s3.amazonaws.com/freecodecamp/screen-reader.mp3"
+      type="audio/mpeg"
+    />
   </audio>
 </main>
 ```
@@ -2439,7 +2572,7 @@ This code will render:
 
 <center>
 
-![Audio Element in HTML](./Responsive37.jpg)
+![Audio Element in HTML](./ResponsiveFCC/Responsive37.jpg)
 
 </center>
 
@@ -2453,15 +2586,15 @@ HTML5 introduced the `figure` element, along with the related `figcaption`. Used
 
 For data visualizations like charts, the caption can be used to briefly note the trends or conclusions for users with visual impairments. Another challenge covers how to move a table version of the chart's data off-screen (using CSS) for screen reader users.
 
-````html
+```html
 <figure>
-  <img src="Stacked-bar-chart-will-go-here.jpeg" alt="Stacked bar chart">
-  <br/>
+  <img src="Stacked-bar-chart-will-go-here.jpeg" alt="Stacked bar chart" />
+  <br />
   <figcaption>
     Master Camper Cat demonstrates proper form of a roundhouse kick.
   </figcaption>
 </figure>
-````
+```
 
 <br/>
 
@@ -2476,10 +2609,10 @@ The value of the `for` attribute must be the same as the value of the `id` attri
 ```html
 <form>
   <label for="name">Name:</label>
-  <input type="text" id="name" name="name">
-    
+  <input type="text" id="name" name="name" />
+
   <label for="email">Email:</label>
-  <input type="text" id="email" name="name">
+  <input type="text" id="email" name="name" />
 </form>
 ```
 
@@ -2497,11 +2630,11 @@ The `fieldset` wrapper and `legend` tag are not necessary when the choices are s
 <form>
   <fieldset>
     <legend>Choose one of these three items:</legend>
-    <input id="one" type="radio" name="items" value="one">
-    <label for="one">Choice One</label><br>
-    <input id="two" type="radio" name="items" value="two">
-    <label for="two">Choice Two</label><br>
-    <input id="three" type="radio" name="items" value="three">
+    <input id="one" type="radio" name="items" value="one" />
+    <label for="one">Choice One</label><br />
+    <input id="two" type="radio" name="items" value="two" />
+    <label for="two">Choice Two</label><br />
+    <input id="three" type="radio" name="items" value="three" />
     <label for="three">Choice Three</label>
   </fieldset>
 </form>
@@ -2520,32 +2653,40 @@ HTML5 introduced an option to specify a `date` field. Depending on browser suppo
 <form>
   <p>Tell us the best date for the competition</p>
   <label for="pickdate">Preferred Date:</label>
-  <input type="date" id="pickdate" name="date">
-  <input type="submit" name="submit" value="Submit">
+  <input type="date" id="pickdate" name="date" />
+  <input type="submit" name="submit" value="Submit" />
 </form>
 ```
 
 <center>
 
-![Date Picker as Input in HTML](./Responsive38.jpg)
+![Date Picker as Input in HTML](./ResponsiveFCC/Responsive38.jpg)
 
 </center>
 
 **[Standardize Times with the HTML5 datetime Attribute](https://www.freecodecamp.org/learn/responsive-web-design/applied-accessibility/standardize-times-with-the-html5-datetime-attribute)**
 
-Continuing with the date theme, HTML5 also introduced the `time` element along with a `datetime` attribute to standardize times. This is an inline element that can wrap a date or time on a page. A valid format of that date is held by the `datetime` attribute. *This is the value accessed by assistive devices. It helps avoid confusion by stating a standardized version of a time, even if it's written in an informal or colloquial manner in the text.*
+Continuing with the date theme, HTML5 also introduced the `time` element along with a `datetime` attribute to standardize times. This is an inline element that can wrap a date or time on a page. A valid format of that date is held by the `datetime` attribute. _This is the value accessed by assistive devices. It helps avoid confusion by stating a standardized version of a time, even if it's written in an informal or colloquial manner in the text._
 
 ```html
-<p>Master Camper Cat officiated the cage match between Goro and Scorpion <time datetime="2013-02-13">last Wednesday</time>, which ended in a draw.</p>
+<p>
+  Master Camper Cat officiated the cage match between Goro and Scorpion
+  <time datetime="2013-02-13">last Wednesday</time>, which ended in a draw.
+</p>
 ```
 
 Another example:
 
 ```html
-    <p>Thank you to everyone for responding to Master Camper Cat's survey. The best day to host the vaunted Mortal Kombat tournament is <time datetime="2016-09-15">Thursday, September 15<sup>th</sup></time>. May the best ninja win!</p>
+<p>
+  Thank you to everyone for responding to Master Camper Cat's survey. The best
+  day to host the vaunted Mortal Kombat tournament is
+  <time datetime="2016-09-15">Thursday, September 15<sup>th</sup></time
+  >. May the best ninja win!
+</p>
 ```
 
-![HTML Datetime Attribute](./Responsive39.jpg)
+![HTML Datetime Attribute](./ResponsiveFCC/Responsive39.jpg)
 
 <br/>
 
@@ -2600,7 +2741,12 @@ The link text that Camper Cat is using is not very descriptive without the surro
   </header>
   <article>
     <h2>Defeating your Foe: the Red Dot is Ours!</h2>
-    <p>Felines the world over have been waging war on the most persistent of foes. This red nemesis combines both cunning stealth and lightning speed. But chin up, fellow fighters, our time for victory may soon be near. Click here for <a href="">information about batteries</a></p>
+    <p>
+      Felines the world over have been waging war on the most persistent of
+      foes. This red nemesis combines both cunning stealth and lightning speed.
+      But chin up, fellow fighters, our time for victory may soon be near. Click
+      here for <a href="">information about batteries</a>
+    </p>
   </article>
 </body>
 ```
@@ -2625,8 +2771,17 @@ Camper Cat wants the links around the two blog article titles to have keyboard s
     <h1>Deep Thoughts with Master Camper Cat</h1>
   </header>
   <article>
-    <h2><a accesskey="g" id="first" href="#">The Garfield Files: Lasagna as Training Fuel?</a></h2>
-    <p>The internet is littered with varying opinions on nutritional paradigms, from catnip paleo to hairball cleanses. But let's turn our attention to an often overlooked fitness fuel, and examine the protein-carb-NOM trifecta that is lasagna...</p>
+    <h2>
+      <a accesskey="g" id="first" href="#"
+        >The Garfield Files: Lasagna as Training Fuel?</a
+      >
+    </h2>
+    <p>
+      The internet is littered with varying opinions on nutritional paradigms,
+      from catnip paleo to hairball cleanses. But let's turn our attention to an
+      often overlooked fitness fuel, and examine the protein-carb-NOM trifecta
+      that is lasagna...
+    </p>
   </article>
 </body>
 ```
@@ -2650,9 +2805,9 @@ Camper Cat created a new survey to collect information about his users. He knows
 ```html
 <head>
   <style>
-  p:focus {
-    background-color: yellow;
-  }
+    p:focus {
+      background-color: yellow;
+    }
   </style>
 </head>
 <body>
@@ -2661,39 +2816,52 @@ Camper Cat created a new survey to collect information about his users. He knows
   </header>
   <section>
     <form>
-      <p tabindex="0">Instructions: Fill in ALL your information then click <b>Submit</b></p>
+      <p tabindex="0">
+        Instructions: Fill in ALL your information then click <b>Submit</b>
+      </p>
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username"><br>
+      <input type="text" id="username" name="username" /><br />
       <fieldset>
         <legend>What level ninja are you?</legend>
-        <input id="newbie" type="radio" name="levels" value="newbie">
-        <label for="newbie">Newbie Kitten</label><br>
-        <input id="intermediate" type="radio" name="levels" value="intermediate">
-        <label for="intermediate">Developing Student</label><br>
-        <input id="master" type="radio" name="levels" value="master">
+        <input id="newbie" type="radio" name="levels" value="newbie" />
+        <label for="newbie">Newbie Kitten</label><br />
+        <input
+          id="intermediate"
+          type="radio"
+          name="levels"
+          value="intermediate"
+        />
+        <label for="intermediate">Developing Student</label><br />
+        <input id="master" type="radio" name="levels" value="master" />
         <label for="master">9th Life Master</label>
       </fieldset>
-      <br>
+      <br />
       <fieldset>
-      <legend>Select your favorite weapons:</legend>
-      <input id="stars" type="checkbox" name="weapons" value="stars">
-      <label for="stars">Throwing Stars</label><br>
-      <input id="nunchucks" type="checkbox" name="weapons" value="nunchucks">
-      <label for="nunchucks">Nunchucks</label><br>
-      <input id="sai" type="checkbox" name="weapons" value="sai">
-      <label for="sai">Sai Set</label><br>
-      <input id="sword" type="checkbox" name="weapons" value="sword">
-      <label for="sword">Sword</label>
+        <legend>Select your favorite weapons:</legend>
+        <input id="stars" type="checkbox" name="weapons" value="stars" />
+        <label for="stars">Throwing Stars</label><br />
+        <input
+          id="nunchucks"
+          type="checkbox"
+          name="weapons"
+          value="nunchucks"
+        />
+        <label for="nunchucks">Nunchucks</label><br />
+        <input id="sai" type="checkbox" name="weapons" value="sai" />
+        <label for="sai">Sai Set</label><br />
+        <input id="sword" type="checkbox" name="weapons" value="sword" />
+        <label for="sword">Sword</label>
       </fieldset>
-      <br>
-      <input type="submit" name="submit" value="Submit">
-    </form><br>
+      <br />
+      <input type="submit" name="submit" value="Submit" />
+    </form>
+    <br />
   </section>
   <footer>&copy; 2018 Camper Cat</footer>
 </body>
 ```
 
-![tabindex HTML and focus](./Responsive40.jpg)
+![tabindex HTML and focus](./ResponsiveFCC/Responsive40.jpg)
 
 **[Use tabindex to Specify the Order of Keyboard Focus for Several Elements](https://www.freecodecamp.org/learn/responsive-web-design/applied-accessibility/use-tabindex-to-specify-the-order-of-keyboard-focus-for-several-elements)**
 
@@ -2724,9 +2892,13 @@ Media Queries consist of a media type, and if that media type matches the type o
 Here's an example of a media query that returns the content when the device's width is less than or equal to 100px, and another example that returns the content when the device's height is more than or equal to 350px:
 
 ```css
-@media (max-width: 100px) { /* CSS Rules */ }
+@media (max-width: 100px) {
+  /* CSS Rules */
+}
 
-@media (min-height: 350px) { /* CSS Rules */ }
+@media (min-height: 350px) {
+  /* CSS Rules */
+}
 ```
 
 ```css
@@ -2751,21 +2923,19 @@ You can also define media queries for landscape (when width > height) and portra
 
 ```css
 @media (orientation: landscape) {
-
 }
 
 @media (orientation: portrait) {
-
 }
 ```
 
 <br/>
 
-Also, you want to always make sure that media queries comes after what you are overwriting. So, if you're overwriting a `<p>` tag, makes sure you place the media queries *after* styling the selector `<p>` tag:
+Also, you want to always make sure that media queries comes after what you are overwriting. So, if you're overwriting a `<p>` tag, makes sure you place the media queries _after_ styling the selector `<p>` tag:
 
 ```css
 p {
-  color: #3E4147;
+  color: #3e4147;
   font-family: "Arvo", serif;
   font-size: 1rem;
   font-weight: 400;
@@ -2781,7 +2951,7 @@ p {
 @media (min-width: 800px) {
   p {
     font-size: 1.5rem;
-    line-height:1.5;
+    line-height: 1.5;
   }
 }
 ```
@@ -2790,7 +2960,7 @@ p {
 
 Also, when you design a website for mobiles devices in mind, start by using `min-width`, otherwise, if you intend to use it mostly on desktops then on mobile, start by using `max-width`:
 
-![Responsive Media Queries Start with](./Responsive41.jpg)
+![Responsive Media Queries Start with](./ResponsiveFCC/Responsive41.jpg)
 
 <br/>
 
@@ -2798,19 +2968,29 @@ Also, when you design a website for mobiles devices in mind, start by using `min
 
 ```css
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {...}
+@media only screen and (max-width: 600px) {
+  ...;
+}
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {...}
+@media only screen and (min-width: 600px) {
+  ...;
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {...}
+@media only screen and (min-width: 768px) {
+  ...;
+}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {...}
+@media only screen and (min-width: 992px) {
+  ...;
+}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {...}
+@media only screen and (min-width: 1200px) {
+  ...;
+}
 ```
 
 **[CSS3 Media Types](https://www.w3schools.com/css/css3_mediaqueries.asp)**
@@ -2863,7 +3043,9 @@ The four different viewport units are:
 Here is an example that sets a body tag to 30% of the viewport's width.
 
 ```css
-body { width: 30vw; }
+body {
+  width: 30vw;
+}
 ```
 
 Another example:
@@ -2879,10 +3061,17 @@ Another example:
 </style>
 
 <h2>Importantus Ipsum</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis tempus massa. Aenean erat nisl, gravida vel vestibulum cursus, interdum sit amet lectus. Sed sit amet quam nibh. Suspendisse quis tincidunt nulla. In hac habitasse platea dictumst. Ut sit amet pretium nisl. Vivamus vel mi sem. Aenean sit amet consectetur sem. Suspendisse pretium, purus et gravida consequat, nunc ligula ultricies diam, at aliquet velit libero a dui.</p>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis tempus
+  massa. Aenean erat nisl, gravida vel vestibulum cursus, interdum sit amet
+  lectus. Sed sit amet quam nibh. Suspendisse quis tincidunt nulla. In hac
+  habitasse platea dictumst. Ut sit amet pretium nisl. Vivamus vel mi sem.
+  Aenean sit amet consectetur sem. Suspendisse pretium, purus et gravida
+  consequat, nunc ligula ultricies diam, at aliquet velit libero a dui.
+</p>
 ```
 
-![Example of using viewport units](./Responsive42.jpg)
+![Example of using viewport units](./ResponsiveFCC/Responsive42.jpg)
 
 Or, another example:
 
@@ -2897,7 +3086,7 @@ div {
 
 That looks like this for both mobile and desktop:
 
-![Responsive centered paragraph CSS](./Responsive43.jpg)
+![Responsive centered paragraph CSS](./ResponsiveFCC/Responsive43.jpg)
 
 <br/>
 
@@ -2940,8 +3129,6 @@ Usually Flexbox is always used with items (`div`, `ul`, etc.) within a container
 </style>
 ```
 
-
-
 ### Flexbox container
 
 `flex-direction:` - defines in which direction the container wants to stack the flex items
@@ -2967,7 +3154,7 @@ flex-wrap: wrap-reverse /* specifies that the flexible items will wrap if necess
 flex-flow: row wrap;
 ```
 
-`justify-content:` - property that is used to align/move the flex items *horizontally (for rows)*
+`justify-content:` - property that is used to align/move the flex items _horizontally (for rows)_
 
 ```css
 justify-content: center /* aligns the flex items at the center of the container */
@@ -2978,7 +3165,7 @@ justify-content: space-between /* displays the flex items with space between the
 justify-content: space-evenly
 ```
 
-`align-items:` - property is used to align/move the flex items *vertically (for rows)*
+`align-items:` - property is used to align/move the flex items _vertically (for rows)_
 
 ```css
 align-items: center /* aligns the flex items in the middle of the container */
@@ -3111,7 +3298,8 @@ This property allows you to adjust each item's alignment individually, instead o
   body {
     font-family: Arial, sans-serif;
   }
-  header, footer {
+  header,
+  footer {
     display: flex;
     flex-direction: row;
   }
@@ -3136,7 +3324,8 @@ This property allows you to adjust each item's alignment individually, instead o
     border-radius: 3px;
     padding: 5px;
   }
-  header h3, header h4 {
+  header h3,
+  header h4 {
     display: flex;
     margin: 0;
   }
@@ -3168,7 +3357,11 @@ This property allows you to adjust each item's alignment individually, instead o
   }
 </style>
 <header>
-  <img src="https://freecodecamp.s3.amazonaws.com/quincy-twitter-photo.jpg" alt="Quincy Larson's profile picture" class="profile-thumbnail">
+  <img
+    src="https://freecodecamp.s3.amazonaws.com/quincy-/twitterResponsiveFCC-photo.jpg"
+    alt="Quincy Larson's profile picture"
+    class="profile-thumbnail"
+  />
   <div class="profile-name">
     <h3>Quincy Larson</h3>
     <h4>@ossia</h4>
@@ -3178,18 +3371,17 @@ This property allows you to adjust each item's alignment individually, instead o
   </div>
 </header>
 <div id="inner">
-  <p>I meet so many people who are in search of that one trick that will help them work smart. Even if you work smart, you still have to work hard.</p>
+  <p>
+    I meet so many people who are in search of that one trick that will help
+    them work smart. Even if you work smart, you still have to work hard.
+  </p>
   <span class="date">1:32 PM - 12 Jan 2018</span>
-  <hr>
+  <hr />
 </div>
 <footer>
   <div class="stats">
-    <div class="Retweets">
-      <strong>107</strong> Retweets
-    </div>
-    <div class="likes">
-      <strong>431</strong> Likes
-    </div>
+    <div class="Retweets"><strong>107</strong> Retweets</div>
+    <div class="likes"><strong>431</strong> Likes</div>
   </div>
   <div class="cta">
     <button class="share-btn">Share</button>
@@ -3201,7 +3393,7 @@ This property allows you to adjust each item's alignment individually, instead o
 
 <center>
 
-![Twitter Card using CSS Flexbox](./Responsive44.jpg)
+![Twitter Card using CSS Flexbox](./ResponsiveFCC/Responsive44.jpg)
 
 </center>
 
@@ -3217,11 +3409,21 @@ https://www.freecodecamp.org/learn/responsive-web-design/css-grid/
 
 ```html
 <style>
-  .d1{background:LightSkyBlue;}
-  .d2{background:LightSalmon;}
-  .d3{background:PaleTurquoise;}
-  .d4{background:LightPink;}
-  .d5{background:PaleGreen;}
+  .d1 {
+    background: LightSkyBlue;
+  }
+  .d2 {
+    background: LightSalmon;
+  }
+  .d3 {
+    background: PaleTurquoise;
+  }
+  .d4 {
+    background: LightPink;
+  }
+  .d5 {
+    background: PaleGreen;
+  }
 
   .container {
     font-size: 40px;
@@ -3239,7 +3441,7 @@ https://www.freecodecamp.org/learn/responsive-web-design/css-grid/
 </div>
 ```
 
-![freeCodeCamp Grid Example](./Responsive45.jpg)
+![freeCodeCamp Grid Example](./ResponsiveFCC/Responsive45.jpg)
 
 Grid Resources:
 
@@ -3316,8 +3518,8 @@ In the preview, when the viewport width is 300px or more, the number of columns 
       "footer";
   }
 
-  @media (min-width: 300px){
-    .container{
+  @media (min-width: 300px) {
+    .container {
       grid-template-columns: auto 1fr;
       grid-template-rows: auto 1fr auto;
       grid-template-areas:
@@ -3327,8 +3529,8 @@ In the preview, when the viewport width is 300px or more, the number of columns 
     }
   }
 
-  @media (min-width: 400px){
-    .container{
+  @media (min-width: 400px) {
+    .container {
       grid-template-areas:
         "header header"
         "advert content"
@@ -3345,7 +3547,7 @@ In the preview, when the viewport width is 300px or more, the number of columns 
 </div>
 ```
 
-![CSS Grid Media Queries](./Responsive46.jpg)
+![CSS Grid Media Queries](./ResponsiveFCC/Responsive46.jpg)
 
 <br/>
 
@@ -3400,7 +3602,6 @@ For example, by setting the `display` and `grid-template-columns` properties of 
   .itemTwo {
     background: BlanchedAlmond;
   }
-
 </style>
 
 <div class="container">
@@ -3416,11 +3617,9 @@ For example, by setting the `display` and `grid-template-columns` properties of 
 
 <center>
 
-![Place Grid within Grids](./Responsive47.jpg)
+![Place Grid within Grids](./ResponsiveFCC/Responsive47.jpg)
 
 </center>
-
-
 
 <br/>
 
@@ -3441,18 +3640,11 @@ My Solution (on [codepen.io](https://codepen.io/radualexandrub/pen/poEZQgM)) - S
   (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
-or:
-
-<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="poEZQgM" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="freeCodeCamp Responsive01: Tribute Page">
-  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/poEZQgM">
-  freeCodeCamp Responsive01: Tribute Page</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
-
 <br/>
 
+<hr/>
 
+<br/>
 
 ### Build a Survey Form
 
@@ -3469,26 +3661,52 @@ Survey Form without any CSS:
 
 <body>
   <main class="container">
-    
     <header>
       <h1 id="title">User's Experience Survey Form</h1>
-      <p id="description">Welcome and thank you for taking your time to help us improve our App.<br />We will make sure that every answer counts!</p>
+      <p id="description">
+        Welcome and thank you for taking your time to help us improve our
+        App.<br />We will make sure that every answer counts!
+      </p>
     </header>
 
     <form id="survey-form">
       <div class="form-group">
         <label id="name-label" for="name">Name</label>
-        <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" required />
+        <input
+          type="text"
+          name="name"
+          id="name"
+          class="form-control"
+          placeholder="Enter your name"
+          required
+        />
       </div>
 
       <div class="form-group">
         <label id="email-label" for="email">Email</label>
-        <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="form-control"
+          placeholder="Enter your email"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label id="number-label" for="number">Age<span class="clue">(optional)</span></label>
-        <input type="number" name="age" id="number" min="10" max="99" class="form-control" placeholder="Enter your age" />
+        <label id="number-label" for="number"
+          >Age<span class="clue">(optional)</span></label
+        >
+        <input
+          type="number"
+          name="age"
+          id="number"
+          min="10"
+          max="99"
+          class="form-control"
+          placeholder="Enter your age"
+        />
       </div>
 
       <div class="form-group">
@@ -3507,20 +3725,76 @@ Survey Form without any CSS:
 
       <div class="form-group">
         <p>How would you rate our service so far?</p>
-        <label><input name="user-rating" value="5" type="radio" class="input-radio" checked />5 stars</label>
-        <label><input name="user-rating" value="4" type="radio" class="input-radio" />4 stars</label>
-        <label><input name="user-rating" value="3" type="radio" class="input-radio" />3 stars</label>
-        <label><input name="user-rating" value="2" type="radio" class="input-radio" />2 stars</label>
-        <label><input name="user-rating" value="1" type="radio" class="input-radio" />1 star</label>
+        <label
+          ><input
+            name="user-rating"
+            value="5"
+            type="radio"
+            class="input-radio"
+            checked
+          />5 stars</label
+        >
+        <label
+          ><input
+            name="user-rating"
+            value="4"
+            type="radio"
+            class="input-radio"
+          />4 stars</label
+        >
+        <label
+          ><input
+            name="user-rating"
+            value="3"
+            type="radio"
+            class="input-radio"
+          />3 stars</label
+        >
+        <label
+          ><input
+            name="user-rating"
+            value="2"
+            type="radio"
+            class="input-radio"
+          />2 stars</label
+        >
+        <label
+          ><input
+            name="user-rating"
+            value="1"
+            type="radio"
+            class="input-radio"
+          />1 star</label
+        >
       </div>
 
       <div class="form-group">
         <p>Would you recommend our service to any of your friends?</p>
         <label>
-          <input name="user-recommend" value="definitely" type="radio" class="input-radio" checked />Definitely</label>
+          <input
+            name="user-recommend"
+            value="definitely"
+            type="radio"
+            class="input-radio"
+            checked
+          />Definitely</label
+        >
         <label>
-          <input name="user-recommend" value="maybe" type="radio" class="input-radio" />Maybe</label>
-        <label><input name="user-recommend" value="no" type="radio" class="input-radio" />No</label>
+          <input
+            name="user-recommend"
+            value="maybe"
+            type="radio"
+            class="input-radio"
+          />Maybe</label
+        >
+        <label
+          ><input
+            name="user-recommend"
+            value="no"
+            type="radio"
+            class="input-radio"
+          />No</label
+        >
       </div>
 
       <div class="form-group">
@@ -3529,56 +3803,131 @@ Survey Form without any CSS:
           <span class="clue">(Check all that apply)</span>
         </p>
 
-        <label><input name="prefer" value="front-end-projects" type="checkbox" class="input-checkbox" />Front-end Projects</label>
+        <label
+          ><input
+            name="prefer"
+            value="front-end-projects"
+            type="checkbox"
+            class="input-checkbox"
+          />Front-end Projects</label
+        >
         <label>
-          <input name="prefer" value="back-end-projects" type="checkbox" class="input-checkbox" />Back-end Projects</label>
-        <label><input name="prefer" value="data-visualization" type="checkbox" class="input-checkbox" />Data Visualization</label>
-        <label><input name="prefer" value="challenges" type="checkbox" class="input-checkbox" />Challenges</label>
-        <label><input name="prefer" value="open-source-community" type="checkbox" class="input-checkbox" />Open Source Community</label>
-        <label><input name="prefer" value="gitter-help-rooms" type="checkbox" class="input-checkbox" />Gitter help rooms</label>
-        <label><input name="prefer" value="videos" type="checkbox" class="input-checkbox" />Videos</label>
-        <label><input name="prefer" value="city-meetups" type="checkbox" class="input-checkbox" />City Meetups</label>
-        <label><input name="prefer" value="wiki" type="checkbox" class="input-checkbox" />Wiki</label>
-        <label><input name="prefer" value="forum" type="checkbox" class="input-checkbox" />Forum</label>
-        <label><input name="prefer" value="additional-courses" type="checkbox" class="input-checkbox" />Additional Courses</label>
+          <input
+            name="prefer"
+            value="back-end-projects"
+            type="checkbox"
+            class="input-checkbox"
+          />Back-end Projects</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="data-visualization"
+            type="checkbox"
+            class="input-checkbox"
+          />Data Visualization</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="challenges"
+            type="checkbox"
+            class="input-checkbox"
+          />Challenges</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="open-source-community"
+            type="checkbox"
+            class="input-checkbox"
+          />Open Source Community</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="gitter-help-rooms"
+            type="checkbox"
+            class="input-checkbox"
+          />Gitter help rooms</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="videos"
+            type="checkbox"
+            class="input-checkbox"
+          />Videos</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="city-meetups"
+            type="checkbox"
+            class="input-checkbox"
+          />City Meetups</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="wiki"
+            type="checkbox"
+            class="input-checkbox"
+          />Wiki</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="forum"
+            type="checkbox"
+            class="input-checkbox"
+          />Forum</label
+        >
+        <label
+          ><input
+            name="prefer"
+            value="additional-courses"
+            type="checkbox"
+            class="input-checkbox"
+          />Additional Courses</label
+        >
       </div>
 
       <div class="form-group">
         <p>Any comments or suggestions?</p>
-        <textarea id="comments" class="input-textarea" name="comment" placeholder="Enter your comment here..."></textarea>
+        <textarea
+          id="comments"
+          class="input-textarea"
+          name="comment"
+          placeholder="Enter your comment here..."
+        ></textarea>
       </div>
 
       <div class="form-group">
-        <button type="submit" id="submit" class="submit-button">
-          Submit
-        </button>
+        <button type="submit" id="submit" class="submit-button">Submit</button>
       </div>
     </form>
-    
   </main>
 </body>
 ```
 
-<center>
-
-![Survey Complete Form HTML](./Responsive48.jpg)
-
-</center>
+![Survey Complete Form HTML](./ResponsiveFCC/Responsive48.jpg)
 
 If we import Bootstrap:
 
 ```html
 <head>
   <title>Survey From</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
 </head>
 ```
 
-<center>
-
-![Survey Complete Form HTML](./Responsive48Bootstrap.jpg)
-
-</center>
+![Survey Complete Form HTML](./ResponsiveFCC/Responsive48Bootstrap.jpg)
 
 My solution (without Bootstrap) - Saturday, January 09, 2021:
 
@@ -3587,16 +3936,9 @@ My solution (without Bootstrap) - Saturday, January 09, 2021:
   (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
+<br/>
 
-
-<p class="codepen" data-height="432" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="ExgpOrw" style="height: 432px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="FCC Responsive02 - Survey Form">
-  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/ExgpOrw">
-  FCC Responsive02 - Survey Form</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
-
-
+<hr/>
 
 <br/>
 
@@ -3611,50 +3953,42 @@ My solution (without Bootstrap) - Saturday, January 09, 2021:
 ```html
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-  <title>Product Landing Page</title>
-  <meta name="description" content="A mockup of a Product Landing Page">
-  <meta name="author" content="Radu-Alexandru B">
-  
-  <link rel="icon" type="image/x-icon" href="/favicon.ico?" />
-  <link rel="apple-touch-icon" href="/favicon.png?" />
-  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-</head>
+    <title>Product Landing Page</title>
+    <meta name="description" content="A mockup of a Product Landing Page" />
+    <meta name="author" content="Radu-Alexandru B" />
 
-<body>
-  
-  <!-- Navigation -->
-  <nav>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?" />
+    <link rel="apple-touch-icon" href="/favicon.png?" />
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  </head>
 
-  </nav>
-  
-  <!-- Page Header -->
-  <header>
-		<h1>    
-    </h1>
-  </header>
+  <body>
+    <!-- Navigation -->
+    <nav></nav>
 
-  <!-- Main Content -->
-  <main class="container">
-    <section>
+    <!-- Page Header -->
+    <header>
+      <h1></h1>
+    </header>
 
-    </section>
+    <!-- Main Content -->
+    <main class="container">
+      <section></section>
 
-    <section>
+      <section></section>
+    </main>
 
-    </section>
-    
-  </main>
-  
-  <!-- Footer -->
-  <footer>
-
-  </footer>
-</body>
+    <!-- Footer -->
+    <footer></footer>
+  </body>
+</html>
 ```
 
 <br/>
@@ -3666,16 +4000,26 @@ My Solution:
   (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
 </iframe>
 
+<br/>
 
+<hr/>
 
-<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="html,result" data-user="radualexandrub" data-slug-hash="JjRBxoQ" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="FCC Responsive03: Product Landing Page">
-  <span>See the Pen <a href="https://codepen.io/radualexandrub/pen/JjRBxoQ">
-  FCC Responsive03: Product Landing Page</a> by Radu-Alexandru B (<a href="https://codepen.io/radualexandrub">@radualexandrub</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+<br/>
 
+### Technical Documentation Page
 
+[Technical Documentation Webpage Challenge Description](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-technical-documentation-page)
 
+[freeCodeCamp's Solution](https://codepen.io/freeCodeCamp/full/NdrKKL)
 
+<br/>
 
+<hr/>
+
+<br/>
+
+### Personal Portfolio Webpage
+
+[Personal Portfolio Webpage Challenge Description](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-personal-portfolio-webpage)
+
+[freeCodeCamp's Solution](https://codepen.io/freeCodeCamp/full/zNBOYG)

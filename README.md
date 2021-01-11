@@ -5,6 +5,7 @@ A collection of my personal study notes from various courses, tutorials, article
 #### HTML, CSS
 * [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
 * [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
+* [Build a Responsive Website | HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
 
 #### JavaScript
 * [JavaScript Full Course for Beginners (to advanced) - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
