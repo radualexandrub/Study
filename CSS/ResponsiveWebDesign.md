@@ -4012,6 +4012,19 @@ My Solution:
 
 [freeCodeCamp's Solution](https://codepen.io/freeCodeCamp/full/NdrKKL)
 
+freeCodeCamp's requests/rules for solving these challenges kind of restricts on personally making the projects...
+
+
+
+<iframe height="672" style="width: 100%;" scrolling="no" title="FCC Responsive04: Documentation Page" src="https://codepen.io/radualexandrub/embed/VwKEmga?height=672&theme-id=dark&default-tab=result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/radualexandrub/pen/VwKEmga'>FCC Responsive04: Documentation Page</a> by Radu-Alexandru B
+  (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+
+
+
+
 <br/>
 
 <hr/>
@@ -4023,3 +4036,15 @@ My Solution:
 [Personal Portfolio Webpage Challenge Description](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-personal-portfolio-webpage)
 
 [freeCodeCamp's Solution](https://codepen.io/freeCodeCamp/full/zNBOYG)
+
+Nice, pretty polished result (Wednesday, January 13, 2021, 00:14)
+
+
+
+<iframe height="751" style="width: 100%;" scrolling="no" title="FC Responsive 05: Portfolio" src="https://codepen.io/radualexandrub/embed/yLaRovV?height=751&theme-id=dark&default-tab=result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/radualexandrub/pen/yLaRovV'>FC Responsive 05: Portfolio</a> by Radu-Alexandru B
+  (<a href='https://codepen.io/radualexandrub'>@radualexandrub</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+
+
