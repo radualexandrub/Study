@@ -2,12 +2,15 @@
 A collection of my personal study notes from various courses, tutorials, articles or lectures.
 
 ## Front-end
-#### HTML, CSS
+#### HTML, CSS, Sass
+
 * [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
 * [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
 * [Build a Responsive Website | HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
+* [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md) 
 
 #### JavaScript
+
 * [JavaScript Full Course for Beginners (to advanced) - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
 * [JavaScript Promises, Forms, Events, DOM, AJAX, JSON - coming soon](./JavaScript/JavaScriptAdvanced.md)
 * [Regular Expressions (Regex) in JavaScript](./JavaScript/JavaScriptRegex.md)
