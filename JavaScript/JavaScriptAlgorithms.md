@@ -1628,3 +1628,148 @@ console.log(checkCashRegister(19.5, 20, [
 
 <br/>
 
+# HackeRank
+
+## Array Methods
+
+### Reverse words in a sentence and swap all cases of letters
+
+- `rUns dOg"` => `"DoG RuNS""`
+- `"aWESOME is cODING"` => `"Coding IS Awesome"`
+
+**My Solution 1:** (Monday, February 01, 2021)
+
+```js
+function reverseWords(sentence) {
+  let output = "";
+  for (let char of sentence.split(" ").reverse().join(' ')) {
+    char = char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+    output += char;
+  }
+  return output;
+}
+
+console.log(reverseWords("aWESOME is cODING")); // Coding IS Awesome
+console.log(reverseWords("rUns dOg")); // DoG RuNS
+```
+
+**My almost failed Solution 2:**
+
+```js
+function reverseWords(sentence) {
+  reversed = sentence.split(" ").reverse().join(' ');
+  return [...reversed].forEach(
+    (char) => 'aaa';
+}
+
+console.log(reverseWords("aWESOME is cODING")); // undefined
+console.log(reverseWords("rUns dOg")); // undefined
+/* NOTE that forEach method only accepts arrays so it needs conversion
+ NOTE that forEach method always returns undefined
+ forEach method mutates every element in an array, but because we called it
+ upon [...reversed], reversed will not be modified 
+ Also we can't mutate elements in forEach by asigning/returning to char (the value)*/
+
+// However, we can solve these problems like this:
+function reverseWords(sentence) {
+  reversed = sentence.split(" ").reverse().join(' ');
+  reversed = [...reversed];
+  reversed.forEach((char, idx) => 
+    reversed[idx] = char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase());
+  return reversed.join('');
+}
+
+console.log(reverseWords("aWESOME is cODING")); // Coding IS Awesome
+console.log(reverseWords("rUns dOg")); // DoG RuNS
+// NOTE that we need to asign values to reversed[idx] (not to char) to mutate the array's elements
+```
+
+**My Solution 3:**
+
+```js
+function reverseWords(sentence) {
+  reversed = sentence.split(" ").reverse().join(' ');
+  return [...reversed]
+    .map((char) => char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase())
+    .join('');
+}
+
+console.log(reverseWords("aWESOME is cODING")); // Coding IS Awesome
+console.log(reverseWords("rUns dOg")); // DoG RuNS
+```
+
+<br/>
+
+### Cut the sticks (min of array, substract from array, filter)
+
+https://www.hackerrank.com/challenges/cut-the-sticks/problem
+
+You will iteratively cut the sticks into smaller sticks, discarding the shortest pieces until there are none left. At each iteration you will determine the length of the shortest stick remaining, cut that length from each of the longer sticks and then discard all the pieces of that shortest length. When all the remaining sticks are the same length, they cannot be shortened so discard them.
+
+**Example** for `arr = [1,2,3]`
+
+The shortest stick length is `1`, so cut that length from the longer two and discard the pieces of length `1`. Now the lengths are `arr = [1,2]`. Again, the shortest stick is of length `1`, so cut that amount from the longer stick and discard those pieces. There is only one stick left, `arr = [1]`, so discard that stick. The number of sticks at each iteration are `answer = [3,2,1]`.
+
+- Sample Input 0:
+
+```
+STDIN           Function
+-----           --------
+6               arr[] size n = 6
+5 4 4 2 2 8     arr = [5, 4, 4, 2, 2, 8]
+
+Sample Output 0:
+6
+4
+2
+1
+
+Explanation 0:
+sticks-length        length-of-cut   sticks-cut
+5 4 4 2 2 8             2               6
+3 2 2 _ _ 6             2               4
+1 _ _ _ _ 4             1               2
+_ _ _ _ _ 3             3               1
+_ _ _ _ _ _           DONE            DONE
+```
+
+- Sample Input 1:
+
+```
+8
+1 2 3 4 3 3 2 1
+
+Sample Output 1:
+8
+6
+4
+1
+
+Explanation 1:
+sticks-length         length-of-cut   sticks-cut
+1 2 3 4 3 3 2 1         1               8
+_ 1 2 3 2 2 1 _         1               6
+_ _ 1 2 1 1 _ _         1               4
+_ _ _ 1 _ _ _ _         1               1
+_ _ _ _ _ _ _ _       DONE            DONE
+```
+
+**My solution:** (Tuesday, February 02, 2021)
+
+```js
+'use strict';
+function cutTheSticks(arr) {
+  let lenghts = [arr.length];
+  while (arr.length) {
+    let minStick = Math.min(...arr);
+    arr.forEach((value, idx) => arr[idx] = value - minStick);
+    arr = arr.filter(value => value !== 0);
+    if (arr.length !== 0)
+      lenghts.push(arr.length);
+  }
+  return lenghts;
+}
+```
+
+<br/>
+
