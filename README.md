@@ -29,7 +29,15 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 ## Back-end
+
+#### PHP
+
+- [PHP Tutorial](./PHP/phpTutorial.md)
+
+
+
 #### **Python**
+
 * [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
 * [Python algorithmic tricks & tips from solving HackerRank challenges - coming soon]
 
@@ -60,11 +68,11 @@ A collection of my personal study notes from various courses, tutorials, article
 
 ## Takes these notes offline!
 - You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
+- Or... you can download [Typora editor](https://typora.io/) on your machine to directly open all the `.md` files.
 
 
 ## Find more about me on:
-***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>
-***My blog:*** [CodingTranquillity](https://codingtranquillity.herokuapp.com/)
+***My portfolio and blog:*** [radubulai.com](https://radualexandrub.github.io/)
 
 <a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
 <a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" /></a>&nbsp;&nbsp;
