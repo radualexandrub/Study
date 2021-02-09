@@ -5,6 +5,7 @@ Credits / Notes taken from:
 - [6h30m PHP For Absolute Beginners | 6.5 Hour Course - Traversy Media (dec-2020)](https://youtu.be/2eebptXfEvw)
 - [4h30m PHP Programming Language Tutorial - freeCodeCamp (jun-2018)](https://www.youtube.com/watch?v=OK_JCtrrv-c&ab_channel=freeCodeCamp.org)
 - [PHP Tutorial - w3schools](https://www.w3schools.com/php/)
+- https://www.php.net/manual/en/index.php
 
 ## PHP Introduction
 
@@ -308,13 +309,38 @@ it contained from the last time the function was called. */
 
 
 
+## PHP Debug / Print to Console function
 
+(Thu, February 04, 2021) Okay, maybe it's just me... but I've noted that, I don't have any console in PHP ...
+
+- for Python (Django), I have my development server up and running in the CMD Prompt.
+- for JavaScript, we have the console within our Browser.
+
+However, instead of using `echo`, `var_dump()`, `get_type()`, `print_r()` functions and render directly in HTML code... I came across this *[function](https://www.php.net/manual/en/debugger.php)*
+
+```php
+function console_log( $data ){
+  echo '<script>';
+  echo 'console.log('. json_encode( $data ) .')';
+  echo '</script>';
+}
+
+// Usage:
+$myvar = array("Banana", "Apple", "Orange");
+console_log( $myvar );
+```
+
+Now we can use `console_log();` to print to Browser's console, just like in JavaScript (`console.log();`)... except, we are actually using JavaScript ofc. :laughing:
+
+![](./phpTutorial/00log.jpg)
 
 # PHP Data types and operators
 
 ## PHP Data types, var_dump(), check functions
 
 The PHP `var_dump()` function returns the data type and value (basically prints out all the information of a variable).
+
+The [`print_r()`](https://www.php.net/manual/en/function.print-r.php) prints human-readable information about a variable
 
 The PHP function `gettype($name)` function returns only the data type.
 
@@ -550,12 +576,12 @@ https://www.w3schools.com/php/php_operators.asp
 
 | Operator | Name | Example    | Result                                        |
 | -------- | ---- | ---------- | --------------------------------------------- |
-| and      | And  | `$x and $y`  | True if both $x and $y are true               |
-| or       | Or   | `$x or $y`   | True if either $x or $y is true               |
-| xor      | Xor  | `$x xor $y`  | True if either $x or $y is true, but not both |
-| &&       | And  | `$x && $y`   | True if both $x and $y are true               |
-| \|\|     | Or   | `$x || $y` | True if either $x or $y is true               |
-| !        | Not  | `!$x`        | True if $x is not true                        |
+| `and`    | And  | `$x and $y`  | True if both `$x and $y` are true             |
+| `or`     | Or   | `$x or $y`   | True if either `$x or $y` is true             |
+| `xor`    | Xor  | `$x xor $y`  | True if either `$x or $y` is true,<br/>but not both |
+| `&&`     | And  | `$x && $y`   | True if both `$x and $y` are true             |
+| `\|\|` | Or   | `$x \|\| $y` | True if either `$x or $y` is true             |
+| `!`      | Not  | `!$x`        | True if $x is not true                        |
 
 **PHP Increment / Decrement Operators**
 
@@ -566,16 +592,6 @@ https://www.w3schools.com/php/php_operators.asp
 | `--$x` | Pre-decrement  | Decrements $x by one, then returns $x |
 | `$x--` | Post-decrement | Returns $x, then decrements $x by one |
 
-**PHP Logical Operators**
-
-| Operator | Name | Example    | Result                                        |
-| -------- | ---- | ---------- | --------------------------------------------- |
-| and      | And  | `$x and $y`  | True if both $x and $y are true               |
-| or       | Or   | `$x or $y`   | True if either $x or $y is true               |
-| xor      | Xor  | `$x xor $y`  | True if either $x or $y is true, but not both |
-| &&       | And  | `$x && $y`   | True if both $x and $y are true               |
-| \|\|     | Or   | `$x || $y` | True if either $x or $y is true               |
-| !        | Not  | `!$x`        | True if $x is not true                        |
 
 **PHP String Operators**
 
@@ -603,119 +619,6 @@ https://www.w3schools.com/php/php_operators.asp
 | -------- | --------------- | ---------------------------- | ------------------------------------------------------------ |
 | ?:       | Ternary         | `$x = expr1 ? expr2 : expr3` | Returns the value of $x. The value of $x is expr2 if expr1 = TRUE. The value of $x is expr3 if expr1 = FALSE |
 | ??       | Null coalescing | `$x = expr1 ?? expr2`        | Returns the value of $x. The value of $x is expr1 if expr1 exists, and is not NULL. If expr1 does not exist, or is NULL, the value of $x is expr2. Introduced in PHP 7 |
-
-
-
-
-
-
-
-
-
-<br/>
-
-**[All PHP String Methods](https://www.w3schools.com/php/php_ref_string.asp)**
-
-| Function                                                     | Description                                                  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| [addcslashes()](https://www.w3schools.com/php/func_string_addcslashes.asp) | Returns a string with backslashes in front of the specified characters |
-| [addslashes()](https://www.w3schools.com/php/func_string_addslashes.asp) | Returns a string with backslashes in front of predefined characters |
-| **[bin2hex()](https://www.w3schools.com/php/func_string_bin2hex.asp)** | **Converts a string of ASCII characters to hexadecimal values** |
-| **[chop()](https://www.w3schools.com/php/func_string_chop.asp)** | **Removes whitespace or other characters from the right end of a string** |
-| [chr()](https://www.w3schools.com/php/func_string_chr.asp)   | Returns a character from a specified ASCII value             |
-| **[chunk_split()](https://www.w3schools.com/php/func_string_chunk_split.asp)** | **Splits a string into a series of smaller parts**           |
-| [convert_cyr_string()](https://www.w3schools.com/php/func_string_convert_cyr_string.asp) | Converts a string from one Cyrillic character-set to another |
-| [convert_uudecode()](https://www.w3schools.com/php/func_string_convert_uudecode.asp) | Decodes a uuencoded string                                   |
-| [convert_uuencode()](https://www.w3schools.com/php/func_string_convert_uuencode.asp) | Encodes a string using the uuencode algorithm                |
-| [count_chars()](https://www.w3schools.com/php/func_string_count_chars.asp) | Returns information about characters used in a string        |
-| [crc32()](https://www.w3schools.com/php/func_string_crc32.asp) | Calculates a 32-bit CRC for a string                         |
-| [crypt()](https://www.w3schools.com/php/func_string_crypt.asp) | One-way string hashing                                       |
-| [echo()](https://www.w3schools.com/php/func_string_echo.asp) | Outputs one or more strings                                  |
-| **[explode()](https://www.w3schools.com/php/func_string_explode.asp)** | **Breaks a string into an array**                            |
-| [fprintf()](https://www.w3schools.com/php/func_string_fprintf.asp) | Writes a formatted string to a specified output stream       |
-| [get_html_translation_table()](https://www.w3schools.com/php/func_string_get_html_translation_table.asp) | Returns the translation table used by htmlspecialchars() and htmlentities() |
-| [hebrev()](https://www.w3schools.com/php/func_string_hebrev.asp) | Converts Hebrew text to visual text                          |
-| [hebrevc()](https://www.w3schools.com/php/func_string_hebrevc.asp) | Converts Hebrew text to visual text and new lines (\n) into <br> |
-| **[hex2bin()](https://www.w3schools.com/php/func_string_hex2bin.asp)** | **Converts a string of hexadecimal values to ASCII characters** |
-| [html_entity_decode()](https://www.w3schools.com/php/func_string_html_entity_decode.asp) | Converts HTML entities to characters                         |
-| [htmlentities()](https://www.w3schools.com/php/func_string_htmlentities.asp) | Converts characters to HTML entities                         |
-| [htmlspecialchars_decode()](https://www.w3schools.com/php/func_string_htmlspecialchars_decode.asp) | Converts some predefined HTML entities to characters         |
-| [htmlspecialchars()](https://www.w3schools.com/php/func_string_htmlspecialchars.asp) | Converts some predefined characters to HTML entities         |
-| **[implode()](https://www.w3schools.com/php/func_string_implode.asp)** | **Returns a string from the elements of an array**           |
-| [join()](https://www.w3schools.com/php/func_string_join.asp) | Alias of [implode()](https://www.w3schools.com/php/func_string_implode.asp) |
-| [lcfirst()](https://www.w3schools.com/php/func_string_lcfirst.asp) | Converts the first character of a string to lowercase        |
-| [levenshtein()](https://www.w3schools.com/php/func_string_levenshtein.asp) | Returns the Levenshtein distance between two strings         |
-| [localeconv()](https://www.w3schools.com/php/func_string_localeconv.asp) | Returns locale numeric and monetary formatting information   |
-| [ltrim()](https://www.w3schools.com/php/func_string_ltrim.asp) | Removes whitespace or other characters from the left side of a string |
-| [md5()](https://www.w3schools.com/php/func_string_md5.asp)   | Calculates the MD5 hash of a string                          |
-| [md5_file()](https://www.w3schools.com/php/func_string_md5_file.asp) | Calculates the MD5 hash of a file                            |
-| [metaphone()](https://www.w3schools.com/php/func_string_metaphone.asp) | Calculates the metaphone key of a string                     |
-| [money_format()](https://www.w3schools.com/php/func_string_money_format.asp) | Returns a string formatted as a currency string              |
-| [nl_langinfo()](https://www.w3schools.com/php/func_string_nl_langinfo.asp) | Returns specific local information                           |
-| [nl2br()](https://www.w3schools.com/php/func_string_nl2br.asp) | Inserts HTML line breaks in front of each newline in a string |
-| [number_format()](https://www.w3schools.com/php/func_string_number_format.asp) | Formats a number with grouped thousands                      |
-| [ord()](https://www.w3schools.com/php/func_string_ord.asp)   | Returns the ASCII value of the first character of a string   |
-| [parse_str()](https://www.w3schools.com/php/func_string_parse_str.asp) | Parses a query string into variables                         |
-| [print()](https://www.w3schools.com/php/func_string_print.asp) | Outputs one or more strings                                  |
-| [printf()](https://www.w3schools.com/php/func_string_printf.asp) | Outputs a formatted string                                   |
-| [quoted_printable_decode()](https://www.w3schools.com/php/func_string_quoted_printable_decode.asp) | Converts a quoted-printable string to an 8-bit string        |
-| [quoted_printable_encode()](https://www.w3schools.com/php/func_string_quoted_printable_encode.asp) | Converts an 8-bit string to a quoted printable string        |
-| [quotemeta()](https://www.w3schools.com/php/func_string_quotemeta.asp) | Quotes meta characters                                       |
-| [rtrim()](https://www.w3schools.com/php/func_string_rtrim.asp) | Removes whitespace or other characters from the right side of a string |
-| [setlocale()](https://www.w3schools.com/php/func_string_setlocale.asp) | Sets locale information                                      |
-| [sha1()](https://www.w3schools.com/php/func_string_sha1.asp) | Calculates the SHA-1 hash of a string                        |
-| [sha1_file()](https://www.w3schools.com/php/func_string_sha1_file.asp) | Calculates the SHA-1 hash of a file                          |
-| [similar_text()](https://www.w3schools.com/php/func_string_similar_text.asp) | Calculates the similarity between two strings                |
-| [soundex()](https://www.w3schools.com/php/func_string_soundex.asp) | Calculates the soundex key of a string                       |
-| [sprintf()](https://www.w3schools.com/php/func_string_sprintf.asp) | Writes a formatted string to a variable                      |
-| [sscanf()](https://www.w3schools.com/php/func_string_sscanf.asp) | Parses input from a string according to a format             |
-| [str_getcsv()](https://www.w3schools.com/php/func_string_str_getcsv.asp) | Parses a CSV string into an array                            |
-| [str_ireplace()](https://www.w3schools.com/php/func_string_str_ireplace.asp) | Replaces some characters in a string (case-insensitive)      |
-| [str_pad()](https://www.w3schools.com/php/func_string_str_pad.asp) | Pads a string to a new length                                |
-| [str_repeat()](https://www.w3schools.com/php/func_string_str_repeat.asp) | Repeats a string a specified number of times                 |
-| [str_replace()](https://www.w3schools.com/php/func_string_str_replace.asp) | Replaces some characters in a string (case-sensitive)        |
-| [str_rot13()](https://www.w3schools.com/php/func_string_str_rot13.asp) | Performs the ROT13 encoding on a string                      |
-| [str_shuffle()](https://www.w3schools.com/php/func_string_str_shuffle.asp) | Randomly shuffles all characters in a string                 |
-| [str_split()](https://www.w3schools.com/php/func_string_str_split.asp) | Splits a string into an array                                |
-| **[str_word_count()](https://www.w3schools.com/php/func_string_str_word_count.asp)** | **Count the number of words in a string**                    |
-| **[strcasecmp()](https://www.w3schools.com/php/func_string_strcasecmp.asp)** | **Compares two strings (case-insensitive)**                  |
-| [strchr()](https://www.w3schools.com/php/func_string_strchr.asp) | Finds the first occurrence of a string inside another string (alias of strstr()) |
-| **[strcmp()](https://www.w3schools.com/php/func_string_strcmp.asp)** | **Compares two strings (case-sensitive)**                    |
-| [strcoll()](https://www.w3schools.com/php/func_string_strcoll.asp) | Compares two strings (locale based string comparison)        |
-| [strcspn()](https://www.w3schools.com/php/func_string_strcspn.asp) | Returns the number of characters found in a string before any part of some specified characters are found |
-| [strip_tags()](https://www.w3schools.com/php/func_string_strip_tags.asp) | Strips HTML and PHP tags from a string                       |
-| [stripcslashes()](https://www.w3schools.com/php/func_string_stripcslashes.asp) | Unquotes a string quoted with addcslashes()                  |
-| [stripslashes()](https://www.w3schools.com/php/func_string_stripslashes.asp) | Unquotes a string quoted with addslashes()                   |
-| [stripos()](https://www.w3schools.com/php/func_string_stripos.asp) | Returns the position of the first occurrence of a string inside another string (case-insensitive) |
-| [stristr()](https://www.w3schools.com/php/func_string_stristr.asp) | Finds the first occurrence of a string inside another string (case-insensitive) |
-| [strlen()](https://www.w3schools.com/php/func_string_strlen.asp) | Returns the length of a string                               |
-| [strnatcasecmp()](https://www.w3schools.com/php/func_string_strnatcasecmp.asp) | Compares two strings using a "natural order" algorithm (case-insensitive) |
-| [strnatcmp()](https://www.w3schools.com/php/func_string_strnatcmp.asp) | Compares two strings using a "natural order" algorithm (case-sensitive) |
-| [strncasecmp()](https://www.w3schools.com/php/func_string_strncasecmp.asp) | String comparison of the first n characters (case-insensitive) |
-| [strncmp()](https://www.w3schools.com/php/func_string_strncmp.asp) | String comparison of the first n characters (case-sensitive) |
-| [strpbrk()](https://www.w3schools.com/php/func_string_strpbrk.asp) | Searches a string for any of a set of characters             |
-| [strpos()](https://www.w3schools.com/php/func_string_strpos.asp) | Returns the position of the first occurrence of a string inside another string (case-sensitive) |
-| [strrchr()](https://www.w3schools.com/php/func_string_strrchr.asp) | Finds the last occurrence of a string inside another string  |
-| **[strrev()](https://www.w3schools.com/php/func_string_strrev.asp)** | **Reverses a string**                                        |
-| [strripos()](https://www.w3schools.com/php/func_string_strripos.asp) | Finds the position of the last occurrence of a string inside another string (case-insensitive) |
-| [strrpos()](https://www.w3schools.com/php/func_string_strrpos.asp) | Finds the position of the last occurrence of a string inside another string (case-sensitive) |
-| [strspn()](https://www.w3schools.com/php/func_string_strspn.asp) | Returns the number of characters found in a string that contains only characters from a specified charlist |
-| **[strstr()](https://www.w3schools.com/php/func_string_strstr.asp)** | **Finds the first occurrence of a string inside another string (case-sensitive)** |
-| [strtok()](https://www.w3schools.com/php/func_string_strtok.asp) | Splits a string into smaller strings                         |
-| **[strtolower()](https://www.w3schools.com/php/func_string_strtolower.asp)** | **Converts a string to lowercase letters**                   |
-| **[strtoupper()](https://www.w3schools.com/php/func_string_strtoupper.asp)** | **Converts a string to uppercase letters**                   |
-| [strtr()](https://www.w3schools.com/php/func_string_strtr.asp) | Translates certain characters in a string                    |
-| [substr()](https://www.w3schools.com/php/func_string_substr.asp) | Returns a part of a string                                   |
-| [substr_compare()](https://www.w3schools.com/php/func_string_substr_compare.asp) | Compares two strings from a specified start position (binary safe and optionally case-sensitive) |
-| [**substr_count()](https://www.w3schools.com/php/func_string_substr_count.asp)** | **Counts the number of times a substring occurs in a string** |
-| **[substr_replace()](https://www.w3schools.com/php/func_string_substr_replace.asp)** | **Replaces a part of a string with another string**          |
-| **[trim()](https://www.w3schools.com/php/func_string_trim.asp)** | **Removes whitespace or other characters from both sides of a string** |
-| [ucfirst()](https://www.w3schools.com/php/func_string_ucfirst.asp) | Converts the first character of a string to uppercase        |
-| [ucwords()](https://www.w3schools.com/php/func_string_ucwords.asp) | Converts the first character of each word in a string to uppercase |
-| [vfprintf()](https://www.w3schools.com/php/func_string_vfprintf.asp) | Writes a formatted string to a specified output stream       |
-| [vprintf()](https://www.w3schools.com/php/func_string_vprintf.asp) | Outputs a formatted string                                   |
-| [vsprintf()](https://www.w3schools.com/php/func_string_vsprintf.asp) | Writes a formatted string to a variable                      |
-| [wordwrap()](https://www.w3schools.com/php/func_string_wordwrap.asp) | Wraps a string to a given number of characters               |
 
 
 
@@ -965,9 +868,663 @@ https://www.php.net/manual/en/ref.math.php
 
 # PHP String methods
 
+(Friday, February 05, 2021)
 
+**Strings concatenation** (Note that the use of single or double quotes matters)
+
+```php
+$name = "Alex";
+echo 'Hi I am '.$name.'!<br/>'; // Hi I am Alex!
+echo 'Hi I am $name!<br/>'; // Hi I am $name!
+echo "Hi I am $name!<br/>"; // Hi I am Alex!
+```
+
+<br/>
+
+## strlen, trim, strpos, substr, str_replace
+
+**`strlen()` - Return the Length of a String**
+
+```php
+echo strlen("Hello world!"); // outputs 12
+```
+
+<br/>
+
+**`trim()` - Removes whitespace from both sides of a string**<br/>For right or left side, use `rtrim()` / `ltrim()`
+
+```php
+echo trim("   Hi, World!   "); // Hi, World!
+```
+
+<br/>
+
+**`str_word_count()` - Count Words in a String**
+
+```php
+echo str_word_count("Hello world!"); // outputs 2
+```
+
+<br/>
+
+**`strrev()` - Reverse a String**
+
+```php
+echo strrev("Hello world!"); // !dlrow olleH
+```
+
+<br/>
+
+**`strpos()` - Search For a Text Within a String (case sensitive), returns the first characters position of the first match, if no match is found, returns `false`**
+
+```php
+echo strpos("Hello world!", "world"); // 6
+```
+
+**`stripos()` - Search For a Text Within a String (ignore case sensitive)**
+
+```php
+echo strpos("Hello World!", "world"); // 6
+```
+
+<br/>
+
+**`substr()` - Returns part of a string (substring)**
+
+```php
+echo substr("Hello World", 4);  // o World
+echo substr("Hello World", -4); // orld
+
+echo substr("Hello World", 4, 3); // O W (takes only 3 characters from pos 4)
+```
+
+
+
+<br/>
+
+**`str_replace()` - Replace Text (all occurrences) within a String**<br/>`str_ireplace()` (ignore case sensitive)
+
+```php
+echo str_replace("world", "Captain", "Hello world!"); // Hello Captain!
+echo str_ireplace("hello", "Captain", "Hello? hello!"); // Captain? Captain!
+```
+
+<br/>
+
+**`strtolower()` and `strtoupper()`** converts string to Lower Case / Upper Case
+
+```php
+echo strtolower("Hello World"); // hello world
+echo strtoupper("Hello World"); // HELLO WORLD
+```
+
+**`ucfirst()` and `lcfirst()`** converts to Upper Case / Lower Case only the first character
+
+```php
+echo ucfirst("hello world"); // Hello world
+echo lcfirst("HELLO WORLD"); // hELLO WORLD
+```
+
+**`ucwords()`** Upper Case all words in string
+
+```php
+echo ucwords("hello world"); // Hello World
+```
+
+<br/>
+
+**`nl2br()`** - newline to break line
+
+```php
+$longText = "
+  Hi,
+  I'm Alex,
+  I like back-end.
+";
+
+echo $longText.'<br>'; // Hi, I'm Alex, I like back-end.
+echo nl2br($longText).'<br>';
+// Hi,
+// I'm Alex,
+// I like back-end.
+```
+
+
+
+<br/>
+
+## String indexes, PHP Strings are mutable
+
+We can access string character's with `[ ]`:
+
+```php
+echo "Hello"[0]; // H
+echo "Hello"[1]; // e
+echo "Hello"[-1]; // o
+```
+
+Unlike **JavaScript** and **Python**... Strings in PHP are **mutable** (content can be changed without creating a new object).
+
+```php
+$myStr = "hello";
+$myStr[0] = "j";
+$myStr[-1] = 'y';
+echo $myStr; // jelly
+```
+
+<br/>
+
+## String Explode, Array Implode
+
+[**`explode()`**](https://www.php.net/manual/en/function.explode.php) Breaks a string into an array (in JavaScript/Python we have `str.split()`)
+
+```explode ( string `$separator` , string `$string` , int `$limit` = `PHP_INT_MAX`) : array```
+
+```php
+$pizza  = "piece1 piece2 piece3";
+$pieces = explode(" ", $pizza);
+echo $pieces[0]; // piece1
+echo $pieces[1]; // piece2
+```
+
+**`implode()`** Returns a string from the elements of an array (`join()` does the same, is an alias of `implode()`)
+
+```php
+$arr = array('Test1', 'Test2', 'Test3');
+$str = join(",", $arr);
+echo $str; // Test1,Test2,Test3.
+```
+
+<center>
+
+![PHP Explode meme](./phpTutorial/03.jpg)
+
+</center>
+
+<br/>
+
+**[All PHP String Methods](https://www.w3schools.com/php/php_ref_string.asp)**
+
+| Function                                                     | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [addcslashes()](https://www.w3schools.com/php/func_string_addcslashes.asp) | Returns a string with backslashes in front of the specified characters |
+| [addslashes()](https://www.w3schools.com/php/func_string_addslashes.asp) | Returns a string with backslashes in front of predefined characters |
+| **[bin2hex()](https://www.w3schools.com/php/func_string_bin2hex.asp)** | **Converts a string of ASCII characters to hexadecimal values** |
+| **[chop()](https://www.w3schools.com/php/func_string_chop.asp)** | **Removes whitespace or other characters from the right end of a string** |
+| [chr()](https://www.w3schools.com/php/func_string_chr.asp)   | Returns a character from a specified ASCII value             |
+| **[chunk_split()](https://www.w3schools.com/php/func_string_chunk_split.asp)** | **Splits a string into a series of smaller parts**           |
+| [convert_cyr_string()](https://www.w3schools.com/php/func_string_convert_cyr_string.asp) | Converts a string from one Cyrillic character-set to another |
+| [convert_uudecode()](https://www.w3schools.com/php/func_string_convert_uudecode.asp) | Decodes a uuencoded string                                   |
+| [convert_uuencode()](https://www.w3schools.com/php/func_string_convert_uuencode.asp) | Encodes a string using the uuencode algorithm                |
+| [count_chars()](https://www.w3schools.com/php/func_string_count_chars.asp) | Returns information about characters used in a string        |
+| [crc32()](https://www.w3schools.com/php/func_string_crc32.asp) | Calculates a 32-bit CRC for a string                         |
+| [crypt()](https://www.w3schools.com/php/func_string_crypt.asp) | One-way string hashing                                       |
+| [echo()](https://www.w3schools.com/php/func_string_echo.asp) | Outputs one or more strings                                  |
+| **[explode()](https://www.w3schools.com/php/func_string_explode.asp)** | **Breaks a string into an array**                            |
+| [fprintf()](https://www.w3schools.com/php/func_string_fprintf.asp) | Writes a formatted string to a specified output stream       |
+| [get_html_translation_table()](https://www.w3schools.com/php/func_string_get_html_translation_table.asp) | Returns the translation table used by htmlspecialchars() and htmlentities() |
+| [hebrev()](https://www.w3schools.com/php/func_string_hebrev.asp) | Converts Hebrew text to visual text                          |
+| [hebrevc()](https://www.w3schools.com/php/func_string_hebrevc.asp) | Converts Hebrew text to visual text and new lines (\n) into <br> |
+| **[hex2bin()](https://www.w3schools.com/php/func_string_hex2bin.asp)** | **Converts a string of hexadecimal values to ASCII characters** |
+| [html_entity_decode()](https://www.w3schools.com/php/func_string_html_entity_decode.asp) | Converts HTML entities to characters                         |
+| [htmlentities()](https://www.w3schools.com/php/func_string_htmlentities.asp) | Converts characters to HTML entities                         |
+| [htmlspecialchars_decode()](https://www.w3schools.com/php/func_string_htmlspecialchars_decode.asp) | Converts some predefined HTML entities to characters         |
+| [htmlspecialchars()](https://www.w3schools.com/php/func_string_htmlspecialchars.asp) | Converts some predefined characters to HTML entities         |
+| **[implode()](https://www.w3schools.com/php/func_string_implode.asp)** | **Returns a string from the elements of an array**           |
+| [join()](https://www.w3schools.com/php/func_string_join.asp) | Alias of [implode()](https://www.w3schools.com/php/func_string_implode.asp) |
+| [lcfirst()](https://www.w3schools.com/php/func_string_lcfirst.asp) | Converts the first character of a string to lowercase        |
+| [levenshtein()](https://www.w3schools.com/php/func_string_levenshtein.asp) | Returns the Levenshtein distance between two strings         |
+| [localeconv()](https://www.w3schools.com/php/func_string_localeconv.asp) | Returns locale numeric and monetary formatting information   |
+| [ltrim()](https://www.w3schools.com/php/func_string_ltrim.asp) | Removes whitespace or other characters from the left side of a string |
+| [md5()](https://www.w3schools.com/php/func_string_md5.asp)   | Calculates the MD5 hash of a string                          |
+| [md5_file()](https://www.w3schools.com/php/func_string_md5_file.asp) | Calculates the MD5 hash of a file                            |
+| [metaphone()](https://www.w3schools.com/php/func_string_metaphone.asp) | Calculates the metaphone key of a string                     |
+| [money_format()](https://www.w3schools.com/php/func_string_money_format.asp) | Returns a string formatted as a currency string              |
+| [nl_langinfo()](https://www.w3schools.com/php/func_string_nl_langinfo.asp) | Returns specific local information                           |
+| [nl2br()](https://www.w3schools.com/php/func_string_nl2br.asp) | Inserts HTML line breaks in front of each newline in a string |
+| [number_format()](https://www.w3schools.com/php/func_string_number_format.asp) | Formats a number with grouped thousands                      |
+| [ord()](https://www.w3schools.com/php/func_string_ord.asp)   | Returns the ASCII value of the first character of a string   |
+| [parse_str()](https://www.w3schools.com/php/func_string_parse_str.asp) | Parses a query string into variables                         |
+| [print()](https://www.w3schools.com/php/func_string_print.asp) | Outputs one or more strings                                  |
+| [printf()](https://www.w3schools.com/php/func_string_printf.asp) | Outputs a formatted string                                   |
+| [quoted_printable_decode()](https://www.w3schools.com/php/func_string_quoted_printable_decode.asp) | Converts a quoted-printable string to an 8-bit string        |
+| [quoted_printable_encode()](https://www.w3schools.com/php/func_string_quoted_printable_encode.asp) | Converts an 8-bit string to a quoted printable string        |
+| [quotemeta()](https://www.w3schools.com/php/func_string_quotemeta.asp) | Quotes meta characters                                       |
+| [rtrim()](https://www.w3schools.com/php/func_string_rtrim.asp) | Removes whitespace or other characters from the right side of a string |
+| [setlocale()](https://www.w3schools.com/php/func_string_setlocale.asp) | Sets locale information                                      |
+| [sha1()](https://www.w3schools.com/php/func_string_sha1.asp) | Calculates the SHA-1 hash of a string                        |
+| [sha1_file()](https://www.w3schools.com/php/func_string_sha1_file.asp) | Calculates the SHA-1 hash of a file                          |
+| [similar_text()](https://www.w3schools.com/php/func_string_similar_text.asp) | Calculates the similarity between two strings                |
+| [soundex()](https://www.w3schools.com/php/func_string_soundex.asp) | Calculates the soundex key of a string                       |
+| [sprintf()](https://www.w3schools.com/php/func_string_sprintf.asp) | Writes a formatted string to a variable                      |
+| [sscanf()](https://www.w3schools.com/php/func_string_sscanf.asp) | Parses input from a string according to a format             |
+| [str_getcsv()](https://www.w3schools.com/php/func_string_str_getcsv.asp) | Parses a CSV string into an array                            |
+| [str_ireplace()](https://www.w3schools.com/php/func_string_str_ireplace.asp) | Replaces some characters in a string (case-insensitive)      |
+| [str_pad()](https://www.w3schools.com/php/func_string_str_pad.asp) | Pads a string to a new length                                |
+| [str_repeat()](https://www.w3schools.com/php/func_string_str_repeat.asp) | Repeats a string a specified number of times                 |
+| [str_replace()](https://www.w3schools.com/php/func_string_str_replace.asp) | Replaces some characters in a string (case-sensitive)        |
+| [str_rot13()](https://www.w3schools.com/php/func_string_str_rot13.asp) | Performs the ROT13 encoding on a string                      |
+| [str_shuffle()](https://www.w3schools.com/php/func_string_str_shuffle.asp) | Randomly shuffles all characters in a string                 |
+| [str_split()](https://www.w3schools.com/php/func_string_str_split.asp) | Splits a string into an array                                |
+| **[str_word_count()](https://www.w3schools.com/php/func_string_str_word_count.asp)** | **Count the number of words in a string**                    |
+| **[strcasecmp()](https://www.w3schools.com/php/func_string_strcasecmp.asp)** | **Compares two strings (case-insensitive)**                  |
+| [strchr()](https://www.w3schools.com/php/func_string_strchr.asp) | Finds the first occurrence of a string inside another string (alias of strstr()) |
+| **[strcmp()](https://www.w3schools.com/php/func_string_strcmp.asp)** | **Compares two strings (case-sensitive)**                    |
+| [strcoll()](https://www.w3schools.com/php/func_string_strcoll.asp) | Compares two strings (locale based string comparison)        |
+| [strcspn()](https://www.w3schools.com/php/func_string_strcspn.asp) | Returns the number of characters found in a string before any part of some specified characters are found |
+| [strip_tags()](https://www.w3schools.com/php/func_string_strip_tags.asp) | Strips HTML and PHP tags from a string                       |
+| [stripcslashes()](https://www.w3schools.com/php/func_string_stripcslashes.asp) | Unquotes a string quoted with addcslashes()                  |
+| [stripslashes()](https://www.w3schools.com/php/func_string_stripslashes.asp) | Unquotes a string quoted with addslashes()                   |
+| [stripos()](https://www.w3schools.com/php/func_string_stripos.asp) | Returns the position of the first occurrence of a string inside another string (case-insensitive) |
+| [stristr()](https://www.w3schools.com/php/func_string_stristr.asp) | Finds the first occurrence of a string inside another string (case-insensitive) |
+| [strlen()](https://www.w3schools.com/php/func_string_strlen.asp) | Returns the length of a string                               |
+| [strnatcasecmp()](https://www.w3schools.com/php/func_string_strnatcasecmp.asp) | Compares two strings using a "natural order" algorithm (case-insensitive) |
+| [strnatcmp()](https://www.w3schools.com/php/func_string_strnatcmp.asp) | Compares two strings using a "natural order" algorithm (case-sensitive) |
+| [strncasecmp()](https://www.w3schools.com/php/func_string_strncasecmp.asp) | String comparison of the first n characters (case-insensitive) |
+| [strncmp()](https://www.w3schools.com/php/func_string_strncmp.asp) | String comparison of the first n characters (case-sensitive) |
+| [strpbrk()](https://www.w3schools.com/php/func_string_strpbrk.asp) | Searches a string for any of a set of characters             |
+| [strpos()](https://www.w3schools.com/php/func_string_strpos.asp) | Returns the position of the first occurrence of a string inside another string (case-sensitive) |
+| [strrchr()](https://www.w3schools.com/php/func_string_strrchr.asp) | Finds the last occurrence of a string inside another string  |
+| **[strrev()](https://www.w3schools.com/php/func_string_strrev.asp)** | **Reverses a string**                                        |
+| [strripos()](https://www.w3schools.com/php/func_string_strripos.asp) | Finds the position of the last occurrence of a string inside another string (case-insensitive) |
+| [strrpos()](https://www.w3schools.com/php/func_string_strrpos.asp) | Finds the position of the last occurrence of a string inside another string (case-sensitive) |
+| [strspn()](https://www.w3schools.com/php/func_string_strspn.asp) | Returns the number of characters found in a string that contains only characters from a specified charlist |
+| **[strstr()](https://www.w3schools.com/php/func_string_strstr.asp)** | **Finds the first occurrence of a string inside another string (case-sensitive)** |
+| [strtok()](https://www.w3schools.com/php/func_string_strtok.asp) | Splits a string into smaller strings                         |
+| **[strtolower()](https://www.w3schools.com/php/func_string_strtolower.asp)** | **Converts a string to lowercase letters**                   |
+| **[strtoupper()](https://www.w3schools.com/php/func_string_strtoupper.asp)** | **Converts a string to uppercase letters**                   |
+| [strtr()](https://www.w3schools.com/php/func_string_strtr.asp) | Translates certain characters in a string                    |
+| [substr()](https://www.w3schools.com/php/func_string_substr.asp) | Returns a part of a string                                   |
+| [substr_compare()](https://www.w3schools.com/php/func_string_substr_compare.asp) | Compares two strings from a specified start position (binary safe and optionally case-sensitive) |
+| [**substr_count()](https://www.w3schools.com/php/func_string_substr_count.asp)** | **Counts the number of times a substring occurs in a string** |
+| **[substr_replace()](https://www.w3schools.com/php/func_string_substr_replace.asp)** | **Replaces a part of a string with another string**          |
+| **[trim()](https://www.w3schools.com/php/func_string_trim.asp)** | **Removes whitespace or other characters from both sides of a string** |
+| [ucfirst()](https://www.w3schools.com/php/func_string_ucfirst.asp) | Converts the first character of a string to uppercase        |
+| [ucwords()](https://www.w3schools.com/php/func_string_ucwords.asp) | Converts the first character of each word in a string to uppercase |
+| [vfprintf()](https://www.w3schools.com/php/func_string_vfprintf.asp) | Writes a formatted string to a specified output stream       |
+| [vprintf()](https://www.w3schools.com/php/func_string_vprintf.asp) | Outputs a formatted string                                   |
+| [vsprintf()](https://www.w3schools.com/php/func_string_vsprintf.asp) | Writes a formatted string to a variable                      |
+| [wordwrap()](https://www.w3schools.com/php/func_string_wordwrap.asp) | Wraps a string to a given number of characters               |
+
+
+
+<br/>
 
 # PHP if..else..elseif, switch, loops
+
+
+
+# PHP Arrays
+
+There are two ways to create indexed arrays:
+
+The index can be assigned automatically (index always starts at 0), like this:
+
+```php
+$cars = array("Volvo", "BMW", "Toyota");
+```
+
+or like this:
+
+```php
+$cars = ["Volvo", "BMW", "Toyota"];
+var_dump($cars);
+// array(3) { [0]=> string(5) "Volvo" [1]=> string(3) "BMW" [2]=> string(6) "Toyota" }
+
+echo $cars[0]; // Volvo
+echo $cars[1]; // BMW
+echo $cars[2]; // Toyota
+```
+
+or we can set elements by index manually (without declaring `$cars` first):
+
+```php
+$cars[0] = "Volvo";
+$cars[1] = "BMW";
+$cars[2] = "Toyota";
+```
+
+<br/>
+
+Print all the contents of an array while nicely formated:
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+echo '<pre>';
+var_dump($fruits);
+echo '</pre>';
+```
+
+```
+array(3) {
+  [0]=>
+  string(5) "Banana"
+  [1]=>
+  string(5) "Apple"
+  [2]=>
+  string(6) "Orange"
+}
+```
+
+<br/>
+
+**Loop through an Indexed Array** using a `for` loop
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+
+for($i = 0; $i < count($fruits); $i++) {
+  echo $fruits[$i].'<br>';
+}
+/* 
+Banana
+Apple
+Orange */
+```
+
+## Array methods
+
+(Saturday, February 06, 2021)
+
+### count, push, pop, unshift, shift
+
+**Get the length of array with `count()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+echo count($fruits); // 3
+```
+
+`sizeof()` it's an alias of `count()` (it's the same function)
+
+```php
+echo sizeof($fruits); // 3
+```
+
+
+
+<br/>
+
+**Check if array has an element at index**
+
+```php
+isset($fruits[2]); // true
+var_dump(isset($fruits[2])); // bool(true)
+```
+
+<br/>
+
+**Append element at the end of Array**
+
+```php
+$fruits[] = 'Kiwi';
+var_dump($fruits);
+// array(4) { [0]=> string(5) "Banna" [1]=> string(5) "Apple" [2]=> string(6) "Orange" [3]=> string(4) "Kiwi" }
+```
+
+```php
+// Note that 
+$fruits[] = ['Kiwi', 'Mango'];
+// will append an array to the end of the array.
+
+array(4) {
+  [0]=>
+  string(5) "Banna"
+  [1]=>
+  string(5) "Apple"
+  [2]=>
+  string(6) "Orange"
+  [3]=>
+  array(2) {
+    [0]=>
+    string(4) "Kiwi"
+    [1]=>
+    string(5) "Mango"
+  }
+}
+```
+
+We can append multiple elements to array using `array_push()`
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+array_push($fruits, "Kiwi", "Raspberry");
+
+print_r($fruits);
+// Array ( [0] => Banana [1] => Apple [2] => Orange [3] => Kiwi [4] => Raspberry )
+```
+
+<br/>
+
+**Remove (pop) element from the end of Array (and also return it)**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+echo array_pop($fruits); // Orange
+print_r($fruits); // Array ( [0] => Banana [1] => Apple )
+```
+
+<br/>
+
+**Add element at the beginning of the array with `array_unshift()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+array_unshift($fruits, 'Pineapple');
+print_r($fruits); // Array ( [0] => Pineapple [1] => Banana [2] => Apple [3] => Orange )
+```
+
+<br/>
+
+**Remove element from the beginning of the array with `array_shift()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+array_shift($fruits);
+// Array ( [0] => Apple [1] => Orange )
+```
+
+<br/>
+
+### String Explode, Array Implode
+
+```explode ( string `$separator` , string `$string` , int `$limit` = `PHP_INT_MAX` ) : array```
+
+```php
+$fruits = explode(",", "Banana,Apple,Orange");
+print_r($fruits); // Array ( [0] => Banana [1] => Apple [2] => Orange )
+```
+
+```implode ( string `$separator` , array `$array` ) : string```
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+echo implode(", ", $fruits); // Banana, Apple, Orange
+```
+
+<br/>
+
+### Check if element in array, get index of element
+
+**Check if element exists in Array with `in_array()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+var_dump(in_array('Apple', $fruits)); // bool(true)
+var_dump(in_array('Lemon', $fruits)); // bool(false)
+```
+
+**Return element's index in Array (if exists) with `array_search()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+var_dump(array_search('Apple', $fruits)); // int(1)
+var_dump(array_search('Lemon', $fruits)); // bool(false)
+```
+
+<br/>
+
+### Merge arrays, chunk arrays
+
+**Return merged array from two or more arrays with `array_merge()`**
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+$veggies = ["Potato", "Cucumber"];
+print_r(array_merge($fruits, $veggies));
+// Array ( [0] => Banana [1] => Apple [2] => Orange [3] => Potato [4] => Cucumber )
+```
+
+From `PHP 7.4` and above, we can use the **Spread** operator to merge arrays:
+
+```php
+print_r( [...$fruits, ...$veggies] );
+// Array ( [0] => Banana [1] => Apple [2] => Orange [3] => Potato [4] => Cucumber )
+```
+
+<br/>
+
+**The [`array_chunk()`](https://www.w3schools.com/php/func_array_chunk.asp) function splits an array into chunks of new arrays.**
+
+```php
+$cars = array("Volvo","BMW","Toyota","Honda","Mercedes");
+echo "<pre>";
+print_r(array_chunk($cars, 2));
+echo "</pre>";
+
+Array
+(
+    [0] => Array
+        (
+            [0] => Volvo
+            [1] => BMW
+        )
+    [1] => Array
+        (
+            [0] => Toyota
+            [1] => Honda
+        )
+    [2] => Array
+        (
+            [0] => Mercedes
+        )
+)
+```
+
+<br/>
+
+### Sort Arrays
+
+```php
+$fruits = ["Banana", "Apple", "Orange"];
+sort($fruits);
+print_r($fruits); // Array ( [0] => Apple [1] => Banana [2] => Orange )
+
+$numbers = array(4,6,2,22,11);
+sort($numbers);
+echo(join(', ', $numbers)); // 2, 4, 6, 11, 22
+```
+
+(`sort($arr)` mutates the array and returns true on success, false on failure)
+
+
+
+## PHP Associative Arrays (Dictionaries/JS Objects)
+
+[Associative arrays](https://www.w3schools.com/php/php_arrays_associative.asp) are `key-value` pairs.
+
+They are the equivalent of [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp) or [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp). All in all, associative arrays are like JSON in PHP's coat (the same applies for objects in JavaScript, this data format is JSON - [read more here](https://stackoverflow.com/questions/8067590/associative-array-versus-object-in-javascript)).
+
+Example:
+
+```php
+$ages = array("Peter"=>"35", "Ben"=>"37", "Joe"=>"43");
+// Array ( [Peter] => 35 [Ben] => 37 [Joe] => 43 )
+```
+
+Another example:
+
+```php
+$person = [
+  'name' => 'Brad',
+  'surname' => 'Traversy',
+  'age' => 30,
+  'hobbies' => ['Tennis', 'Video Games']
+];
+echo "<pre>";
+print_r($person);
+echo "</pre>";
+```
+
+Output:
+
+```
+Array
+(
+    [name] => Brad
+    [surname] => Traversy
+    [age] => 30
+    [hobbies] => Array
+        (
+            [0] => Tennis
+            [1] => Video Games
+        )
+)
+```
+
+<br/>
+
+Let's compare the same "associative array" to a JavaScript object:
+
+```js
+let person = {
+  name: "Brad",
+  surname: "Traversy",
+  age: 30,
+  hobbies: ["Tennis", "Video Games"]
+}
+console.log(person);
+```
+
+Output:
+
+```
+{name: "Brad", surname: "Traversy", age: 30, hobbies: Array(2)}
+  age: 30
+  hobbies: (2) ["Tennis", "Video Games"]
+  name: "Brad"
+  surname: "Traversy"
+```
+
+<br/>
+
+### Associative Array methods
+
+**Loop Through an Associative Array**
+
+```php
+$person = [
+  'name' => 'Brad',
+  'surname' => 'Traversy',
+  'age' => 30,
+  'hobbies' => ['Tennis', 'Video Games']
+];
+
+foreach($person as $key => $value) {
+  echo($key.": ");
+  print_r($value);
+  echo("<br/>");
+}
+```
+
+```
+name: Brad
+surname: Traversy
+age: 30
+hobbies: Array ( [0] => Tennis [1] => Video Games )
+```
+
+<br/>
 
 
 

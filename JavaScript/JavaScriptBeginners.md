@@ -1,8 +1,12 @@
-## Credits / Notes taken from:
+# JavaScript Tutorial
+
+Credits / Notes taken from:
+
 - [3h26m Learn JavaScript - Full Course for Beginners from freeCodeCamp/Beau Carnes](https://youtu.be/PkZNo7MFNFg)
 - [w3schools JavaScript Tutorial](https://www.w3schools.com/js/default.asp)
 
-## Contents:
+## Contents
+
 - [Where can I run JavaScript code?](#WhereCanRun)
 - [Declaring variables with `var`, `let`, `const`](#declaringvariables)
 - [Variable names that starts with `$` or `_`](#variablenamesthatstarts)
@@ -125,7 +129,8 @@ Since JavaScript treats underscore as a letter, identifiers containing _ are val
 <br/><br/>
 Note that again, as with $, the use of _ is merely a convention and is not enforced by JavaScript itself.
 
-## <a name="JSDataTypes">JS Data Types</a>
+# <a name="JSDataTypes">JS Data Types and Operators</a>
+
 [JavaScript has dynamic types](https://www.w3schools.com/js/js_datatypes.asp). This means that the same variable can be used to hold different data types.
 ```js
 var x;           // Now x is undefined
@@ -256,7 +261,7 @@ snoopy.bark() // alert("woof!")
 
 <br/>
 
-### Check data types in JS
+## Check data types in JS
 
 ```js
 /* Undefined */
@@ -384,8 +389,7 @@ x = 5 * '10'; // x = 50
 
 
 
-
-## <a name="StringsStringsMethodsTemplateLiterals">Strings, Strings methods and Template Literals</a>
+# <a name="StringsStringsMethodsTemplateLiterals">Strings, Strings methods and Template Literals</a>
 
 - Escape characters in strings:
 
@@ -673,7 +677,8 @@ const failuresList = makeList(result.failure);
     - [w3schools complete string reference](https://www.w3schools.com/jsref/jsref_obj_string.asp)
     - [All strings methods listed from developer.mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-## <a name="NumbersDecimalHexadecimalEtc">Numbers: Decimal, Hexadecimal, Octal, Binary, Infinity and Number Methods `toFixed`/`toPrecision`</a>
+# <a name="NumbersDecimalHexadecimalEtc">Numbers: Decimal, Hexadecimal, Octal, Binary, Infinity and Number Methods `toFixed`/`toPrecision`</a>
+
 JavaScript interprets numeric constants as:
 - **decimal (base 10)** (with no prefix)
 - **hexadecimal (base 16)** if they are preceded by 0x (`0xFF`)
@@ -830,8 +835,9 @@ var x = 6; var y = x.MAX_VALUE;    // y becomes undefined
 
 
 
-## <a name="JavaScriptIfElseSwitchFor">JavaScript `if else`, `switch`, `for`, `for in`, `for of` loop, `while`, `do/while` loop, `break`</a>
-#### <a name="JSIfElse">[`if else`](https://www.w3schools.com/js/js_if_else.asp)</a>
+# <a name="JavaScriptIfElseSwitchFor">JavaScript `if else`, `switch`, `for`, `for in`, `for of` loop, `while`, `do/while` loop, `break`</a>
+
+## <a name="JSIfElse">[`if else`](https://www.w3schools.com/js/js_if_else.asp)</a>
 
 ```js
 if (condition1) {
@@ -866,7 +872,7 @@ function checkSign(num) {
 }
 ```
 
-#### <a name="JSSwitch">[`switch`](https://www.w3schools.com/js/js_switch.asp)</a>
+## <a name="JSSwitch">[`switch`](https://www.w3schools.com/js/js_switch.asp)</a>
 
 ```js
 switch(expression) {
@@ -919,14 +925,15 @@ document.getElementById("demo").innerHTML = text;
 </body>
 ```
 
-#### <a name="JSforloop">[Loops](https://www.w3schools.com/js/js_loop_for.asp)</a>
+## <a name="JSforloop">[Loops](https://www.w3schools.com/js/js_loop_for.asp)</a>
+
 - `for` - loops through a block of code a number of times
 - `for/in` - loops through the properties of an object
 - `for/of` - loops through the values of an iterable object
 - `while` - loops through a block of code while a specified condition is true
 - `do/while` - also loops through a block of code while a specified condition is true
 
-#### `for` loop
+## `for` loop
 
 ```js
 for (statement 1; statement 2; statement 3) {
@@ -965,7 +972,7 @@ for (let i = 0; i < myArr.length; i++) {
 
 - `statement3` increments/decrements the value of the initial variable (`i--`, `i += 5`). It could also be optional/omitted if you increment the values inside the loop.
 
-#### <a name="Jsforin">`for...in` loops through the properties of an object</a>
+## <a name="Jsforin">`for...in` loops through the properties of an object</a>
 
 ```js
 var txt = "";
@@ -990,7 +997,7 @@ for (x in persons) {
 document.getElementById("demo").innerHTML = txt; // Jane Doe 23 John Doe 27 Albert Doa 24
 ```
 
-#### <a name="Jsforof">`for...of` loops through the values of an iterable objects</a>
+## <a name="Jsforof">`for...of` loops through the values of an iterable objects</a>
 
 ```js
 var cars = ['BMW', 'Volvo', 'Mini'];
@@ -1013,7 +1020,7 @@ for (let x of txt) {
 }
 ```
 
-#### <a name="JSwhileloop">`while` loop</a>
+## <a name="JSwhileloop">`while` loop, `do while` loop</a>
 
 ```js
 var text = "";
@@ -1034,7 +1041,7 @@ while (i < 5) {
 }
 ```
 
-#### `do while` loop
+`do {} while ();`
 
 ```js
 do {
@@ -1061,7 +1068,8 @@ while (cars[i]) {
 }
 ```
 
-#### <a name="JsBreakandContinue">[The `break` and `continue` statement](https://www.w3schools.com/js/js_break.asp)</a>
+## <a name="JsBreakandContinue">[`break` and `continue` statement](https://www.w3schools.com/js/js_break.asp)</a>
+
 The `break` statement can also be used to jump out of a loop and continues executing the code after the loop (if any).
 
 ```js
@@ -1080,8 +1088,7 @@ for (i = 0; i < 6; i++) {
 // This example skips the value of 3: will show 0 1 2 4 5
 ```
 
-
-## <a name="MoreOnObjects"></a>More on `objects`:
+# <a name="MoreOnObjects"></a>More on `objects`:
 
 - Return the current value of `apples` property:
 
@@ -1342,8 +1349,7 @@ Dog.prototype = {
 
 
 
-
-## <a name="ArraysandArryasMethods">Arrays and Array methods: `shift`/`unshift`, `push`/`pop`, `splice`/`slice`, `includes`:</a>
+# <a name="ArraysandArryasMethods">Arrays and Array methods: `shift`/`unshift`, `push`/`pop`, `splice`/`slice`, `includes`:</a>
 
 ```js
 cars.length; // 3
@@ -1401,6 +1407,7 @@ values.includes(2); // true
 ```
 
 ## <a name="ArraySort">Array `sort()`</a>
+
 - `sort()` and `reverse()`
 
 ```js
@@ -1518,8 +1525,7 @@ objs.sort(function(a, b) {
 
 
 
-
-## <a name="JsFunctionsHoistingandReturn">JavaScript Functions, Returning values and Function Hoisting</a>
+# <a name="JsFunctionsHoistingandReturn">JavaScript Functions, Returning values and Function Hoisting</a>
 
 ```js
 function myFunctionName(p1, p2) {
@@ -1709,7 +1715,6 @@ console.log(person.myFunction()); // will show all the definiton with properties
 
 
 
-
 ## <a name="JsMakeaSimpleCounter">Making a simple counter function with a button</a>
 
 ```HTML
@@ -1805,7 +1810,7 @@ function myFunctionDec(){
 
 
 ## <a name="RestOperatorandSpreadOperator">The `Rest` operator (`...`) on Function Parameters and `Spread` (`...`) operator to Evaluate Arrays In-Place</a>
-#### The Rest operator allow a function to take a variable number of arguments
+### The Rest operator allows a function to take a variable number of arguments
 
 ```js
 /* This function takes 3 parameters and returns their sum */
@@ -1829,7 +1834,8 @@ const sum = (function() {
 console.log(sum(1, 2, 3, 4)); // 10
 ```
 
-#### The Spread operator expands an already existing array (spreads out an array into its individual elements)
+### The Spread operator expands an already existing array (spreads out an array into its individual elements)
+
 By default, copying an array uses pass-by-reference values.
 
 ```js
@@ -1876,9 +1882,9 @@ const [ , , ...arr] = numbers;
 console.log(arr); // [3, 4, 5, 6, 7]
 ```
 
+# <a name="ArraysAndArrayIteration">[Arrays and Array iteration methods](https://www.w3schools.com/js/js_array_iteration.asp): `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`</a>
 
-## <a name="ArraysAndArrayIteration">[Arrays and Array iteration methods](https://www.w3schools.com/js/js_array_iteration.asp): `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`</a>
-### <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
+## <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
 
 ```js
 var txt = "";
@@ -1902,7 +1908,8 @@ Note that the function takes 3 arguments, some can be optional but must respect 
 - The item `index`
 - The `array` itself
 
-### <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
+## <a name="Arraymap"></a>`Array.map()` method creates a new array by performing a function on each array element
+
 - The map() method does not execute the function for array's elements without values.
 - The map() method does not change the original array.
 
@@ -1969,7 +1976,7 @@ console.log(doubled); // [2, 4, 6, 8, 10]
 
 - Performance-wise: `map()` could be up to 70% faster than `forEach()` on massive arrays.
 
-### <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
+## <a name="ArrayFilter"></a>`Array.filter()` method creates a new array with array elements that passes a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -2007,7 +2014,8 @@ arr.filter((val) => {return Number.isInteger(val) && val >= 0})
    .map((val) => {return val ** 2});
 ```
 
-### <a name="ArrayReduce"></a>`Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
+## <a name="ArrayReduce"></a>`Array.reduce()` method runs a function on each array element to produce (reduce it to) a single value
+
 - `reduce()` method works from left-to-right in the array. 
 - `reduceRight()` does exactly the same but works from right-to-left in the array.
 - Note that the function takes 4 arguments with the same exact names, even `total`:
@@ -2057,7 +2065,7 @@ var sumEven = numbers.filter(e => !(e % 2))
 sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 ```
 
-### <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
+## <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -2071,7 +2079,7 @@ allOver18 = all([_ > 18 for _ in numbers]) # False
 # [_ > 18 for _ in numbers] returns [True, False, False, False, True]
 ```
 
-### <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
+## <a name="ArraySome"></a>`Array.some()` method check if some array values pass a test
 
 ```js
 var numbers = [45, 4, 9, 16, 25];
@@ -2082,7 +2090,8 @@ var someOver18 = numbers.some((value) => {return value > 18}); // true
 someOver18 = any([_ > 18 for _ in numbers]) // True
 ```
 
-### <a name="ArrayIndexOf"></a>`Array.indexOf(item[, start])` method searches an array for an element value and returns its position
+## <a name="ArrayIndexOf"></a>`Array.indexOf(item[, start])` method searches an array for an element value and returns its position
+
 - `Array.lastIndexOf(item[, start])` returns the position of the last occurrence of the specified element.
 - *start* is optional: where to start the search; negative values will start at the given position counting from the end, and search to the end.
 
@@ -2101,7 +2110,7 @@ function quickCheck(arr, elem) {
 console.log(quickCheck(['squash', 'onions', 'shallots'], 'mushrooms')); // false
 ```
 
-### <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
+## <a name="ArrayFind"></a>`Array.find()` returns the value of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];
@@ -2114,7 +2123,7 @@ function myFunction(value, index, array) {
 var first = numbers.find(e => e > 18); // 25
 ```
 
-### <a name="ArrayFindIndex"></a>`Array.findIndex()` method returns the index of the first array element that passes a test function
+## <a name="ArrayFindIndex"></a>`Array.findIndex()` method returns the index of the first array element that passes a test function
 
 ```js
 var numbers = [4, 9, 16, 25, 29];
@@ -2131,7 +2140,8 @@ function myFunction(value, index, array) {
 
 
 
-## <a name="UsingDestructurinAssignment">Using Destructuring Assignment to Assign Variables from Objects</a>
+# <a name="UsingDestructurinAssignment">Using Destructuring Assignment to Assign Variables from Objects</a>
+
 - We can assign values to variables taken from an object in two ways:
 
 ```js
@@ -2224,8 +2234,7 @@ const stats = {
 const half = ({max, min}) => (max + min) / 2.0; // 28.015
 ```
 
-
-## <a name="ConciseObjectLiteralDeclarations">Create Concise Object Literal Declarations using Simple Fields</a>
+# <a name="ConciseObjectLiteralDeclarations">Create Concise Object Literal Declarations using Simple Fields</a>
 
 ```js
 const createPerson = (name, age, gender) => {
@@ -2272,7 +2281,8 @@ const bicycle = {
 
 
 
-## <a name="JsGeneratorFunctions">JavaScript [Generator Function* (`yield`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield)</a>
+# <a name="JsGeneratorFunctions">JavaScript [Generator Function* (`yield`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/yield)</a>
+
 The yield keyword is used to pause and resume a generator function  (`function*`). Syntax: `[retrievedValue] = yield [expression]`
 
 ```js
@@ -2309,7 +2319,7 @@ console.log(appleStore.next())      // { value: undefined, done: true }
 
 
 
-## <a name="JavaScriptClasses"></a>JavaScript Classes
+# <a name="JavaScriptClasses"></a>JavaScript Classes
 
 > JavaScript is object-oriented, but is not a *class-based* object-oriented language like Java, C++, C#. Class-based OOP languages are a subset of the larger family of OOP languages which also include prototype-based languages like JavaScript. JavaScript is both an object-oriented as well as a functional programming language.
 
@@ -2326,7 +2336,7 @@ class ClassName {
 }
 ```
 
-### <a name="UsingClassSyntaxtoDef"></a>[Using class Syntax to Define a Constructor Function](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-class-syntax-to-define-a-constructor-function)
+## <a name="UsingClassSyntaxtoDef"></a>[Using class Syntax to Define a Constructor Function](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-class-syntax-to-define-a-constructor-function)
 
 It should be noted that the `class` syntax is just syntax, and not a full-fledged class-based implementation of an object-oriented paradigm, unlike in languages such as Java, Python, Ruby, etc.<br/>
 
@@ -2385,7 +2395,7 @@ document.getElementById("demo").innerHTML =
 "My car is " + myCar.age() + " years old.";
 ```
 
-### <a name="UsingGettersSetters"></a>[Using getters and setters to Control Access to an Object](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-getters-and-setters-to-control-access-to-an-object)
+## <a name="UsingGettersSetters"></a>[Using getters and setters to Control Access to an Object](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/use-getters-and-setters-to-control-access-to-an-object)
 
 You can obtain values from an object (**get**) and **set** the value of a property within an object.
 - Getter functions are meant to simply return (get) the value of an object's private variable to the user without the user directly accessing the private variable.
@@ -2434,8 +2444,7 @@ thermos.temperature = 26;
 temp = thermos.temperature; // 26 in Celsius
 ```
 
-
-### <a name="JSClassInheritance"></a>[JavaScript Class Inheritance](https://www.w3schools.com/js/js_class_inheritance.asp)
+## <a name="JSClassInheritance"></a>[JavaScript Class Inheritance](https://www.w3schools.com/js/js_class_inheritance.asp)
 
 To create a class inheritance, use the `extends` keyword. A class created with a class inheritance inherits all the methods from another class:
 
@@ -2467,7 +2476,7 @@ document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it i
 
 > Inheritance is useful for code reusability: reuse properties and methods of an existing class when you create a new class.
 
-### <a name="JSClassHoisting"></a>[Class Hoisting](https://www.w3schools.com/js/js_class_inheritance.asp)
+## <a name="JSClassHoisting"></a>[Class Hoisting](https://www.w3schools.com/js/js_class_inheritance.asp)
 
 Unlike functions, and other JavaScript declarations, class declarations are not hoisted. That means that you must declare a class before you can use it:
 
@@ -2502,8 +2511,8 @@ mycar = new Car("Ford")
 
 
 
+# Find me on Social
 
-## Find me on Social
 ***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>
 ***My blog:*** [CodingTranquillity](https://codingtranquillity.herokuapp.com/)
 
