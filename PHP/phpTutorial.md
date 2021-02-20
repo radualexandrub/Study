@@ -58,7 +58,7 @@ Note: PHP 8 was released on November 2020.
 
 In order to run PHP, we need run an Web Apache Server that processes `.php` files and sends the output to the browser.<br/>For this, we can install [XAMPP](https://www.apachefriends.org/ro/index.html) distribution (X-Cross Platform, Apache, MariaDB/MySQL, PHP, Perl).
 
-![](./phpTutorial/00.jpg)
+![](./PhpTutorial/00.jpg)
 
 - To check if Apache server is running, open your browser and type http://localhost/dashboard/
 
@@ -99,7 +99,7 @@ Useful **VSCode extensions** for PHP:
 
 **Now, we need to navigate to our `http://localhost/phptutorialsetup/` address in Chrome Browser.** 
 
-![](./phpTutorial/01.jpg)
+![](./PhpTutorial/01.jpg)
 
 ---
 
@@ -178,7 +178,7 @@ $name = "Radu";
 echo "$txt my name is $name";
 ```
 
-![](./phpTutorial/02.jpg)
+![](./PhpTutorial/02.jpg)
 
 Rules for PHP variables:
 
@@ -332,7 +332,7 @@ console_log( $myvar );
 
 Now we can use `console_log();` to print to Browser's console, just like in JavaScript (`console.log();`)... except, we are actually using JavaScript ofc. :laughing:
 
-![](./phpTutorial/00log.jpg)
+![](./PhpTutorial/00log.jpg)
 
 # PHP Data types and operators
 
@@ -1037,7 +1037,7 @@ echo $str; // Test1,Test2,Test3.
 
 <center>
 
-![PHP Explode meme](./phpTutorial/03.jpg)
+![PHP Explode meme](./PhpTutorial/03.jpg)
 
 </center>
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <title>JavaScript DOM Tutorial</title>
+</head>
+
+<body>
+  <header id="main-header" class="header bg-info text-white p-4 mb-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1 class="header-title">Item Lister</h1>
+        </div>
+
+        <div class="col-md-6 align-self-center">
+          <input id="filter" type="text" class="form-control" placeholder="Search Items...">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="main" class="card card-body">
+      <h2 class="title">Add Items</h2>
+      <form id="addItemForm" class="mb-3">
+        <input id="itemInput" type="text" class="form-control mb-2" />
+        <input type="submit" class="btn btn-dark" value="Submit" />
+      </form>
+
+      <h2 class="title">Items</h2>
+      <ul id="itemList" class="list-group">
+        <li class="list-group-item">Item 1 <button class="btn btn-danger btn-sm float-end delete">X</button></li>
+        <li class="list-group-item">Item 2 <button class="btn btn-danger btn-sm float-end delete">X</button></li>
+        <li class="list-group-item">Item 3 <button class="btn btn-danger btn-sm float-end delete">X</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
