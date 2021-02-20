@@ -28,6 +28,8 @@ The HTML DOM is a standard **object** model and **programming interface** for HT
 
 In other words: **The HTML DOM is a standard for how to get, change, add, or delete HTML elements.**
 
+![](./JSAdvanced/DOM2.jpg)
+
 ---
 
 Example we will use:
@@ -1032,80 +1034,153 @@ function filterItems(e) {
 }
 ```
 
+You can see the Live App:
 
+- [here](https://radubulai.com/Study/JavaScript/VanillaJS_ToDo/)
+- or [here](https://radualexandrub.github.io/Study/JavaScript/VanillaJS_ToDo/)
 
 <br/>
 
 <br/>
 
-# [JavaScript Promises](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/create-a-javascript-promise)
+# Retrieve Array of values from multiple inputs in form
 
-We use promises to do something asynchronously. When a task completes, you either fulfill your promise or fail to do so.<br/>
-`Promise` is a constructor function that is created with `new` keyword. It takes a function as its argument, with two parameters: `resolve` and `reject`. These are methods used to determine the outcome of the promise.
+## HTML
 
-```js
-const myPromise = new Promise((resolve, reject) => {
+```html
+<!DOCTYPE html>
+<html lang="en">
 
-});
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <main>
+    <header class="py-4 text-center bg-primary text-white">
+      <h1>Multiple Inputs</h1>
+    </header>
+
+    <div class="container my-4 card card-body">
+      <form id="form" class="my-2">
+        <div class="form-group py-1">
+          <label id="first-name-label" for="firstName">First Name *</label>
+          <input type="text" name="firstName" id="firstName" class="form-control" placeholder="First name" required />
+        </div>
+
+        <div class="form-group py-1">
+          <label id="last-name-label" for="lastName">Last Name *</label>
+          <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last name" required />
+        </div>
+
+        <div class="form-group py-1">
+          <label id="age-label" for="age">Age</label>
+          <input type="text" name="age" id="age" class="form-control" placeholder="Age" />
+        </div>
+
+        <div class="form-group py-1">
+          <label id="email-label" for="email">E-Mail *</label>
+          <input type="text" name="email" id="email" class="form-control" placeholder="E-Mail" required />
+        </div>
+
+        <div class="form-group py-1">
+          <button type="submit" id="submit" class="btn btn-dark">Submit</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+
+</html>
 ```
 
-A promise has three states: `pending`, `fulfilled`, and `rejected`: 
-- `resolve` is used when you want your promise to succeed
-- `reject` is used when you want it to fail.
+## JS
 
 ```js
-const myPromise = new Promise((resolve, reject) => {
-  if(condition) {
-    resolve("Promise was fulfilled or Data Acquired");
-  } else {
-    reject("Promise was rejected or Data not received");
+let btnSubmit = document.getElementById('submit');
+btnSubmit.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  let values = [];
+  const formData = new FormData(document.getElementById('form'));
+  for (let pair of formData.entries()) {
+    values.push(pair[1]);
   }
-});
+
+  console.log(values);
+})
 ```
 
-The example above uses strings for the argument of these functions, but it can really be anything. Often, it might be an object, that you would use data from, to put on your website or elsewhere.
+![](./JSAdvanced/16.jpg)
 
-## [Handle a Fulfilled Promise with `then`](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/handle-a-fulfilled-promise-with-then)
+<br/>
 
-Promises are most useful when you have a process that takes an unknown amount of time in your code (i.e. something asynchronous), often a server request. When you make a server request it takes some amount of time, and after it completes you usually want to do something with the response from the server. This can be achieved by using the `then` method. The `then` method is executed immediately after your promise is fulfilled with `resolve`:
+## Simpler HTML version complete code
 
-```js
-const makeServerRequest = new Promise((resolve, reject) => {   
-  if(responseFromServer) {
-    resolve("We got the data");
-  } else {  
-    reject("Data not received");
-  }
-});
+We can make a simpler version of this with less form stuff, and we can also save the array in browser's localStorage.
 
-makeServerRequest.then(result => {
-  console.log(result);
-});
+**Complete code:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <title>Document</title>
+</head>
+
+<body>
+  <main>
+    <header class="py-4 text-center bg-primary text-white">
+      <h1>Multiple Inputs</h1>
+    </header>
+
+    <div class="container my-4 card card-body">
+      <form id="form" class="my-2">
+        <input type="text" name="firstName" id="firstName" class="form-control my-2" placeholder="First name *"
+          required />
+        <input type="text" name="lastName" id="lastName" class="form-control my-2" placeholder="Last name *" required />
+        <input type="text" name="age" id="age" class="form-control my-2" placeholder="Age" />
+        <input type="text" name="email" id="email" class="form-control my-2" placeholder="E-Mail *" required />
+        <button type="submit" id="submit" class="btn btn-dark">Submit</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    let btnSubmit = document.getElementById('submit');
+    btnSubmit.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      let values = [];
+      const formData = new FormData(document.getElementById('form'));
+      for (let pair of formData.entries()) {
+        values.push(pair[1]);
+      }
+
+      console.log(values);
+      localStorage.setItem("valuesArray", JSON.stringify(values));
+
+      // to load from localStorage
+      let retrievedData = localStorage.getItem("valuesArray");
+      let retrievedValues = JSON.parse(retrievedData);
+      console.log(retrievedValues);
+    })
+  </script>
+</body>
+
+</html>
 ```
 
-## [Handle a Rejected Promise with `catch`](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/handle-a-rejected-promise-with-catch)
-
-`catch` is the method used when your promise has been rejected and it's executed immediately after a promise's reject method is called.
-
-```js
-makeServerRequest.catch(error => {
-  console.log(error);
-});
-```
-
-- More on **promises**:
-	- [from web.dev](https://web.dev/promises/) 
-	- [from developer.mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
-
-
-
-
-
-
-
-
-
-
-
-
+![](./JSAdvanced/17.jpg)
 
