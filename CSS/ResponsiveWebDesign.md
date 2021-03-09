@@ -72,6 +72,8 @@
 
 ## Basic HTML and HTML5
 
+![Semantic Elements in HTML](./ResponsiveFCC/Responsive001.jpg)
+
 Comments in HTML start with `<!--` and end with a `-->`
 
 HTML5 (released on 28 October 2014) introduces more descriptive HTML tags. These include `main`, `header`, `footer`, `nav`, `video`, `article`, `section` and others.
@@ -422,6 +424,8 @@ To do this, just add the word "checked" to the inside of an input element:
 <br/>
 
 ## Basic CSS
+
+![Set Font Family in CSS](./ResponsiveFCC/Responsive002.jpg)
 
 - **External** CSS:
 

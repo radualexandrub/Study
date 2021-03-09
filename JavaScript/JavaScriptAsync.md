@@ -1,6 +1,29 @@
 
 
-# [JavaScript Promises](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/create-a-javascript-promise)
+# JS Crash course on Callbacks, Promises, Async Await
+
+Credits:
+
+- [24min Async JS Crash Course - Callbacks, Promises, Async Await - Traversy Media](https://youtu.be/PoRJizFvM7s?list=WL)
+- [JavaScript Async, Callbacks, Promises - w3schools](https://www.w3schools.com/js/js_callback.asp)
+
+> **A callback function is a function passed as an argument to another function**
+>
+> This technique allows a function to call another function
+>
+> A callback function can run after another function has finished
+
+
+
+<br/>
+
+<br/>
+
+
+
+# [JavaScript Promises - fCC](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/create-a-javascript-promise)
+
+(Notes taken from freeCodeCamp JavaScript course)
 
 We use promises to do something asynchronously. When a task completes, you either fulfill your promise or fail to do so.<br/>
 `Promise` is a constructor function that is created with `new` keyword. It takes a function as its argument, with two parameters: `resolve` and `reject`. These are methods used to determine the outcome of the promise.

@@ -5,6 +5,44 @@ Credits/Notes from:
 - [[2h] JavaScript DOM Crash Course 2017 - from Traversy Media](https://www.youtube.com/playlist?list=PLillGF-RfqbYE6Ik_EuXA2iZFcE082B3s)
 - [JS HTML DOM - from w3schools](https://www.w3schools.com/js/js_htmldom.asp)
 
+Contents:
+
+- [JavaScript DOM (Document Object Model)](#javascript-dom-document-object-model)
+  - [DOM Elements](#dom-elements)
+  - [DOM Selector Methods](#dom-selector-methods)
+    - [getElementById Method](#getelementbyid-method)
+      - [textContent, innerText and innerHTML](#textcontent-innertext-and-innerhtml)
+      - [Change style of selected element](#change-style-of-selected-element)
+      - [Change class to selected element](#change-class-to-selected-element)
+    - [document.getElementsByClassName](#documentgetelementsbyclassname)
+      - [Add style to selected elements](#add-style-to-selected-elements)
+    - [getElementsByTagName](#getelementsbytagname)
+    - [querySelector](#queryselector)
+    - [querySelectorAll](#queryselectorall)
+- [JavaScript DOM Events](#javascript-dom-events)
+  - [onclick method](#onclick-method)
+  - [addEventListener](#addeventlistener)
+    - [The event parameter](#the-event-parameter)
+    - [Other Types of events](#other-types-of-events)
+  - [Form events](#form-events)
+    - [Keyboard input events. Inputs](#keyboard-input-events-inputs)
+    - [Trigger from a Form Selector](#trigger-from-a-form-selector)
+    - [Submit event, preventDefault](#submit-event-preventdefault)
+- [JavaScript ToDo with Search and delete](#javascript-todo-with-search-and-delete)
+  - [HTML](#html)
+  - [Adding items](#adding-items)
+    - [Initialize and addEventListener](#initialize-and-addeventlistener)
+    - [Create `<li>` and Retrieve the value from form](#create-li-and-retrieve-the-value-from-form)
+    - [Create Delete btn within li](#create-delete-btn-within-li)
+  - [Removing items](#removing-items)
+    - [Complete code so far:](#complete-code-so-far)
+  - [Filter / Search items](#filter--search-items)
+  - [Complete JS code simple ToDo List](#complete-js-code-simple-todo-list)
+- [Retrieve Array of values from multiple inputs in form](#retrieve-array-of-values-from-multiple-inputs-in-form)
+  - [HTML](#html-1)
+  - [JS](#js)
+  - [Simpler HTML version complete code](#simpler-html-version-complete-code)
+
 ![](./JSAdvanced/DOM.jpg)
 
 With the object model, [JavaScript gets all the power it needs to create dynamic HTML](https://www.w3schools.com/js/js_htmldom.asp):
@@ -646,6 +684,8 @@ function runEvent(e) {
 
 # JavaScript ToDo with Search and delete
 
+(Saturday, February 20, 2021)
+
 **Credits:**
 
 - [22min JavaScript DOM Crash Course Part 4 - Brad Traversy](https://youtu.be/i37KVt_IcXw)
@@ -1044,6 +1084,8 @@ You can see the Live App:
 <br/>
 
 # Retrieve Array of values from multiple inputs in form
+
+(Saturday, February 20, 2021)
 
 ## HTML
 
