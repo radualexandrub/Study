@@ -1,6 +1,8 @@
 # Windows 10 Complete Backup Guide for myself
 
-> Last update: Tuesday, November 17, 2020
+> Last Update: Sunday, March 21, 2021
+>
+> Update: Tuesday, November 17, 2020
 
 ## Applications
 
@@ -12,6 +14,7 @@
 - LightShot: https://app.prntscr.com/en/download.html
 - Windirstat: https://windirstat.net/download.html
 - CCleaner: https://www.ccleaner.com/
+- Microsoft Power Toys: https://github.com/microsoft/PowerToys/releases/tag/v0.33.1 (scroll down to Assets to download)
 - Adobe Reader: https://get2.adobe.com/ro/reader/
 - Foxit Phantom PDF Business [SEE LICENSE]
 - [VLC media player](https://www.videolan.org/vlc/download-windows.html)
@@ -22,23 +25,32 @@
 - [MathType 7](https://www.dessci.com/en/products/mathtype/) [CHECK FOR LICENSE]
 - [Microsoft Teams](https://www.microsoft.com/en/microsoft-365/microsoft-teams/group-chat-software)
 - [Zoom](https://zoom.us/download)
+- [Skype](https://www.skype.com/en/get-skype/)
 - Steam: https://store.steampowered.com/about/
 - Epic Games Launcher: https://www.epicgames.com/store/en-US/download
 - Discord: https://discord.com/download
+- Monday: https://support.monday.com/hc/en-us/articles/115005316885-Does-monday-com-have-a-desktop-app-
+- Thunderbird: https://www.thunderbird.net/en-US/
 
 ### Browsers
 
-- [Google Chrome](https://www.google.com/chrome/). Check extensions:
-  - [MarkDown Viewer](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) -> Advanced Options: only allow origin named `file://`, make sure GitHub isn't there! Also check all the options in `CONTENT`
-  - [Fireshot](https://chrome.google.com/webstore/detail/take-webpage-screenshots/mcbpblocgmgfnpjjppndjkmgjaogfceg?hl=en)
-  - [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
-  - [News Feed Eradicator for Facebook](https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en)
-  - [Facebook Purity](https://chrome.google.com/webstore/detail/fbfluffbustingpurity/nmkinhboiljjkhaknpaeaicmdjhagpep)
-  - [DF Tube (Distraction Free for YouTube)](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en)
-  - [Dark Mode](https://chrome.google.com/webstore/detail/dark-mode/dmghijelimhndkbmpgbldicpogfkceaj)
-  - [Grammarly for Chrome](https://chrome.google.com/webstore/detail/grammarly-for-chrome/kbfnbcaeplbcioakkpcpgfkobkghlhen)
-  - [Screenshot YouTube](https://chrome.google.com/webstore/detail/screenshot-youtube/gjoijpfmdhbjkkgnmahganhoinjjpohk)
-  - [Webtime Tracker](https://chrome.google.com/webstore/detail/webtime-tracker/ppaojnbmmaigjmlpjaldnkgnklhicppk)
+- [Google Chrome](https://www.google.com/chrome/). Check these **extensions**:
+  - Dev:
+    - [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+    - [Wappalyzer](https://chrome.google.com/webstore/detail/wappalyzer/gppongmhjkpfnbhagpmjfkannfbllamg?hl=en)
+    - [Tag Assistant Legacy](https://chrome.google.com/webstore/detail/tag-assistant-legacy-by-g/kejbdjndbnbjgmefkgdddjlbokphdefk?hl=en)
+    - [CSS Reloader](https://chrome.google.com/webstore/detail/css-reloader/dnfpcpfijpdhabaoieccoclghgplmpbd?hl=en)
+    - [SEO META in 1 CLICK](https://chrome.google.com/webstore/detail/seo-meta-in-1-click/bjogjfinolnhfhkbipphpdlldadpnmhc?hl=en)
+  - Other:
+    - [MarkDown Viewer](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) -> Advanced Options: only allow origin named `file://`, make sure GitHub isn't there! Also check all the options in `CONTENT` (EXCEPT Content -> Mathjax and EXCEPT Compiler -> Pedantic)
+    - [Fireshot](https://chrome.google.com/webstore/detail/take-webpage-screenshots/mcbpblocgmgfnpjjppndjkmgjaogfceg?hl=en)
+    - [News Feed Eradicator for Facebook](https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en)
+    - [Facebook Purity](https://chrome.google.com/webstore/detail/fbfluffbustingpurity/nmkinhboiljjkhaknpaeaicmdjhagpep)
+    - [DF Tube (Distraction Free for YouTube)](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en)
+    - [Dark Mode](https://chrome.google.com/webstore/detail/dark-mode/dmghijelimhndkbmpgbldicpogfkceaj)
+    - [Grammarly for Chrome](https://chrome.google.com/webstore/detail/grammarly-for-chrome/kbfnbcaeplbcioakkpcpgfkobkghlhen)
+    - [Screenshot YouTube](https://chrome.google.com/webstore/detail/screenshot-youtube/gjoijpfmdhbjkkgnmahganhoinjjpohk)
+    - [Webtime Tracker](https://chrome.google.com/webstore/detail/webtime-tracker/ppaojnbmmaigjmlpjaldnkgnklhicppk)
 - [Firefox](https://www.mozilla.org/en-US/firefox/new/)
 
 ### Work
@@ -46,14 +58,22 @@
 - Git and Git GUI: https://git-scm.com/downloads
 - Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
 - [Postgre SQL](https://www.postgresql.org/download/) and/or [MySQL](https://dev.mysql.com/downloads/installer/)
+  
   - Store the passwords safely!
-- Node.js: https://nodejs.org/en/
-  - It also should be added to `Environment Variables -> System variables -> Path -> Edit -> C:\Program Files\nodejs\`
 - Android Studio and SDK: https://developer.android.com/studio#downloads
-- FileZilla Client: https://filezilla-project.org/download.php?platform=win64
+- FTP:
+  - FileZilla Client: https://filezilla-project.org/download.php?platform=win64
+  - WinSCP (better): https://winscp.net/eng/download.php
 - Kite: https://www.kite.com/
 - [CodeBlocks?](http://www.codeblocks.org/downloads)
 - [Article on How to properly install Java JDK 13 on Windows + Eclipse 2020](https://www.guru99.com/install-java.html)
+- Node.js: https://nodejs.org/en/
+  
+  - `Appdata\Roaming\npm` is added by default after installation
+  - Add this folder to `Environment Variables -> System variables -> Path -> Edit -> C:\Program Files\nodejs\`
+  - Restart PC
+  
+  ![Environment Variables](./win10img/node01.jpg)
 
 ### Others, optional
 
@@ -67,7 +87,7 @@
 
 ## Anaconda (Python, Spyder, Jupyter)
 
-Download here: https://www.anaconda.com/products/individual
+Download here: https://www.anaconda.com/products/individual. On installation, make sure you check `Add Anaconda to the system PATH environment variable` (even if it says "Not recommended").
 
 After installing Anaconda distribution, restart PC & check Path(s) in Environment Variables:
 
@@ -120,7 +140,7 @@ conda remove --name myenv --all
 conda env list
 ```
 
-Also, it's not recommended to install packages/modules in you `Base` Anaconda Environment!
+**Also, it's not recommended to install packages/modules in you `Base` Anaconda Environment!** Only work within your own created custom environments.
 
 <br/>
 
@@ -321,15 +341,14 @@ pip install gunicorn
 
 ## Text Editors and Word Processors
 
-- Typora (Markdown): https://typora.io/
+- Typora (Markdown): https://typora.io/ (In File -> Preferences -> Editor Tab -> Check "Live Rendering Display source for headings", also in Markdown Tab you can set code indent to 2 spaces)
 
 - Notepad++: https://notepad-plus-plus.org/downloads/
 
 - Microsoft Office [SEE STUDENT LICENSE]
 
 - [Visual Studio Code](https://code.visualstudio.com/download). Check these extensions:
-
-  - [Django](https://marketplace.visualstudio.com/items?itemName=batisteo.vscode-django)
+- [Django](https://marketplace.visualstudio.com/items?itemName=batisteo.vscode-django)
   - [Prettier Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
   - [ES7 React/Redux/GraphQL/React snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
   - [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
@@ -390,29 +409,10 @@ Download [Sublime Text](https://www.sublimetext.com/3)
 ### My Sublime Text settings / preferences
 
 ```yaml
-Settings - Preferences.sublime-settings
 {
-	"added_words":
-	[
-		"domnule",
-		"",
-		"Judecäƒtorul",
-		"Aè™a",
-		"Tovaräƒè™ul",
-		"Judecäƒtorul",
-		"Ascultäƒ",
-		"zise",
-		"Nelder",
-		"repo",
-		"reflog",
-		"config",
-		"github",
-		"Convolutional",
-		"app"
-	],
 	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
 	"dictionary": "Packages/Language - English/en_US.dic",
-	"font_size": 11,
+	"font_size": 10,
 	"ignored_packages":
 	[
 		"Vintage"
@@ -425,7 +425,6 @@ Settings - Preferences.sublime-settings
 	"translate_tabs_to_spaces": true,
 	"vintageous_use_ctrl_keys": true
 }
-
 ```
 
 ### Key bindings, especially `F5` for Pyhon REPL:
@@ -592,7 +591,11 @@ These settings are found in `User/AppData/Roaming/Sublime Text 3/Packages/User` 
 }
 ```
 
+### Sublime Backup and Restore
 
+In order to restore all your sublime text settings, preferences, and installed & customized packages settings, you just need to drag and drop the sublime's "User" folder located in `C:\Users\radu\AppData\Roaming\Sublime Text 3\Packages\User`, and next time you'll run Sublime Text, it will automatically install all the packages and configure their preferences. (However, don't copy `cache` folders)
+
+![Sublime Text Backup and Recover](./win10img/sublime01.jpg)
 
 <br/>
 
@@ -600,5 +603,5 @@ These settings are found in `User/AppData/Roaming/Sublime Text 3/Packages/User` 
 
 Download [AutoHotKey](https://www.autohotkey.com/)
 
-My current script - Tuesday, November 17, 2020
-[Hotkeys_Basic_stuff.ahk](./AutoHotKey/Hotkeys_Basic_stuff.ahk)
+My current script - Sunday, March 21, 2021
+[AHK.ahk](./AutoHotKey/AHK.ahk)

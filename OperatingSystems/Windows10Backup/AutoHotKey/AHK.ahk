@@ -1,4 +1,4 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 	; List of keyboard buttons
@@ -519,3 +519,4 @@ Alt & SC035:: ; / as arrow down
   Send {Down}
   Return
 }
+

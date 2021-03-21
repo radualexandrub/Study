@@ -3,11 +3,11 @@
 	[
 		"domnule",
 		"",
-		"Judec�torul",
-		"A�a",
-		"Tovar��ul",
-		"Judec�torul",
-		"Ascult�",
+		"Judecäƒtorul",
+		"Aè™a",
+		"Tovaräƒè™ul",
+		"Judecäƒtorul",
+		"Ascultäƒ",
 		"zise",
 		"Nelder",
 		"repo",
@@ -19,7 +19,7 @@
 	],
 	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
 	"dictionary": "Packages/Language - English/en_US.dic",
-	"font_size": 11,
+	"font_size": 10,
 	"ignored_packages":
 	[
 		"Vintage"
