@@ -1226,3 +1226,45 @@ We can make a simpler version of this with less form stuff, and we can also save
 
 ![](./JSAdvanced/17.jpg)
 
+<br/>
+
+<br/>
+
+**Another method for retrieving all field values from a form, but here we need to store all the field's IDs into an array:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Retrieve Values from Form fields as Array</title>
+  </head>
+  <body>
+    <form id="formID">
+      <div>
+        <input type="text" id="title" placeholder="Title" />
+      </div>
+      <div>
+        <textarea id="body" placeholder="Body"></textarea>
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+      document.getElementById("formID").addEventListener("submit", addPost);
+      function addPost(e) {
+        e.preventDefault();
+
+        let ids = ["title", "body"];
+        let values = [];
+        for (id of ids) {
+          values.push(document.getElementById(id).value);
+        }
+        console.log(values);
+      }
+    </script>
+  </body>
+</html>
+```
+
+![](./JSAdvanced/18.jpg)
