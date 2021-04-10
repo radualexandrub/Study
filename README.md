@@ -2,14 +2,15 @@
 A collection of my personal study notes from various courses, tutorials, articles or lectures.
 
 ## Front-end
-#### **HTML, CSS, Sass**
+
+### **HTML, CSS, Sass**
 
 * [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
 * [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
 * [Build a Responsive Website | HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
 * [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md) 
 
-#### **JavaScript**
+### **JavaScript**
 
 * [**JavaScript Full Course for Beginners (to advanced)** - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
 * [JavaScript DOM](./JavaScript/JavaScriptDOM.md)
@@ -20,35 +21,41 @@ A collection of my personal study notes from various courses, tutorials, article
   * [**Object Oriented Programming (OOP)** and OOP in JavaScript](./JavaScript/JavaScriptOOP.md)
 * [JavaScript Algorithms from solving freeCodeCamp & HackerRank challenges](./JavaScript/JavaScriptAlgorithms.md)
 
-#### **React**
+### **React**
 
 * [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
 * [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
 
 
 
+## Mobile
+
+### React Native
+
+- [React Native Crash Course](./ReactNative/ReactNativeCrashCourse/ReactNativeCrash.md)
+
 
 
 ## Back-end
 
-#### PHP
+### PHP
 
 - [PHP Tutorial](./PHP/phpTutorial.md)
 
 
 
-#### **Python**
+### **Python**
 
 * [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
 * [Python algorithmic tricks & tips from solving HackerRank challenges - coming soon]
 
-#### **Django**
+### **Django**
 
 
 
 
 
-#### SQL
+### SQL
 
 * [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
 
@@ -59,7 +66,9 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 ## Other
-#### Git
+
+### Git
+
 * [About Git and GitHub](./Git/Git-about.md)
 * [Git CLI commands](./Git/Git-CLI-commands.md)
 
@@ -68,11 +77,12 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 ## Takes these notes offline!
+
 - You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
 - Or... you can download [Typora editor](https://typora.io/) on your machine to directly open all the `.md` files.
 
-
 ## Find more about me on:
+
 ***My portfolio and blog:*** [radubulai.com](https://radualexandrub.github.io/)
 
 <a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
