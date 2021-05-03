@@ -1,4 +1,5 @@
-# My-Study-Notes
+# My Study Notes
+
 A collection of my personal study notes from various courses, tutorials, articles or lectures.
 
 ## Front-end
@@ -7,7 +8,7 @@ A collection of my personal study notes from various courses, tutorials, article
 
 * [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
 * [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
-* [Build a Responsive Website | HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
+* [Build a Responsive Website - HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
 * [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md) 
 
 ### **JavaScript**
@@ -74,6 +75,20 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 
+---
+
+
+
+## Deployed Apps from these Notes
+
+https://radubulai.com/Study/React/todo
+
+https://radubulai.com/Study/JavaScript/VanillaJS_ToDo
+
+https://radubulai.com/Study/LiveQualiaSoft
+
+https://radubulai.com/Study/LiveSassPortfolio
+
 
 
 ## Takes these notes offline!
@@ -81,7 +96,7 @@ A collection of my personal study notes from various courses, tutorials, article
 - You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
 - Or... you can download [Typora editor](https://typora.io/) on your machine to directly open all the `.md` files.
 
-## Find more about me on:
+## Find more about me
 
 ***My portfolio and blog:*** [radubulai.com](https://radualexandrub.github.io/)
 
