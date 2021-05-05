@@ -2,6 +2,8 @@
 
 A collection of my personal study notes from various courses, tutorials, articles or lectures.
 
+---
+
 ## Front-end
 
 ### **HTML, CSS, Sass**
@@ -27,7 +29,7 @@ A collection of my personal study notes from various courses, tutorials, article
 * [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
 * [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
 
-
+---
 
 ## Mobile
 
@@ -35,15 +37,13 @@ A collection of my personal study notes from various courses, tutorials, article
 
 - [React Native Crash Course](./ReactNative/ReactNativeCrashCourse/ReactNativeCrash.md)
 
-
+---
 
 ## Back-end
 
 ### PHP
 
 - [PHP Tutorial](./PHP/phpTutorial.md)
-
-
 
 ### **Python**
 
@@ -54,17 +54,11 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 
-
-
 ### SQL
 
 * [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
 
-
-
-
-
-
+---
 
 ## Other
 
@@ -93,7 +87,7 @@ https://radubulai.com/Study/LiveSassPortfolio
 
 ## Takes these notes offline!
 
-- You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` files in Google Chrome.
+- You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` (markdown) files in Google Chrome.
 - Or... you can download [Typora editor](https://typora.io/) on your machine to directly open all the `.md` files.
 
 ## Find more about me
