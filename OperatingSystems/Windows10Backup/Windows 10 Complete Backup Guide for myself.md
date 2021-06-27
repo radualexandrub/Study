@@ -394,10 +394,12 @@ My Visual Studio Code current settings (`CTRL+SHIFT+P` -> select `Preferences: O
         - `pdflatex DEFAULT:pdflatex DEFAULT` : `pdflatex.exe -synctex=1 -interaction=nonstopmode %.tex`
         - We will compile with XeLaTeX in order to use Minted Code Highlighting
     - **Language** tab:
-      - ![image-20201117180300695](./win10img/img03.png)
+      - ![](./win10img/img03.png)
       - https://tex.stackexchange.com/questions/260651/romanian-language-in-latex/538166#538166
       - https://extensions.openoffice.org/de/project/classic-romanian-dictionary-pack-spell-checker-hyphenation-thesaurus
-
+  - **Preserve Indentation when pasting code into minted -> Keep Indentation**
+      - ![](./win10img/img03-02.png)
+  
   
 
 <br/>

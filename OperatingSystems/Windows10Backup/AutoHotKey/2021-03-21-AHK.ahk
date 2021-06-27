@@ -189,7 +189,7 @@ Alt & Volume_Down::WheelDown
 {                                      ; to open jupyter notebook in g: in tf_gpu conda env
   Run cmd, g:
   Sleep 100
-  Send, activate tf
+  Send, activate tf_gpu
   Sleep 1000
   Send, {Enter}
   Send, jupyter notebook

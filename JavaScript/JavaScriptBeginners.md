@@ -2065,6 +2065,43 @@ var sumEven = numbers.filter(e => !(e % 2))
 sumEven = sum([_ for _ in numbers if _ % 2 == 0])
 ```
 
+<br/>
+
+Sum of all prices of an Array with objects that have a "price" property:
+
+```js
+let arr = [
+  { name: "Banana", price: 2 },
+  { name: "Chia seeds", price: 5 },
+  { name: "Milk" },
+  { name: "Potatoes", price: 1.5 }
+];
+
+// Also check if object has a price property, if not, map as 0 (zero)
+let totalPrice = arr.map(item => item.price || 0)
+					.reduce((total, price) => {return total + price}, 0);
+
+console.log(totalPrice); // 8.5
+```
+
+```python
+# Python3
+arr = [
+  {'name': "Banana", 'price': 2},
+  {'name': "Chia seeds", 'price': 5},
+  {'name': "Milk"},
+  {'name': "Potatoes", 'price': 1.5}
+]
+
+# Also check if item (dict) has a price attribute/key
+totalPrice = sum([item['price'] for item in arr if 'price' in item])
+print(totalPrice) # 8.5
+```
+
+
+
+<br/>
+
 ## <a name="ArrayEvery"></a>`Array.every()` method check if all array values pass a test
 
 ```js
