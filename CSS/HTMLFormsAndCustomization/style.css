@@ -1,0 +1,72 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 720px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.form-container {
+  margin: 0.5rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 10, 0.1);
+  border-radius: 1rem;
+}
+
+.form__item {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form__item .form__label {
+  margin-bottom: 0.5rem;
+}
+
+.form__item .form__input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-color: rgba(0, 0, 10, 0.25);
+  border-radius: 0.5rem;
+  transition: border-color 200ms ease-in;
+}
+
+.form__item .form__input:focus {
+  border-color: rgba(0, 0, 10, 0.8);
+  outline: 0;
+}
+
+.form__item--buttons {
+  margin-top: 1rem;
+}
+
+.form__item--buttons .form__button {
+  padding: 1em 2em;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.form__item--buttons .form__button .form__button--submit {
+  background-color: #222;
+  border: 1px solid #222;
+  color: #fff;
+}
+
+.form__item--buttons .form__button .form__button--reset {
+  background-color: #fff;
+  border: 1px solid #222;
+  color: #222;
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All forms elements and customization</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="form-container">
+      <form class="form" action="./" method="GET" enctype="multipart/form-data">
+        <div class="form__item">
+          <label class="form__label" for="name">Name</label>
+          <input class="form__input" type="text" name="name" id="name" required>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="email">Email</label>
+          <input class="form__input" type="email" name="email" id="email" required>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="phone">Phone</label>
+          <input class="form__input" type="tel" name="phone" id="phone">
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="age">Age</label>
+          <input class="form__input" type="number" name="age" id="age" min="1" max="200" step="1">
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="url">Website URL</label>
+          <input class="form__input" type="url" name="url" id="url">
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="password">Password</label>
+          <input class="form__input" type="password" name="password" id="password" required>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="date">Birthdate</label>
+          <input class="form__input" type="date" name="date" id="date" min="2019-06-10">
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="week">Week</label>
+          <input class="form__input" id="week" type="week" name="week">
+        </div>
+
+        <div class="form__item">
+          Favorite Food Checkbox
+          <div>
+            <input class="form__input" type="checkbox" name="banana" id="banana">
+            <label class="form__label" for="banana">Banana</label>
+          </div>
+          <div>
+            <input class="form__input" type="checkbox" name="apple" id="apple">
+            <label class="form__label" for="apple">Apple</label>
+          </div>
+        </div>
+
+        <div class="form__item">
+          Gender Radio
+          <div>
+            <input class="form__input" type="radio" name="gender" id="male" value="male">
+            <label class="form__label" for="male">Male</label>
+          </div>
+          <div>
+            <input class="form__input" type="radio" name="gender" id="female" value="female">
+            <label class="form__label" for="female">Female</label>
+          </div>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="eyeColor">Eye Color</label>
+          <select name="eyeColor" id="eyeColor">
+            <option value="Green">Green</option>
+            <option value="Red">Red</option>
+          </select>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="bio">Bio</label>
+          <textarea id="bio" name="bio" rows="4"></textarea>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="range">Range</label>
+          <input class="form__input" id="range" type="range" name="range" min="1" max="10">
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="file">File</label>
+          <input class="form__input" id="file" type="file" name="file">
+        </div>
+
+        <input class="form__input" type="hidden" name="hidden" value="hi">
+
+        <div class="form__item--buttons">
+          <button class="form__button form__button--submit" type="submit">Submit</button>
+          <button class="form__button form__button--reset" type="reset">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>

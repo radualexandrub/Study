@@ -18,6 +18,7 @@ A collection of my personal study notes from various courses, tutorials, article
 * [**JavaScript Full Course for Beginners (to advanced)** - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
 * [JavaScript DOM](./JavaScript/JavaScriptDOM.md)
 * [JavaScript Async, Await, Promises, AJAX](./JavaScript/JavaScriptAsync.md)
+* [JavaScript Local Storage, Session Storage and Cookies](./JavaScript/JavaScriptLocalStorageCookies.md)
 * [Regular Expressions (Regex) in JavaScript](./JavaScript/JavaScriptRegex.md)
 * [Programming Paradigms in JavaScript, with lots of examples:](./JavaScript/JavaScriptFunctionalProgramming.md)
   * [JavaScript **Functional Programming**](./JavaScript/JavaScriptFunctionalProgramming.md)
