@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Range Slider with Price</title>
+
+  <style>
+    .form__item--range-container {
+      display: flex;
+      width: 600px;
+    }
+
+    .range__slider {
+      width: 95%;
+    }
+
+    .range__value {
+      width: 35%;
+      margin-left: 45px;
+      text-align: center;
+      border-left: #e6e4e4 1px solid;
+    }
+
+    .form__item--range-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form__item--range-group .range__text {
+      text-transform: uppercase;
+      font-size: .7rem;
+      color: #222;
+      margin-bottom: 5px;
+    }
+
+    .form__item--range-group span {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #3c3b3b;
+    }
+
+    .range__slider .range__text {
+      margin-bottom: 10px;
+    }
+
+    .range__slider [type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 0.5rem;
+      border-radius: 6px;
+      background: #f1f1f1;
+      padding: 0;
+      margin: 0;
+    }
+
+    .range__slider [type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: #fbfbfb;
+      border: #7a00ff 3px solid;
+      cursor: pointer;
+      -webkit-transition: background-color .15s ease-in-out;
+      transition: background-color .15s ease-in-out;
+    }
+
+    .range__slider [type="range"]::-webkit-slider-thumb:hover {
+      background-color: #7a00ff;
+    }
+
+    .range__slider [type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border: 0;
+      border-radius: 50%;
+      background-color: #ccc;
+      border: #7a00ff 3px solid;
+      cursor: pointer;
+      -webkit-transition: background-color .15s ease-in-out;
+      transition: background-color .15s ease-in-out;
+    }
+
+    .range__slider [type="range"]::-moz-range-thumb:hover {
+      background-color: #7a00ff;
+    }
+
+    input::-moz-focus-inner,
+    input::-moz-focus-outer {
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form__item">
+    <label for="rangeAmountSpentOnFruits">How much do you spend on fruits annualy?</label>
+    <div class="form__item--range-container">
+      <div class="form__item--range-group range__slider">
+        <input id="rangeAmountSpentOnFruits" type="range" step="100">
+      </div>
+      <div class="form__item--range-group range__value">
+        <span id="rangeAmountSpentOnFruitsDisplay"></span>
+        <div class="range__text">Amount</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class Slider {
+      constructor(rangeElement, valueElement, options) {
+        this.rangeElement = rangeElement
+        this.valueElement = valueElement
+        this.options = options
+        this.rangeElement.addEventListener('input', this.updateSlider.bind(this))
+      }
+      init() {
+        this.rangeElement.setAttribute('min', options.min)
+        this.rangeElement.setAttribute('max', options.max)
+        this.rangeElement.value = options.cur
+
+        this.updateSlider()
+      }
+      asMoney(value) {
+        /* Money Format */
+        return parseFloat(value).toLocaleString('en-US', { maximumFractionDigits: 2 }) + " Lei"
+      }
+      generateBackground(rangeElement) {
+        if (this.rangeElement.value === this.options.min) {
+          return
+        }
+        var percentage = (this.rangeElement.value - this.options.min) / (this.options.max - this.options.min) * 100
+        return 'background: linear-gradient(to right, #50299c, #7a00ff ' + percentage + '%, #E9E9E9 ' + percentage + '%, #E6E6E6 100%)'
+      }
+      updateSlider(newValue) {
+        this.valueElement.innerHTML = this.asMoney(this.rangeElement.value)
+        this.rangeElement.style = this.generateBackground(this.rangeElement.value)
+      }
+    }
+
+    var rangeElement = document.querySelector('.form__item--range-container #rangeAmountSpentOnFruits')
+    var valueElement = document.querySelector('.form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay')
+
+    var options = {
+      min: 100,
+      max: 5000,
+      cur: 1500
+    }
+    if (rangeElement) {
+      var slider = new Slider(rangeElement, valueElement, options)
+      slider.init()
+    }
+  </script>
+</body>
+
+</html>

@@ -7,40 +7,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All forms elements and customization</title>
   <link rel="stylesheet" href="./style.css">
+  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
   <div class="container">
     <div class="form-container">
-      <form class="form" action="./" method="GET" enctype="multipart/form-data">
+      <form id="form" class="form" action="./" method="GET" enctype="multipart/form-data">
         <div class="form__item">
           <label class="form__label" for="name">Name</label>
-          <input class="form__input" type="text" name="name" id="name" required>
+          <input class="form__input" type="text" name="name" id="name">
+          <i class="fas fa-check-circle"></i>
+          <i class="fas fa-exclamation-circle"></i>
+          <small>Error message</small>
         </div>
 
         <div class="form__item">
           <label class="form__label" for="email">Email</label>
-          <input class="form__input" type="email" name="email" id="email" required>
+          <input class="form__input" type="email" name="email" id="email">
+          <i class="fas fa-check-circle"></i>
+          <i class="fas fa-exclamation-circle"></i>
+          <small>Error message</small>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="password">Password</label>
+          <input class="form__input" name="password" id="password" type="password">
+          <i class="fas fa-check-circle"></i>
+          <i class="fas fa-exclamation-circle"></i>
+          <small>Error message</small>
+        </div>
+
+        <div class="form__item">
+          <label class="form__label" for="passwordCheck">Password check</label>
+          <input class="form__input" name="passwordCheck" id="passwordCheck" type="password">
+          <i class="fas fa-check-circle"></i>
+          <i class="fas fa-exclamation-circle"></i>
+          <small>Error message</small>
         </div>
 
         <div class="form__item">
           <label class="form__label" for="phone">Phone</label>
-          <input class="form__input" type="tel" name="phone" id="phone">
+          <input class="form__input" type="tel" name="phone" id="phone" placeholder="555-555-xxxx">
         </div>
 
         <div class="form__item">
           <label class="form__label" for="age">Age</label>
-          <input class="form__input" type="number" name="age" id="age" min="1" max="200" step="1">
+          <input class="form__input" type="number" name="age" id="age" min="1" max="120" step="1">
         </div>
 
         <div class="form__item">
           <label class="form__label" for="url">Website URL</label>
           <input class="form__input" type="url" name="url" id="url">
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="password">Password</label>
-          <input class="form__input" type="password" name="password" id="password" required>
         </div>
 
         <div class="form__item">
@@ -54,50 +73,89 @@
         </div>
 
         <div class="form__item">
-          Favorite Food Checkbox
-          <div>
+          <label class="form__label" for="selectFavoriteColor">Favorite Color</label>
+          <div class="form__select">
+            <select class="form__input" name="selectFavoriteColor" id="selectFavoriteColor">
+              <option value="" disabled selected>Select your option</option>
+              <option value="Green">Green</option>
+              <option value="Red">Red</option>
+              <option value="Blue">Blue</option>
+              <option value="Brown">Brown</option>
+              <option value="Purple">Purple</option>
+            </select>
+            <span class="form__select--arrow"></span>
+          </div>
+        </div>
+
+
+        <div class="form__item">
+          <div class="form__item--title">Favorite Food Checkbox</div>
+          <div class="form__item--checkbox-container">
             <input class="form__input" type="checkbox" name="banana" id="banana">
             <label class="form__label" for="banana">Banana</label>
           </div>
-          <div>
-            <input class="form__input" type="checkbox" name="apple" id="apple">
-            <label class="form__label" for="apple">Apple</label>
+          <div class="form__item--checkbox-container">
+            <input class="form__input" type="checkbox" name="grapefruit" id="grapefruit">
+            <label class="form__label" for="grapefruit">Grapefruit</label>
+          </div>
+          <div class="form__item--checkbox-container">
+            <input class="form__input" type="checkbox" name="blackberry" id="blackberry">
+            <label class="form__label" for="blackberry">Blackberry</label>
           </div>
         </div>
 
         <div class="form__item">
-          Gender Radio
-          <div>
-            <input class="form__input" type="radio" name="gender" id="male" value="male">
-            <label class="form__label" for="male">Male</label>
-          </div>
-          <div>
-            <input class="form__input" type="radio" name="gender" id="female" value="female">
-            <label class="form__label" for="female">Female</label>
-          </div>
+          <label class="toggle" for="myToggle">
+            <input class="toggle__input" name="fruit-toggler" type="checkbox" id="myToggle">
+            <div class="toggle__fill"></div>
+            <span>Allow fruits recommendations?</span>
+          </label>
+          <br />
+          <label class="toggle" for="myToggle2">
+            <input class="toggle__input" name="fruit-toggler" type="checkbox" id="myToggle2">
+            <div class="toggle__fill"></div>
+            <span>Subscribe to our food newsletter?</span>
+          </label>
         </div>
 
         <div class="form__item">
-          <label class="form__label" for="eyeColor">Eye Color</label>
-          <select name="eyeColor" id="eyeColor">
-            <option value="Green">Green</option>
-            <option value="Red">Red</option>
-          </select>
+          <div class="form__item--title">Gender Radio</div>
+
+          <div class="form__item--radio-container">
+            <input class="form__input" type="radio" name="radioGender" id="radioGender_male">
+            <label class="form__label" for="radioGender_male">Male</label>
+          </div>
+
+          <div class="form__item--radio-container">
+            <input class="form__input" type="radio" name="radioGender" id="radioGender_female" checked>
+            <label class="form__label" for="radioGender_female">Female</label>
+          </div>
         </div>
 
         <div class="form__item">
           <label class="form__label" for="bio">Bio</label>
-          <textarea id="bio" name="bio" rows="4"></textarea>
+          <textarea title="Say more about yourself" class="form__input" id="bio" name="bio" rows="4"></textarea>
         </div>
 
         <div class="form__item">
-          <label class="form__label" for="range">Range</label>
-          <input class="form__input" id="range" type="range" name="range" min="1" max="10">
+          <label for="rangeFruitLikeness">How much do you like fruits?</label>
+          <div class="form__item--range-container">
+            <input class="form__input" type="range" id="rangeFruitLikeness" name="rangeFruitLikeness" min="1" max="10"
+              value="1" step="1">
+            <div class="form__range-value">
+              <div id="rangeFruitLikenessDisplayValue"></div>
+            </div>
+          </div>
         </div>
 
         <div class="form__item">
-          <label class="form__label" for="file">File</label>
-          <input class="form__input" id="file" type="file" name="file">
+          <label class="form__label" for="inputFileUpload">Import a file:</label>
+          <input type="file" class="js-inputFileUpload" id="inputFileUpload" name="inputFileUpload[]" hidden="hidden"
+            multiple>
+          <div>
+            <button type="button" class="form__button form__button--submit js-btnFileUpload">Choose File</button>
+            <span class="form__item--files-name js-outputTextFileNames">No file(s) chosen</span>
+          </div>
         </div>
 
         <input class="form__input" type="hidden" name="hidden" value="hi">

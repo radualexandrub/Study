@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All forms elements and customization</title>
+  <link rel="stylesheet" href="./style_checkbox.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="form-container">
+      <form class="form" action="./" method="GET" enctype="multipart/form-data">
+
+        <!-- Animated Checkbox - DesignCourse -->
+        <div class="form__item">
+          <div class="form__item--title">Favorite Fruit Checkbox</div>
+          <div class="form__item--checkbox-container">
+            <input type="checkbox" name="apple" id="apple">
+            <label for="apple">
+              <svg viewBox="0 0 100 100">
+                <path class="box"
+                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
+                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+              </svg>
+              <span>Apple</span>
+            </label>
+          </div>
+          <div class="form__item--checkbox-container">
+            <input type="checkbox" name="avocado" id="avocado">
+            <label for="avocado">
+              <svg viewBox="0 0 100 100">
+                <path class="box"
+                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
+                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+              </svg>
+              <span>Avocado</span>
+            </label>
+          </div>
+          <div class="form__item--checkbox-container">
+            <input type="checkbox" name="pomegranate" id="pomegranate">
+            <label for="pomegranate">
+              <svg viewBox="0 0 100 100">
+                <path class="box"
+                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
+                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
+              </svg>
+              <span>Pomegranate</span>
+            </label>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="form__item">
+          <div class="form__item--title">How many fruits do you eat per day?</div>
+
+          <div class="form__item--radio-container">
+            <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Zero">
+            <label class="form__label" for="radioFruitPerDay_Zero">Zero fruits/day</label>
+          </div>
+
+          <div class="form__item--radio-container">
+            <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_One" checked>
+            <label class="form__label" for="radioFruitPerDay_One">One fruit/day</label>
+          </div>
+
+          <div class="form__item--radio-container">
+            <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Three">
+            <label class="form__label" for="radioFruitPerDay_Three">Over three fruits/day</label>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="form__item">
+          <label class="toggle" for="myToggle">
+            <input class="toggle__input" name="fruit-toggler" type="checkbox" id="myToggle">
+            <div class="toggle__fill"></div>
+            <span>Allow fruits recommendations?</span>
+          </label>
+          <br />
+          <label class="toggle" for="myToggle2">
+            <input class="toggle__input" name="fruit-toggler" type="checkbox" id="myToggle2">
+            <div class="toggle__fill"></div>
+            <span>Subscribe to our fruit newsletter?</span>
+          </label>
+        </div>
+
+        <br />
+
+        <div class="form__item">
+          <label for="rangeFruitLikeness">How much do you like fruits?</label>
+          <div class="form__item--range-container">
+            <input class="form__input" type="range" id="rangeFruitLikeness" name="rangeFruitLikeness" min="1" max="10"
+              value="1" step="1">
+            <div class="form__range-value">
+              <div id="rangeFruitLikenessDisplayValue"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form__item">
+          <label for="rangeFruitRecommendation">How much would you recommend a fruit to a friend?</label>
+          <div class="slider-ui">
+            <input id="rangeFruitRecommendation" name="rangeFruitRecommendation" type="range" min="1" max="10" step="1"
+              value="4">
+            <div class="bar">
+              <span class="min"></span>
+              <span class="max"></span>
+            </div>
+            <div class="track">
+              <div class="value"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form__item">
+          <label for="rangeAmountSpentOnFruits">How much do you spend on fruits annualy?</label>
+          <div class="form__item--range-container">
+            <div class="form__item--range-group range__slider">
+              <input id="rangeAmountSpentOnFruits" type="range" step="100">
+            </div>
+            <div class="form__item--range-group range__value">
+              <span id="rangeAmountSpentOnFruitsDisplay"></span>
+              <div class="range__text">Amount</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form__item--buttons">
+          <button class="form__button form__button--submit" type="submit">Submit</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* Custom Range Input - https://codepen.io/dsr/pen/rNLxBxw */
+    let rangeInput = document.querySelector(".form__item--range-container .form__input");
+    let rangeValue = document.querySelector(".form__item--range-container .form__range-value #rangeFruitLikenessDisplayValue");
+
+    let start = parseFloat(rangeInput.min);
+    let end = parseFloat(rangeInput.max);
+    let step = parseFloat(rangeInput.step);
+    rangeValue.innerHTML = '<div>' + start + '</div>';
+
+    for (let i = start; i <= end; i += step) {
+      rangeValue.innerHTML += '<div>' + i + '</div>';
+    }
+
+    rangeInput.addEventListener("input", function () {
+      let top = parseFloat(rangeInput.value) / step * -40;
+      rangeValue.style.transform = `translateY(${top + "px"})`;
+    });
+    /* end of Custom Range Input */
+
+
+    /* Custom Range Slider Animated - https://codepen.io/MinzCode/pen/bGEvXWR */
+    const sliders = document.querySelectorAll(".slider-ui");
+    sliders.forEach(slider => {
+      let input = slider.querySelector("input[type=range]");
+      let min = input.getAttribute("min");
+      let max = input.getAttribute("max");
+      let valueElem = slider.querySelector(".value");
+
+      slider.querySelector(".min").innerText = min;
+      slider.querySelector(".max").innerText = max;
+
+      function setValueElem() {
+        valueElem.innerText = input.value;
+        let percent = (input.value - min) / (max - min) * 100;
+        valueElem.style.left = percent + "%";
+      }
+      setValueElem();
+
+      input.addEventListener("input", setValueElem);
+      input.addEventListener("mousedown", () => {
+        valueElem.classList.add("up");
+      });
+      input.addEventListener("mouseup", () => {
+        valueElem.classList.remove("up");
+      });
+    });
+    /* end of Custom Range Slider Animated */
+
+
+    /* Custom Range Slider for Prices - https://codepen.io/lavary/pen/OJbQPXe */
+    class Slider {
+      constructor(rangeElement, valueElement, options) {
+        this.rangeElement = rangeElement
+        this.valueElement = valueElement
+        this.options = options
+        this.rangeElement.addEventListener('input', this.updateSlider.bind(this))
+      }
+      init() {
+        this.rangeElement.setAttribute('min', options.min)
+        this.rangeElement.setAttribute('max', options.max)
+        this.rangeElement.value = options.cur
+
+        this.updateSlider()
+      }
+      asMoney(value) {
+        /* Money Format */
+        return parseFloat(value).toLocaleString('en-US', { maximumFractionDigits: 2 }) + " Lei"
+      }
+      generateBackground(rangeElement) {
+        if (this.rangeElement.value === this.options.min) {
+          return
+        }
+        var percentage = (this.rangeElement.value - this.options.min) / (this.options.max - this.options.min) * 100
+        return 'background: linear-gradient(to right, var(--primary-color), var(--primary-color) ' + percentage + '%, #E9E9E9 ' + percentage + '%, #E6E6E6 100%)'
+      }
+      updateSlider(newValue) {
+        this.valueElement.innerHTML = this.asMoney(this.rangeElement.value)
+        this.rangeElement.style = this.generateBackground(this.rangeElement.value)
+      }
+    }
+
+    var rangeElement = document.querySelector('.form__item--range-container #rangeAmountSpentOnFruits')
+    var valueElement = document.querySelector('.form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay')
+
+    var options = {
+      min: 100,
+      max: 5000,
+      cur: 1500
+    }
+    if (rangeElement) {
+      var slider = new Slider(rangeElement, valueElement, options)
+      slider.init()
+    }
+/* end of Custom Range Slider for Prices */
+
+  </script>
+
+</body>
+
+</html>

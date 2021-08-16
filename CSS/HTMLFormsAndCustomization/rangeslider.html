@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom range slider</title>
+</head>
+<style>
+  .slider-ui {
+    position: relative;
+    width: 500px;
+    height: 2rem;
+    margin: 70px 0;
+  }
+
+  .slider-ui input {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  .slider-ui .bar {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #00b894;
+    border-radius: 50px;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, .1);
+  }
+
+  .slider-ui .min,
+  .slider-ui .max {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .slider-ui .min {
+    left: 2%;
+  }
+
+  .slider-ui .max {
+    right: 2%;
+  }
+
+  .slider-ui .track {
+    position: absolute;
+    z-index: 3;
+    left: 25px;
+    right: 25px;
+    top: 0;
+    bottom: 0;
+  }
+
+  .slider-ui .value {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    background-color: #fff;
+    border: 2px solid #00b894;
+    border-radius: 100%;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+    transition: top .3s ease-in-out, color .3s ease-in-out;
+  }
+
+  .slider-ui .value.up {
+    top: -110%;
+    color: #000;
+  }
+</style>
+
+<body>
+
+  <div class="slider-ui">
+    <input type="range" min="1" max="10" step="1">
+    <div class="bar">
+      <span class="min"></span>
+      <span class="max"></span>
+    </div>
+    <div class="track">
+      <div class="value"></div>
+    </div>
+  </div>
+
+
+  <script>
+    const sliders = document.querySelectorAll(".slider-ui");
+    sliders.forEach(slider => {
+      let input = slider.querySelector("input[type=range]");
+      let min = input.getAttribute("min");
+      let max = input.getAttribute("max");
+      let valueElem = slider.querySelector(".value");
+
+      slider.querySelector(".min").innerText = min;
+      slider.querySelector(".max").innerText = max;
+
+      function setValueElem() {
+        valueElem.innerText = input.value;
+        let percent = (input.value - min) / (max - min) * 100;
+        valueElem.style.left = percent + "%";
+      }
+      setValueElem();
+
+      input.addEventListener("input", setValueElem);
+      input.addEventListener("mousedown", () => {
+        valueElem.classList.add("up");
+      });
+      input.addEventListener("mouseup", () => {
+        valueElem.classList.remove("up");
+      });
+    });
+  </script>
+</body>
+
+</html>
