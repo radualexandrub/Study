@@ -1,8 +1,45 @@
-Credits / Notes taken from:
+**Credits / Notes taken from:**
 
 - [Learn HTML Forms in 25 Minutes - Web Dev Simplified](https://www.youtube.com/watch?v=fNcJuPIZ2WE)
 - [freeCodeCamp Survey Form from Responsive Web Design Course -> Form Challenge](https://www.freecodecamp.org/learn/responsive-web-design/responsive-web-design-projects/build-a-survey-form)
-- 
+- [Custom Checkbox Tutorial - Wev Dev Simplified](https://www.youtube.com/watch?v=YyLzwR-iXtI)
+- [Create a Custom SVG Checkbox (Animated AND Accessible!) - DesignCourse](https://www.youtube.com/watch?v=46iQVS7WddE)
+- [Custom SVG Checkbox CSS Only - Foxxite on codepen.io](https://codepen.io/Foxxite/pen/LYEdOoX)
+- [How to Create a Custom Radio Button - HTML & CSS Tutorial - dcode](https://www.youtube.com/watch?v=5K7JefKDa4s)
+- [Custom File Upload Button with FileList - HTML, CSS & JavaScript Tutorial - dcode](https://youtu.be/SE38zdOOrAQ)
+- [JavaScript Client-side Form Validation - Florin Pop](https://www.youtube.com/watch?v=rsd4FNGTRBw)
+
+<br/>
+
+**Table of Contents**
+
+- [HTML Forms](#html-forms)
+  - [Form Example without style](#form-example-without-style)
+  - [Customize basic HTML form elements](#customize-basic-html-form-elements)
+- [Styling special Form elements](#styling-special-form-elements)
+  - [Checkboxes - Web Dev Simplified](#checkboxes---web-dev-simplified)
+  - [Checkboxes SVG Animated](#checkboxes-svg-animated)
+  - [Checkboxes as Toggle Switch - dcode](#checkboxes-as-toggle-switch---dcode)
+  - [Radio Buttons Simple CSS](#radio-buttons-simple-css)
+  - [Radio Buttons CSS - A better approach for accessibility](#radio-buttons-css---a-better-approach-for-accessibility)
+  - [Custom Range Slider](#custom-range-slider)
+  - [Custom Range Slider Animated](#custom-range-slider-animated)
+  - [Custom Range Slider for Price Amounts](#custom-range-slider-for-price-amounts)
+  - [File Upload Button](#file-upload-button)
+  - [Custom Select Dropdown Menu](#custom-select-dropdown-menu)
+- [JavaScript Form Validation](#javascript-form-validation)
+  - [JavaScript Form Validation on Submit](#javascript-form-validation-on-submit)
+  - [JavaScript Form Validation onBlur](#javascript-form-validation-onblur)
+- [Complete Code](#complete-code)
+  - [index.html](#indexhtml)
+  - [script.js](#scriptjs)
+  - [style.css](#stylecss)
+  - [index_checkbox.html](#index_checkboxhtml)
+  - [style_checkbox.css](#style_checkboxcss)
+  - [rangeslider.html](#rangesliderhtml)
+  - [rangesliderprice.html](#rangesliderpricehtml)
+
+
 
 # HTML Forms
 
@@ -56,52 +93,52 @@ Here's a Form that contains almost all input types:
   <form action="./" method="GET" enctype="multipart/form-data">
     <div>
       <label for="name">Name</label>
-      <input type="text" name="name" id="name" required>
+      <input type="text" name="name" id="name" required />
     </div>
 
     <div>
       <label for="email">Email</label>
-      <input type="email" name="email" id="email" required>
+      <input type="email" name="email" id="email" required />
     </div>
 
     <div>
       <label for="phone">Phone</label>
-      <input type="tel" name="phone" id="phone">
+      <input type="tel" name="phone" id="phone" />
     </div>
 
     <div>
       <label for="age">Age</label>
-      <input type="number" name="age" id="age" min="1" max="200" step="1">
+      <input type="number" name="age" id="age" min="1" max="200" step="1" />
     </div>
 
     <div>
       <label for="url">Website URL</label>
-      <input type="url" name="url" id="url">
+      <input type="url" name="url" id="url" />
     </div>
 
     <div>
       <label for="password">Password</label>
-      <input type="password" name="password" id="password" required>
+      <input type="password" name="password" id="password" required />
     </div>
 
     <div>
       <label for="date">Birthdate</label>
-      <input type="date" name="date" id="date" min="2019-06-10">
+      <input type="date" name="date" id="date" min="2019-06-10" />
     </div>
 
     <div>
       <label for="week">Week</label>
-      <input id="week" type="week" name="week">
+      <input id="week" type="week" name="week" />
     </div>
 
     <div>
       Favorite Food Checkbox
       <div>
-        <input type="checkbox" name="banana" id="banana">
+        <input type="checkbox" name="banana" id="banana" />
         <label for="banana">Banana</label>
       </div>
       <div>
-        <input type="checkbox" name="apple" id="apple">
+        <input type="checkbox" name="apple" id="apple" />
         <label for="apple">Apple</label>
       </div>
     </div>
@@ -109,11 +146,11 @@ Here's a Form that contains almost all input types:
     <div>
       Gender Radio
       <div>
-        <input type="radio" name="gender" id="male" value="male">
+        <input type="radio" name="gender" id="male" value="male" />
         <label for="male">Male</label>
       </div>
       <div>
-        <input type="radio" name="gender" id="female" value="female">
+        <input type="radio" name="gender" id="female" value="female" />
         <label for="female">Female</label>
       </div>
     </div>
@@ -133,15 +170,15 @@ Here's a Form that contains almost all input types:
 
     <div>
       <label for="range">Range</label>
-      <input id="range" type="range" name="range" min="1" max="10">
+      <input id="range" type="range" name="range" min="1" max="10" />
     </div>
 
     <div>
       <label for="file">File</label>
-      <input id="file" type="file" name="file">
+      <input id="file" type="file" name="file" />
     </div>
 
-    <input type="hidden" name="hidden" value="hi">
+    <input type="hidden" name="hidden" value="hi" />
 
     <div class="form__item--buttons">
       <button type="submit">Submit</button>
@@ -155,10 +192,6 @@ This will render:
 
 ![Simple HTML Form with all input elements](./HTMLFormsAndCustomization/html_forms_imgs/html_forms01.jpg)
 
-
-
-
-
 <br/>
 
 ## Customize basic HTML form elements
@@ -170,118 +203,196 @@ Now we can customize our form only by using CSS classes (in our `style.css` we w
 ```html
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All forms elements and customization</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All forms elements and customization</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
-
-<body>
-  <div class="container">
-    <div class="form-container">
-      <form class="form" action="./" method="GET" enctype="multipart/form-data">
-        <div class="form__item">
-          <label class="form__label" for="name">Name</label>
-          <input class="form__input" type="text" name="name" id="name" required>
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="email">Email</label>
-          <input class="form__input" type="email" name="email" id="email" required>
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="phone">Phone</label>
-          <input class="form__input" type="tel" name="phone" id="phone" placeholder="555-555-xxxx">
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="age">Age</label>
-          <input class="form__input" type="number" name="age" id="age" min="1" max="200" step="1">
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="url">Website URL</label>
-          <input class="form__input" type="url" name="url" id="url">
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="password">Password</label>
-          <input class="form__input" type="password" name="password" id="password" required>
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="date">Birthdate</label>
-          <input class="form__input" type="date" name="date" id="date" min="2019-06-10">
-        </div>
-
-        <div class="form__item">
-          <label class="form__label" for="week">Week</label>
-          <input class="form__input" id="week" type="week" name="week">
-        </div>
-
-        <div class="form__item">
-          Favorite Food Checkbox
-          <div>
-            <input class="form__input" type="checkbox" name="banana" id="banana">
-            <label class="form__label" for="banana">Banana</label>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <form
+          class="form"
+          action="./"
+          method="GET"
+          enctype="multipart/form-data"
+        >
+          <div class="form__item">
+            <label class="form__label" for="name">Name</label>
+            <input
+              class="form__input"
+              type="text"
+              name="name"
+              id="name"
+              required
+            />
           </div>
-          <div>
-            <input class="form__input" type="checkbox" name="apple" id="apple">
-            <label class="form__label" for="apple">Apple</label>
+
+          <div class="form__item">
+            <label class="form__label" for="email">Email</label>
+            <input
+              class="form__input"
+              type="email"
+              name="email"
+              id="email"
+              required
+            />
           </div>
-        </div>
 
-        <div class="form__item">
-          Gender Radio
-          <div>
-            <input class="form__input" type="radio" name="gender" id="male" value="male">
-            <label class="form__label" for="male">Male</label>
+          <div class="form__item">
+            <label class="form__label" for="phone">Phone</label>
+            <input
+              class="form__input"
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="555-555-xxxx"
+            />
           </div>
-          <div>
-            <input class="form__input" type="radio" name="gender" id="female" value="female">
-            <label class="form__label" for="female">Female</label>
+
+          <div class="form__item">
+            <label class="form__label" for="age">Age</label>
+            <input
+              class="form__input"
+              type="number"
+              name="age"
+              id="age"
+              min="1"
+              max="200"
+              step="1"
+            />
           </div>
-        </div>
 
-        <div class="form__item">
-          <label class="form__label" for="eyeColor">Eye Color</label>
-          <select name="eyeColor" id="eyeColor">
-            <option value="Green">Green</option>
-            <option value="Red">Red</option>
-          </select>
-        </div>
+          <div class="form__item">
+            <label class="form__label" for="url">Website URL</label>
+            <input class="form__input" type="url" name="url" id="url" />
+          </div>
 
-        <div class="form__item">
-          <label class="form__label" for="bio">Bio</label>
-          <textarea class="form__input" id="bio" name="bio" rows="4"></textarea>
-        </div>
+          <div class="form__item">
+            <label class="form__label" for="password">Password</label>
+            <input
+              class="form__input"
+              type="password"
+              name="password"
+              id="password"
+              required
+            />
+          </div>
 
-        <div class="form__item">
-          <label class="form__label" for="range">Range</label>
-          <input class="form__input" id="range" type="range" name="range" min="1" max="10">
-        </div>
+          <div class="form__item">
+            <label class="form__label" for="date">Birthdate</label>
+            <input
+              class="form__input"
+              type="date"
+              name="date"
+              id="date"
+              min="2019-06-10"
+            />
+          </div>
 
-        <div class="form__item">
-          <label class="form__label" for="file">File</label>
-          <input class="form__input" id="file" type="file" name="file">
-        </div>
+          <div class="form__item">
+            <label class="form__label" for="week">Week</label>
+            <input class="form__input" id="week" type="week" name="week" />
+          </div>
 
-        <input class="form__input" type="hidden" name="hidden" value="hi">
+          <div class="form__item">
+            Favorite Food Checkbox
+            <div>
+              <input
+                class="form__input"
+                type="checkbox"
+                name="banana"
+                id="banana"
+              />
+              <label class="form__label" for="banana">Banana</label>
+            </div>
+            <div>
+              <input
+                class="form__input"
+                type="checkbox"
+                name="apple"
+                id="apple"
+              />
+              <label class="form__label" for="apple">Apple</label>
+            </div>
+          </div>
 
-        <div class="form__item--buttons">
-          <button class="form__button form__button--submit" type="submit">Submit</button>
-          <button class="form__button form__button--reset" type="reset">Reset</button>
-        </div>
-      </form>
+          <div class="form__item">
+            Gender Radio
+            <div>
+              <input
+                class="form__input"
+                type="radio"
+                name="gender"
+                id="male"
+                value="male"
+              />
+              <label class="form__label" for="male">Male</label>
+            </div>
+            <div>
+              <input
+                class="form__input"
+                type="radio"
+                name="gender"
+                id="female"
+                value="female"
+              />
+              <label class="form__label" for="female">Female</label>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="eyeColor">Eye Color</label>
+            <select name="eyeColor" id="eyeColor">
+              <option value="Green">Green</option>
+              <option value="Red">Red</option>
+            </select>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="bio">Bio</label>
+            <textarea
+              class="form__input"
+              id="bio"
+              name="bio"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="range">Range</label>
+            <input
+              class="form__input"
+              id="range"
+              type="range"
+              name="range"
+              min="1"
+              max="10"
+            />
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="file">File</label>
+            <input class="form__input" id="file" type="file" name="file" />
+          </div>
+
+          <input class="form__input" type="hidden" name="hidden" value="hi" />
+
+          <div class="form__item--buttons">
+            <button class="form__button form__button--submit" type="submit">
+              Submit
+            </button>
+            <button class="form__button form__button--reset" type="reset">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-
-</body>
-
+  </body>
 </html>
 ```
 
@@ -405,27 +516,42 @@ These checkboxes will also use accessibility functionalities (like toggling thro
 <div class="container">
   <div class="form-container">
     <form class="form" action="./" method="GET" enctype="multipart/form-data">
-
       <div class="form__item">
         <div class="form__item--title">Favorite Food Checkbox</div>
         <div class="form__item--checkbox-container">
-          <input class="form__input" type="checkbox" name="banana" id="banana">
+          <input
+            class="form__input"
+            type="checkbox"
+            name="banana"
+            id="banana"
+          />
           <label class="form__label" for="banana">Banana</label>
         </div>
         <div class="form__item--checkbox-container">
-          <input class="form__input" type="checkbox" name="grapefruit" id="grapefruit">
+          <input
+            class="form__input"
+            type="checkbox"
+            name="grapefruit"
+            id="grapefruit"
+          />
           <label class="form__label" for="grapefruit">Grapefruit</label>
         </div>
         <div class="form__item--checkbox-container">
-          <input class="form__input" type="checkbox" name="blackberry" id="blackberry">
+          <input
+            class="form__input"
+            type="checkbox"
+            name="blackberry"
+            id="blackberry"
+          />
           <label class="form__label" for="blackberry">Blackberry</label>
         </div>
       </div>
 
       <div class="form__item--buttons">
-        <button class="form__button form__button--submit" type="submit">Submit</button>
+        <button class="form__button form__button--submit" type="submit">
+          Submit
+        </button>
       </div>
-
     </form>
   </div>
 </div>
@@ -507,13 +633,14 @@ All these will render:
 Now, let's actually customize these checkboxes:
 
 1. First, we could make sure that our label (text near checkboxes) is always aligned with the checkbox itself, for that we will set `display: flex; align-items: center` on `.form__item--checkbox-container`
+
    - Next, we should have a `cursor: pointer;` on our `.form__label` to point our that the checkbox is clickable
    - We will also add to our `.form_label` a `display: flex` in order to create a check/checkbox with `::before` pseudo-element (on step 3)
 
 2. Then, on the checkbox input (either `input[type='checkbox']` or `.form__item--checkbox-container .form__input`), we need the hide the default check ✅... **We don't hide it with `display: none;``, because then we can no longer tab through the checkboxes, and screen readers won't actually pick these checkboxes anymore.**
-	
+
 - Instead, we will use `opacity: 0;` with `position: absolute;`
-	
+
 3. Now, we will actually create our checkbox icon, using the pseudo-selector `::before` on our `label` element, with the following properties: `conent:""; width: 1em; height:1em; border: 0.05em solid #000; border-radius: 0.15em; margin-right: 0.5em;`
 
    - (Optional) Here we can also set `border-radius: 50%; padding: 0.5em;` if we want to make our checkboxes a circle!
@@ -530,7 +657,7 @@ Now, let's actually customize these checkboxes:
 
 <br/>
 
-Also, the nice part of these checkboxes, is that we can set the size of the checkboxes based on the `label` (or `.input__label`) `font-size` property! 
+Also, the nice part of these checkboxes, is that we can set the size of the checkboxes based on the `label` (or `.input__label`) `font-size` property!
 
 ![Customize Simple HTML Form](./HTMLFormsAndCustomization/html_forms_imgs/html_forms04.jpg)
 
@@ -652,71 +779,87 @@ Resources:
 ```html
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All forms elements and customization</title>
+    <link rel="stylesheet" href="./style_checkbox.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All forms elements and customization</title>
-  <link rel="stylesheet" href="./style_checkbox.css">
-</head>
+  <body>
+    <div class="container">
+      <!-- Animated Checkbox - DesignCourse -->
+      <div class="form-container">
+        <form
+          class="form"
+          action="./"
+          method="GET"
+          enctype="multipart/form-data"
+        >
+          <div class="form__item">
+            <div class="form__item--title">Favorite Food Checkbox</div>
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="apple" id="apple" />
+              <label for="apple">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Apple</span>
+              </label>
+            </div>
 
-<body>
-  <div class="container">
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="avocado" id="avocado" />
+              <label for="avocado">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Avocado</span>
+              </label>
+            </div>
 
-    <!-- Animated Checkbox - DesignCourse -->
-    <div class="form-container">
-      <form class="form" action="./" method="GET" enctype="multipart/form-data">
-
-        <div class="form__item">
-          <div class="form__item--title">Favorite Food Checkbox</div>
-          <div class="form__item--checkbox-container">
-            <input type="checkbox" name="apple" id="apple">
-            <label for="apple">
-              <svg viewBox="0 0 100 100">
-                <path class="box"
-                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
-                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
-              </svg>
-              <span>Apple</span>
-            </label>
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="pomegranate" id="pomegranate" />
+              <label for="pomegranate">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Pomegranate</span>
+              </label>
+            </div>
           </div>
 
-          <div class="form__item--checkbox-container">
-            <input type="checkbox" name="avocado" id="avocado">
-            <label for="avocado">
-              <svg viewBox="0 0 100 100">
-                <path class="box"
-                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
-                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
-              </svg>
-              <span>Avocado</span>
-            </label>
+          <div class="form__item--buttons">
+            <button class="form__button form__button--submit" type="submit">
+              Submit
+            </button>
           </div>
-
-          <div class="form__item--checkbox-container">
-            <input type="checkbox" name="pomegranate" id="pomegranate">
-            <label for="pomegranate">
-              <svg viewBox="0 0 100 100">
-                <path class="box"
-                  d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z" />
-                <polyline class="check" points="25.5,53.5 39.5,67.5 72.5,34.5 " />
-              </svg>
-              <span>Pomegranate</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form__item--buttons">
-          <button class="form__button form__button--submit" type="submit">Submit</button>
-        </div>
-
-      </form>
+        </form>
+      </div>
     </div>
-
-  </div>
-</body>
-
+  </body>
 </html>
 ```
 
@@ -846,7 +989,7 @@ Credits:
 
 ```html
 <label class="toggle" for="myToggle">
-  <input class="toggle__input" name="" type="checkbox" id="myToggle">
+  <input class="toggle__input" name="" type="checkbox" id="myToggle" />
   <div class="toggle__fill"></div>
   <span>Allow fruits recommendations?</span>
 </label>
@@ -912,13 +1055,23 @@ Also, the awesome aspect about this: you can change these toggle switches from c
 ```html
 <!-- Switch Togglers as radio buttons instead of checkboxes HTML -->
 <label class="toggle" for="myToggle">
-  <input class="toggle__input" name="fruit-toggler" type="radio" id="myToggle">
+  <input
+    class="toggle__input"
+    name="fruit-toggler"
+    type="radio"
+    id="myToggle"
+  />
   <div class="toggle__fill"></div>
   <span>Allow fruits recommendations?</span>
 </label>
 <br />
 <label class="toggle" for="myToggle2">
-  <input class="toggle__input" name="fruit-toggler" type="radio" id="myToggle2">
+  <input
+    class="toggle__input"
+    name="fruit-toggler"
+    type="radio"
+    id="myToggle2"
+  />
   <div class="toggle__fill"></div>
   <span>Subscribe to our food newsletter?</span>
 </label>
@@ -939,19 +1092,35 @@ The **HTML** inside a `<form>`:
 <div class="form__item">
   <div class="form__item--title">How many fruits do you eat per day?</div>
   <label for="radioFruitPerDay_Zero" class="form__label--radio">
-    <input type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Zero" class="form__input--radio" checked>
+    <input
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_Zero"
+      class="form__input--radio"
+      checked
+    />
     <div class="form__radio--radio"></div>
     <span class="form__text--radio">Zero fruits/day</span>
   </label>
 
   <label for="radioFruitPerDay_One" class="form__label--radio">
-    <input type="radio" name="radioFruitPerDay" id="radioFruitPerDay_One" class="form__input--radio">
+    <input
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_One"
+      class="form__input--radio"
+    />
     <div class="form__radio--radio"></div>
     <span class="form__text--radio">One fruit/day</span>
   </label>
 
   <label for="radioFruitPerDay_Three" class="form__label--radio">
-    <input type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Three" class="form__input--radio">
+    <input
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_Three"
+      class="form__input--radio"
+    />
     <div class="form__radio--radio"></div>
     <span class="form__text--radio">Over three fruits/day</span>
   </label>
@@ -1053,7 +1222,7 @@ The **HTML** inside a `<form>`:
 
 ## Radio Buttons CSS - A better approach for accessibility
 
-However, the tutorial above for the custom radio buttons is not that okay, as it's not suitable for accessibility (you use arrow keys through them while using screen readers). *Note: By default, in accessibility standards, you can tab through checkboxes then check with space key, and you can only use arrow keys through radio buttons.*
+However, the tutorial above for the custom radio buttons is not that okay, as it's not suitable for accessibility (you use arrow keys through them while using screen readers). _Note: By default, in accessibility standards, you can tab through checkboxes then check with space key, and you can only use arrow keys through radio buttons._
 
 Here's the result (but unfortunately, this version doesn't have a scale animation like the previous radio box):
 
@@ -1064,18 +1233,38 @@ Here's the result (but unfortunately, this version doesn't have a scale animatio
   <div class="form__item--title">How many fruits do you eat per day?</div>
 
   <div class="form__item--radio-container">
-    <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Zero">
-    <label class="form__label" for="radioFruitPerDay_Zero">Zero fruits/day</label>
+    <input
+      class="form__input"
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_Zero"
+    />
+    <label class="form__label" for="radioFruitPerDay_Zero"
+      >Zero fruits/day</label
+    >
   </div>
 
   <div class="form__item--radio-container">
-    <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_One" checked>
+    <input
+      class="form__input"
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_One"
+      checked
+    />
     <label class="form__label" for="radioFruitPerDay_One">One fruit/day</label>
   </div>
 
   <div class="form__item--radio-container">
-    <input class="form__input" type="radio" name="radioFruitPerDay" id="radioFruitPerDay_Three">
-    <label class="form__label" for="radioFruitPerDay_Three">Over three fruits/day</label>
+    <input
+      class="form__input"
+      type="radio"
+      name="radioFruitPerDay"
+      id="radioFruitPerDay_Three"
+    />
+    <label class="form__label" for="radioFruitPerDay_Three"
+      >Over three fruits/day</label
+    >
   </div>
 </div>
 ```
@@ -1213,8 +1402,16 @@ The **HTML**:
 <div class="form__item">
   <label for="rangeFruitLikeness">How much do you like fruits?</label>
   <div class="form__item--range-container">
-    <input class="form__input" type="range" id="rangeFruitLikeness" name="rangeFruitLikeness" min="1" max="10"
-      value="1" step="1">
+    <input
+      class="form__input"
+      type="range"
+      id="rangeFruitLikeness"
+      name="rangeFruitLikeness"
+      min="1"
+      max="10"
+      value="1"
+      step="1"
+    />
     <div class="form__range-value">
       <div id="rangeFruitLikenessDisplayValue"></div>
     </div>
@@ -1226,20 +1423,24 @@ The **HTML**:
 
 ```js
 /* Custom Range Input - https://codepen.io/dsr/pen/rNLxBxw */
-let rangeInput = document.querySelector(".form__item--range-container .form__input");
-let rangeValue = document.querySelector(".form__item--range-container .form__range-value #rangeFruitLikenessDisplayValue");
+let rangeInput = document.querySelector(
+  ".form__item--range-container .form__input"
+);
+let rangeValue = document.querySelector(
+  ".form__item--range-container .form__range-value #rangeFruitLikenessDisplayValue"
+);
 
 let start = parseFloat(rangeInput.min);
 let end = parseFloat(rangeInput.max);
 let step = parseFloat(rangeInput.step);
-rangeValue.innerHTML += '<div>' + start + '</div>';
+rangeValue.innerHTML += "<div>" + start + "</div>";
 
 for (let i = start; i <= end; i += step) {
-  rangeValue.innerHTML += '<div>' + i + '</div>';
+  rangeValue.innerHTML += "<div>" + i + "</div>";
 }
 
 rangeInput.addEventListener("input", function () {
-  let top = parseFloat(rangeInput.value) / step * -40;
+  let top = (parseFloat(rangeInput.value) / step) * -40;
   rangeValue.style.transform = `translateY(${top + "px"})`;
 });
 /* end of Custom Range Input */
@@ -1303,10 +1504,19 @@ Source:
 
 ```html
 <div class="form__item">
-  <label for="rangeFruitRecommendation">How much would you recommend a fruit to a friend?</label>
+  <label for="rangeFruitRecommendation"
+    >How much would you recommend a fruit to a friend?</label
+  >
   <div class="slider-ui">
-    <input id="rangeFruitRecommendation" name="rangeFruitRecommendation" type="range" min="1" max="10" step="1"
-      value="4">
+    <input
+      id="rangeFruitRecommendation"
+      name="rangeFruitRecommendation"
+      type="range"
+      min="1"
+      max="10"
+      step="1"
+      value="4"
+    />
     <div class="bar">
       <span class="min"></span>
       <span class="max"></span>
@@ -1402,7 +1612,7 @@ Source:
 ```js
 /* Custom Range Slider Animated - https://codepen.io/MinzCode/pen/bGEvXWR */
 const sliders = document.querySelectorAll(".slider-ui");
-sliders.forEach(slider => {
+sliders.forEach((slider) => {
   let input = slider.querySelector("input[type=range]");
   let min = input.getAttribute("min");
   let max = input.getAttribute("max");
@@ -1413,7 +1623,7 @@ sliders.forEach(slider => {
 
   function setValueElem() {
     valueElem.innerText = input.value;
-    let percent = (input.value - min) / (max - min) * 100;
+    let percent = ((input.value - min) / (max - min)) * 100;
     valueElem.style.left = percent + "%";
   }
   setValueElem();
@@ -1443,10 +1653,12 @@ The code was modified in order to style elements by CSS classes (instead of HTML
 
 ```html
 <div class="form__item">
-  <label for="rangeAmountSpentOnFruits">How much do you spend on fruits annualy?</label>
+  <label for="rangeAmountSpentOnFruits"
+    >How much do you spend on fruits annualy?</label
+  >
   <div class="form__item--range-container">
     <div class="form__item--range-group range__slider">
-      <input id="rangeAmountSpentOnFruits" type="range" step="100">
+      <input id="rangeAmountSpentOnFruits" type="range" step="100" />
     </div>
     <div class="form__item--range-group range__value">
       <span id="rangeAmountSpentOnFruitsDisplay"></span>
@@ -1542,46 +1754,62 @@ input::-moz-focus-outer {
 /* Custom Range Slider for Prices - https://codepen.io/lavary/pen/OJbQPXe */
 class Slider {
   constructor(rangeElement, valueElement, options) {
-    this.rangeElement = rangeElement
-    this.valueElement = valueElement
-    this.options = options
-    this.rangeElement.addEventListener('input', this.updateSlider.bind(this))
+    this.rangeElement = rangeElement;
+    this.valueElement = valueElement;
+    this.options = options;
+    this.rangeElement.addEventListener("input", this.updateSlider.bind(this));
   }
   init() {
-    this.rangeElement.setAttribute('min', options.min)
-    this.rangeElement.setAttribute('max', options.max)
-    this.rangeElement.value = options.cur
+    this.rangeElement.setAttribute("min", options.min);
+    this.rangeElement.setAttribute("max", options.max);
+    this.rangeElement.value = options.cur;
 
-    this.updateSlider()
+    this.updateSlider();
   }
   asMoney(value) {
     /* Money Format */
-    return parseFloat(value).toLocaleString('en-US', { maximumFractionDigits: 2 }) + " Lei"
+    return (
+      parseFloat(value).toLocaleString("en-US", { maximumFractionDigits: 2 }) +
+      " Lei"
+    );
   }
   generateBackground(rangeElement) {
     if (this.rangeElement.value === this.options.min) {
-      return
+      return;
     }
-    var percentage = (this.rangeElement.value - this.options.min) / (this.options.max - this.options.min) * 100
-    return 'background: linear-gradient(to right, var(--primary-color), var(--primary-color) ' + percentage + '%, #E9E9E9 ' + percentage + '%, #E6E6E6 100%)'
+    var percentage =
+      ((this.rangeElement.value - this.options.min) /
+        (this.options.max - this.options.min)) *
+      100;
+    return (
+      "background: linear-gradient(to right, var(--primary-color), var(--primary-color) " +
+      percentage +
+      "%, #E9E9E9 " +
+      percentage +
+      "%, #E6E6E6 100%)"
+    );
   }
   updateSlider(newValue) {
-    this.valueElement.innerHTML = this.asMoney(this.rangeElement.value)
-    this.rangeElement.style = this.generateBackground(this.rangeElement.value)
+    this.valueElement.innerHTML = this.asMoney(this.rangeElement.value);
+    this.rangeElement.style = this.generateBackground(this.rangeElement.value);
   }
 }
 
-var rangeElement = document.querySelector('.form__item--range-container #rangeAmountSpentOnFruits')
-var valueElement = document.querySelector('.form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay')
+var rangeElement = document.querySelector(
+  ".form__item--range-container #rangeAmountSpentOnFruits"
+);
+var valueElement = document.querySelector(
+  ".form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay"
+);
 
 var options = {
   min: 100,
   max: 5000,
-  cur: 1500
-}
+  cur: 1500,
+};
 if (rangeElement) {
-  var slider = new Slider(rangeElement, valueElement, options)
-  slider.init()
+  var slider = new Slider(rangeElement, valueElement, options);
+  slider.init();
 }
 /* end of Custom Range Slider for Prices */
 ```
@@ -1603,18 +1831,31 @@ We will need the following **HTML:**
 ```html
 <div class="form__item">
   <label class="form__label" for="inputFileUpload">Import a file:</label>
-  <input type="file" class="js-inputFileUpload" id="inputFileUpload" name="inputFileUpload[]" hidden="hidden"
-    multiple>
+  <input
+    type="file"
+    class="js-inputFileUpload"
+    id="inputFileUpload"
+    name="inputFileUpload[]"
+    hidden="hidden"
+    multiple
+  />
   <div>
-    <button type="button" class="form__button form__button--submit js-btnFileUpload">Choose File</button>
-    <span class="form__item--files-name js-outputTextFileNames">No file(s) chosen</span>
+    <button
+      type="button"
+      class="form__button form__button--submit js-btnFileUpload"
+    >
+      Choose File
+    </button>
+    <span class="form__item--files-name js-outputTextFileNames"
+      >No file(s) chosen</span
+    >
   </div>
 </div>
 ```
 
 - Note that in order to hide the original File Input, we used `hidden=hidden` property on our input.
 
-- **Also, if we want to add *multiple* files, we just need to add `multiple` keyword in our `<input>`, and also add `[]` in the name property.**
+- **Also, if we want to add _multiple_ files, we just need to add `multiple` keyword in our `<input>`, and also add `[]` in the name property.**
 
 **CSS**:
 
@@ -1654,31 +1895,41 @@ We will need the following **HTML:**
 }
 ```
 
-- `text-overflow: ellipsis;` along with `overflow: hidden;` and `white-space: nowrap;`  will add ... if the text goes over 250px width.
+- `text-overflow: ellipsis;` along with `overflow: hidden;` and `white-space: nowrap;` will add ... if the text goes over 250px width.
 
 <br/>Now the **JavaScript** part, we will try to be virtually clicking the actual `<input>` (which is hidden) using JS:
 
 ```js
 /* Custom File Upload Button */
-Array.prototype.forEach.call(document.querySelectorAll(".js-btnFileUpload"), function (button) {
-  var hiddenInputFileUpload = button.parentElement.parentElement.querySelector(".js-inputFileUpload");
-  var outputTextFileNames = button.parentElement.querySelector(".js-outputTextFileNames");
-  var defaultLabelText = "No file(s) selected";
+Array.prototype.forEach.call(
+  document.querySelectorAll(".js-btnFileUpload"),
+  function (button) {
+    var hiddenInputFileUpload =
+      button.parentElement.parentElement.querySelector(".js-inputFileUpload");
+    var outputTextFileNames = button.parentElement.querySelector(
+      ".js-outputTextFileNames"
+    );
+    var defaultLabelText = "No file(s) selected";
 
-  outputTextFileNames.textContent = defaultLabelText;
-  outputTextFileNames.title = defaultLabelText;
+    outputTextFileNames.textContent = defaultLabelText;
+    outputTextFileNames.title = defaultLabelText;
 
-  button.addEventListener('click', function () {
-    hiddenInputFileUpload.click();
-  })
-  hiddenInputFileUpload.addEventListener('change', function () {
-    var filenameList = Array.prototype.map.call(hiddenInputFileUpload.files, function (file) {
-      return file.name;
+    button.addEventListener("click", function () {
+      hiddenInputFileUpload.click();
     });
-    outputTextFileNames.textContent = filenameList.join(', ') || defaultLabelText;
-    outputTextFileNames.title = outputTextFileNames.textContent;
-  });
-});
+    hiddenInputFileUpload.addEventListener("change", function () {
+      var filenameList = Array.prototype.map.call(
+        hiddenInputFileUpload.files,
+        function (file) {
+          return file.name;
+        }
+      );
+      outputTextFileNames.textContent =
+        filenameList.join(", ") || defaultLabelText;
+      outputTextFileNames.title = outputTextFileNames.textContent;
+    });
+  }
+);
 /* end of Custom File Upload Button */
 ```
 
@@ -1816,7 +2067,9 @@ Or if we want a single down arrow:
 
 <br/><br/>
 
-# JavaScript Form Validation on Submit
+# JavaScript Form Validation
+
+## JavaScript Form Validation on Submit
 
 Notes taken from:
 
@@ -1827,7 +2080,7 @@ First, we'll add some icons into our **HTML** (using font-awesome) + some small 
 ```html
 <div class="form__item">
   <label class="form__label" for="name">Name</label>
-  <input class="form__input" type="text" name="name" id="name">
+  <input class="form__input" type="text" name="name" id="name" />
   <i class="fas fa-check-circle"></i>
   <i class="fas fa-exclamation-circle"></i>
   <small>Error message</small>
@@ -1835,7 +2088,7 @@ First, we'll add some icons into our **HTML** (using font-awesome) + some small 
 
 <div class="form__item">
   <label class="form__label" for="email">Email</label>
-  <input class="form__input" type="email" name="email" id="email">
+  <input class="form__input" type="email" name="email" id="email" />
   <i class="fas fa-check-circle"></i>
   <i class="fas fa-exclamation-circle"></i>
   <small>Error message</small>
@@ -1843,7 +2096,7 @@ First, we'll add some icons into our **HTML** (using font-awesome) + some small 
 
 <div class="form__item">
   <label class="form__label" for="password">Password</label>
-  <input class="form__input" name="password" id="password" type="password">
+  <input class="form__input" name="password" id="password" type="password" />
   <i class="fas fa-check-circle"></i>
   <i class="fas fa-exclamation-circle"></i>
   <small>Error message</small>
@@ -1851,7 +2104,12 @@ First, we'll add some icons into our **HTML** (using font-awesome) + some small 
 
 <div class="form__item">
   <label class="form__label" for="passwordCheck">Password check</label>
-  <input class="form__input" name="passwordCheck" id="passwordCheck" type="password">
+  <input
+    class="form__input"
+    name="passwordCheck"
+    id="passwordCheck"
+    type="password"
+  />
   <i class="fas fa-check-circle"></i>
   <i class="fas fa-exclamation-circle"></i>
   <small>Error message</small>
@@ -1984,5 +2242,2089 @@ And here's the result when pressing submit:
 
 <br/><br/>
 
-# JavaScript Form Validation onBlur
+## JavaScript Form Validation onBlur
 
+(Sunday, August 22, 2021, 17:17)
+
+We can modify the above code to support form validation on blur of each field.
+
+**HTML**:
+
+```html
+<form
+  id="form"
+  class="form"
+  action="./"
+  method="GET"
+  enctype="multipart/form-data"
+>
+  <div class="form__item">
+    <label class="form__label" for="name">Name</label>
+    <input class="form__input" type="text" name="name" id="name" />
+    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-exclamation-circle"></i>
+    <small>Error message</small>
+  </div>
+
+  <div class="form__item">
+    <label class="form__label" for="email">Email</label>
+    <input class="form__input" type="email" name="email" id="email" />
+    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-exclamation-circle"></i>
+    <small>Error message</small>
+  </div>
+
+  <div class="form__item">
+    <label class="form__label" for="phone">Phone</label>
+    <input
+      class="form__input"
+      type="tel"
+      name="phone"
+      id="phone"
+      placeholder="555-555-xxxx"
+    />
+    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-exclamation-circle"></i>
+    <small>Error message</small>
+  </div>
+
+  <div class="form__item">
+    <label class="form__label" for="password">Password</label>
+    <input class="form__input" name="password" id="password" type="password" />
+    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-exclamation-circle"></i>
+    <small>Error message</small>
+  </div>
+
+  <div class="form__item">
+    <label class="form__label" for="passwordCheck">Password check</label>
+    <input
+      class="form__input"
+      name="passwordCheck"
+      id="passwordCheck"
+      type="password"
+    />
+    <i class="fas fa-check-circle"></i>
+    <i class="fas fa-exclamation-circle"></i>
+    <small>Error message</small>
+  </div>
+</form>
+```
+
+<br/>
+
+**JavaScript**
+
+```js
+/* JavaScript Form Validation on Submit */
+const form = document.getElementById("form");
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const passInput = document.getElementById("password");
+const passCheckInput = document.getElementById("passwordCheck");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  checkInputs();
+});
+
+function checkInputs() {
+  checkName(nameInput);
+  checkEmail(emailInput);
+  checkPhone(phoneInput);
+  checkPass(passInput);
+  checkPassCheck(passInput, passCheckInput);
+}
+
+function setErrorFor(inputElement, message = "Error") {
+  const formItem = inputElement.parentElement;
+  formItem.className = "form__item error";
+  formItem.querySelector("small").innerText = message;
+}
+function setSuccessFor(inputElement) {
+  const formItem = inputElement.parentElement;
+  formItem.className = "form__item success";
+}
+
+function checkName(nameInput) {
+  const nameValue = nameInput.value.trim();
+  nameValue
+    ? setSuccessFor(nameInput)
+    : setErrorFor(nameInput, "Name cannot be blank");
+}
+function checkEmail(emailInput) {
+  const emailValue = emailInput.value.trim();
+  emailValue
+    ? isEmailRegex(emailValue)
+      ? setSuccessFor(emailInput)
+      : setErrorFor(emailInput, "Email is not valid")
+    : setErrorFor(emailInput, "Email cannot be blank");
+}
+function checkPhone(phoneInput) {
+  const phoneValue = phoneInput.value.trim();
+  phoneValue
+    ? isPhoneRegex(phoneValue)
+      ? setSuccessFor(phoneInput)
+      : setErrorFor(phoneInput, "Phone number is not valid")
+    : setErrorFor(phoneInput, "Phone number cannot be blank");
+}
+function checkPass(passInput) {
+  const passValue = passInput.value.trim();
+  passValue
+    ? setSuccessFor(passInput)
+    : setErrorFor(passInput, "Password cannot be blank");
+}
+function checkPassCheck(passInput, passCheckInput) {
+  const passValue = passInput.value.trim();
+  const passCheckValue = passCheckInput.value.trim();
+  passCheckValue
+    ? passCheckValue === passValue
+      ? setSuccessFor(passCheckInput)
+      : setErrorFor(passCheckInput, "Passwords does not match")
+    : setErrorFor(passCheckInput, "Password check cannot be blank");
+}
+
+function isEmailRegex(email) {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+}
+function isPhoneRegex(phone) {
+  const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/im;
+  return re.test(String(phone).toLowerCase());
+}
+
+/* JavaScript Form Validation onblur */
+nameInput.addEventListener("blur", function () {
+  checkName(this);
+});
+emailInput.addEventListener("blur", function () {
+  checkEmail(this);
+});
+passInput.addEventListener("blur", function () {
+  checkPass(this);
+});
+passCheckInput.addEventListener("blur", function () {
+  checkPassCheck(passInput, passCheckInput);
+});
+phoneInput.addEventListener("blur", function () {
+  checkPhone(this);
+});
+/* end of JavaScript Form Validation */
+```
+
+<br/><br/>
+
+# Complete Code
+
+## index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All forms elements and customization</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <form
+          id="form"
+          class="form"
+          action="./"
+          method="GET"
+          enctype="multipart/form-data"
+        >
+          <div class="form__item">
+            <label class="form__label" for="name">Name</label>
+            <input class="form__input" type="text" name="name" id="name" />
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="email">Email</label>
+            <input class="form__input" type="email" name="email" id="email" />
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="phone">Phone</label>
+            <input
+              class="form__input"
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="555-555-xxxx"
+            />
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="password">Password</label>
+            <input
+              class="form__input"
+              name="password"
+              id="password"
+              type="password"
+            />
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="passwordCheck"
+              >Password check</label
+            >
+            <input
+              class="form__input"
+              name="passwordCheck"
+              id="passwordCheck"
+              type="password"
+            />
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="age">Age</label>
+            <input
+              class="form__input"
+              type="number"
+              name="age"
+              id="age"
+              min="1"
+              max="120"
+              step="1"
+            />
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="url">Website URL</label>
+            <input class="form__input" type="url" name="url" id="url" />
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="date">Birthdate</label>
+            <input
+              class="form__input"
+              type="date"
+              name="date"
+              id="date"
+              min="2019-06-10"
+            />
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="week">Week</label>
+            <input class="form__input" id="week" type="week" name="week" />
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="selectFavoriteColor"
+              >Favorite Color</label
+            >
+            <div class="form__select">
+              <select
+                class="form__input"
+                name="selectFavoriteColor"
+                id="selectFavoriteColor"
+              >
+                <option value="" disabled selected>Select your option</option>
+                <option value="Green">Green</option>
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Brown">Brown</option>
+                <option value="Purple">Purple</option>
+              </select>
+              <span class="form__select--arrow"></span>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <div class="form__item--title">Favorite Food Checkbox</div>
+            <div class="form__item--checkbox-container">
+              <input
+                class="form__input"
+                type="checkbox"
+                name="banana"
+                id="banana"
+              />
+              <label class="form__label" for="banana">Banana</label>
+            </div>
+            <div class="form__item--checkbox-container">
+              <input
+                class="form__input"
+                type="checkbox"
+                name="grapefruit"
+                id="grapefruit"
+              />
+              <label class="form__label" for="grapefruit">Grapefruit</label>
+            </div>
+            <div class="form__item--checkbox-container">
+              <input
+                class="form__input"
+                type="checkbox"
+                name="blackberry"
+                id="blackberry"
+              />
+              <label class="form__label" for="blackberry">Blackberry</label>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label class="toggle" for="myToggle">
+              <input
+                class="toggle__input"
+                name="fruit-toggler"
+                type="checkbox"
+                id="myToggle"
+              />
+              <div class="toggle__fill"></div>
+              <span>Allow fruits recommendations?</span>
+            </label>
+            <br />
+            <label class="toggle" for="myToggle2">
+              <input
+                class="toggle__input"
+                name="fruit-toggler"
+                type="checkbox"
+                id="myToggle2"
+              />
+              <div class="toggle__fill"></div>
+              <span>Subscribe to our food newsletter?</span>
+            </label>
+          </div>
+
+          <div class="form__item">
+            <div class="form__item--title">Gender Radio</div>
+
+            <div class="form__item--radio-container">
+              <input
+                class="form__input"
+                type="radio"
+                name="radioGender"
+                id="radioGender_male"
+              />
+              <label class="form__label" for="radioGender_male">Male</label>
+            </div>
+
+            <div class="form__item--radio-container">
+              <input
+                class="form__input"
+                type="radio"
+                name="radioGender"
+                id="radioGender_female"
+                checked
+              />
+              <label class="form__label" for="radioGender_female">Female</label>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="bio">Bio</label>
+            <textarea
+              title="Say more about yourself"
+              class="form__input"
+              id="bio"
+              name="bio"
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="form__item">
+            <label for="rangeFruitLikeness">How much do you like fruits?</label>
+            <div class="form__item--range-container">
+              <input
+                class="form__input"
+                type="range"
+                id="rangeFruitLikeness"
+                name="rangeFruitLikeness"
+                min="1"
+                max="10"
+                value="1"
+                step="1"
+              />
+              <div class="form__range-value">
+                <div id="rangeFruitLikenessDisplayValue"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label class="form__label" for="inputFileUpload"
+              >Import a file:</label
+            >
+            <input
+              type="file"
+              class="js-inputFileUpload"
+              id="inputFileUpload"
+              name="inputFileUpload[]"
+              hidden="hidden"
+              multiple
+            />
+            <div>
+              <button
+                type="button"
+                class="form__button form__button--submit js-btnFileUpload"
+              >
+                Choose File
+              </button>
+              <span class="form__item--files-name js-outputTextFileNames"
+                >No file(s) chosen</span
+              >
+            </div>
+          </div>
+
+          <input class="form__input" type="hidden" name="hidden" value="hi" />
+
+          <div class="form__item--buttons">
+            <button class="form__button form__button--submit" type="submit">
+              Submit
+            </button>
+            <button class="form__button form__button--reset" type="reset">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+## script.js
+
+```js
+/* Custom Range Input - https://codepen.io/dsr/pen/rNLxBxw */
+let rangeInput = document.querySelector(
+  ".form__item--range-container .form__input"
+);
+let rangeValue = document.querySelector(
+  ".form__item--range-container .form__range-value #rangeFruitLikenessDisplayValue"
+);
+
+let start = parseFloat(rangeInput.min);
+let end = parseFloat(rangeInput.max);
+let step = parseFloat(rangeInput.step);
+rangeValue.innerHTML += "<div>" + start + "</div>";
+
+for (let i = start; i <= end; i += step) {
+  rangeValue.innerHTML += "<div>" + i + "</div>";
+}
+
+rangeInput.addEventListener("input", function () {
+  let top = (parseFloat(rangeInput.value) / step) * -40;
+  rangeValue.style.transform = `translateY(${top + "px"})`;
+});
+/* end of Custom Range Input */
+
+/* Custom File Upload Button */
+Array.prototype.forEach.call(
+  document.querySelectorAll(".js-btnFileUpload"),
+  function (button) {
+    var hiddenInputFileUpload =
+      button.parentElement.parentElement.querySelector(".js-inputFileUpload");
+    var outputTextFileNames = button.parentElement.querySelector(
+      ".js-outputTextFileNames"
+    );
+    var defaultLabelText = "No file(s) selected";
+
+    outputTextFileNames.textContent = defaultLabelText;
+    outputTextFileNames.title = defaultLabelText;
+
+    button.addEventListener("click", function () {
+      hiddenInputFileUpload.click();
+    });
+    hiddenInputFileUpload.addEventListener("change", function () {
+      var filenameList = Array.prototype.map.call(
+        hiddenInputFileUpload.files,
+        function (file) {
+          return file.name;
+        }
+      );
+      outputTextFileNames.textContent =
+        filenameList.join(", ") || defaultLabelText;
+      outputTextFileNames.title = outputTextFileNames.textContent;
+    });
+  }
+);
+/* end of Custom File Upload Button */
+
+/* JavaScript Form Validation on Submit */
+const form = document.getElementById("form");
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const passInput = document.getElementById("password");
+const passCheckInput = document.getElementById("passwordCheck");
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  checkInputs();
+});
+
+function checkInputs() {
+  checkName(nameInput);
+  checkEmail(emailInput);
+  checkPhone(phoneInput);
+  checkPass(passInput);
+  checkPassCheck(passInput, passCheckInput);
+}
+
+function setErrorFor(inputElement, message = "Error") {
+  const formItem = inputElement.parentElement;
+  formItem.className = "form__item error";
+  formItem.querySelector("small").innerText = message;
+}
+function setSuccessFor(inputElement) {
+  const formItem = inputElement.parentElement;
+  formItem.className = "form__item success";
+}
+
+function checkName(nameInput) {
+  const nameValue = nameInput.value.trim();
+  nameValue
+    ? setSuccessFor(nameInput)
+    : setErrorFor(nameInput, "Name cannot be blank");
+}
+function checkEmail(emailInput) {
+  const emailValue = emailInput.value.trim();
+  emailValue
+    ? isEmailRegex(emailValue)
+      ? setSuccessFor(emailInput)
+      : setErrorFor(emailInput, "Email is not valid")
+    : setErrorFor(emailInput, "Email cannot be blank");
+}
+function checkPhone(phoneInput) {
+  const phoneValue = phoneInput.value.trim();
+  phoneValue
+    ? isPhoneRegex(phoneValue)
+      ? setSuccessFor(phoneInput)
+      : setErrorFor(phoneInput, "Phone number is not valid")
+    : setErrorFor(phoneInput, "Phone number cannot be blank");
+}
+function checkPass(passInput) {
+  const passValue = passInput.value.trim();
+  passValue
+    ? setSuccessFor(passInput)
+    : setErrorFor(passInput, "Password cannot be blank");
+}
+function checkPassCheck(passInput, passCheckInput) {
+  const passValue = passInput.value.trim();
+  const passCheckValue = passCheckInput.value.trim();
+  passCheckValue
+    ? passCheckValue === passValue
+      ? setSuccessFor(passCheckInput)
+      : setErrorFor(passCheckInput, "Passwords does not match")
+    : setErrorFor(passCheckInput, "Password check cannot be blank");
+}
+
+function isEmailRegex(email) {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+}
+function isPhoneRegex(phone) {
+  const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/im;
+  return re.test(String(phone).toLowerCase());
+}
+
+/* JavaScript Form Validation onblur */
+nameInput.addEventListener("blur", function () {
+  checkName(this);
+});
+emailInput.addEventListener("blur", function () {
+  checkEmail(this);
+});
+passInput.addEventListener("blur", function () {
+  checkPass(this);
+});
+passCheckInput.addEventListener("blur", function () {
+  checkPassCheck(passInput, passCheckInput);
+});
+phoneInput.addEventListener("blur", function () {
+  checkPhone(this);
+});
+/* end of JavaScript Form Validation */
+```
+
+## style.css
+
+```css
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #2b627c;
+}
+
+::selection {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 720px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.form-container {
+  margin: 0.5rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 10, 0.1);
+  border-radius: 1rem;
+  background-color: #fdfdfd;
+}
+
+.form__item {
+  margin: 1.25rem 0;
+  position: relative;
+}
+
+.form__label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.form__input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #fcfcfc;
+  border-width: 2px;
+  border-radius: 0.5rem;
+  border-color: rgba(0, 0, 10, 0.25);
+  transition: border-color 200ms ease-in;
+}
+
+.form__input::placeholder {
+  color: #bbb;
+}
+
+.form__input:focus {
+  background-color: #fff;
+  border-color: var(--primary-color);
+  outline: 0;
+}
+
+/* CSS for green, red borders and icons for success/error messages */
+.form__item i {
+  visibility: hidden;
+  position: absolute;
+  font-size: 1.1em;
+  top: 2.15em;
+  right: 0.875em;
+}
+.form__item small {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+.form__item.error small {
+  color: #e74c3c;
+  visibility: visible;
+}
+.form__item.success i.fa-check-circle {
+  visibility: visible;
+  color: #2ecc71;
+}
+.form__item.error i.fa-exclamation-circle {
+  visibility: visible;
+  color: #e74c3c;
+}
+.form__item.success .form__input {
+  border: 2px solid #2ecc71;
+}
+.form__item.error .form__input {
+  border: 2px solid #e74c3c;
+}
+
+.form__item--buttons {
+  margin: 2rem 0 1rem 0;
+}
+
+.form__button {
+  padding: 1em 2em;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.form__button--submit {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: #fff;
+}
+.form__button--reset {
+  background-color: #fff;
+  border: 1px solid #0c1f24;
+  color: #0c1f24;
+}
+
+.form__item--title {
+  margin-bottom: 1rem;
+}
+
+/*************************************************/
+/* Custom Checkbox Tutorial - Web Dev Simplified */
+.form__item--checkbox-container .form__label {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 0.5em;
+}
+.form__item--checkbox-container .form__input {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+.form__item--checkbox-container .form__label::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 0.05em solid #000;
+  border-radius: 0.2em;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  transition: background-color 200ms;
+}
+.form__item--checkbox-container .form__label:hover::before,
+.form__item--checkbox-container .form__input:hover + .form__label::before {
+  background-color: #9cbbc920;
+}
+.form__item--checkbox-container .form__input:checked + .form__label::before {
+  content: "\002714";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: var(--primary-color);
+}
+.form__item--checkbox-container .form__input:focus + .form__label::before {
+  box-shadow: 0 0 2px 1px #1a3b4b90;
+}
+
+/************************************/
+/* Custom Checkbox as Toggle Switch */
+.toggle {
+  --width: 2.5rem;
+  --height: calc(var(--width) / 2);
+  --border-radius: calc(var(--height) / 2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.toggle__input {
+  display: none;
+}
+.toggle__fill {
+  position: relative;
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  background: #ddd;
+  margin-right: 0.5em;
+  transition: background-color 0.2s;
+}
+.toggle__input:checked ~ .toggle__fill {
+  background-color: var(--primary-color);
+}
+.toggle__fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--height);
+  width: var(--height);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  border-radius: var(--border-radius);
+  transition: transform 0.2s;
+}
+.toggle__input:checked ~ .toggle__fill::after {
+  transform: translateX(var(--height));
+}
+
+/***********************/
+/* Custom Radio Button */
+.form__item--radio-container {
+  display: flex;
+  align-items: center;
+}
+.form__item--radio-container .form__label {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 0.5em;
+}
+.form__item--radio-container .form__input {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+.form__item--radio-container .form__label::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 2px solid #d8e4e2;
+  border-radius: 50%;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  transition: background-color 200ms;
+}
+.form__item--radio-container .form__label:hover::before,
+.form__item--radio-container .form__input:hover + .form__label::before {
+  background-color: #9cbbc940;
+}
+.form__item--radio-container .form__input:checked + .form__label::before {
+  content: "";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+}
+.form__item--radio-container .form__input:focus + .form__label::before {
+  box-shadow: 0 0 2px 1px #1a3b4b90;
+}
+
+/***********************/
+/* Custom Range Slider */
+.form__item--range-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.form__item--range-container .form__input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  padding: unset;
+  background: var(--primary-color);
+  border: none;
+}
+.form__item--range-container .form__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  transition: background-color 100ms ease-in;
+}
+.form__item--range-container .form__input::-webkit-slider-thumb:hover {
+  background-color: var(--primary-color);
+}
+.form__item--range-container .form__range-value {
+  color: var(--primary-color);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 40px;
+  height: 40px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+.form__item--range-container .form__range-value div {
+  transition: transform 300ms linear;
+}
+
+/*****************************/
+/* Custom File Upload Button */
+.form__item--file .form__item--file-text {
+  margin-left: 0.5em;
+  color: #333;
+}
+.form__item--files-name {
+  max-width: 250px;
+  font-size: 0.95em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/**********************/
+/* Custom Select Menu */
+.form__select select {
+  appearance: none;
+  padding: 0.5rem 3rem 0.5rem 0.5rem;
+}
+.form__select {
+  position: relative;
+  width: 100%;
+}
+.form__select--arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  background: #9cbbc930;
+  border-radius: 0 0.5rem 0.5rem 0;
+  height: 100%;
+  width: 2em;
+  pointer-events: none;
+}
+
+.form__select--arrow::before,
+.form__select--arrow::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-left: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+}
+
+.form__select--arrow::before {
+  top: 35%;
+  border-bottom: 0.3em solid #000;
+}
+.form__select--arrow::after {
+  top: 65%;
+  border-top: 0.3em solid #000;
+}
+```
+
+![JavaScript Form](./HTMLFormsAndCustomization/html_forms_imgs/html_forms17.jpg)
+
+<br/>
+
+## index_checkbox.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All forms elements and customization</title>
+    <link rel="stylesheet" href="./style_checkbox.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <form
+          class="form"
+          action="./"
+          method="GET"
+          enctype="multipart/form-data"
+        >
+          <!-- Animated Checkbox - DesignCourse -->
+          <div class="form__item">
+            <div class="form__item--title">Favorite Fruit Checkbox</div>
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="apple" id="apple" />
+              <label for="apple">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Apple</span>
+              </label>
+            </div>
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="avocado" id="avocado" />
+              <label for="avocado">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Avocado</span>
+              </label>
+            </div>
+            <div class="form__item--checkbox-container">
+              <input type="checkbox" name="pomegranate" id="pomegranate" />
+              <label for="pomegranate">
+                <svg viewBox="0 0 100 100">
+                  <path
+                    class="box"
+                    d="M82,89H18c-3.87,0-7-3.13-7-7V18c0-3.87,3.13-7,7-7h64c3.87,0,7,3.13,7,7v64C89,85.87,85.87,89,82,89z"
+                  />
+                  <polyline
+                    class="check"
+                    points="25.5,53.5 39.5,67.5 72.5,34.5 "
+                  />
+                </svg>
+                <span>Pomegranate</span>
+              </label>
+            </div>
+          </div>
+
+          <br />
+
+          <div class="form__item">
+            <div class="form__item--title">
+              How many fruits do you eat per day?
+            </div>
+
+            <div class="form__item--radio-container">
+              <input
+                class="form__input"
+                type="radio"
+                name="radioFruitPerDay"
+                id="radioFruitPerDay_Zero"
+              />
+              <label class="form__label" for="radioFruitPerDay_Zero"
+                >Zero fruits/day</label
+              >
+            </div>
+
+            <div class="form__item--radio-container">
+              <input
+                class="form__input"
+                type="radio"
+                name="radioFruitPerDay"
+                id="radioFruitPerDay_One"
+                checked
+              />
+              <label class="form__label" for="radioFruitPerDay_One"
+                >One fruit/day</label
+              >
+            </div>
+
+            <div class="form__item--radio-container">
+              <input
+                class="form__input"
+                type="radio"
+                name="radioFruitPerDay"
+                id="radioFruitPerDay_Three"
+              />
+              <label class="form__label" for="radioFruitPerDay_Three"
+                >Over three fruits/day</label
+              >
+            </div>
+          </div>
+
+          <br />
+
+          <div class="form__item">
+            <label class="toggle" for="myToggle">
+              <input
+                class="toggle__input"
+                name="fruit-toggler"
+                type="checkbox"
+                id="myToggle"
+              />
+              <div class="toggle__fill"></div>
+              <span>Allow fruits recommendations?</span>
+            </label>
+            <br />
+            <label class="toggle" for="myToggle2">
+              <input
+                class="toggle__input"
+                name="fruit-toggler"
+                type="checkbox"
+                id="myToggle2"
+              />
+              <div class="toggle__fill"></div>
+              <span>Subscribe to our fruit newsletter?</span>
+            </label>
+          </div>
+
+          <br />
+
+          <div class="form__item">
+            <label for="rangeFruitLikeness">How much do you like fruits?</label>
+            <div class="form__item--range-container">
+              <input
+                class="form__input"
+                type="range"
+                id="rangeFruitLikeness"
+                name="rangeFruitLikeness"
+                min="1"
+                max="10"
+                value="1"
+                step="1"
+              />
+              <div class="form__range-value">
+                <div id="rangeFruitLikenessDisplayValue"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label for="rangeFruitRecommendation"
+              >How much would you recommend a fruit to a friend?</label
+            >
+            <div class="slider-ui">
+              <input
+                id="rangeFruitRecommendation"
+                name="rangeFruitRecommendation"
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value="4"
+              />
+              <div class="bar">
+                <span class="min"></span>
+                <span class="max"></span>
+              </div>
+              <div class="track">
+                <div class="value"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label for="rangeAmountSpentOnFruits"
+              >How much do you spend on fruits annualy?</label
+            >
+            <div class="form__item--range-container">
+              <div class="form__item--range-group range__slider">
+                <input id="rangeAmountSpentOnFruits" type="range" step="100" />
+              </div>
+              <div class="form__item--range-group range__value">
+                <span id="rangeAmountSpentOnFruitsDisplay"></span>
+                <div class="range__text">Amount</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form__item--buttons">
+            <button class="form__button form__button--submit" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      /* Custom Range Input - https://codepen.io/dsr/pen/rNLxBxw */
+      let rangeInput = document.querySelector(
+        ".form__item--range-container .form__input"
+      );
+      let rangeValue = document.querySelector(
+        ".form__item--range-container .form__range-value #rangeFruitLikenessDisplayValue"
+      );
+
+      let start = parseFloat(rangeInput.min);
+      let end = parseFloat(rangeInput.max);
+      let step = parseFloat(rangeInput.step);
+      rangeValue.innerHTML = "<div>" + start + "</div>";
+
+      for (let i = start; i <= end; i += step) {
+        rangeValue.innerHTML += "<div>" + i + "</div>";
+      }
+
+      rangeInput.addEventListener("input", function () {
+        let top = (parseFloat(rangeInput.value) / step) * -40;
+        rangeValue.style.transform = `translateY(${top + "px"})`;
+      });
+      /* end of Custom Range Input */
+
+      /* Custom Range Slider Animated - https://codepen.io/MinzCode/pen/bGEvXWR */
+      const sliders = document.querySelectorAll(".slider-ui");
+      sliders.forEach((slider) => {
+        let input = slider.querySelector("input[type=range]");
+        let min = input.getAttribute("min");
+        let max = input.getAttribute("max");
+        let valueElem = slider.querySelector(".value");
+
+        slider.querySelector(".min").innerText = min;
+        slider.querySelector(".max").innerText = max;
+
+        function setValueElem() {
+          valueElem.innerText = input.value;
+          let percent = ((input.value - min) / (max - min)) * 100;
+          valueElem.style.left = percent + "%";
+        }
+        setValueElem();
+
+        input.addEventListener("input", setValueElem);
+        input.addEventListener("mousedown", () => {
+          valueElem.classList.add("up");
+        });
+        input.addEventListener("mouseup", () => {
+          valueElem.classList.remove("up");
+        });
+      });
+      /* end of Custom Range Slider Animated */
+
+      /* Custom Range Slider for Prices - https://codepen.io/lavary/pen/OJbQPXe */
+      class Slider {
+        constructor(rangeElement, valueElement, options) {
+          this.rangeElement = rangeElement;
+          this.valueElement = valueElement;
+          this.options = options;
+          this.rangeElement.addEventListener(
+            "input",
+            this.updateSlider.bind(this)
+          );
+        }
+        init() {
+          this.rangeElement.setAttribute("min", options.min);
+          this.rangeElement.setAttribute("max", options.max);
+          this.rangeElement.value = options.cur;
+
+          this.updateSlider();
+        }
+        asMoney(value) {
+          /* Money Format */
+          return (
+            parseFloat(value).toLocaleString("en-US", {
+              maximumFractionDigits: 2,
+            }) + " Lei"
+          );
+        }
+        generateBackground(rangeElement) {
+          if (this.rangeElement.value === this.options.min) {
+            return;
+          }
+          var percentage =
+            ((this.rangeElement.value - this.options.min) /
+              (this.options.max - this.options.min)) *
+            100;
+          return (
+            "background: linear-gradient(to right, var(--primary-color), var(--primary-color) " +
+            percentage +
+            "%, #E9E9E9 " +
+            percentage +
+            "%, #E6E6E6 100%)"
+          );
+        }
+        updateSlider(newValue) {
+          this.valueElement.innerHTML = this.asMoney(this.rangeElement.value);
+          this.rangeElement.style = this.generateBackground(
+            this.rangeElement.value
+          );
+        }
+      }
+
+      var rangeElement = document.querySelector(
+        ".form__item--range-container #rangeAmountSpentOnFruits"
+      );
+      var valueElement = document.querySelector(
+        ".form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay"
+      );
+
+      var options = {
+        min: 100,
+        max: 5000,
+        cur: 1500,
+      };
+      if (rangeElement) {
+        var slider = new Slider(rangeElement, valueElement, options);
+        slider.init();
+      }
+      /* end of Custom Range Slider for Prices */
+    </script>
+  </body>
+</html>
+```
+
+## style_checkbox.css
+
+```css
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* --primary-color: #2b627c; */
+  --primary-color: #fc4444;
+}
+
+::selection {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 720px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.form-container {
+  margin: 0.5rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 10, 0.1);
+  border-radius: 1rem;
+}
+
+.form__item {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form__item--title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.form__item--buttons {
+  margin-top: 1rem;
+}
+
+.form__button {
+  padding: 1em 2em;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.form__button.form__button--submit {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: #fff;
+}
+
+/*************************************************/
+/* Custom Checkbox Tutorial - Web Dev Simplified */
+.form__item--checkbox-container {
+  display: flex;
+  align-items: center;
+}
+.form__item--checkbox-container .form__label {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 0.5em;
+}
+.form__item--checkbox-container .form__input {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+.form__item--checkbox-container .form__label::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 0.05em solid #000;
+  border-radius: 50%;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  transition: background-color 200ms;
+}
+.form__item--checkbox-container .form__label:hover::before,
+.form__item--checkbox-container .form__input:hover + .form__label::before {
+  background-color: #9cbbc940;
+}
+.form__item--checkbox-container .form__input:checked + .form__label::before {
+  content: "\002714";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: var(--primary-color);
+}
+.form__item--checkbox-container .form__input:focus + .form__label::before {
+  box-shadow: 0 0 2px 1px #1a3b4b90;
+}
+
+/************************************/
+/* Animated Checkbox - DesignCourse */
+input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+input[type="checkbox"] + label {
+  cursor: pointer;
+  display: flex;
+}
+input[type="checkbox"] + label svg {
+  width: 2em;
+  stroke: var(--primary-color);
+  stroke-width: 5;
+  fill: white;
+}
+input[type="checkbox"] + label svg .box {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 0;
+  fill: #fff;
+  transition: stroke-dashoffset 0.3s linear, fill 0.3s linear;
+}
+input[type="checkbox"]:hover + label svg .box {
+  fill: #9cbbc920;
+}
+input[type="checkbox"]:focus + label svg .box {
+  fill: #9cbbc950;
+}
+input[type="checkbox"] + label svg .check {
+  stroke-dasharray: 70;
+  stroke-dashoffset: 70;
+  fill: none;
+  transition: stroke-dashoffset 0.3s linear;
+}
+input[type="checkbox"] + label span {
+  padding-top: 0.5em;
+  margin-left: 0.3em;
+}
+input[type="checkbox"]:checked + label .box {
+  stroke-dashoffset: 320;
+  fill: #9cbbc920;
+}
+input[type="checkbox"]:checked + label .check {
+  stroke-dashoffset: 0;
+}
+
+/************************************/
+/* Custom Checkbox as Toggle Switch */
+.toggle {
+  --width: 50px;
+  --height: calc(var(--width) / 2);
+  --border-radius: calc(var(--height) / 2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.toggle__input {
+  display: none;
+}
+.toggle__fill {
+  position: relative;
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  background: #ddd;
+  margin-right: 0.5em;
+  transition: background-color 0.2s;
+}
+.toggle__input:checked ~ .toggle__fill {
+  background-color: var(--primary-color);
+}
+.toggle__fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--height);
+  width: var(--height);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  border-radius: var(--border-radius);
+  transition: transform 0.2s;
+}
+.toggle__input:checked ~ .toggle__fill::after {
+  transform: translateX(var(--height));
+}
+
+/***********************/
+/* Custom Radio Button */
+.form__item--radio-container {
+  display: flex;
+  align-items: center;
+}
+.form__item--radio-container .form__label {
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 0.5em;
+  position: relative;
+  margin-left: 2em;
+}
+.form__item--radio-container .form__input {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+}
+.form__item--radio-container .form__label::before {
+  content: "";
+  position: absolute;
+  left: -2em;
+  top: -0.075em;
+  width: 1em;
+  height: 1em;
+  border: 0.05em solid #d8e4e2;
+  border-radius: 50%;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  transition: background-color 200ms;
+}
+.form__item--radio-container .form__label:hover::before,
+.form__item--radio-container .form__input:hover + .form__label::before {
+  background-color: #9cbbc940;
+}
+.form__item--radio-container .form__label::after {
+  content: "";
+  position: absolute;
+  left: calc(-2em + 0.05em);
+  top: calc(-0.075em + 0.05em);
+  width: 1em;
+  height: 1em;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  transition: transform 200ms ease-in-out;
+  transform: scale(0);
+}
+.form__item--radio-container .form__input:checked + .form__label::after {
+  transform: scale(1);
+}
+.form__item--radio-container .form__input:focus + .form__label::before {
+  box-shadow: 0 0 2px 1px #1a3b4b90;
+}
+
+/***********************/
+/* Custom Range Slider */
+.form__item--range-container {
+  display: flex;
+  align-items: center;
+}
+.form__item--range-container .form__input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: var(--primary-color);
+  border: none;
+}
+.form__item--range-container .form__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  transition: background-color 100ms ease-in;
+}
+.form__item--range-container .form__input::-webkit-slider-thumb:hover {
+  background-color: var(--primary-color);
+}
+.form__item--range-container .form__range-value {
+  color: var(--primary-color);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 40px;
+  height: 40px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+.form__item--range-container .form__range-value div {
+  transition: transform 300ms linear;
+}
+
+/********************************/
+/* Custom Range Slider Animated */
+.slider-ui {
+  position: relative;
+  width: 95%;
+  height: 2rem;
+  margin: 2.25rem 0;
+}
+.slider-ui input {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+.slider-ui .bar {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: var(--primary-color);
+  border-radius: 50px;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1);
+}
+.slider-ui .min,
+.slider-ui .max {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 800;
+  color: #fff;
+}
+.slider-ui .min {
+  left: 2%;
+}
+.slider-ui .max {
+  right: 2%;
+}
+.slider-ui .track {
+  position: absolute;
+  z-index: 3;
+  left: 25px;
+  right: 25px;
+  top: 0;
+  bottom: 0;
+}
+.slider-ui .value {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  background-color: #fff;
+  border: 2px solid var(--primary-color);
+  border-radius: 100%;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  transition: top 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+.slider-ui .value.up {
+  top: -110%;
+  color: #000;
+}
+
+/**********************************/
+/* Custom Range Slider for Prices */
+.form__item--range-container {
+  display: flex;
+}
+.range__slider {
+  width: 95%;
+}
+.range__value {
+  width: 35%;
+  margin-left: 45px;
+  text-align: center;
+  border-left: #e6e4e4 1px solid;
+}
+.form__item--range-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form__item--range-group .range__text {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: #222;
+  margin-bottom: 5px;
+}
+.form__item--range-group span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3c3b3b;
+}
+.range__slider .range__text {
+  margin-bottom: 10px;
+}
+.range__slider [type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 0.5rem;
+  border-radius: 6px;
+  background: #f1f1f1;
+  padding: 0;
+  margin: 0;
+}
+.range__slider [type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #fbfbfb;
+  border: var(--primary-color) 3px solid;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
+}
+.range__slider [type="range"]::-webkit-slider-thumb:hover {
+  background-color: var(--primary-color);
+}
+.range__slider [type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: var(--primary-color) 3px solid;
+  cursor: pointer;
+  -webkit-transition: background-color 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
+}
+.range__slider [type="range"]::-moz-range-thumb:hover {
+  background-color: var(--primary-color);
+}
+input::-moz-focus-inner,
+input::-moz-focus-outer {
+  border: 0;
+}
+```
+
+![JavaScript Form](./HTMLFormsAndCustomization/html_forms_imgs/html_forms18.jpg)
+
+## rangeslider.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom range slider</title>
+  </head>
+  <style>
+    .slider-ui {
+      position: relative;
+      width: 500px;
+      height: 2rem;
+      margin: 70px 0;
+    }
+
+    .slider-ui input {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    .slider-ui .bar {
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #00b894;
+      border-radius: 50px;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-ui .min,
+    .slider-ui .max {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .slider-ui .min {
+      left: 2%;
+    }
+
+    .slider-ui .max {
+      right: 2%;
+    }
+
+    .slider-ui .track {
+      position: absolute;
+      z-index: 3;
+      left: 25px;
+      right: 25px;
+      top: 0;
+      bottom: 0;
+    }
+
+    .slider-ui .value {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      background-color: #fff;
+      border: 2px solid #00b894;
+      border-radius: 100%;
+      box-sizing: border-box;
+      transform: translateX(-50%);
+      transition: top 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    .slider-ui .value.up {
+      top: -110%;
+      color: #000;
+    }
+  </style>
+
+  <body>
+    <div class="slider-ui">
+      <input type="range" min="1" max="10" step="1" />
+      <div class="bar">
+        <span class="min"></span>
+        <span class="max"></span>
+      </div>
+      <div class="track">
+        <div class="value"></div>
+      </div>
+    </div>
+
+    <script>
+      const sliders = document.querySelectorAll(".slider-ui");
+      sliders.forEach((slider) => {
+        let input = slider.querySelector("input[type=range]");
+        let min = input.getAttribute("min");
+        let max = input.getAttribute("max");
+        let valueElem = slider.querySelector(".value");
+
+        slider.querySelector(".min").innerText = min;
+        slider.querySelector(".max").innerText = max;
+
+        function setValueElem() {
+          valueElem.innerText = input.value;
+          let percent = ((input.value - min) / (max - min)) * 100;
+          valueElem.style.left = percent + "%";
+        }
+        setValueElem();
+
+        input.addEventListener("input", setValueElem);
+        input.addEventListener("mousedown", () => {
+          valueElem.classList.add("up");
+        });
+        input.addEventListener("mouseup", () => {
+          valueElem.classList.remove("up");
+        });
+      });
+    </script>
+  </body>
+</html>
+```
+
+## rangesliderprice.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Range Slider with Price</title>
+
+    <style>
+      .form__item--range-container {
+        display: flex;
+        width: 600px;
+      }
+
+      .range__slider {
+        width: 95%;
+      }
+
+      .range__value {
+        width: 35%;
+        margin-left: 45px;
+        text-align: center;
+        border-left: #e6e4e4 1px solid;
+      }
+
+      .form__item--range-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .form__item--range-group .range__text {
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        color: #222;
+        margin-bottom: 5px;
+      }
+
+      .form__item--range-group span {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #3c3b3b;
+      }
+
+      .range__slider .range__text {
+        margin-bottom: 10px;
+      }
+
+      .range__slider [type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 0.5rem;
+        border-radius: 6px;
+        background: #f1f1f1;
+        padding: 0;
+        margin: 0;
+      }
+
+      .range__slider [type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #fbfbfb;
+        border: #7a00ff 3px solid;
+        cursor: pointer;
+        -webkit-transition: background-color 0.15s ease-in-out;
+        transition: background-color 0.15s ease-in-out;
+      }
+
+      .range__slider [type="range"]::-webkit-slider-thumb:hover {
+        background-color: #7a00ff;
+      }
+
+      .range__slider [type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border: 0;
+        border-radius: 50%;
+        background-color: #ccc;
+        border: #7a00ff 3px solid;
+        cursor: pointer;
+        -webkit-transition: background-color 0.15s ease-in-out;
+        transition: background-color 0.15s ease-in-out;
+      }
+
+      .range__slider [type="range"]::-moz-range-thumb:hover {
+        background-color: #7a00ff;
+      }
+
+      input::-moz-focus-inner,
+      input::-moz-focus-outer {
+        border: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="form__item">
+      <label for="rangeAmountSpentOnFruits"
+        >How much do you spend on fruits annualy?</label
+      >
+      <div class="form__item--range-container">
+        <div class="form__item--range-group range__slider">
+          <input id="rangeAmountSpentOnFruits" type="range" step="100" />
+        </div>
+        <div class="form__item--range-group range__value">
+          <span id="rangeAmountSpentOnFruitsDisplay"></span>
+          <div class="range__text">Amount</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      class Slider {
+        constructor(rangeElement, valueElement, options) {
+          this.rangeElement = rangeElement;
+          this.valueElement = valueElement;
+          this.options = options;
+          this.rangeElement.addEventListener(
+            "input",
+            this.updateSlider.bind(this)
+          );
+        }
+        init() {
+          this.rangeElement.setAttribute("min", options.min);
+          this.rangeElement.setAttribute("max", options.max);
+          this.rangeElement.value = options.cur;
+
+          this.updateSlider();
+        }
+        asMoney(value) {
+          /* Money Format */
+          return (
+            parseFloat(value).toLocaleString("en-US", {
+              maximumFractionDigits: 2,
+            }) + " Lei"
+          );
+        }
+        generateBackground(rangeElement) {
+          if (this.rangeElement.value === this.options.min) {
+            return;
+          }
+          var percentage =
+            ((this.rangeElement.value - this.options.min) /
+              (this.options.max - this.options.min)) *
+            100;
+          return (
+            "background: linear-gradient(to right, #50299c, #7a00ff " +
+            percentage +
+            "%, #E9E9E9 " +
+            percentage +
+            "%, #E6E6E6 100%)"
+          );
+        }
+        updateSlider(newValue) {
+          this.valueElement.innerHTML = this.asMoney(this.rangeElement.value);
+          this.rangeElement.style = this.generateBackground(
+            this.rangeElement.value
+          );
+        }
+      }
+
+      var rangeElement = document.querySelector(
+        ".form__item--range-container #rangeAmountSpentOnFruits"
+      );
+      var valueElement = document.querySelector(
+        ".form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay"
+      );
+
+      var options = {
+        min: 100,
+        max: 5000,
+        cur: 1500,
+      };
+      if (rangeElement) {
+        var slider = new Slider(rangeElement, valueElement, options);
+        slider.init();
+      }
+    </script>
+  </body>
+</html>
+```

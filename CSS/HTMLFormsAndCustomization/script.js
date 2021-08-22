@@ -57,36 +57,22 @@ Array.prototype.forEach.call(
 const form = document.getElementById("form");
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
 const passInput = document.getElementById("password");
 const passCheckInput = document.getElementById("passwordCheck");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   checkInputs();
 });
-function checkInputs() {
-  /* Get input values */
-  const nameValue = nameInput.value.trim();
-  const emailValue = emailInput.value.trim();
-  const passValue = passInput.value.trim();
-  const passCheckValue = passCheckInput.value.trim();
 
-  nameValue
-    ? setSuccessFor(nameInput)
-    : setErrorFor(nameInput, "Name cannot be blank");
-  emailValue
-    ? isEmail(emailValue)
-      ? setSuccessFor(emailInput)
-      : setErrorFor(emailInput, "Email is not valid")
-    : setErrorFor(emailInput, "Email cannot be blank");
-  passValue
-    ? setSuccessFor(passInput)
-    : setErrorFor(passInput, "Password cannot be blank");
-  passCheckValue
-    ? passCheckValue === passValue
-      ? setSuccessFor(passCheckInput)
-      : setErrorFor(passCheckInput, "Passwords does not match")
-    : setErrorFor(passCheckInput, "Password check cannot be blank");
+function checkInputs() {
+  checkName(nameInput);
+  checkEmail(emailInput);
+  checkPhone(phoneInput);
+  checkPass(passInput);
+  checkPassCheck(passInput, passCheckInput);
 }
+
 function setErrorFor(inputElement, message = "Error") {
   const formItem = inputElement.parentElement;
   formItem.className = "form__item error";
@@ -96,9 +82,69 @@ function setSuccessFor(inputElement) {
   const formItem = inputElement.parentElement;
   formItem.className = "form__item success";
 }
-function isEmail(email) {
+
+function checkName(nameInput) {
+  const nameValue = nameInput.value.trim();
+  nameValue
+    ? setSuccessFor(nameInput)
+    : setErrorFor(nameInput, "Name cannot be blank");
+}
+function checkEmail(emailInput) {
+  const emailValue = emailInput.value.trim();
+  emailValue
+    ? isEmailRegex(emailValue)
+      ? setSuccessFor(emailInput)
+      : setErrorFor(emailInput, "Email is not valid")
+    : setErrorFor(emailInput, "Email cannot be blank");
+}
+function checkPhone(phoneInput) {
+  const phoneValue = phoneInput.value.trim();
+  phoneValue
+    ? isPhoneRegex(phoneValue)
+      ? setSuccessFor(phoneInput)
+      : setErrorFor(phoneInput, "Phone number is not valid")
+    : setErrorFor(phoneInput, "Phone number cannot be blank");
+}
+function checkPass(passInput) {
+  const passValue = passInput.value.trim();
+  passValue
+    ? setSuccessFor(passInput)
+    : setErrorFor(passInput, "Password cannot be blank");
+}
+function checkPassCheck(passInput, passCheckInput) {
+  const passValue = passInput.value.trim();
+  const passCheckValue = passCheckInput.value.trim();
+  passCheckValue
+    ? passCheckValue === passValue
+      ? setSuccessFor(passCheckInput)
+      : setErrorFor(passCheckInput, "Passwords does not match")
+    : setErrorFor(passCheckInput, "Password check cannot be blank");
+}
+
+function isEmailRegex(email) {
   return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
     email
   );
 }
-/* end of JavaScript Form Validation on Submit */
+function isPhoneRegex(phone) {
+  const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/im;
+  return re.test(String(phone).toLowerCase());
+}
+
+/* JavaScript Form Validation onblur */
+nameInput.addEventListener("blur", function () {
+  checkName(this);
+});
+emailInput.addEventListener("blur", function () {
+  checkEmail(this);
+});
+passInput.addEventListener("blur", function () {
+  checkPass(this);
+});
+passCheckInput.addEventListener("blur", function () {
+  checkPassCheck(passInput, passCheckInput);
+});
+phoneInput.addEventListener("blur", function () {
+  checkPhone(this);
+});
+/* end of JavaScript Form Validation */
