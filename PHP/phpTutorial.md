@@ -103,6 +103,18 @@ Useful **VSCode extensions** for PHP:
 
 ---
 
+## Set a new password to MySQL Xampp database
+
+By default, the password for `root` is an empty string `""` (so we don't have any password).
+
+(Optional) To set a new password for **root** in MySQL in XAMPP: Configure it with the "XAMPP Shell" (command prompt). Open the shell from the XAMPP control panel and execute this command: ```mysqladmin.exe -u root password secret``` this sets the root password to 'secret'.
+
+After that, we need to edit the `C:\xampp\phpMyAdmin\config.inc.php` file, and restart both Apache and MySQL servers from XAMPP Control Panel.
+
+![Reset Xampp MySQL root password](./PhpTutorial/mysql_pass_reset.jpg)
+
+Now you can access http://localhost/phpmyadmin/.
+
 <br/>
 
 ## PHP Syntax
