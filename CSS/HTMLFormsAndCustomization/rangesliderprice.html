@@ -18,6 +18,7 @@
     }
 
     .range__value {
+      display: none;
       width: 35%;
       margin-left: 45px;
       text-align: center;
@@ -111,9 +112,20 @@
     </div>
   </div>
 
+  <br><br>
+
+  <div class="form__item">
+    <label for="rangeAmountSpentOnVeggies">How much do you spend on vegetables annualy?</label>
+    <div class="form__item--range-container">
+      <div class="form__item--range-group range__slider">
+        <input id="rangeAmountSpentOnVeggies" type="range" step="100">
+      </div>
+    </div>
+  </div>
+
   <script>
     class Slider {
-      constructor(rangeElement, valueElement, options) {
+      constructor(options, rangeElement, valueElement = null) {
         this.rangeElement = rangeElement
         this.valueElement = valueElement
         this.options = options
@@ -138,22 +150,36 @@
         return 'background: linear-gradient(to right, #50299c, #7a00ff ' + percentage + '%, #E9E9E9 ' + percentage + '%, #E6E6E6 100%)'
       }
       updateSlider(newValue) {
-        this.valueElement.innerHTML = this.asMoney(this.rangeElement.value)
         this.rangeElement.style = this.generateBackground(this.rangeElement.value)
+        if (this.valueElement) {
+          this.valueElement.innerHTML = this.asMoney(this.rangeElement.value)
+        }
       }
     }
 
+    /* First slider with money spent on fruits */
     var rangeElement = document.querySelector('.form__item--range-container #rangeAmountSpentOnFruits')
     var valueElement = document.querySelector('.form__item--range-container .range__value #rangeAmountSpentOnFruitsDisplay')
-
     var options = {
       min: 100,
       max: 5000,
       cur: 1500
     }
     if (rangeElement) {
-      var slider = new Slider(rangeElement, valueElement, options)
+      var slider = new Slider(options, rangeElement, valueElement)
       slider.init()
+    }
+
+    /* Second slider with money spent on vegetables without showing price */
+    var rangeElement2 = document.querySelector('.form__item--range-container #rangeAmountSpentOnVeggies')
+    var options2 = {
+      min: 100,
+      max: 5000,
+      cur: 2000
+    }
+    if (rangeElement) {
+      var slider2 = new Slider(options2, rangeElement2)
+      slider2.init()
     }
   </script>
 </body>

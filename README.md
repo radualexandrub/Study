@@ -30,6 +30,7 @@ A collection of my personal study notes from various courses, tutorials, article
 
 * [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
 * [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
+* [React JS Crash Course 2021 - Traversy Media](./React/ReactCrashCourse.md)
 
 ---
 
@@ -45,7 +46,8 @@ A collection of my personal study notes from various courses, tutorials, article
 
 ### PHP
 
-- [PHP Tutorial](./PHP/phpTutorial.md)
+- [PHP Tutorial Part 1 (Data types, Conditionals & Loops, Functions, OOP, Files, cURL)](./PHP/phpTutorial.md)
+- [PHP Tutorial Part 2 (MySQL, PHP Forms)](./PHP/phpTutorial_part2.md)
 
 ### **Python**
 
