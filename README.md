@@ -58,6 +58,10 @@ A collection of my personal study notes from various courses, tutorials, article
 
 
 
+### **Java**
+
+- [Java Tutorial](./Java/README.md)
+
 ### SQL
 
 * [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
