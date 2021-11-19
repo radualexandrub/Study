@@ -2,9 +2,10 @@
 
 Credits / Notes taken from:
 
-- [Learn Java 8 - Full Tutorial for Beginners 8-Aug-2018 - 9h32m - freeCodeCamp](https://youtu.be/grEKMHGYyns)
 - [Java - W3Schools](https://www.w3schools.com/java/default.asp)
 - [Intro to Java Programming - Course for Absolute Beginners - 21-May-2019 - 3h48m](https://youtu.be/GoXwIVyNvX0)
+- [Java Tutorial from javatpoint](https://www.javatpoint.com/java-tutorial)
+- [Learn Java 8 - Full Tutorial for Beginners 8-Aug-2018 - 9h32m - freeCodeCamp](https://youtu.be/grEKMHGYyns)
 
 Table of Contents:
 
@@ -77,6 +78,18 @@ Now we can also run "javac" command.
 ![Elipse Editor Does Not Contain Main Type Error](./LearnJava_imgs/java06.jpg)
 
 - Click again on "Run Main" icon and... congrats, you successfully ran your first "Hello World" app in Java.
+
+<br/>
+
+<br/>
+
+**[Enable Autocomplete / content assist in Eclipse](https://stackoverflow.com/questions/6912169/eclipse-enable-autocomplete-content-assist)**
+
+Also see: [No Default Proposals in Eclipse Juno](https://stackoverflow.com/questions/11653448/no-default-proposals-in-eclipse-juno). Solution:
+
+![Elipse Editor Does Not Contain Main Type Error](./LearnJava_imgs/java02_1.jpg)
+
+(You could check them all)
 
 <br/>
 
@@ -962,7 +975,7 @@ System.out.println("hey there there".lastIndexOf("there")); // 10
 
 <br/>
 
-# Java Arrays
+# Java Built-in default Arrays
 
 https://www.w3schools.com/java/java_arrays.asp
 
@@ -1039,9 +1052,25 @@ for (int i = 0; i < myNumbers.length; ++i) {
 
 ## Array Methods
 
+https://www.programcreek.com/2013/09/top-10-methods-for-java-arrays/
 
+<br/>
 
+**Sort array in-place (mutates the array)**
 
+```java
+import java.util.Arrays;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		int arr[] = {32, -76, 34, 12, 3, 37, 54, 21, 49};
+		Arrays.sort(arr);
+		
+		System.out.println(Arrays.toString(arr)); // [-76, 3, 12, 21, 32, 34, 37, 49, 54]
+	}
+}
+```
 
 
 
@@ -1449,29 +1478,582 @@ public static void main(String[] args) {
 
 <Br/>
 
-# LinkedList
-
-
-
-
-
-# Sets and Lists
 
 
 
 
 
 
+# Sets, ArrayLists, LinkedLists
+
+When you create a set or a list, you don't need to specify it's size (like an array: `String arr[] = new String[3];` or `String[] arr = {"Hello", "Hey"}`).
+
+```java
+String[] arr = new String[3];
+
+arr[0] = "Hello";
+arr[1] = "yes";
+
+System.out.println(Arrays.toString(arr));
+// [Hello, yes, null]
+
+String[] arr = new String[]; // ERROR: Variable must provide either dimension expressions or an array initializer
+```
+
+The difference between a built-in array and an `ArrayList` in Java, is that the size of an array cannot be modified (if you want to add or remove elements to/from an array, you have to create a new one). While elements can be added and removed from an `ArrayList` whenever you want.
+
+<br/>
+
+<br/>
+
+## Java Sets / Hashsets
+
+A set is a collection which is unordered and unindexed, meaning that the order doesn't matter in a set and you cannot be sure in which order the items will appear. Elements in a set are unique, without duplicates (you can't have 2 or more of a same value). (just like [Python Sets](https://www.w3schools.com/python/python_sets.asp)).
+
+We can declare a set (eg of Strings) with `Set<String> set = new HashSet<String>();`.
+
+**To add elements to a set, we call the `add()` method on a Set instance (object).**
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+class Main {
+  public static void main(String[] args) {
+
+	  Set<String> daysSet = new HashSet<String>();
+	  daysSet.add("Monday");
+	  daysSet.add("Monday"); // "Monday" value already exist
+	  daysSet.add("Tuesday");
+	  
+	  System.out.println(daysSet); // [Monday, Tuesday]
+  }
+}
+```
+
+<br/>
+
+**Check if a set contains a value with `.contains()` method:**
+
+```java
+Set<String> paidMonthsSet = new HashSet<String>();
+paidMonthsSet.add("Jan");
+paidMonthsSet.add("Feb");
+paidMonthsSet.add("Mar");
+
+System.out.println(paidMonthsSet.contains("Feb")); // true
+```
+
+<br/>
+
+**Get length of a set with `.size()`**
+
+```java
+System.out.println(paidMonthsSet.size()); // 3
+```
+
+
+
+<br/>
+
+**Remove elements in a set based on value with remove()**
+
+```java
+Set<String> paidMonthsSet = new HashSet<String>();
+paidMonthsSet.add("Jan");
+paidMonthsSet.add("Feb");
+paidMonthsSet.add("Mar");
+
+paidMonthsSet.remove("Jan");
+System.out.println(paidMonthsSet); // [Feb, Mar]
+```
+
+<br/>
+
+**You can clear an entire set with `clear()`**
+
+```java
+paidMonthsSet.clear();
+```
+
+<br/>
+
+**Check if a set is empty with `isEmpty()`**
+
+```java
+paidMonthsSet.clear();
+paidMonthsSet.isEmpty(); // returs true
+```
+
+<br/>
+
+**Loop through a HashSet**
+
+https://www.w3schools.com/java/java_hashset.asp
+
+```java
+HashSet<String> cars = new HashSet<String>();
+cars.add("Volvo");
+cars.add("BMW");
+cars.add("Ford");
+cars.add("BMW");
+cars.add("Mazda");
+
+for (String car : cars) {
+  System.out.print(car + " ");
+}
+// Volvo Mazda Ford BMW 
+```
+
+<br/>
+
+<br/>
+
+## Java ArrayList
+
+https://www.w3schools.com/java/java_arraylist.asp
+
+The `ArrayList` class is a resizable [array](https://www.w3schools.com/java/java_arrays.asp), which can be found in the `java.util` package.
+
+The difference between a built-in array and an `ArrayList` in Java, is that the size of an array cannot be modified (if you want to add or remove elements to/from an array, you have to create a new one). While elements can be added and removed from an `ArrayList` whenever you want.
+
+<br/>
+
+**Add items in ArrayList**
+
+```java
+import java.util.ArrayList;
+
+public class Main {
+	public static void main(String[] args) {
+		ArrayList<String> shoppingList = new ArrayList<String>();
+		
+		shoppingList.add("Banana");
+		shoppingList.add("Kiwi");
+		
+		System.out.println(shoppingList); // [Banana, Kiwi]
+	}
+}
+```
+
+<br/>
+
+Unlike sets, you can **access, change/update and remove items (based on index) in ArrayList**
+
+```java
+ArrayList<String> shoppingList = new ArrayList<String>();
+
+shoppingList.add("Banana");
+shoppingList.add("Kiwi");
+
+System.out.println(shoppingList.get(0)); // Banana
+shoppingList.set(0, "Orange");
+System.out.println(shoppingList); // [Orange, Kiwi]
+
+shoppingList.remove(shoppingList.size() - 1);
+System.out.println(shoppingList); // [Orange]
+```
+
+<br/>
+
+**Empty/Clear an ArrayList**
+
+```java
+shoppingList.clear();
+```
+
+<br/>
+
+**Get sublist elements from specified indexes (range from first index to second index)**
+
+```java
+ArrayList<String> shoppingList = new ArrayList<String>();
+
+shoppingList.add("Apple"); // 0
+shoppingList.add("Banana"); // 1
+shoppingList.add("Kiwi"); // 2
+shoppingList.add("Orange"); // 3
+
+System.out.println(shoppingList.subList(1, 3)); // [Banana, Kiwi]
+```
+
+
+
+<br/>
+
+**Loop through an ArrayList**
+
+```java
+ArrayList<String> cars = new ArrayList<String>();
+cars.add("Volvo");
+cars.add("BMW");
+cars.add("Ford");
+cars.add("Mazda");
+for (int i = 0; i < cars.size(); i++) {
+  System.out.println(cars.get(i));
+}
+/*
+Volvo
+BMW
+Ford
+Mazda
+*/
+```
+
+```java
+for (String car : cars) {
+  System.out.println(car + " "); // Volvo BMW Ford Mazda
+}
+```
+
+<br/>
+
+https://www.javatpoint.com/java-arraylist
+
+| Method                                                       | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| void [add](https://www.javatpoint.com/java-arraylist-add-method)(int index, E element) | It is used to insert the specified element at the specified position in a list. |
+| boolean [add](https://www.javatpoint.com/java-arraylist-add-method)(E e) | It is used to append the specified element at the end of a list. |
+| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(Collection<? extends E> c) | It is used to append all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator. |
+| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(int index, Collection<? extends E> c) | It is used to append all the elements in the specified collection, starting at the specified position of the list. |
+| void [clear](https://www.javatpoint.com/java-arraylist-clear-method)() | It is used to remove all of the elements from this list.     |
+| void ensureCapacity(int requiredCapacity)                    | It is used to enhance the capacity of an ArrayList instance. |
+| E get(int index)                                             | It is used to fetch the element from the particular position of the list. |
+| boolean isEmpty()                                            | It returns true if the list is empty, otherwise false.       |
+| [Iterator()](https://www.javatpoint.com/java-arraylist-iterator-method) |                                                              |
+| [listIterator()](https://www.javatpoint.com/java-arraylist-listiterator-method) |                                                              |
+| int lastIndexOf(Object o)                                    | It is used to return the index in this list of the last occurrence of the specified element, or -1 if the list does not contain this element. |
+| Object[] toArray()                                           | It is used to return an array containing all of the elements in this list in the correct order. |
+| <T> T[] toArray(T[] a)                                       | It is used to return an array containing all of the elements in this list in the correct order. |
+| Object clone()                                               | It is used to return a shallow copy of an ArrayList.         |
+| boolean contains(Object o)                                   | It returns true if the list contains the specified element   |
+| int indexOf(Object o)                                        | It is used to return the index in this list of the first occurrence of the specified element, or -1 if the List does not contain this element. |
+| E remove(int index)                                          | It is used to remove the element present at the specified position in the list. |
+| boolean [remove](https://www.javatpoint.com/java-arraylist-remove-method)(Object o) | It is used to remove the first occurrence of the specified element. |
+| boolean [removeAll](https://www.javatpoint.com/java-arraylist-removeall-method)(Collection<?> c) | It is used to remove all the elements from the list.         |
+| boolean removeIf(Predicate<? super E> filter)                | It is used to remove all the elements from the list that satisfies the given predicate. |
+| protected void [removeRange](https://www.javatpoint.com/java-arraylist-removerange-method)(int fromIndex, int toIndex) | It is used to remove all the elements lies within the given range. |
+| void replaceAll(UnaryOperator<E> operator)                   | It is used to replace all the elements from the list with the specified element. |
+| void [retainAll](https://www.javatpoint.com/java-arraylist-retainall-method)(Collection<?> c) | It is used to retain all the elements in the list that are present in the specified collection. |
+| E set(int index, E element)                                  | It is used to replace the specified element in the list, present at the specified position. |
+| void sort(Comparator<? super E> c)                           | It is used to sort the elements of the list on the basis of specified comparator. |
+| Spliterator<E> spliterator()                                 | It is used to create spliterator over the elements in a list. |
+| List<E> subList(int fromIndex, int toIndex)                  | It is used to fetch all the elements lies within the given range. |
+| int size()                                                   | It is used to return the number of elements present in the list. |
+| void trimToSize()                                            | It is used to trim the capacity of this ArrayList instance to be the list's current size. |
+
+
+
+<br/>
+
+<br/>
+
+## Java LinkedList
+
+https://www.w3schools.com/java/java_linkedlist.asp
+
+The `LinkedList` class is a collection which can contain many objects (dynamic size) of the same type, just like the `ArrayList`.
+
+he `LinkedList` class has all of the same methods as the `ArrayList` class because they both implement the `List` interface. This means that you can add items, change items, remove items and clear the list in the same way.
+
+However, while the `ArrayList` class and the `LinkedList` class can be used in the same way, they are built very differently.
+
+<br/>
+
+The `LinkedList` stores its items in "containers." The list has a link to the first container and each container has a link to the next container in the list. To add an element to the list, the element is placed into a new container and that container is linked to one of the other containers in the list.
+
+🟢 **Use case: Use an `ArrayList` for storing and accessing data, and `LinkedList` to manipulate data.**
+
+<br/>
+
+For many cases, the `ArrayList` is more efficient as it is common to need access to random items in the list, but the `LinkedList` provides several methods to do certain operations more efficiently:
+
+| Method        | Description                                    | Try it                                                       |
+| :------------ | :--------------------------------------------- | :----------------------------------------------------------- |
+| addFirst()    | Adds an item to the beginning of the list.     | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addfirst) |
+| addLast()     | Add an item to the end of the list             | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addlast) |
+| removeFirst() | Remove an item from the beginning of the list. | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_removefirst) |
+| removeLast()  | Remove an item from the end of the list        | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_removelast) |
+| getFirst()    | Get the item at the beginning of the list      | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getfirst) |
+| getLast()     | Get the item at the end of the list            | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getlast) |
+
+
+
+<br/>
+
+
+
+## Java Maps
+
+An object that maps keys to values. A map cannot contain duplicate keys; each key can map to at most one value.
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		Map persons = new HashMap();
+		persons.put("Alex", 18);
+		persons.put("Andrew", 23);
+		
+		System.out.println(persons); // {Alex=18, Andrew=23}
+	}
+}
+```
+
+```java
+// However, if we use maps like this, we will get warnings:
+/* Type safety: The method put(Object, Object) belongs to the raw type Map. References to generic type Map<K,V> should be parameterized */
+
+// Solution:
+Map<String, Integer> persons = new HashMap<String, Integer>();
+persons.put("Alex", 18);
+persons.put("Andrew", 23);
+
+System.out.println(persons); // {Alex=18, Andrew=23}
+```
+
+<br/>
+
+[Key Differences between Map and HashMap](https://www.javatpoint.com/map-and-hashmap-in-java):
+
+- The Map is an interface, and HashMap is a class of the Java collection framework.
+- The Map interface can be implemented by using its implementing classes. In comparison, the HashMap class implements the Map interface.
+- The Map contains unique key-pair values. But, the HashMap can hold duplicate values.
+- The Map does not allow null values. But the HashMap can have one null key and multiple values.
+- The Map has two implementations, which are HashMap and TreeMap. Whereas HashMap implements Map interface and extends AbstractMap class.
+- There is no difference between the Map and HashMap objects.
+
+<br/>
 
 # HashMaps
 
+https://www.w3schools.com/java/java_hashmap.asp
+
+https://www.geeksforgeeks.org/java-util-hashmap-in-java-with-examples/?ref=lbp
+
+https://www.geeksforgeeks.org/hashmap-containsvalue-method-in-java/?ref=lbp
+
+In the [`ArrayList`](https://www.w3schools.com/java/java_arraylist.asp) chapter, you learned that Arrays store items as an ordered collection, and you have to access them with an index number (`int` type). A `HashMap` however, store items in "**key**/**value**" pairs, and you can access them by an index of another type (e.g. a `String`).
+
+*(So, hashmaps in Java are just like [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp), or [associative arrays in PHP](https://www.w3schools.com/php/php_arrays_associative.asp), or [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp))*
+
+<br/>
+
+One object is used as a key (index) to another object (value). It can store different types: `String` keys and `Integer` values, or the same type, like: `String` keys and `String` values:
+
+<br/>
+
+**Add items to HashMap with `put()`**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		HashMap<String, String> capitalCities = new HashMap<String, String>();
+		capitalCities.put("Romania", "Bucharest");
+		capitalCities.put("France", "Paris");
+		capitalCities.put("Germany", "Berlin");
+		capitalCities.put("Poland", "Warsaw");
+		
+		System.out.println(capitalCities); // {Romania=Bucharest, Poland=Warsaw, France=Paris, Germany=Berlin}
+	}
+}
+```
+
+<br/>
+
+**Length/Size of HashMap object with `size()`**
+
+```java
+System.out.println(capitalCities.size()); // 4
+```
+
+<br/>
+
+**Check and Access the value of item by referring to its key with `get()`**
+
+```java
+System.out.println(capitalCities.containsKey("France")); // true
+
+System.out.println(capitalCities.get("France")); // Paris
+System.out.println(capitalCities.get("England")); // null
+```
+
+```java
+// Check if HashMap contains a value
+System.out.println(capitalCities.containsValue("Warsaw")); // true
+```
+
+Note that we don't get an error if we try to retrieve an item that doesn't exist (in Python we would get **KeyError** error)
+
+<br/>
+
+**Remove an item from hashmap by reffering to its key**
+
+```java
+HashMap<String, String> capitalCities = new HashMap<String, String>();
+capitalCities.put("Romania", "Bucharest");
+capitalCities.put("France", "Paris");
+capitalCities.put("Germany", "Berlin");
+capitalCities.put("Poland", "Warsaw");
+
+System.out.println(capitalCities.remove("Poland")); // it also returns the value: Warsaw
+System.out.println(capitalCities); // {Romania=Bucharest, France=Paris, Germany=Berlin}
+```
+
+<br/>
+
+**Get all the values of HashMap object**
+
+```java
+HashMap<String, String> capitalCities = new HashMap<String, String>();
+capitalCities.put("Romania", "Bucharest");
+capitalCities.put("France", "Paris");
+capitalCities.put("Germany", "Berlin");
+capitalCities.put("Poland", "Warsaw");
+
+System.out.println(capitalCities.values()); // [Bucharest, Warsaw, Paris, Berlin]
+```
+
+<br/>
+
+**Loop through a HashMap**
+
+```java
+HashMap<String, String> capitalCities = new HashMap<String, String>();
+capitalCities.put("Romania", "Bucharest");
+capitalCities.put("France", "Paris");
+capitalCities.put("Germany", "Berlin");
+capitalCities.put("Poland", "Warsaw");
+
+// Get only the values
+for (String value : capitalCities.values()) {
+  System.out.print(value + " "); // Bucharest Warsaw Paris Berlin 
+}
+
+// Get key and value
+for (String key : capitalCities.keySet()) {
+  System.out.println(key + "=" + capitalCities.get(key));
+}
+/*
+Romania=Bucharest
+Poland=Warsaw
+France=Paris
+Germany=Berlin
+*/
+```
+
+<br/>
+
+Another [example](https://www.w3schools.com/java/java_hashmap.asp):
+
+```java
+public class Main {
+  public static void main(String[] args) {
+
+    // Create a HashMap object called people
+    HashMap<String, Integer> people = new HashMap<String, Integer>();
+
+
+    // Add keys and values (Name, Age)
+    people.put("John", 32);
+    people.put("Steve", 30);
+    people.put("Angie", 33);
+
+    for (String i : people.keySet()) {
+      System.out.println("key: " + i + " value: " + people.get(i));
+    }
+  }
+}
+```
+
+<br/>
+
+**Copy a HashMap to another HashMap (copy without reference, so a true separate copy)**
+
+```java
+HashMap<String, String> capitalCities = new HashMap<String, String>();
+capitalCities.put("Romania", "Bucharest");
+capitalCities.put("France", "Paris");
+capitalCities.put("Germany", "Berlin");
+capitalCities.put("Poland", "Warsaw");
+
+HashMap<String, String> capitalCitiesCopy = new HashMap<String, String>();
+capitalCitiesCopy.putAll(capitalCities);
+
+capitalCities.put("England", "London");
+System.out.println(capitalCitiesCopy); // {Poland=Warsaw, Romania=Bucharest, France=Paris, Germany=Berlin}
+```
 
 
 
+<br/>
+
+## TreeMap
+
+A TreeMap is like a HashMap but it is sorted according to the [natural ordering](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) of its keys (or based on a custom [Comparator](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html) that you can provide at the time of creation of the TreeMap).
+
+<br/>
+
+Example: Given a **string**, store in a TreeMap the frequency of all characters (count all the characters into a map).
+
+```java
+import java.util.TreeMap;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		TreeMap<Character, Integer> letterFrequency = new TreeMap<Character, Integer>();
+		String inputString = "alphabetically";
+    
+    /* Or input from scanner */
+    // Scanner scannerObj = new Scanner(System.in);
+		// String inputString = scannerObj.nextLine();
+		
+		for (int i = 0; i < inputString.length(); i++) {
+			char currentLetter = inputString.charAt(i);
+			if (letterFrequency.containsKey(currentLetter)) {
+				letterFrequency.put(currentLetter, letterFrequency.get(currentLetter) + 1);
+			} else {
+				letterFrequency.put(currentLetter, 1);
+			}
+		}
+		
+		System.out.println(letterFrequency); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
+	}
+}
+```
+
+Note that in the template (*templates types is the common name in C/C++*) (when we specify the TypeArgument), we need to use **the wrapper object** of the primitive type we want to use. So, for `char`, its wrapper object is `Character`, for `int` its wrapper object is `Integer`.
 
 
 
+<br/>
+
+# Java Stream
+
+Resources on Java Stream:
+
+- https://stackify.com/streams-guide-java-8/
+- https://www.baeldung.com/java-8-streams
+- https://www.baeldung.com/java-stream-reduce
+- https://mkyong.com/java8/java-8-stream-reduce-examples/
+
+<br/>
+
+The addition of the *Stream* was one of the major features added to Java 8, that allows to operate with a data source and making bulk processing convenient and fast. Java 8 Streams should not be confused with Java I/O streams (ex: *FileInputStream* etc).
+
+**A stream does not store data and, in that sense, is not a data structure. It also <u>never modifies the underlying data source</u>.**
+
+This functionality – *java.util.stream* – supports functional-style operations on streams of elements, such as map-reduce transformations on collections.
+
+<br/>
 
 
 
-
+## Java Stream.reduce
