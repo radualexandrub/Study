@@ -155,7 +155,7 @@ Any code inside the `main()` method will be executed.
 
 
 
-## Final variables
+## Final keyword
 
 You can add the `final` keyword if you don't want others (or yourself) to overwrite existing values (this will declare the variable as "final" or "constant", which means unchangeable and read-only):
 
@@ -169,6 +169,54 @@ myNumFinal = 20;  // will generate an error: cannot assign a value to a final va
 
 /* The final local variable myNumFinal cannot be assigned. It must be blank and not using a compound assignment */
 ```
+
+<br/>
+
+**Final keyword for attributes within a Class** (variables)
+
+By default you can override existing values of attributes (obviously) - https://www.w3schools.com/java/java_class_attributes.asp
+
+```java
+public class Main {
+	
+	int x = 5;
+	
+	public static void main(String[] args) {
+		Main obj = new Main();
+		obj.x = 8;
+		
+		System.out.println(obj.x); // 8
+	}
+}
+```
+
+If you don't want the ability to override existing values, declare the attribute as `final`:
+
+```java
+public class Main {
+	
+	final int x = 5;
+	
+	public static void main(String[] args) {
+		Main obj = new Main();
+		obj.x = 8; // Error: The final field Main.x cannot be assigned
+		
+		System.out.println(obj.x);
+	}
+}
+```
+
+<br/>
+
+**Final keyword for methods within a Class**
+
+Final methods means that these methods cannot be overridden.
+
+
+
+
+
+
 
 <br/>
 
@@ -1338,7 +1386,7 @@ for (int i = 0; i < cars.length; i++) {
 // Volvo BMW Ford Mazda 
 ```
 
-Note you can use `printf` (print format) in Java and C/C++ (as an alternative to *Template Literals in JavaScript* or *f-strings in Python*)
+> Note you can use `printf` (print format) in Java and C/C++ (as an alternative to *Template Literals in JavaScript* or *f-strings in Python*)
 
 <br/>
 
@@ -1474,13 +1522,258 @@ public static void main(String[] args) {
 
 # Java OOP
 
+Resources on OOP from w3schols:
+
+- [Java - What is OOP?](https://www.w3schools.com/java/java_oop.asp)
+- [Java Classes and Objects](https://www.w3schools.com/java/java_classes.asp)
+- [Java Class Attributes](https://www.w3schools.com/java/java_class_attributes.asp)
+- [Java Class Methods](https://www.w3schools.com/java/java_class_methods.asp)
+- [Java Constructors](https://www.w3schools.com/java/java_constructors.asp)
+- [Java Modifiers](https://www.w3schools.com/java/java_modifiers.asp)
+- [Java Encapsulation](https://www.w3schools.com/java/java_encapsulation.asp)
+- [Java Inheritance](https://www.w3schools.com/java/java_inheritance.asp)
+- [Java Polymorphism](https://www.w3schools.com/java/java_polymorphism.asp)
+- [Java Inner Classes](https://www.w3schools.com/java/java_inner_classes.asp)
+- [Java Abstraction](https://www.w3schools.com/java/java_abstract.asp)
+- [Java Interface](https://www.w3schools.com/java/java_interface.asp)
+
+<br/>
+
+In Java, you can create an object (instance of a class) within the class itself (eg. **Main**):
+
+```java
+public class Main {
+	
+	int x = 5;
+	
+	public static void main(String[] args) {
+		
+		Main obj = new Main();
+		System.out.println(obj.x); // 5
+	}
+}
+```
+
+<br/>
+
+**Using multiple classes (in different files)**
+
+We can have multiple classes (classes separated in .java files). If the classes are within the same package, there's no need to import them while creating objects in the Main Class.
+
+```java
+// package helloworld -> Person.java
+package helloworld;
+
+public class Person {
+	int age = 0;
+}
+```
+
+  ```java
+// package helloword -> Main.java
+package helloworld;
+
+public class Main {
+	
+	public static void main(String[] args) {
+		
+		Person Donna = new Person();
+		Donna.age = 25;
+		
+		System.out.println(Donna.age); // 25
+	}
+}
+  ```
+
+![](./LearnJava_imgs/java07.jpg)
+
+Note that public classes must be defined in their own .java files (with the filename matching the class).
+
+<br/>
+
+You can also import classes from other packages:
+
+![](./LearnJava_imgs/java07_2.jpg)
 
 
-<Br/>
+
+<br/>
+
+## Static vs non-static (public) methods
+
+https://www.w3schools.com/java/java_class_methods.asp
+
+You will often see Java programs that have either `static` or `public` attributes and methods:
+
+- `static` method means that it can be accessed without creating an object of the class (the static methods can be used within the Class itself), unlike `public` methods
+- `public` methods can be only accessed by objects (instances) of that Class
+- both `public static` means that the method can be accessed within its Class and/or accessed by objects its Class.
+
+Example within/using the **Main Class**
+
+```java
+public class Main {
+	
+	static void staticMethod() {
+		System.out.println("Static methods can be called without creating objects");
+	}
+	public void publicMethod() {
+		System.out.println("Public methods must be called by creating objects");
+	}
+	public static void publicStaticMethod() {
+		System.out.println("Public static method can be called anywhere by anyone");
+	}
+
+	public static void main(String[] args) {
+		
+		staticMethod(); // prints Static methods can be called without creating objects
+		
+		Main obj = new Main();
+		obj.publicMethod(); // prints Public methods must be called by creating objects
+		
+		publicStaticMethod(); // prints Public static method can be called anywhere by anyone
+		obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone -- although for this one we get warning: The static method publicStaticMethod() from the type Main should be accessed in a static way */
+	}
+}
+```
 
 
 
 
+
+<br/>
+
+## Constructors
+
+https://www.w3schools.com/java/java_constructors.asp
+
+A constructor in Java is a **special method** that is used to initialize objects. The constructor is called when an object of a class is created. It can be used to set initial values for object attributes:
+
+🟢 Note that the constructor name must **match the class name**, and it cannot have a **return type** (like `void`). The constructor is called when the object is created.
+
+> In other languages, the constructor is created with different keywords (eg. `__init__(args)` in Python, or `__construct($args)` in PHP)
+
+🟢 All classes have constructors by default: if you do not create a class constructor yourself, Java creates one for you. However, then you are not able to set initial values for object attributes.
+
+```java
+// Person.java
+public class Person {
+	
+	private String name;
+	private String surname;
+	private String email;
+	private int age;
+	private double credits;
+	
+	public Person() {
+		this.name = "";
+		this.surname = "";
+		this.email = "";
+		this.credits = 0.0;
+	}
+	
+	public Person(String name, String surname, String email) {
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.credits = 0.0;
+	}
+}
+```
+
+Note: we can override constructors (by using different parameters), and we can access the properties (variables) within the class using `this` keyword *(just to be more specific, mandatory only when we have the same variable names as the Class properties used as parameters in constructors --- in other words, we use this keyword only when the constructor parameters/variables have the same variable names as the Class properties/variables)*.
+
+<br/>
+
+<br/>
+
+## Modifiers
+
+https://www.w3schools.com/java/java_modifiers.asp
+
+### Access modifiers
+
+- **Access Modifiers** - controls the access level
+
+For **classes**, you can use either `public` or *default*:
+
+| Modifier  | Description                                                  |
+| :-------- | :----------------------------------------------------------- |
+| `public`  | The class is accessible by any other class                   |
+| *default* | **The class is only accessible by classes in the same package**. This is used when you don't specify a modifier. |
+
+<br/>
+
+For **attributes, methods and constructors**, you can use the one of the following:
+
+| Modifier    | Description                                                  |
+| :---------- | :----------------------------------------------------------- |
+| `public`    | The code is accessible for all classes                       |
+| `private`   | The code is only accessible within the declared class        |
+| *default*   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The *default* modifier is like a *protected* modifier, you can access/call the attributes/method of a Class in another Class, but only if they are situated in the same package)** |
+| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class). |
+
+<br/>
+
+### Non-access modifiers
+
+- **Non-Access Modifiers** - do not control access level, but provides other functionality
+
+For **classes**, you can use either `final` or `abstract`:
+
+| Modifier   | Description                                                  | Try it on w3schols                                           |
+| :--------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `final`    | The class cannot be inherited by other classes               | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_inherit_final) |
+| `abstract` | The class cannot be used to create objects (Also, to access an abstract class, it must be inherited from another class). | [Try it »](https://www.w3schools.com/java/tryjava_multi.asp?filename=demo_mod_abstract&multi=demo_mod_abstract_multi) |
+
+So, for example, if you create an abstract Class `public abstract class Person`, you cannot instantiate/create objects `Person` from this class anymore (you can't write `Person personObj = new Person()`, it will return error).
+
+And, if you want to use (the properties/methods) this new abstract class Person, you must create another class (ex `Student`/`Teacher`/`Employee` class) that inherits all properties/methods from the abstract class `Person`.
+
+
+
+<br/>
+
+For **attributes and methods**, you can use the one of the following:
+
+| Modifier       | Description                                                  |
+| :------------- | :----------------------------------------------------------- |
+| `final`        | Attributes and methods cannot be overridden/modified (eg. constant values for attributes) |
+| `static`       | Attributes and methods belongs to the class, and cannot be accessed through an object of that class |
+| `abstract`     | Can only be used in an abstract class, and can only be used on methods. The method does not have a body, for example **abstract void run();**. The body is provided by the subclass (inherited from). |
+| `transient`    | Attributes and methods are skipped when serializing the object containing them |
+| `synchronized` | Methods can only be accessed by one thread at a time         |
+| `volatile`     | The value of an attribute is not cached thread-locally, and is always read from the "main memory" |
+
+<br/>
+
+
+
+## Inheritance
+
+
+
+
+
+
+
+<br/>
+
+## Encapsulation and examples
+
+https://www.w3schools.com/java/java_encapsulation.asp
+
+The meaning of **Encapsulation**, is to make sure that "sensitive" data is hidden from users. To achieve this, you must:
+
+- declare class variables/attributes as `private`
+- provide public **get** and **set** methods to access and update the value of a `private` variable
+
+Benefits:
+
+- Better control of class attributes and methods
+- Class attributes can be made **read-only** (if you only use the `get` method), or **write-only** (if you only use the `set` method)
+- Flexible: the programmer can change one part of the code without affecting other parts
+- Increased security of data
 
 
 
@@ -1838,7 +2131,9 @@ https://www.geeksforgeeks.org/hashmap-containsvalue-method-in-java/?ref=lbp
 
 In the [`ArrayList`](https://www.w3schools.com/java/java_arraylist.asp) chapter, you learned that Arrays store items as an ordered collection, and you have to access them with an index number (`int` type). A `HashMap` however, store items in "**key**/**value**" pairs, and you can access them by an index of another type (e.g. a `String`).
 
-*(So, hashmaps in Java are just like [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp), or [associative arrays in PHP](https://www.w3schools.com/php/php_arrays_associative.asp), or [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp))*
+<br/>
+
+> *So, hashmaps in Java are just like [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp), or [associative arrays in PHP](https://www.w3schools.com/php/php_arrays_associative.asp), or [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp)*
 
 <br/>
 
@@ -2011,8 +2306,8 @@ public class Main {
 		TreeMap<Character, Integer> letterFrequency = new TreeMap<Character, Integer>();
 		String inputString = "alphabetically";
     
-    /* Or input from scanner */
-    // Scanner scannerObj = new Scanner(System.in);
+		/* Or input from scanner */
+		// Scanner scannerObj = new Scanner(System.in);
 		// String inputString = scannerObj.nextLine();
 		
 		for (int i = 0; i < inputString.length(); i++) {
@@ -2030,6 +2325,313 @@ public class Main {
 ```
 
 Note that in the template (*templates types is the common name in C/C++*) (when we specify the TypeArgument), we need to use **the wrapper object** of the primitive type we want to use. So, for `char`, its wrapper object is `Character`, for `int` its wrapper object is `Integer`.
+
+<br/>
+
+## Examples
+
+### LinkedList of HashMaps:
+
+```java
+LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
+
+HashMap<String, String> person1 = new HashMap<String, String>();
+person1.put("name", "Alex");
+person1.put("email", "alex@example.com");
+person1.put("age", "23");
+
+HashMap<String, String> person2 = new HashMap<String, String>();
+person2.put("name", "Daniel");
+person2.put("email", "daniel@example.com");
+person2.put("age", "28");
+
+HashMap<String, String> person3 = new HashMap<String, String>();
+person3.put("name", "Emma");
+person3.put("email", "emma.n@example.com");
+person3.put("age", "22");
+
+HashMap<String, String> person4 = new HashMap<String, String>();
+person4.put("name", "Brittany");
+person4.put("email", "britt.a@example.com");
+person4.put("age", "25");
+
+persons.add(person1);
+persons.add(person2);
+persons.add(person3);
+persons.add(person4);
+
+System.out.println(persons);
+/* [{name=Alex, email=alex@example.com, age=23}, {name=Daniel, email=daniel@example.com, age=28}, {name=Emma, email=emma.n@example.com, age=22}, {name=Brittany, email=britt.a@example.com, age=25}] */
+```
+
+Loop through array of hashmaps (linkedlist of hashmaps):
+
+```java
+for (HashMap<String, String> person : persons) {
+  System.out.println(person.get("name") + ", age: " + person.get("age"));
+} /*
+Alex, age: 23
+Daniel, age: 28
+Emma, age: 22
+Brittany, age: 25
+*/
+```
+
+Sort array of hashmaps (linkedlist of hashmaps) by "age" key:
+
+```java
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Comparator;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
+		
+		HashMap<String, String> person1 = new HashMap<String, String>();
+		person1.put("name", "Alex");
+		person1.put("email", "alex@example.com");
+		person1.put("age", "23");
+		
+		HashMap<String, String> person2 = new HashMap<String, String>();
+		person2.put("name", "Daniel");
+		person2.put("email", "daniel@example.com");
+		person2.put("age", "28");
+		
+		HashMap<String, String> person3 = new HashMap<String, String>();
+		person3.put("name", "Emma");
+		person3.put("email", "emma.n@example.com");
+		person3.put("age", "22");
+		
+		HashMap<String, String> person4 = new HashMap<String, String>();
+		person4.put("name", "Brittany");
+		person4.put("email", "britt.a@example.com");
+		person4.put("age", "25");
+		
+		HashMap<String, String> person5 = new HashMap<String, String>();
+		person5.put("name", "Diana");
+		person5.put("email", "diana.z@example.com");
+		person5.put("age", "19");
+		
+		persons.add(person1);
+		persons.add(person2);
+		persons.add(person3);
+		persons.add(person4);
+		persons.add(person5);
+		
+		Collections.sort(persons, new Comparator<HashMap<String, String>>() {
+			@Override
+			public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+				return Integer.parseInt(o1.get("age")) - Integer.parseInt(o2.get("age"));
+			}
+		});
+		
+		for (HashMap<String, String> person : persons) {
+			System.out.println(person);
+		}
+	}
+}
+/* output:
+{name=Diana, email=diana.z@example.com, age=19}
+{name=Emma, email=emma.n@example.com, age=22}
+{name=Alex, email=alex@example.com, age=23}
+{name=Brittany, email=britt.a@example.com, age=25}
+{name=Daniel, email=daniel@example.com, age=28}
+*/
+```
+
+Sort array of hashmaps (linkedlist of hashmaps) by "name" key (alphabetically):
+
+```java
+/* Sort LinkedList of HashMaps by "name" key */
+Collections.sort(persons, new Comparator<HashMap<String, String>>() {
+  @Override
+  public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+    return o1.get("name").compareTo(o2.get("name"));
+      // return String.CASE_INSENSITIVE_ORDER.compare(o1.get("name"), o2.get("name"));
+  }
+});
+
+for (HashMap<String, String> person : persons) {
+  System.out.println(person);
+}
+/* output
+{name=Alex, email=alex@example.com, age=23}
+{name=Brittany, email=britt.a@example.com, age=25}
+{name=Daniel, email=daniel@example.com, age=28}
+{name=Diana, email=diana.z@example.com, age=19}
+{name=Emma, email=emma.n@example.com, age=22}
+*/
+```
+
+You can also return (in the compare method) a case-insensitive order by using:
+
+```java
+return String.CASE_INSENSITIVE_ORDER.compare(o1.get("name"), o2.get("name"));
+```
+
+References:
+
+- **https://stackoverflow.com/questions/11176227/simple-way-to-sort-strings-in-the-case-sensitive-alphabetical-order**
+- **https://stackoverflow.com/questions/57001594/comparator-cannot-be-resolved-to-a-type-what-should-i-do**
+- **https://stackoverflow.com/questions/33190156/sort-a-linkedlist-of-objects-by-objects-variable**
+- https://www.baeldung.com/java-hashmap-sort
+- https://www.geeksforgeeks.org/sorting-hashmap-according-key-value-java/
+- https://stackoverflow.com/questions/13069412/sort-array-of-hashmap-by-ascending-time
+
+<br/>
+
+<br/>
+
+<br/>
+
+**Another example just for fun:**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		
+		LinkedList<HashMap<String, String>> shoppingList = new LinkedList<HashMap<String, String>>();
+		
+		HashMap<String, String> item1 = new HashMap<String, String>();
+		item1.put("name", "Keyboard");
+		item1.put("checked", "true");
+		item1.put("price", "40.00");
+		
+		HashMap<String, String> item2 = new HashMap<String, String>();
+		item2.put("name", "Display");
+		item2.put("checked", "false");
+		item2.put("price", "200.00");
+		
+		HashMap<String, String> item3 = new HashMap<String, String>();
+		item3.put("name", "Mouse");
+		item3.put("checked", "true");
+		item3.put("price", "20.00");
+		
+		HashMap<String, String> item4 = new HashMap<String, String>();
+		item4.put("name", "Hard-disk");
+		item4.put("checked", "false");
+		item4.put("price", "35.00");
+		
+		HashMap<String, String> item5 = new HashMap<String, String>();
+		item5.put("name", "Speakers");
+		item5.put("checked", "false");
+		item5.put("price", "25.00");
+		
+		
+		shoppingList.add(item1);
+		shoppingList.add(item2);
+		shoppingList.add(item3);
+		shoppingList.add(item4);
+		shoppingList.add(item5);
+		
+		for (HashMap<String, String> item : shoppingList) {
+			System.out.println(item);
+		}
+	}
+}
+/* outputs:
+{price=40.00, name=Keyboard, checked=true}
+{price=200.00, name=Display, checked=false}
+{price=20.00, name=Mouse, checked=true}
+{price=35.00, name=Hard-disk, checked=false}
+{price=25.00, name=Speakers, checked=false}
+*/
+```
+
+<br/>
+
+Let's return the sum of all prices in LinkedList:
+
+```java
+double sumPrices = 0.0;
+for (HashMap<String, String> item : shoppingList) {
+  sumPrices += item.get("price") != null ? Double.parseDouble(item.get("price")) : 0;
+}
+System.out.println(sumPrices); // 320.0
+```
+
+Return prices of checked items:
+
+```java
+// We only have keyboard and mouse in list priced at 40.0 and 20.0, so return value should be 60.0
+
+double sumPricesCheckedItems = 0.0;
+for (HashMap<String, String> item : shoppingList) {
+
+  if (item.get("price") != null && Boolean.valueOf(item.get("checked"))) {
+    sumPricesCheckedItems += Double.parseDouble(item.get("price"));
+  }
+}
+System.out.println(sumPricesCheckedItems); // 60.0
+```
+
+Sort items by price then by checked/unchecked:
+
+```java
+Collections.sort(shoppingList, new Comparator<HashMap<String, String>>() {
+  @Override
+  public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+    return Double.compare(Double.parseDouble(o1.get("price")), Double.parseDouble(o2.get("price")));
+  }
+});
+
+for(HashMap<String, String> item : shoppingList) {
+  System.out.println(item);
+}
+System.out.println();
+/*
+{price=20.00, name=Mouse, checked=true}
+{price=25.00, name=Speakers, checked=false}
+{price=35.00, name=Hard-disk, checked=false}
+{price=40.00, name=Keyboard, checked=true}
+{price=200.00, name=Display, checked=false}
+*/
+
+Collections.sort(shoppingList, new Comparator<HashMap<String, String>>() {
+  @Override
+  public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+    return String.CASE_INSENSITIVE_ORDER.compare(o2.get("checked"), o1.get("checked"));
+  }
+});
+
+for(HashMap<String, String> item : shoppingList) {
+  System.out.println(item);
+}
+/*
+{price=20.00, name=Mouse, checked=true}
+{price=40.00, name=Keyboard, checked=true}
+{price=25.00, name=Speakers, checked=false}
+{price=35.00, name=Hard-disk, checked=false}
+{price=200.00, name=Display, checked=false}
+*/
+```
+
+Resources:
+
+- https://stackoverflow.com/questions/13434143/sorting-a-double-value-of-an-object-within-an-arraylist
+
+
+
+<br/>
+
+<br/>
+
+<br/>
+
+
+
+### HashMap of objects
+
+```java
+
+```
+
+
+
+
 
 
 
