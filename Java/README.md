@@ -9,6 +9,54 @@ Credits / Notes taken from:
 
 Table of Contents:
 
+- [Java Tutorial](#java-tutorial)
+	- [Java Introduction](#java-introduction)
+	- [First Java Project](#first-java-project)
+- [Java Syntax / Keywords](#java-syntax--keywords)
+	- [Classes](#classes)
+	- [Package](#package)
+	- [Final keyword](#final-keyword)
+	- [Naming Conventions](#naming-conventions)
+- [Java Data Types and Operators](#java-data-types-and-operators)
+	- [Primitive Data Types](#primitive-data-types)
+	- [Type Casting](#type-casting)
+	- [Java Operators](#java-operators)
+	- [Java Math functions](#java-math-functions)
+- [Java User Input and Scanners](#java-user-input-and-scanners)
+- [Java Strings and String Methods](#java-strings-and-string-methods)
+- [Java Built-in default Arrays](#java-built-in-default-arrays)
+	- [Array Methods](#array-methods)
+- [Java Conditions and Loops](#java-conditions-and-loops)
+	- [Java Conditions](#java-conditions)
+	- [Java Loops](#java-loops)
+		- [for each loops](#for-each-loops)
+- [Java Functions / Methods](#java-functions--methods)
+	- [Lambda functions](#lambda-functions)
+- [Java OOP](#java-oop)
+	- [Static vs non-static (public) methods](#static-vs-non-static-public-methods)
+	- [Constructors](#constructors)
+	- [Modifiers](#modifiers)
+		- [Access modifiers](#access-modifiers)
+		- [Non-access modifiers](#non-access-modifiers)
+	- [Encapsulation](#encapsulation)
+	- [Inheritance](#inheritance)
+	- [Abstraction](#abstraction)
+	- [Java Interface](#java-interface)
+	- [Java Inner Classes](#java-inner-classes)
+- [Java Enums](#java-enums)
+- [Sets, ArrayLists, LinkedLists](#sets-arraylists-linkedlists)
+	- [Java Sets / Hashsets](#java-sets--hashsets)
+	- [Java ArrayList](#java-arraylist)
+	- [Java LinkedList](#java-linkedlist)
+	- [Java Maps](#java-maps)
+- [HashMaps](#hashmaps)
+	- [TreeMap](#treemap)
+	- [Examples](#examples)
+		- [LinkedList of HashMaps:](#linkedlist-of-hashmaps)
+		- [LinkedList of objects](#linkedlist-of-objects)
+- [Java Stream](#java-stream)
+	- [Java Stream.reduce](#java-streamreduce)
+
 ## Java Introduction
 
 [to be updated]
@@ -93,8 +141,6 @@ Also see: [No Default Proposals in Eclipse Juno](https://stackoverflow.com/quest
 
 <br/>
 
-
-
 # Java Syntax / Keywords
 
 ## Classes
@@ -107,15 +153,11 @@ A Class is like an object constructor, or a "blueprint" for creating objects.
 
 **Every Java program has a `class` name which must match the filename.**
 
-
-
-
-
 ## Package
 
 https://www.w3schools.com/java/java_packages.asp
 
-A java package is **a group of similar types of classes, interfaces and sub-packages**. 
+A java package is **a group of similar types of classes, interfaces and sub-packages**.
 
 Think of it as **a folder in a file directory**. We use packages to avoid name conflicts, and to write a better maintainable code. Packages are divided into two categories:
 
@@ -131,10 +173,6 @@ import package.name.Class;   // Import a single class
 import package.name.*;   // Import the whole package
 ```
 
-
-
-
-
 <br/>
 
 **The main Method**
@@ -145,15 +183,13 @@ The `main()` method is required and you will see it in every Java program:
 public static void main(String[] args) {
   String userName = "Alex";
   System.out.println("Hello " + userName); // Hello Alex
-  
+
   int x = 1, y = 2, z = 3;
 	System.out.println(x + y + z); // 6
 }
 ```
 
 Any code inside the `main()` method will be executed.
-
-
 
 ## Final keyword
 
@@ -178,13 +214,13 @@ By default you can override existing values of attributes (obviously) - https://
 
 ```java
 public class Main {
-	
+
 	int x = 5;
-	
+
 	public static void main(String[] args) {
 		Main obj = new Main();
 		obj.x = 8;
-		
+
 		System.out.println(obj.x); // 8
 	}
 }
@@ -194,13 +230,13 @@ If you don't want the ability to override existing values, declare the attribute
 
 ```java
 public class Main {
-	
+
 	final int x = 5;
-	
+
 	public static void main(String[] args) {
 		Main obj = new Main();
 		obj.x = 8; // Error: The final field Main.x cannot be assigned
-		
+
 		System.out.println(obj.x);
 	}
 }
@@ -211,12 +247,6 @@ public class Main {
 **Final keyword for methods within a Class**
 
 Final methods means that these methods cannot be overridden.
-
-
-
-
-
-
 
 <br/>
 
@@ -266,7 +296,7 @@ eg. print(), run(), actionPerformed(), runFast(), getBackground(), draw()
 
 **Variables**
 
-Variable names should not start with underscore _ or dollar sign $ characters, even though both are allowed. Variables could use camelCase.
+Variable names should not start with underscore \_ or dollar sign $ characters, even though both are allowed. Variables could use camelCase.
 
 ```
 eg. id, sumPrice, keyWidth, stockprice
@@ -276,13 +306,11 @@ eg. id, sumPrice, keyWidth, stockprice
 
 **Constants**
 
-The names of variables declared class constants and of ANSI constants should be all uppercase with words separated by underscores ("_").
+The names of variables declared class constants and of ANSI constants should be all uppercase with words separated by underscores ("\_").
 
 ```
 eg. PI, MIN_WIDTH, GET_CPU, MIN_AGE, DENSITY, MAX_PRICE, MAX_PRIORITY
 ```
-
-
 
 <br/>
 
@@ -294,16 +322,16 @@ Source: https://www.w3schools.com/java/java_data_types.asp
 
 **Primitive Data Types**
 
-| Data Type | Size           | Description                                                  |
-| :-------- | :------------- | :----------------------------------------------------------- |
-| byte      | 1 byte         | Stores whole numbers from -128 to 127                        |
-| short     | 2 bytes        | Stores whole numbers from -32,768 to 32,767                  |
-| int       | 4 bytes        | Stores whole numbers from -2,147,483,648 to 2,147,483,647    |
+| Data Type | Size           | Description                                                                       |
+| :-------- | :------------- | :-------------------------------------------------------------------------------- |
+| byte      | 1 byte         | Stores whole numbers from -128 to 127                                             |
+| short     | 2 bytes        | Stores whole numbers from -32,768 to 32,767                                       |
+| int       | 4 bytes        | Stores whole numbers from -2,147,483,648 to 2,147,483,647                         |
 | long      | 8 bytes        | Stores whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 |
-| float     | 4 bytes        | Stores fractional numbers. Sufficient for storing 6 to 7 decimal digits |
-| double    | 8 bytes        | Stores fractional numbers. Sufficient for storing 15 decimal digits |
-| boolean   | 1 bit / 1 byte | Stores true or false values                                  |
-| char      | 2 bytes        | Stores a single character/letter or ASCII values             |
+| float     | 4 bytes        | Stores fractional numbers. Sufficient for storing 6 to 7 decimal digits           |
+| double    | 8 bytes        | Stores fractional numbers. Sufficient for storing 15 decimal digits               |
+| boolean   | 1 bit / 1 byte | Stores true or false values                                                       |
+| char      | 2 bytes        | Stores a single character/letter or ASCII values                                  |
 
 <br/>
 
@@ -343,14 +371,12 @@ More about [Floating Point Math](https://0.30000000000000004.com/)
 
 **Non-primitive data types**:
 
-| Data Type | Size | Description                                                  |
-| :-------- | :--- | :----------------------------------------------------------- |
+| Data Type | Size | Description                                                                                                      |
+| :-------- | :--- | :--------------------------------------------------------------------------------------------------------------- |
 | String    |      | Store a sequence of characters (text). String values must be surrounded by double quotes. Strings are immutable. |
-| Array     |      | Store multiple values in a single variable                   |
-| Class     |      |                                                              |
-| Interface |      |                                                              |
-
-
+| Array     |      | Store multiple values in a single variable                                                                       |
+| Class     |      |                                                                                                                  |
+| Interface |      |                                                                                                                  |
 
 Code Examples:
 
@@ -366,7 +392,7 @@ System.out.println(cars); // [Ljava.lang.String;@182decdb
 
 // Loop through Array
 for (int i = 0; i < cars.length; i++) {
-  System.out.print(cars[i] + " "); // Volvo BMW Ford Mazda 
+  System.out.print(cars[i] + " "); // Volvo BMW Ford Mazda
 }
 ```
 
@@ -381,7 +407,7 @@ Example:
 ```java
 public class Main {
 	public static final int MAX_SECONDS = 25;
-  
+
 	public static void main(String[] args) {
 		System.out.println(MAX_SECONDS); // 25
 	}
@@ -391,8 +417,6 @@ public class Main {
 🟠 Note that Java doesn't have a `const` keyword. (Article [Why the const keyword in Java is not implemented?](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Why-the-const-keyword-in-Java-is-not-implemented))
 
 <br/>
-
-
 
 ## Type Casting
 
@@ -437,7 +461,23 @@ public class Main {
 }
 ```
 
+<br/>
 
+**Convert Integer to String**
+
+https://www.educative.io/edpresso/how-to-convert-an-integer-to-a-string-in-java
+
+```java
+int number = 5;
+String.valueOf(number);
+```
+
+or
+
+```java
+int i = 1234;
+String str = Integer.toString(i);
+```
 
 <br/>
 
@@ -451,7 +491,7 @@ Source: https://www.w3schools.com/java/java_operators.asp
 | :------- | :------------- | :------------------------------- | :------ |
 | +        | Addition       | Adds together two values         | x + y   |
 | -        | Subtraction    | Subtracts one value from another | x - y   |
-| *        | Multiplication | Multiplies two values            | x * y   |
+| \*       | Multiplication | Multiplies two values            | x \* y  |
 | /        | Division       | Divides one value by another     | x / y   |
 | %        | Modulus        | Returns the division remainder   | x % y   |
 
@@ -473,7 +513,7 @@ Increment / Decrement:
 | =        | x = 5   | x = 5      |
 | +=       | x += 3  | x = x + 3  |
 | -=       | x -= 3  | x = x - 3  |
-| *=       | x *= 3  | x = x * 3  |
+| \*=      | x \*= 3 | x = x \* 3 |
 | /=       | x /= 3  | x = x / 3  |
 | %=       | x %= 3  | x = x % 3  |
 | &=       | x &= 3  | x = x & 3  |
@@ -486,8 +526,8 @@ Increment / Decrement:
 
 **Java Comparison Operators to compare two values**
 
-| Operator | Name                     | Example | Try it                                                       |
-| :------- | :----------------------- | :------ | :----------------------------------------------------------- |
+| Operator | Name                     | Example | Try it                                                                             |
+| :------- | :----------------------- | :------ | :--------------------------------------------------------------------------------- |
 | ==       | Equal to                 | x == y  | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_compare1) |
 | !=       | Not equal                | x != y  | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_compare2) |
 | >        | Greater than             | x > y   | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_compare3) |
@@ -499,8 +539,8 @@ Increment / Decrement:
 
 **Java Logical Operators**
 
-| Operator | Name        | Description                                             | Example            | Try it                                                       |
-| :------- | :---------- | :------------------------------------------------------ | :----------------- | :----------------------------------------------------------- |
+| Operator | Name        | Description                                             | Example            | Try it                                                                             |
+| :------- | :---------- | :------------------------------------------------------ | :----------------- | :--------------------------------------------------------------------------------- |
 | &&       | Logical and | Returns true if both statements are true                | x < 5 && x < 10    | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_logical1) |
 | \|\|     | Logical or  | Returns true if one of the statements is true           | x < 5 \|\| x < 4   | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_logical2) |
 | !        | Logical not | Reverse the result, returns false if the result is true | !(x < 5 && x < 10) | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_oper_logical3) |
@@ -530,7 +570,7 @@ import java.util.Arrays;
 public class Main {
 	public static void main(String[] args) {
 		double[] numberArr = {2.3, 4.5, 8.94, 4.42, 11.5};
-		
+
 		DoubleSummaryStatistics stat = Arrays.stream(numberArr).summaryStatistics();
 		System.out.println(stat.getMin());
 		System.out.println(stat.getMax());
@@ -548,7 +588,7 @@ System.out.println(Math.sqrt(64)); // 8.0
 
 <br/>
 
-**Java `Math.abs(x)`** 
+**Java `Math.abs(x)`**
 
 ```java
 System.out.println(Math.abs(-6.4)); // 6.4
@@ -595,56 +635,52 @@ System.out.println(Math.pow(5, 2)); // 25.0
 System.out.println(Math.pow(2, 10)); // 1024.0
 ```
 
-
-
 <br/>
 
 More resources:
 
 - https://www.javatpoint.com/java-math
-- https://www.w3schools.com/java/java_ref_math.asp 
+- https://www.w3schools.com/java/java_ref_math.asp
 
-| Method                                                       | Description                                                  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| [Math.abs()](https://www.javatpoint.com/java-math-abs-method) | It will return the Absolute value of the given value.        |
-| [Math.max()](https://www.javatpoint.com/java-math-max-method) | It returns the Largest of two values.                        |
-| [Math.min()](https://www.javatpoint.com/java-math-min-method) | It is used to return the Smallest of two values.             |
-| [Math.round()](https://www.javatpoint.com/java-math-round-method) | It is used to round of the decimal numbers to the nearest value. |
-| [Math.sqrt()](https://www.javatpoint.com/java-math-sqrt-method) | It is used to return the square root of a number.            |
-| [Math.cbrt()](https://www.javatpoint.com/java-math-cbrt-method) | It is used to return the cube root of a number.              |
-| [Math.pow()](https://www.javatpoint.com/java-math-pow-method) | It returns the value of first argument raised to the power to second argument. |
-| [Math.signum()](https://www.javatpoint.com/java-math-signum-method) | It is used to find the sign of a given value.                |
-| [Math.ceil()](https://www.javatpoint.com/java-math-ceil-method) | It is used to find the smallest integer value that is greater than or equal to the argument or mathematical integer. |
-| [Math.copySign()](https://www.javatpoint.com/java-math-copysign-method) | It is used to find the Absolute value of first argument along with sign specified in second argument. |
-| [Math.nextAfter()](https://www.javatpoint.com/java-math-nextafter-method) | It is used to return the floating-point number adjacent to the first argument in the direction of the second argument. |
-| [Math.nextUp()](https://www.javatpoint.com/java-math-nextup-method) | It returns the floating-point value adjacent to d in the direction of positive infinity. |
-| [Math.nextDown()](https://www.javatpoint.com/java-math-nextdown-method) | It returns the floating-point value adjacent to d in the direction of negative infinity. |
-| [Math.floor()](https://www.javatpoint.com/java-math-floor-method) | It is used to find the largest integer value which is less than or equal to the argument and is equal to the mathematical integer of a double value. |
-| [Math.floorDiv()](https://www.javatpoint.com/java-math-floordiv-method) | It is used to find the largest integer value that is less than or equal to the algebraic quotient. |
-| [Math.random()](https://www.javatpoint.com/java-math-random-method) | It returns a double value with a positive sign, greater than or equal to 0.0 and less than 1.0. |
-| [Math.rint()](https://www.javatpoint.com/java-math-rint-method) | It returns the double value that is closest to the given argument and equal to mathematical integer. |
-| [Math.hypot()](https://www.javatpoint.com/java-math-hypot-method) | It returns sqrt(x2 +y2) without intermediate overflow or underflow. |
-| [Math.ulp()](https://www.javatpoint.com/java-math-ulp-method) | It returns the size of an ulp of the argument.               |
-| [Math.getExponent()](https://www.javatpoint.com/java-math-getexponent-method) | It is used to return the unbiased exponent used in the representation of a value. |
-| [Math.IEEEremainder()](https://www.javatpoint.com/java-math-ieeeremainder-method) | It is used to calculate the remainder operation on two arguments as prescribed by the IEEE 754 standard and returns value. |
-| [Math.addExact()](https://www.javatpoint.com/java-math-addexact-method) | It is used to return the sum of its arguments, throwing an exception if the result overflows an int or long. |
-| [Math.subtractExact()](https://www.javatpoint.com/java-math-subtractexact-method) | It returns the difference of the arguments, throwing an exception if the result overflows an int. |
-| [Math.multiplyExact()](https://www.javatpoint.com/java-math-multiplyexact-method) | It is used to return the product of the arguments, throwing an exception if the result overflows an int or long. |
-| [Math.incrementExact()](https://www.javatpoint.com/java-math-incrementexact-method) | It returns the argument incremented by one, throwing an exception if the result overflows an int. |
-| [Math.decrementExact()](https://www.javatpoint.com/java-math-decrementexact-method) | It is used to return the argument decremented by one, throwing an exception if the result overflows an int or long. |
-| [Math.negateExact()](https://www.javatpoint.com/java-math-negateexact-method) | It is used to return the negation of the argument, throwing an exception if the result overflows an int or long. |
-| [Math.toIntExact()](https://www.javatpoint.com/java-math-tointexact-method) | It returns the value of the long argument, throwing an exception if the value overflows an int. |
+| Method                                                                              | Description                                                                                                                                          |
+| :---------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Math.abs()](https://www.javatpoint.com/java-math-abs-method)                       | It will return the Absolute value of the given value.                                                                                                |
+| [Math.max()](https://www.javatpoint.com/java-math-max-method)                       | It returns the Largest of two values.                                                                                                                |
+| [Math.min()](https://www.javatpoint.com/java-math-min-method)                       | It is used to return the Smallest of two values.                                                                                                     |
+| [Math.round()](https://www.javatpoint.com/java-math-round-method)                   | It is used to round of the decimal numbers to the nearest value.                                                                                     |
+| [Math.sqrt()](https://www.javatpoint.com/java-math-sqrt-method)                     | It is used to return the square root of a number.                                                                                                    |
+| [Math.cbrt()](https://www.javatpoint.com/java-math-cbrt-method)                     | It is used to return the cube root of a number.                                                                                                      |
+| [Math.pow()](https://www.javatpoint.com/java-math-pow-method)                       | It returns the value of first argument raised to the power to second argument.                                                                       |
+| [Math.signum()](https://www.javatpoint.com/java-math-signum-method)                 | It is used to find the sign of a given value.                                                                                                        |
+| [Math.ceil()](https://www.javatpoint.com/java-math-ceil-method)                     | It is used to find the smallest integer value that is greater than or equal to the argument or mathematical integer.                                 |
+| [Math.copySign()](https://www.javatpoint.com/java-math-copysign-method)             | It is used to find the Absolute value of first argument along with sign specified in second argument.                                                |
+| [Math.nextAfter()](https://www.javatpoint.com/java-math-nextafter-method)           | It is used to return the floating-point number adjacent to the first argument in the direction of the second argument.                               |
+| [Math.nextUp()](https://www.javatpoint.com/java-math-nextup-method)                 | It returns the floating-point value adjacent to d in the direction of positive infinity.                                                             |
+| [Math.nextDown()](https://www.javatpoint.com/java-math-nextdown-method)             | It returns the floating-point value adjacent to d in the direction of negative infinity.                                                             |
+| [Math.floor()](https://www.javatpoint.com/java-math-floor-method)                   | It is used to find the largest integer value which is less than or equal to the argument and is equal to the mathematical integer of a double value. |
+| [Math.floorDiv()](https://www.javatpoint.com/java-math-floordiv-method)             | It is used to find the largest integer value that is less than or equal to the algebraic quotient.                                                   |
+| [Math.random()](https://www.javatpoint.com/java-math-random-method)                 | It returns a double value with a positive sign, greater than or equal to 0.0 and less than 1.0.                                                      |
+| [Math.rint()](https://www.javatpoint.com/java-math-rint-method)                     | It returns the double value that is closest to the given argument and equal to mathematical integer.                                                 |
+| [Math.hypot()](https://www.javatpoint.com/java-math-hypot-method)                   | It returns sqrt(x2 +y2) without intermediate overflow or underflow.                                                                                  |
+| [Math.ulp()](https://www.javatpoint.com/java-math-ulp-method)                       | It returns the size of an ulp of the argument.                                                                                                       |
+| [Math.getExponent()](https://www.javatpoint.com/java-math-getexponent-method)       | It is used to return the unbiased exponent used in the representation of a value.                                                                    |
+| [Math.IEEEremainder()](https://www.javatpoint.com/java-math-ieeeremainder-method)   | It is used to calculate the remainder operation on two arguments as prescribed by the IEEE 754 standard and returns value.                           |
+| [Math.addExact()](https://www.javatpoint.com/java-math-addexact-method)             | It is used to return the sum of its arguments, throwing an exception if the result overflows an int or long.                                         |
+| [Math.subtractExact()](https://www.javatpoint.com/java-math-subtractexact-method)   | It returns the difference of the arguments, throwing an exception if the result overflows an int.                                                    |
+| [Math.multiplyExact()](https://www.javatpoint.com/java-math-multiplyexact-method)   | It is used to return the product of the arguments, throwing an exception if the result overflows an int or long.                                     |
+| [Math.incrementExact()](https://www.javatpoint.com/java-math-incrementexact-method) | It returns the argument incremented by one, throwing an exception if the result overflows an int.                                                    |
+| [Math.decrementExact()](https://www.javatpoint.com/java-math-decrementexact-method) | It is used to return the argument decremented by one, throwing an exception if the result overflows an int or long.                                  |
+| [Math.negateExact()](https://www.javatpoint.com/java-math-negateexact-method)       | It is used to return the negation of the argument, throwing an exception if the result overflows an int or long.                                     |
+| [Math.toIntExact()](https://www.javatpoint.com/java-math-tointexact-method)         | It returns the value of the long argument, throwing an exception if the value overflows an int.                                                      |
 
 <br/>
 
 **Angular Math Methods**
 
-| Method                                                       | Description                                                  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Method                                                                  | Description                                                                                |
+| :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
 | [Math.toDegrees](https://www.javatpoint.com/java-math-todegrees-method) | It is used to convert the specified Radians angle to equivalent angle measured in Degrees. |
 | [Math.toRadians](https://www.javatpoint.com/java-math-toradians-method) | It is used to convert the specified Degrees angle to equivalent angle measured in Radians. |
-
-
 
 <br/>
 
@@ -670,7 +706,7 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner scannerObj = new Scanner(System.in);
 		System.out.print("Enter username: ");
-		
+
 		String userName = scannerObj.nextLine();
 		System.out.println("Username: " + userName);
 	}
@@ -732,7 +768,7 @@ Salary: 999.99
 
 🟠 **Note**
 
-However, if we don't want to have any errors if the user is inserting the wrong type of data (double instead of int, etc)... We should always read as strings as input (using `next` or `nextLine`), then *parse* the string in the type of data that we want.
+However, if we don't want to have any errors if the user is inserting the wrong type of data (double instead of int, etc)... We should always read as strings as input (using `next` or `nextLine`), then _parse_ the string in the type of data that we want.
 
 ```java
 class Main {
@@ -775,12 +811,12 @@ class Main {
 
 	  Scanner scannerObj = new Scanner(System.in);
 	  String[] names = new String[4];
-	  
+
 	  for (int idx = 0; idx < names.length; idx++) {
 		  System.out.println("Input: ");
 		  names[idx] = scannerObj.nextLine();
 	  }
-	  
+
 	  System.out.println(Arrays.toString(names));
   }
 }
@@ -792,8 +828,6 @@ Input: Joe
 [Bob, Alice, Alex, Joe]
 */
 ```
-
-
 
 <br/>
 
@@ -972,52 +1006,46 @@ System.out.println("hey there there".lastIndexOf("there")); // 10
 
 [All Java Strings Methods - w3schools](https://www.w3schools.com/java/java_ref_string.asp)
 
-| Method                                                       | Description                                                  | Return Type  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- | :----------- |
-| [charAt()](https://www.w3schools.com/java/ref_string_charat.asp) | Returns the character at the specified index (position)      | char         |
-| [codePointAt()](https://www.w3schools.com/java/ref_string_codepointat.asp) | Returns the Unicode of the character at the specified index  | int          |
-| [codePointBefore()](https://www.w3schools.com/java/ref_string_codepointbefore.asp) | Returns the Unicode of the character before the specified index | int          |
-| [codePointCount()](https://www.w3schools.com/java/ref_string_codepointcount.asp) | Returns the number of Unicode values found in a string.      | int          |
-| [compareTo()](https://www.w3schools.com/java/ref_string_compareto.asp) | Compares two strings lexicographically                       | int          |
-| [compareToIgnoreCase()](https://www.w3schools.com/java/ref_string_comparetoignorecase.asp) | Compares two strings lexicographically, ignoring case differences | int          |
-| [concat()](https://www.w3schools.com/java/ref_string_concat.asp) | Appends a string to the end of another string                | String       |
-| [contains()](https://www.w3schools.com/java/ref_string_contains.asp) | Checks whether a string contains a sequence of characters    | boolean      |
-| [contentEquals()](https://www.w3schools.com/java/ref_string_contentequals.asp) | Checks whether a string contains the exact same sequence of characters of the specified CharSequence or StringBuffer | boolean      |
-| [copyValueOf()](https://www.w3schools.com/java/ref_string_copyvalueof.asp) | Returns a String that represents the characters of the character array | String       |
-| [endsWith()](https://www.w3schools.com/java/ref_string_endswith.asp) | Checks whether a string ends with the specified character(s) | boolean      |
-| [equals()](https://www.w3schools.com/java/ref_string_equals.asp) | Compares two strings. Returns true if the strings are equal, and false if not | boolean      |
-| [equalsIgnoreCase()](https://www.w3schools.com/java/ref_string_equalsignorecase.asp) | Compares two strings, ignoring case considerations           | boolean      |
-| format()                                                     | Returns a formatted string using the specified locale, format string, and arguments | String       |
-| getBytes()                                                   | Encodes this String into a sequence of bytes using the named charset, storing the result into a new byte array | byte[]       |
-| getChars()                                                   | Copies characters from a string to an array of chars         | void         |
-| [hashCode()](https://www.w3schools.com/java/ref_string_hashcode.asp) | Returns the hash code of a string                            | int          |
-| [indexOf()](https://www.w3schools.com/java/ref_string_indexof.asp) | Returns the position of the first found occurrence of specified characters in a string | int          |
-| intern()                                                     | Returns the canonical representation for the string object   | String       |
-| [isEmpty()](https://www.w3schools.com/java/ref_string_isempty.asp) | Checks whether a string is empty or not                      | boolean      |
-| [lastIndexOf()](https://www.w3schools.com/java/ref_string_lastindexof.asp) | Returns the position of the last found occurrence of specified characters in a string | int          |
-| [length()](https://www.w3schools.com/java/ref_string_length.asp) | Returns the length of a specified string                     | int          |
-| matches()                                                    | Searches a string for a match against a regular expression, and returns the matches | boolean      |
-| offsetByCodePoints()                                         | Returns the index within this String that is offset from the given index by codePointOffset code points | int          |
-| regionMatches()                                              | Tests if two string regions are equal                        | boolean      |
-| [replace()](https://www.w3schools.com/java/ref_string_replace.asp) | Searches a string for a specified value, and returns a new string where the specified values are replaced | String       |
-| replaceFirst()                                               | Replaces the first occurrence of a substring that matches the given regular expression with the given replacement | String       |
-| replaceAll()                                                 | Replaces each substring of this string that matches the given regular expression with the given replacement | String       |
-| split()                                                      | Splits a string into an array of substrings                  | String[]     |
-| [startsWith()](https://www.w3schools.com/java/ref_string_startswith.asp) | Checks whether a string starts with specified characters     | boolean      |
-| subSequence()                                                | Returns a new character sequence that is a subsequence of this sequence | CharSequence |
-| substring()                                                  | Returns a new string which is the substring of a specified string | String       |
-| toCharArray()                                                | Converts this string to a new character array                | char[]       |
-| [toLowerCase()](https://www.w3schools.com/java/ref_string_tolowercase.asp) | Converts a string to lower case letters                      | String       |
-| toString()                                                   | Returns the value of a String object                         | String       |
-| [toUpperCase()](https://www.w3schools.com/java/ref_string_touppercase.asp) | Converts a string to upper case letters                      | String       |
-| [trim()](https://www.w3schools.com/java/ref_string_trim.asp) | Removes whitespace from both ends of a string                | String       |
-| valueOf()                                                    | Returns the string representation of the specified value     | String       |
-
-
-
-
-
-
+| Method                                                                                     | Description                                                                                                          | Return Type  |
+| :----------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------- | :----------- |
+| [charAt()](https://www.w3schools.com/java/ref_string_charat.asp)                           | Returns the character at the specified index (position)                                                              | char         |
+| [codePointAt()](https://www.w3schools.com/java/ref_string_codepointat.asp)                 | Returns the Unicode of the character at the specified index                                                          | int          |
+| [codePointBefore()](https://www.w3schools.com/java/ref_string_codepointbefore.asp)         | Returns the Unicode of the character before the specified index                                                      | int          |
+| [codePointCount()](https://www.w3schools.com/java/ref_string_codepointcount.asp)           | Returns the number of Unicode values found in a string.                                                              | int          |
+| [compareTo()](https://www.w3schools.com/java/ref_string_compareto.asp)                     | Compares two strings lexicographically                                                                               | int          |
+| [compareToIgnoreCase()](https://www.w3schools.com/java/ref_string_comparetoignorecase.asp) | Compares two strings lexicographically, ignoring case differences                                                    | int          |
+| [concat()](https://www.w3schools.com/java/ref_string_concat.asp)                           | Appends a string to the end of another string                                                                        | String       |
+| [contains()](https://www.w3schools.com/java/ref_string_contains.asp)                       | Checks whether a string contains a sequence of characters                                                            | boolean      |
+| [contentEquals()](https://www.w3schools.com/java/ref_string_contentequals.asp)             | Checks whether a string contains the exact same sequence of characters of the specified CharSequence or StringBuffer | boolean      |
+| [copyValueOf()](https://www.w3schools.com/java/ref_string_copyvalueof.asp)                 | Returns a String that represents the characters of the character array                                               | String       |
+| [endsWith()](https://www.w3schools.com/java/ref_string_endswith.asp)                       | Checks whether a string ends with the specified character(s)                                                         | boolean      |
+| [equals()](https://www.w3schools.com/java/ref_string_equals.asp)                           | Compares two strings. Returns true if the strings are equal, and false if not                                        | boolean      |
+| [equalsIgnoreCase()](https://www.w3schools.com/java/ref_string_equalsignorecase.asp)       | Compares two strings, ignoring case considerations                                                                   | boolean      |
+| format()                                                                                   | Returns a formatted string using the specified locale, format string, and arguments                                  | String       |
+| getBytes()                                                                                 | Encodes this String into a sequence of bytes using the named charset, storing the result into a new byte array       | byte[]       |
+| getChars()                                                                                 | Copies characters from a string to an array of chars                                                                 | void         |
+| [hashCode()](https://www.w3schools.com/java/ref_string_hashcode.asp)                       | Returns the hash code of a string                                                                                    | int          |
+| [indexOf()](https://www.w3schools.com/java/ref_string_indexof.asp)                         | Returns the position of the first found occurrence of specified characters in a string                               | int          |
+| intern()                                                                                   | Returns the canonical representation for the string object                                                           | String       |
+| [isEmpty()](https://www.w3schools.com/java/ref_string_isempty.asp)                         | Checks whether a string is empty or not                                                                              | boolean      |
+| [lastIndexOf()](https://www.w3schools.com/java/ref_string_lastindexof.asp)                 | Returns the position of the last found occurrence of specified characters in a string                                | int          |
+| [length()](https://www.w3schools.com/java/ref_string_length.asp)                           | Returns the length of a specified string                                                                             | int          |
+| matches()                                                                                  | Searches a string for a match against a regular expression, and returns the matches                                  | boolean      |
+| offsetByCodePoints()                                                                       | Returns the index within this String that is offset from the given index by codePointOffset code points              | int          |
+| regionMatches()                                                                            | Tests if two string regions are equal                                                                                | boolean      |
+| [replace()](https://www.w3schools.com/java/ref_string_replace.asp)                         | Searches a string for a specified value, and returns a new string where the specified values are replaced            | String       |
+| replaceFirst()                                                                             | Replaces the first occurrence of a substring that matches the given regular expression with the given replacement    | String       |
+| replaceAll()                                                                               | Replaces each substring of this string that matches the given regular expression with the given replacement          | String       |
+| split()                                                                                    | Splits a string into an array of substrings                                                                          | String[]     |
+| [startsWith()](https://www.w3schools.com/java/ref_string_startswith.asp)                   | Checks whether a string starts with specified characters                                                             | boolean      |
+| subSequence()                                                                              | Returns a new character sequence that is a subsequence of this sequence                                              | CharSequence |
+| substring()                                                                                | Returns a new string which is the substring of a specified string                                                    | String       |
+| toCharArray()                                                                              | Converts this string to a new character array                                                                        | char[]       |
+| [toLowerCase()](https://www.w3schools.com/java/ref_string_tolowercase.asp)                 | Converts a string to lower case letters                                                                              | String       |
+| toString()                                                                                 | Returns the value of a String object                                                                                 | String       |
+| [toUpperCase()](https://www.w3schools.com/java/ref_string_touppercase.asp)                 | Converts a string to upper case letters                                                                              | String       |
+| [trim()](https://www.w3schools.com/java/ref_string_trim.asp)                               | Removes whitespace from both ends of a string                                                                        | String       |
+| valueOf()                                                                                  | Returns the string representation of the specified value                                                             | String       |
 
 <br/>
 
@@ -1064,7 +1092,7 @@ String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
 for (int i = 0; i < cars.length; i++) {
   System.out.printf("%s ", cars[i]);
 }
-// Volvo BMW Ford Mazda 
+// Volvo BMW Ford Mazda
 ```
 
 **Loop Through an Array with For-Each**
@@ -1074,7 +1102,7 @@ String[] cars = {"Volvo", "BMW", "Ford", "Mazda", "Renault"};
 for (String car : cars) {
   System.out.printf("%s ".toUpperCase(), car);
 }
-// VOLVO BMW FORD MAZDA RENAULT 
+// VOLVO BMW FORD MAZDA RENAULT
 ```
 
 **Multidimensional Arrays**
@@ -1111,16 +1139,14 @@ import java.util.Arrays;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		int arr[] = {32, -76, 34, 12, 3, 37, 54, 21, 49};
 		Arrays.sort(arr);
-		
+
 		System.out.println(Arrays.toString(arr)); // [-76, 3, 12, 21, 32, 34, 37, 49, 54]
 	}
 }
 ```
-
-
 
 <br/>
 
@@ -1141,9 +1167,9 @@ import java.time.LocalDateTime; // needs Java 8
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		int hour = LocalDateTime.now().getHour();
-		
+
 		if (hour >= 5 && hour < 12) {
 			System.out.println("Good morning");
 		} else if (hour < 18) {
@@ -1151,7 +1177,7 @@ public class Main {
 		} else {
 			System.out.println("Good evening");
 		}
-    
+
     System.out.println(hour);
 	}
 }
@@ -1188,7 +1214,7 @@ public class Main {
 		Calendar calendar = Calendar.getInstance();
 		int day = calendar.get(Calendar.DAY_OF_WEEK);
 		String dayName = "";
-		
+
 		switch (day) {
 		  case 1:
 		    dayName = "Sunday";
@@ -1214,7 +1240,7 @@ public class Main {
 		}
 		return dayName;
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(getCurrentDayName());
 	}
@@ -1260,19 +1286,17 @@ public class Main {
 	public static String getCurrentDayName() {
 		Calendar calendar = Calendar.getInstance();
 		int day = calendar.get(Calendar.DAY_OF_WEEK); // returns int from 1 to 7
-		
+
 		String dayNames[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 		return dayNames[day - 1];
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(getCurrentDayName());
 	}
 }
 // Tuesday
 ```
-
-
 
 <br/>
 
@@ -1326,10 +1350,8 @@ for (int i = 0; i < 6; i++) {
   }
   System.out.printf("%d ", i);
 }
-// 0 1 2 3 5 
+// 0 1 2 3 5
 ```
-
-
 
 <br/>
 
@@ -1345,7 +1367,7 @@ while (idx < cars.length) {
   idx += 1;
 }
 System.out.println(myStr);
-// BMW Volvo Dacia Ford 
+// BMW Volvo Dacia Ford
 ```
 
 <br/>
@@ -1383,14 +1405,14 @@ String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
 for (int i = 0; i < cars.length; i++) {
   System.out.printf("%s ", cars[i]);
 }
-// Volvo BMW Ford Mazda 
+// Volvo BMW Ford Mazda
 ```
 
-> Note you can use `printf` (print format) in Java and C/C++ (as an alternative to *Template Literals in JavaScript* or *f-strings in Python*)
+> Note you can use `printf` (print format) in Java and C/C++ (as an alternative to _Template Literals in JavaScript_ or _f-strings in Python_)
 
 <br/>
 
-### **"for each" loops**
+### for each loops
 
 There is also a "**for-each**" loop, which is used exclusively to loop through elements in an **array**:
 
@@ -1399,7 +1421,7 @@ String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
 for (String carName : cars) {
   System.out.printf("%s ", carName);
 }
-// Volvo BMW Ford Mazda 
+// Volvo BMW Ford Mazda
 ```
 
 <br/>
@@ -1407,13 +1429,13 @@ for (String carName : cars) {
 More on For-each loop in Java here: https://www.geeksforgeeks.org/for-each-loop-in-java/
 
 ```java
-for (type var : array) 		{ 
+for (type var : array) 		{
   // statements using var;
 }
 
 /* is equivalent to: */
 
-for (int i = 0; i < arr.length; i++) { 
+for (int i = 0; i < arr.length; i++) {
   type var = arr[i];
   // statements using var;
 }
@@ -1433,15 +1455,7 @@ for (int num : nums) {
 System.out.println(sum); // 42
 ```
 
-
-
 <br/>
-
-
-
-
-
-
 
 <br/>
 
@@ -1506,15 +1520,13 @@ public static void main(String[] args) {
 
 <br/>
 
+<br/>
 
+However, all the above examples are functions written in Java `Main` Class.
+
+A better approach would be to write (and group) all our functions within Interfaces, as `public` (interfaces have public methods by default) and `static` methods , so we can access them everywhere. For example, we can write useful functions within a `CustomMath` interface, or useful functions in a `ImageProcessing` interface, or functions specific to a custom `DatabaseMethods` interface, etc...
 
 ## Lambda functions
-
-
-
-
-
-
 
 <br/>
 
@@ -1543,11 +1555,11 @@ In Java, you can create an object (instance of a class) within the class itself 
 
 ```java
 public class Main {
-	
+
 	int x = 5;
-	
+
 	public static void main(String[] args) {
-		
+
 		Main obj = new Main();
 		System.out.println(obj.x); // 5
 	}
@@ -1569,21 +1581,21 @@ public class Person {
 }
 ```
 
-  ```java
+```java
 // package helloword -> Main.java
 package helloworld;
 
 public class Main {
-	
+
 	public static void main(String[] args) {
-		
+
 		Person Donna = new Person();
 		Donna.age = 25;
-		
+
 		System.out.println(Donna.age); // 25
 	}
 }
-  ```
+```
 
 ![](./LearnJava_imgs/java07.jpg)
 
@@ -1594,8 +1606,6 @@ Note that public classes must be defined in their own .java files (with the file
 You can also import classes from other packages:
 
 ![](./LearnJava_imgs/java07_2.jpg)
-
-
 
 <br/>
 
@@ -1613,7 +1623,7 @@ Example within/using the **Main Class**
 
 ```java
 public class Main {
-	
+
 	static void staticMethod() {
 		System.out.println("Static methods can be called without creating objects");
 	}
@@ -1625,21 +1635,17 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		
+
 		staticMethod(); // prints Static methods can be called without creating objects
-		
+
 		Main obj = new Main();
 		obj.publicMethod(); // prints Public methods must be called by creating objects
-		
+
 		publicStaticMethod(); // prints Public static method can be called anywhere by anyone
 		obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone -- although for this one we get warning: The static method publicStaticMethod() from the type Main should be accessed in a static way */
 	}
 }
 ```
-
-
-
-
 
 <br/>
 
@@ -1658,20 +1664,20 @@ A constructor in Java is a **special method** that is used to initialize objects
 ```java
 // Person.java
 public class Person {
-	
+
 	private String name;
 	private String surname;
 	private String email;
 	private int age;
 	private double credits;
-	
+
 	public Person() {
 		this.name = "";
 		this.surname = "";
 		this.email = "";
 		this.credits = 0.0;
 	}
-	
+
 	public Person(String name, String surname, String email) {
 		this.name = name;
 		this.surname = surname;
@@ -1681,7 +1687,7 @@ public class Person {
 }
 ```
 
-Note: we can override constructors (by using different parameters), and we can access the properties (variables) within the class using `this` keyword *(just to be more specific, mandatory only when we have the same variable names as the Class properties used as parameters in constructors --- in other words, we use this keyword only when the constructor parameters/variables have the same variable names as the Class properties/variables)*.
+Note: we can override constructors (by using different parameters), and we can access the properties (variables) within the class using `this` keyword _(just to be more specific, mandatory only when we have the same variable names as the Class properties used as parameters in constructors --- in other words, we use this keyword only when the constructor parameters/variables have the same variable names as the Class properties/variables)_.
 
 <br/>
 
@@ -1695,23 +1701,23 @@ https://www.w3schools.com/java/java_modifiers.asp
 
 - **Access Modifiers** - controls the access level
 
-For **classes**, you can use either `public` or *default*:
+For **classes**, you can use either `public` or _default_:
 
-| Modifier  | Description                                                  |
-| :-------- | :----------------------------------------------------------- |
-| `public`  | The class is accessible by any other class                   |
-| *default* | **The class is only accessible by classes in the same package**. This is used when you don't specify a modifier. |
+| Modifier  | Description                                                                                                      |
+| :-------- | :--------------------------------------------------------------------------------------------------------------- |
+| `public`  | The class is accessible by any other class                                                                       |
+| _default_ | **The class is only accessible by classes in the same package**. This is used when you don't specify a modifier. |
 
 <br/>
 
 For **attributes, methods and constructors**, you can use the one of the following:
 
-| Modifier    | Description                                                  |
-| :---------- | :----------------------------------------------------------- |
-| `public`    | The code is accessible for all classes                       |
-| `private`   | The code is only accessible within the declared class        |
-| *default*   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The *default* modifier is like a *protected* modifier, you can access/call the attributes/method of a Class in another Class, but only if they are situated in the same package)** |
-| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class). |
+| Modifier    | Description                                                                                                                                                                                                                                                                            |
+| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `public`    | The code is accessible for all classes                                                                                                                                                                                                                                                 |
+| `private`   | The code is only accessible within the declared class                                                                                                                                                                                                                                  |
+| _default_   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The _default_ modifier is like a _protected_ modifier, you can access/call the attributes/method of a Class in another Class, but only if they are situated in the same package)** |
+| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class).                                                                                                                                                                                     |
 
 <br/>
 
@@ -1721,45 +1727,31 @@ For **attributes, methods and constructors**, you can use the one of the followi
 
 For **classes**, you can use either `final` or `abstract`:
 
-| Modifier   | Description                                                  | Try it on w3schols                                           |
-| :--------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| `final`    | The class cannot be inherited by other classes               | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_inherit_final) |
+| Modifier   | Description                                                                                                              | Try it on w3schols                                                                                                    |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `final`    | The class cannot be inherited by other classes                                                                           | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_inherit_final)                                    |
 | `abstract` | The class cannot be used to create objects (Also, to access an abstract class, it must be inherited from another class). | [Try it »](https://www.w3schools.com/java/tryjava_multi.asp?filename=demo_mod_abstract&multi=demo_mod_abstract_multi) |
 
 So, for example, if you create an abstract Class `public abstract class Person`, you cannot instantiate/create objects `Person` from this class anymore (you can't write `Person personObj = new Person()`, it will return error).
 
 And, if you want to use (the properties/methods) this new abstract class Person, you must create another class (ex `Student`/`Teacher`/`Employee` class) that inherits all properties/methods from the abstract class `Person`.
 
-
-
 <br/>
 
 For **attributes and methods**, you can use the one of the following:
 
-| Modifier       | Description                                                  |
-| :------------- | :----------------------------------------------------------- |
-| `final`        | Attributes and methods cannot be overridden/modified (eg. constant values for attributes) |
-| `static`       | Attributes and methods belongs to the class, and cannot be accessed through an object of that class |
+| Modifier       | Description                                                                                                                                                                                           |
+| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `final`        | Attributes and methods cannot be overridden/modified (eg. constant values for attributes)                                                                                                             |
+| `static`       | Attributes and methods belongs to the class, and cannot be accessed through an object of that class                                                                                                   |
 | `abstract`     | Can only be used in an abstract class, and can only be used on methods. The method does not have a body, for example **abstract void run();**. The body is provided by the subclass (inherited from). |
-| `transient`    | Attributes and methods are skipped when serializing the object containing them |
-| `synchronized` | Methods can only be accessed by one thread at a time         |
-| `volatile`     | The value of an attribute is not cached thread-locally, and is always read from the "main memory" |
+| `transient`    | Attributes and methods are skipped when serializing the object containing them                                                                                                                        |
+| `synchronized` | Methods can only be accessed by one thread at a time                                                                                                                                                  |
+| `volatile`     | The value of an attribute is not cached thread-locally, and is always read from the "main memory"                                                                                                     |
 
 <br/>
 
-
-
-## Inheritance
-
-
-
-
-
-
-
-<br/>
-
-## Encapsulation and examples
+## Encapsulation
 
 https://www.w3schools.com/java/java_encapsulation.asp
 
@@ -1775,7 +1767,496 @@ Benefits:
 - Flexible: the programmer can change one part of the code without affecting other parts
 - Increased security of data
 
+<br/>
 
+## Inheritance
+
+https://www.w3schools.com/java/java_inheritance.asp
+
+- **subclass** (child) - the class that inherits from another class
+- **superclass** (parent) - the class being inherited from
+
+To inherit from a class, use the `extends` keyword.
+
+```java
+// User.java
+public class User {
+
+	protected String name;
+	protected String family_name;
+	protected String email;
+
+	public User() {
+		this.name = "";
+		this.family_name = "";
+		this.email = "";
+	}
+	public User(String name, String family_name, String email) {
+		this.name = name;
+		this.family_name = family_name;
+		this.email = email;
+	}
+
+	public String toString() {
+		/* Override toString - Return a String representation when printing the object directly */
+		return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email + "]";
+	}
+}
+```
+
+```java
+// Author.java
+import java.util.ArrayList;
+
+public class Author extends User {
+
+	private ArrayList<String> articlesWritten;
+
+	public Author(String name, String family_name, String email, ArrayList<String> articlesWritten) {
+		super(name, family_name, email);
+		this.articlesWritten = articlesWritten;
+	}
+
+	public ArrayList<String> getArticlesWritten() {
+		return this.articlesWritten;
+	}
+}
+```
+
+Note that we need to define a new constructor in the derived class, eg. Author (if we don't define a constructor, the constructor of superclass won't be called automatically when we instantiate a new object of subclass). Also, to inherit/call the constructor of the parent/superclass, we call the `super` method.
+
+```java
+// Main.java
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> author1Articles = new ArrayList<String>();
+		author1Articles.add("How to eat well");
+		author1Articles.add("Practice meditation");
+
+		Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
+
+		System.out.println(author1);
+		System.out.println(author1.getArticlesWritten());
+	}
+}
+/* output
+[fullname: Anna Doe, email: anna@example.com]
+[How to eat well, Practice meditation]
+*/
+```
+
+Note that `toString` method (print object representation) was called from superclass User (base class/parent class), and `getArticlesWritten` was called from sub class Author (child class).
+
+<br/>
+
+Let's create one more class:
+
+```java
+// Contributor.java
+import java.util.ArrayList;
+
+public class Contributor extends User {
+
+	private ArrayList<String> articlesEdited;
+
+	public Contributor(String name, String family_name, String email) {
+		super(name, family_name, email);
+	}
+
+	public ArrayList<String> getArticlesEdited() {
+		return articlesEdited;
+	}
+	public void setArticlesEdited(ArrayList<String> articlesEdited) {
+		this.articlesEdited = articlesEdited;
+	}
+
+	@Override
+	public String toString() {
+		return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email +
+				", editedArticles: " + this.getArticlesEdited().toString() + "]";
+	}
+}
+
+```
+
+```java
+// Main.java
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> author1Articles = new ArrayList<String>();
+		author1Articles.add("How to eat well");
+		author1Articles.add("Practice meditation");
+
+		Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
+
+		System.out.println(author1); // [fullname: Anna Doe, email: anna@example.com]
+		System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
+
+
+		ArrayList<String> contributor1Articles = new ArrayList<String>();
+		contributor1Articles.add("Practice meditation");
+		contributor1Articles.add("Reading everyday");
+
+		Contributor contributor1 = new Contributor("Andrew", "Christmas", "andrew.c@example.com");
+		contributor1.setArticlesEdited(contributor1Articles);
+		System.out.println(contributor1);
+    /* [fullname: Andrew Christmas, email: andrew.c@example.com, editedArticles: [Practice meditation, Reading everyday]] */
+	}
+}
+```
+
+<br/>
+
+Here's the UML Class representation of the Java Classes written above as example:
+
+![](./LearnJava_imgs/Java_UML_Class01.png)
+
+<br/>
+
+## Abstraction
+
+https://www.w3schools.com/java/java_abstract.asp
+
+Data **abstraction** is the process of hiding certain details and showing only essential information to the user. Abstraction can be achieved with either **abstract classes** or [**interfaces**](https://www.w3schools.com/java/java_interface.asp).
+
+The `abstract` keyword is a non-access modifier, used for classes and methods:
+
+- **Abstract class:** is a restricted class that cannot be used to create objects (to access it, it must be inherited from another class).
+- **Abstract method:** can only be used in an abstract class, and it does not have a body. The body is provided by the subclass (inherited from).
+
+An abstract class can have both abstract and regular methods:
+
+```java
+abstract class Animal {
+  public abstract void animalSound();
+  public void sleep() {
+    System.out.println("Zzz");
+  }
+}
+```
+
+From the example above, it is not possible to create an object of the Animal class:
+
+```java
+Animal myObj = new Animal(); // will generate an error
+```
+
+Simple example from w3schools:
+
+```java
+// Abstract class
+abstract class Animal {
+  // Abstract method (does not have a body)
+  public abstract void animalSound();
+  // Regular method
+  public void sleep() {
+    System.out.println("Zzz");
+  }
+}
+
+// Subclass (inherit from Animal)
+class Pig extends Animal {
+  public void animalSound() {
+    // The body of animalSound() is provided/implemented here
+    System.out.println("The pig says: oink");
+  }
+}
+
+class Main {
+  public static void main(String[] args) {
+    Pig myPig = new Pig();
+    myPig.animalSound(); // The pig says: oink
+    myPig.sleep(); // Zzz
+  }
+}
+```
+
+<br/>
+
+<br/>
+
+Another example based on the User example before:
+
+```java
+// User.java
+public abstract class User {
+
+	protected String userName;
+	protected String hashedPassword;
+	protected String foreName; // first name
+	protected String surName; // family name
+	protected String email;
+
+	public User(String userName, String password) {
+		this.setUserName(userName);
+		this.hashedPassword = Integer.toString(password.hashCode());
+	}
+	public User(String userName, String password, String first_name, String family_name, String email) {
+		this.setUserName(userName);
+		this.hashedPassword = hashPassword(password);
+		this.setForeName(first_name);
+		this.setSurName(family_name);
+		this.setEmail(email);
+	}
+
+	public static String hashPassword(String password) {
+		return Integer.toString(password.hashCode());
+	}
+
+	public Boolean login(String userName, String password) {
+		return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
+	}
+
+	public String toString() {
+		/* Override toString - Return a String representation when printing the object directly */
+		return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+	public void setHashedPassword(String password) {
+		this.hashedPassword = hashPassword(password);
+	}
+	public String getForeName() {
+		return foreName;
+	}
+	public void setForeName(String foreName) {
+		this.foreName = foreName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	public void setSurName(String surName) {
+		this.surName = surName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}
+```
+
+```java
+// Author.java
+import java.util.ArrayList;
+
+public class Author extends User {
+
+	private ArrayList<String> articlesWritten;
+
+	public Author(String userName, String password) {
+		super(userName, password);
+	}
+	public Author(String userName, String password, ArrayList<String> articlesWritten) {
+		super(userName, password);
+		this.setArticlesWritten(articlesWritten);
+	}
+	public Author(String userName, String password, String first_name, String family_name, String email,
+			ArrayList<String> articlesWritten) {
+		super(userName, password, first_name, family_name, email);
+		this.setArticlesWritten(articlesWritten);
+	}
+
+	public ArrayList<String> getArticlesWritten() {
+		return this.articlesWritten;
+	}
+	public void setArticlesWritten(ArrayList<String> articlesWritten) {
+		this.articlesWritten = articlesWritten;
+	}
+}
+```
+
+```java
+// Main.java
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> author1Articles = new ArrayList<String>();
+		author1Articles.add("How to eat well");
+		author1Articles.add("Practice meditation");
+
+		Author author1 = new Author("alice_m", "helloworld");
+		author1.setForeName("Alice");
+		author1.setSurName("Mackie");
+		author1.setArticlesWritten(author1Articles);
+
+		System.out.println(author1); // User(userName: alice_m, foreName: Alice, surName: Mackie, email: null)
+		System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
+
+		System.out.println(author1.getHashedPassword()); // -1524582912
+		System.out.println(author1.login("alice_m", "helloworlzz")); // false
+		System.out.println(author1.login("alice_m", "helloworld")); // true
+
+		// User user1 = new User("betty", "password123"); // ERROR: Cannot instantiate the type User
+	}
+}
+```
+
+<br/>
+
+## Java Interface
+
+https://www.w3schools.com/java/java_interface.asp
+
+Another way to achieve [abstraction](https://www.w3schools.com/java/java_abstract.asp) in Java, is with interfaces. An `interface` is a completely "**abstract class**" that is used to group related methods with empty bodies:
+
+Example from w3schools:
+
+```java
+// Interface
+interface Animal {
+  public void animalSound(); // interface method (does not have a body)
+  public void sleep(); // interface method (does not have a body)
+}
+
+// Pig "implements" the Animal interface
+class Pig implements Animal {
+  public void animalSound() {
+    // The body of animalSound() is provided here
+    System.out.println("The pig says: wee wee");
+  }
+  public void sleep() {
+    // The body of sleep() is provided here
+    System.out.println("Zzz");
+  }
+}
+
+class Main {
+  public static void main(String[] args) {
+    Pig myPig = new Pig();
+    myPig.animalSound(); // The pig says: wee wee
+    myPig.sleep(); // Zzz
+  }
+}
+```
+
+🟠 **To access the interface methods, the interface must be "implemented" (kinda like inherited) by another class with the `implements` keyword (instead of `extends`).**
+
+Notes on Interfaces:
+
+- Like **abstract classes**, interfaces **cannot** be used to create objects (in the example above, it is not possible to create an "Animal" object in the MyMainClass)
+- **Interface methods do not have a body - the body is provided by the "implement" class** (abstract classes can have methods with bodies that aren't declared abstract)
+- **On implementation of an interface, you must override all of its methods**
+- Interface methods are by default `abstract` and `public`
+- Interface attributes are by default `public`, `static` and `final`
+- An interface cannot contain a constructor (as it cannot be used to create objects)
+
+Why And When To Use Interfaces?
+
+1. To achieve security - hide certain details and only show the important details of an object (interface).
+
+2. Java does not support "multiple inheritance" (a class can only inherit from one superclass). However, it can be achieved with interfaces, because the class can **implement** multiple interfaces. **Note:** To implement multiple interfaces, separate them with a comma (see example below).
+
+<br/>
+
+**Multiple interfaces - example from w3schools**
+
+```java
+interface FirstInterface {
+  public void myMethod(); // interface method
+}
+
+interface SecondInterface {
+  public void myOtherMethod(); // interface method
+}
+
+class DemoClass implements FirstInterface, SecondInterface {
+  public void myMethod() {
+    System.out.println("Some text..");
+  }
+  public void myOtherMethod() {
+    System.out.println("Some other text...");
+  }
+}
+
+class Main {
+  public static void main(String[] args) {
+    DemoClass myObj = new DemoClass();
+    myObj.myMethod(); // Some text...
+    myObj.myOtherMethod(); // Some other text...
+  }
+}
+```
+
+<br/>
+
+**More on difference between abstract classes and interfaces in Java: https://www.javatpoint.com/difference-between-abstract-class-and-interface**
+
+| Abstract class                                                                                 | Interface                                                                                                         |
+| :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| 1) Abstract class can **have abstract and non-abstract** methods.                              | Interface can have **only abstract** methods. But, since Java 8, it can have **default and static methods** also. |
+| 2) Abstract class **doesn't support multiple inheritance**.                                    | Interface **supports multiple inheritance**.                                                                      |
+| 3) Abstract class **can have final, non-final, static and non-static variables**.              | Interface has **only static and final variables**.                                                                |
+| 4) Abstract class **can provide the implementation of interface**.                             | Interface **can't provide the implementation of abstract class**.                                                 |
+| 5) The **abstract keyword** is used to declare abstract class.                                 | The **interface keyword** is used to declare interface.                                                           |
+| 6) An **abstract class** can extend another Java class and implement multiple Java interfaces. | An **interface** can extend another Java interface only.                                                          |
+| 7) An **abstract class** can be extended using keyword "extends".                              | An **interface** can be implemented using keyword "implements".                                                   |
+| 8) A Java **abstract class** can have class members like private, protected, etc.              | Members of a Java interface are public by default.                                                                |
+| 9) **Example:** public abstract class Shape{ public abstract void draw(); }                    | **Example:** public interface Drawable{ void draw(); }                                                            |
+
+Simply, abstract class achieves partial abstraction (0 to 100%) whereas interface achieves fully abstraction (100%).
+
+<br/>
+
+<br/>
+
+Another example using Shape -> Rectangle, Circle: https://www.geeksforgeeks.org/difference-between-abstract-class-and-interface-in-java/
+
+<br/>
+
+<br/>
+
+## Java Inner Classes
+
+To access the inner class, create an object of the outer class, and then create an object of the inner class:
+
+Example from: https://www.w3schools.com/java/java_inner_classes.asp
+
+```java
+class OuterClass {
+  int x = 10;
+
+  class InnerClass {
+    int y = 5;
+  }
+}
+
+public class Main {
+  public static void main(String[] args) {
+    OuterClass myOuter = new OuterClass();
+    OuterClass.InnerClass myInner = myOuter.new InnerClass();
+    System.out.println(myInner.y + myOuter.x);
+  }
+}
+
+// Outputs 15 (5 + 10)
+```
+
+<br/>
+
+# Java Enums
+
+<br/>
 
 # Sets, ArrayLists, LinkedLists
 
@@ -1818,7 +2299,7 @@ class Main {
 	  daysSet.add("Monday");
 	  daysSet.add("Monday"); // "Monday" value already exist
 	  daysSet.add("Tuesday");
-	  
+
 	  System.out.println(daysSet); // [Monday, Tuesday]
   }
 }
@@ -1844,8 +2325,6 @@ System.out.println(paidMonthsSet.contains("Feb")); // true
 ```java
 System.out.println(paidMonthsSet.size()); // 3
 ```
-
-
 
 <br/>
 
@@ -1895,7 +2374,7 @@ cars.add("Mazda");
 for (String car : cars) {
   System.out.print(car + " ");
 }
-// Volvo Mazda Ford BMW 
+// Volvo Mazda Ford BMW
 ```
 
 <br/>
@@ -1920,10 +2399,10 @@ import java.util.ArrayList;
 public class Main {
 	public static void main(String[] args) {
 		ArrayList<String> shoppingList = new ArrayList<String>();
-		
+
 		shoppingList.add("Banana");
 		shoppingList.add("Kiwi");
-		
+
 		System.out.println(shoppingList); // [Banana, Kiwi]
 	}
 }
@@ -1970,8 +2449,6 @@ shoppingList.add("Orange"); // 3
 System.out.println(shoppingList.subList(1, 3)); // [Banana, Kiwi]
 ```
 
-
-
 <br/>
 
 **Loop through an ArrayList**
@@ -2003,39 +2480,37 @@ for (String car : cars) {
 
 https://www.javatpoint.com/java-arraylist
 
-| Method                                                       | Description                                                  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| void [add](https://www.javatpoint.com/java-arraylist-add-method)(int index, E element) | It is used to insert the specified element at the specified position in a list. |
-| boolean [add](https://www.javatpoint.com/java-arraylist-add-method)(E e) | It is used to append the specified element at the end of a list. |
-| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(Collection<? extends E> c) | It is used to append all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator. |
-| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(int index, Collection<? extends E> c) | It is used to append all the elements in the specified collection, starting at the specified position of the list. |
-| void [clear](https://www.javatpoint.com/java-arraylist-clear-method)() | It is used to remove all of the elements from this list.     |
-| void ensureCapacity(int requiredCapacity)                    | It is used to enhance the capacity of an ArrayList instance. |
-| E get(int index)                                             | It is used to fetch the element from the particular position of the list. |
-| boolean isEmpty()                                            | It returns true if the list is empty, otherwise false.       |
-| [Iterator()](https://www.javatpoint.com/java-arraylist-iterator-method) |                                                              |
-| [listIterator()](https://www.javatpoint.com/java-arraylist-listiterator-method) |                                                              |
-| int lastIndexOf(Object o)                                    | It is used to return the index in this list of the last occurrence of the specified element, or -1 if the list does not contain this element. |
-| Object[] toArray()                                           | It is used to return an array containing all of the elements in this list in the correct order. |
-| <T> T[] toArray(T[] a)                                       | It is used to return an array containing all of the elements in this list in the correct order. |
-| Object clone()                                               | It is used to return a shallow copy of an ArrayList.         |
-| boolean contains(Object o)                                   | It returns true if the list contains the specified element   |
-| int indexOf(Object o)                                        | It is used to return the index in this list of the first occurrence of the specified element, or -1 if the List does not contain this element. |
-| E remove(int index)                                          | It is used to remove the element present at the specified position in the list. |
-| boolean [remove](https://www.javatpoint.com/java-arraylist-remove-method)(Object o) | It is used to remove the first occurrence of the specified element. |
-| boolean [removeAll](https://www.javatpoint.com/java-arraylist-removeall-method)(Collection<?> c) | It is used to remove all the elements from the list.         |
-| boolean removeIf(Predicate<? super E> filter)                | It is used to remove all the elements from the list that satisfies the given predicate. |
-| protected void [removeRange](https://www.javatpoint.com/java-arraylist-removerange-method)(int fromIndex, int toIndex) | It is used to remove all the elements lies within the given range. |
-| void replaceAll(UnaryOperator<E> operator)                   | It is used to replace all the elements from the list with the specified element. |
-| void [retainAll](https://www.javatpoint.com/java-arraylist-retainall-method)(Collection<?> c) | It is used to retain all the elements in the list that are present in the specified collection. |
-| E set(int index, E element)                                  | It is used to replace the specified element in the list, present at the specified position. |
-| void sort(Comparator<? super E> c)                           | It is used to sort the elements of the list on the basis of specified comparator. |
-| Spliterator<E> spliterator()                                 | It is used to create spliterator over the elements in a list. |
-| List<E> subList(int fromIndex, int toIndex)                  | It is used to fetch all the elements lies within the given range. |
-| int size()                                                   | It is used to return the number of elements present in the list. |
-| void trimToSize()                                            | It is used to trim the capacity of this ArrayList instance to be the list's current size. |
-
-
+| Method                                                                                                                 | Description                                                                                                                                                               |
+| :--------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| void [add](https://www.javatpoint.com/java-arraylist-add-method)(int index, E element)                                 | It is used to insert the specified element at the specified position in a list.                                                                                           |
+| boolean [add](https://www.javatpoint.com/java-arraylist-add-method)(E e)                                               | It is used to append the specified element at the end of a list.                                                                                                          |
+| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(Collection<? extends E> c)                   | It is used to append all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator. |
+| boolean [addAll](https://www.javatpoint.com/java-arraylist-addall-method)(int index, Collection<? extends E> c)        | It is used to append all the elements in the specified collection, starting at the specified position of the list.                                                        |
+| void [clear](https://www.javatpoint.com/java-arraylist-clear-method)()                                                 | It is used to remove all of the elements from this list.                                                                                                                  |
+| void ensureCapacity(int requiredCapacity)                                                                              | It is used to enhance the capacity of an ArrayList instance.                                                                                                              |
+| E get(int index)                                                                                                       | It is used to fetch the element from the particular position of the list.                                                                                                 |
+| boolean isEmpty()                                                                                                      | It returns true if the list is empty, otherwise false.                                                                                                                    |
+| [Iterator()](https://www.javatpoint.com/java-arraylist-iterator-method)                                                |                                                                                                                                                                           |
+| [listIterator()](https://www.javatpoint.com/java-arraylist-listiterator-method)                                        |                                                                                                                                                                           |
+| int lastIndexOf(Object o)                                                                                              | It is used to return the index in this list of the last occurrence of the specified element, or -1 if the list does not contain this element.                             |
+| Object[] toArray()                                                                                                     | It is used to return an array containing all of the elements in this list in the correct order.                                                                           |
+| <T> T[] toArray(T[] a)                                                                                                 | It is used to return an array containing all of the elements in this list in the correct order.                                                                           |
+| Object clone()                                                                                                         | It is used to return a shallow copy of an ArrayList.                                                                                                                      |
+| boolean contains(Object o)                                                                                             | It returns true if the list contains the specified element                                                                                                                |
+| int indexOf(Object o)                                                                                                  | It is used to return the index in this list of the first occurrence of the specified element, or -1 if the List does not contain this element.                            |
+| E remove(int index)                                                                                                    | It is used to remove the element present at the specified position in the list.                                                                                           |
+| boolean [remove](https://www.javatpoint.com/java-arraylist-remove-method)(Object o)                                    | It is used to remove the first occurrence of the specified element.                                                                                                       |
+| boolean [removeAll](https://www.javatpoint.com/java-arraylist-removeall-method)(Collection<?> c)                       | It is used to remove all the elements from the list.                                                                                                                      |
+| boolean removeIf(Predicate<? super E> filter)                                                                          | It is used to remove all the elements from the list that satisfies the given predicate.                                                                                   |
+| protected void [removeRange](https://www.javatpoint.com/java-arraylist-removerange-method)(int fromIndex, int toIndex) | It is used to remove all the elements lies within the given range.                                                                                                        |
+| void replaceAll(UnaryOperator<E> operator)                                                                             | It is used to replace all the elements from the list with the specified element.                                                                                          |
+| void [retainAll](https://www.javatpoint.com/java-arraylist-retainall-method)(Collection<?> c)                          | It is used to retain all the elements in the list that are present in the specified collection.                                                                           |
+| E set(int index, E element)                                                                                            | It is used to replace the specified element in the list, present at the specified position.                                                                               |
+| void sort(Comparator<? super E> c)                                                                                     | It is used to sort the elements of the list on the basis of specified comparator.                                                                                         |
+| Spliterator<E> spliterator()                                                                                           | It is used to create spliterator over the elements in a list.                                                                                                             |
+| List<E> subList(int fromIndex, int toIndex)                                                                            | It is used to fetch all the elements lies within the given range.                                                                                                         |
+| int size()                                                                                                             | It is used to return the number of elements present in the list.                                                                                                          |
+| void trimToSize()                                                                                                      | It is used to trim the capacity of this ArrayList instance to be the list's current size.                                                                                 |
 
 <br/>
 
@@ -2061,20 +2536,16 @@ The `LinkedList` stores its items in "containers." The list has a link to the fi
 
 For many cases, the `ArrayList` is more efficient as it is common to need access to random items in the list, but the `LinkedList` provides several methods to do certain operations more efficiently:
 
-| Method        | Description                                    | Try it                                                       |
-| :------------ | :--------------------------------------------- | :----------------------------------------------------------- |
-| addFirst()    | Adds an item to the beginning of the list.     | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addfirst) |
-| addLast()     | Add an item to the end of the list             | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addlast) |
+| Method        | Description                                    | Try it                                                                                      |
+| :------------ | :--------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| addFirst()    | Adds an item to the beginning of the list.     | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addfirst)    |
+| addLast()     | Add an item to the end of the list             | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_addlast)     |
 | removeFirst() | Remove an item from the beginning of the list. | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_removefirst) |
-| removeLast()  | Remove an item from the end of the list        | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_removelast) |
-| getFirst()    | Get the item at the beginning of the list      | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getfirst) |
-| getLast()     | Get the item at the end of the list            | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getlast) |
-
-
+| removeLast()  | Remove an item from the end of the list        | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_removelast)  |
+| getFirst()    | Get the item at the beginning of the list      | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getfirst)    |
+| getLast()     | Get the item at the end of the list            | [Try it »](https://www.w3schools.com/java/tryjava.asp?filename=demo_linkedlist_getlast)     |
 
 <br/>
-
-
 
 ## Java Maps
 
@@ -2086,11 +2557,11 @@ import java.util.Map;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		Map persons = new HashMap();
 		persons.put("Alex", 18);
 		persons.put("Andrew", 23);
-		
+
 		System.out.println(persons); // {Alex=18, Andrew=23}
 	}
 }
@@ -2133,7 +2604,7 @@ In the [`ArrayList`](https://www.w3schools.com/java/java_arraylist.asp) chapter,
 
 <br/>
 
-> *So, hashmaps in Java are just like [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp), or [associative arrays in PHP](https://www.w3schools.com/php/php_arrays_associative.asp), or [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp)*
+> _So, hashmaps in Java are just like [objects in JavaScript](https://www.w3schools.com/js/js_objects.asp), or [associative arrays in PHP](https://www.w3schools.com/php/php_arrays_associative.asp), or [dictionaries in Python](https://www.w3schools.com/python/python_dictionaries.asp)_
 
 <br/>
 
@@ -2148,13 +2619,13 @@ import java.util.HashMap;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		HashMap<String, String> capitalCities = new HashMap<String, String>();
 		capitalCities.put("Romania", "Bucharest");
 		capitalCities.put("France", "Paris");
 		capitalCities.put("Germany", "Berlin");
 		capitalCities.put("Poland", "Warsaw");
-		
+
 		System.out.println(capitalCities); // {Romania=Bucharest, Poland=Warsaw, France=Paris, Germany=Berlin}
 	}
 }
@@ -2228,7 +2699,7 @@ capitalCities.put("Poland", "Warsaw");
 
 // Get only the values
 for (String value : capitalCities.values()) {
-  System.out.print(value + " "); // Bucharest Warsaw Paris Berlin 
+  System.out.print(value + " "); // Bucharest Warsaw Paris Berlin
 }
 
 // Get key and value
@@ -2285,8 +2756,6 @@ capitalCities.put("England", "London");
 System.out.println(capitalCitiesCopy); // {Poland=Warsaw, Romania=Bucharest, France=Paris, Germany=Berlin}
 ```
 
-
-
 <br/>
 
 ## TreeMap
@@ -2302,14 +2771,14 @@ import java.util.TreeMap;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		TreeMap<Character, Integer> letterFrequency = new TreeMap<Character, Integer>();
 		String inputString = "alphabetically";
-    
+
 		/* Or input from scanner */
 		// Scanner scannerObj = new Scanner(System.in);
 		// String inputString = scannerObj.nextLine();
-		
+
 		for (int i = 0; i < inputString.length(); i++) {
 			char currentLetter = inputString.charAt(i);
 			if (letterFrequency.containsKey(currentLetter)) {
@@ -2318,13 +2787,28 @@ public class Main {
 				letterFrequency.put(currentLetter, 1);
 			}
 		}
-		
+
 		System.out.println(letterFrequency); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
 	}
 }
 ```
 
-Note that in the template (*templates types is the common name in C/C++*) (when we specify the TypeArgument), we need to use **the wrapper object** of the primitive type we want to use. So, for `char`, its wrapper object is `Character`, for `int` its wrapper object is `Integer`.
+Note that in the template (_templates types is the common name in C/C++_) (when we specify the TypeArgument), we need to use **the wrapper object** of the primitive type we want to use. So, for `char`, its wrapper object is `Character`, for `int` its wrapper object is `Integer`.
+
+See more about Wrapper Classes here: https://www.w3schools.com/java/java_wrapper_classes.asp
+
+| Primitive Data Type | Wrapper Class |
+| :------------------ | :------------ |
+| byte                | Byte          |
+| short               | Short         |
+| int                 | Integer       |
+| long                | Long          |
+| float               | Float         |
+| double              | Double        |
+| boolean             | Boolean       |
+| char                | Character     |
+
+<br/>
 
 <br/>
 
@@ -2387,47 +2871,47 @@ import java.util.Comparator;
 
 public class Main {
 	public static void main(String[] args) {
-		
+
 		LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
-		
+
 		HashMap<String, String> person1 = new HashMap<String, String>();
 		person1.put("name", "Alex");
 		person1.put("email", "alex@example.com");
 		person1.put("age", "23");
-		
+
 		HashMap<String, String> person2 = new HashMap<String, String>();
 		person2.put("name", "Daniel");
 		person2.put("email", "daniel@example.com");
 		person2.put("age", "28");
-		
+
 		HashMap<String, String> person3 = new HashMap<String, String>();
 		person3.put("name", "Emma");
 		person3.put("email", "emma.n@example.com");
 		person3.put("age", "22");
-		
+
 		HashMap<String, String> person4 = new HashMap<String, String>();
 		person4.put("name", "Brittany");
 		person4.put("email", "britt.a@example.com");
 		person4.put("age", "25");
-		
+
 		HashMap<String, String> person5 = new HashMap<String, String>();
 		person5.put("name", "Diana");
 		person5.put("email", "diana.z@example.com");
 		person5.put("age", "19");
-		
+
 		persons.add(person1);
 		persons.add(person2);
 		persons.add(person3);
 		persons.add(person4);
 		persons.add(person5);
-		
+
 		Collections.sort(persons, new Comparator<HashMap<String, String>>() {
 			@Override
 			public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
 				return Integer.parseInt(o1.get("age")) - Integer.parseInt(o2.get("age"));
 			}
 		});
-		
+
 		for (HashMap<String, String> person : persons) {
 			System.out.println(person);
 		}
@@ -2492,41 +2976,41 @@ References:
 ```java
 public class Main {
 	public static void main(String[] args) {
-		
+
 		LinkedList<HashMap<String, String>> shoppingList = new LinkedList<HashMap<String, String>>();
-		
+
 		HashMap<String, String> item1 = new HashMap<String, String>();
 		item1.put("name", "Keyboard");
 		item1.put("checked", "true");
 		item1.put("price", "40.00");
-		
+
 		HashMap<String, String> item2 = new HashMap<String, String>();
 		item2.put("name", "Display");
 		item2.put("checked", "false");
 		item2.put("price", "200.00");
-		
+
 		HashMap<String, String> item3 = new HashMap<String, String>();
 		item3.put("name", "Mouse");
 		item3.put("checked", "true");
 		item3.put("price", "20.00");
-		
+
 		HashMap<String, String> item4 = new HashMap<String, String>();
 		item4.put("name", "Hard-disk");
 		item4.put("checked", "false");
 		item4.put("price", "35.00");
-		
+
 		HashMap<String, String> item5 = new HashMap<String, String>();
 		item5.put("name", "Speakers");
 		item5.put("checked", "false");
 		item5.put("price", "25.00");
-		
-		
+
+
 		shoppingList.add(item1);
 		shoppingList.add(item2);
 		shoppingList.add(item3);
 		shoppingList.add(item4);
 		shoppingList.add(item5);
-		
+
 		for (HashMap<String, String> item : shoppingList) {
 			System.out.println(item);
 		}
@@ -2553,7 +3037,7 @@ for (HashMap<String, String> item : shoppingList) {
 System.out.println(sumPrices); // 320.0
 ```
 
-Return prices of checked items:
+Return the sum of prices of checked items:
 
 ```java
 // We only have keyboard and mouse in list priced at 40.0 and 20.0, so return value should be 60.0
@@ -2613,27 +3097,324 @@ Resources:
 
 - https://stackoverflow.com/questions/13434143/sorting-a-double-value-of-an-object-within-an-arraylist
 
-
-
 <br/>
 
 <br/>
 
 <br/>
 
+### LinkedList of objects
 
-
-### HashMap of objects
+First, we define these classes:
 
 ```java
+// User.java
+public abstract class User {
 
+	protected String userName;
+	protected String hashedPassword;
+	protected String foreName; // first name
+	protected String surName; // family name
+	protected String email;
+
+	public static String hashPassword(String password) {
+		return Integer.toString(password.hashCode());
+	}
+
+	public User(String userName, String password) {
+		this.setUserName(userName);
+		this.hashedPassword = hashPassword(password);
+	}
+	public User(String userName, String password, String first_name, String family_name, String email) {
+		this.setUserName(userName);
+		this.hashedPassword = hashPassword(password);
+		this.setForeName(first_name);
+		this.setSurName(family_name);
+		this.setEmail(email);
+	}
+
+	public Boolean login(String userName, String password) {
+		return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
+	}
+
+	public String toString() {
+		/* Override toString - Return a String representation when printing the object directly */
+		return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+	public void setHashedPassword(String password) {
+		this.hashedPassword = hashPassword(password);
+	}
+	public String getForeName() {
+		return foreName;
+	}
+	public void setForeName(String foreName) {
+		this.foreName = foreName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	public void setSurName(String surName) {
+		this.surName = surName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}
 ```
 
+```java
+// Customer.java
+public class Customer extends User {
+
+	private ArrayList<String> itemsBought = new ArrayList<String>();
+	private int noOfItemsBought = getNoOfItemsBought();
+
+	public Customer(String userName, String password) {
+		super(userName, password);
+	}
+	public Customer(String userName, String password, ArrayList<String> itemsBought) {
+		super(userName, password);
+		this.setItemsBought(itemsBought);
+	}
+
+	public int getNoOfItemsBought() {
+		return this.getItemsBought().size();
+	}
+	public ArrayList<String> getItemsBought() {
+		return itemsBought;
+	}
+	public void setItemsBought(ArrayList<String> itemsBought) {
+		this.itemsBought = itemsBought;
+	}
+}
+```
+
+Examples of operations with a single object:
+
+```java
+// Main.java
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+		customer1ItemsBought.add("Lenovo Laptop");
+		customer1ItemsBought.add("RAM 32GB Kit");
+		customer1ItemsBought.add("SSD 1TB NVMe");
+
+		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+		customer1.setEmail("zacky95@example.com");
+
+		System.out.println(customer1); // User(userName: zack95, foreName: null, surName: null, email: zacky95@example.com)
+		System.out.println(customer1.getItemsBought()); // [Lenovo Laptop, RAM 32GB Kit, SSD 1TB NVMe]
+		System.out.println(customer1.getNoOfItemsBought()); // 3
+	}
+}
+```
+
+<br/>
+
+**Loop through array of Customer objects**
+
+```java
+// Main.java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+		customer1ItemsBought.add("Lenovo Laptop");
+		customer1ItemsBought.add("RAM 32GB Kit");
+		customer1ItemsBought.add("SSD 1TB NVMe");
+
+		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+		customer1.setEmail("zacky95@example.com");
+		customer1.setForeName("Zack");
+		customer1.setSurName("Hillbert");
+
+		Customer customer2 = new Customer("emily_w", "TheNextEpisode");
+
+		Customer customer3 = new Customer("sarah01", "EnterSandman01");
+		customer3.setEmail("sarahh@example.com");
+
+		Customer customer4 = new Customer("scott_x", "airplanes321");
+
+		LinkedList<Customer> customers = new LinkedList<Customer>(
+				Arrays.asList(customer1, customer2, customer3, customer4));
+
+		for(Customer customer : customers) {
+			System.out.println(customer);
+		}
+	}
+}
+/* outputs
+User(userName: zack95, foreName: Zack, surName: Hillbert, email: zacky95@example.com)
+User(userName: emily_w, foreName: null, surName: null, email: null)
+User(userName: sarah01, foreName: null, surName: null, email: sarahh@example.com)
+User(userName: scott_x, foreName: null, surName: null, email: null)
+*/
+```
+
+> Ways to initialize an ArrayList in Java: https://www.geeksforgeeks.org/initialize-an-arraylist-in-java/ (works on LinkedList too)
+
+<br/>
+
+**Sort Array of Customer objects by their username alphabetically**
+
+```java
+// Main.java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+		customer1ItemsBought.add("Lenovo Laptop");
+		customer1ItemsBought.add("RAM 32GB Kit");
+		customer1ItemsBought.add("SSD 1TB NVMe");
+
+		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+		customer1.setEmail("zacky95@example.com");
+		customer1.setForeName("Zack");
+		customer1.setSurName("Hillbert");
+
+		Customer customer2 = new Customer("emily_w", "TheNextEpisode");
+
+		Customer customer3 = new Customer("sarah01", "EnterSandman01");
+		customer3.setEmail("sarahh@example.com");
+
+		Customer customer4 = new Customer("scott_x", "airplanes321");
+
+		Customer customer5 = new Customer("anna_marie", "password1234");
+
+		LinkedList<Customer> customers = new LinkedList<Customer>(
+				Arrays.asList(customer1, customer2, customer3, customer4, customer5));
+
+		Collections.sort(customers, new Comparator<Customer>() {
+			@Override
+			public int compare(Customer o1, Customer o2) {
+				return String.CASE_INSENSITIVE_ORDER.compare(o1.getUserName(), o2.getUserName());
+			}
+		});
+
+		for(Customer customer : customers) {
+			System.out.println(customer);
+		}
+	}
+}
+/* outputs
+User(userName: anna_marie, foreName: null, surName: null, email: null)
+User(userName: emily_w, foreName: null, surName: null, email: null)
+User(userName: sarah01, foreName: null, surName: null, email: sarahh@example.com)
+User(userName: scott_x, foreName: null, surName: null, email: null)
+User(userName: zack95, foreName: Zack, surName: Hillbert, email: zacky95@example.com)
+*/
+```
+
+<br/>
+
+**Sort Array of Customer objects by their number of items bought**
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> customer1ItemsBought = new ArrayList<String>(
+				Arrays.asList("Lenovo Laptop", "RAM 32GB Kit", "SSD 1TB NVMe"));
+		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+		customer1.setEmail("zacky95@example.com");
+		customer1.setForeName("Zack");
+
+		ArrayList<String> customer2ItemsBought = new ArrayList<String>(
+				Arrays.asList("External Battery", "Power Cable"));
+		Customer customer2 = new Customer("emily_w", "TheNextEpisode", customer2ItemsBought);
+
+		Customer customer3 = new Customer("sarah01", "EnterSandman01");
+		customer3.setEmail("sarahh@example.com");
+
+		ArrayList<String> customer4ItemsBought = new ArrayList<String>(
+				Arrays.asList("HDMI Adapter", "Samsung Phone", "External Display", "Fast Wall Charger"));
+		Customer customer4 = new Customer("scott_x", "airplanes321", customer4ItemsBought);
+
+		ArrayList<String> customer5ItemsBought = new ArrayList<String>(
+				Arrays.asList("Bluetooth Speakers", "Microphone"));
+		Customer customer5 = new Customer("anne_m", "password1234", customer5ItemsBought);
 
 
+		LinkedList<Customer> customers = new LinkedList<Customer>(
+				Arrays.asList(customer1, customer2, customer3, customer4, customer5));
 
+		Collections.sort(customers, new Comparator<Customer>() {
+			@Override
+			public int compare(Customer o1, Customer o2) {
+				return o1.getNoOfItemsBought() - o2.getNoOfItemsBought();
+			}
+		});
 
+		for(Customer customer : customers) {
+			System.out.printf("%-8s- %d items: %s \n", customer.getUserName(), customer.getNoOfItemsBought(), customer.getItemsBought());
+		}
+	}
+}
+/* outputs
+sarah01 - 0 items: []
+emily_w - 2 items: [External Battery, Power Cable]
+anne_m  - 2 items: [Bluetooth Speakers, Microphone]
+zack95  - 3 items: [Lenovo Laptop, RAM 32GB Kit, SSD 1TB NVMe]
+scott_x - 4 items: [HDMI Adapter, Samsung Phone, External Display, Fast Wall Charger]
+*/
+```
 
+<br/>
+
+**Sum of total items bought by customers**
+
+```java
+int totalItemsBought = 0;
+for(Customer customer : customers) {
+  totalItemsBought += customer.getNoOfItemsBought();
+}
+System.out.printf("Total items bought: %d", totalItemsBought);
+/*
+sarah01 - 0 items: []
+emily_w - 2 items: [External Battery, Power Cable]
+anne_m  - 2 items: [Bluetooth Speakers, Microphone]
+zack95  - 3 items: [Lenovo Laptop, RAM 32GB Kit, SSD 1TB NVMe]
+scott_x - 4 items: [HDMI Adapter, Samsung Phone, External Display, Fast Wall Charger]
+Total items bought: 11
+*/
+```
 
 <br/>
 
@@ -2648,14 +3429,12 @@ Resources on Java Stream:
 
 <br/>
 
-The addition of the *Stream* was one of the major features added to Java 8, that allows to operate with a data source and making bulk processing convenient and fast. Java 8 Streams should not be confused with Java I/O streams (ex: *FileInputStream* etc).
+The addition of the _Stream_ was one of the major features added to Java 8, that allows to operate with a data source and making bulk processing convenient and fast. Java 8 Streams should not be confused with Java I/O streams (ex: _FileInputStream_ etc).
 
 **A stream does not store data and, in that sense, is not a data structure. It also <u>never modifies the underlying data source</u>.**
 
-This functionality – *java.util.stream* – supports functional-style operations on streams of elements, such as map-reduce transformations on collections.
+This functionality – _java.util.stream_ – supports functional-style operations on streams of elements, such as map-reduce transformations on collections.
 
 <br/>
-
-
 
 ## Java Stream.reduce
