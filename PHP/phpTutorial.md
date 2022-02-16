@@ -1935,6 +1935,26 @@ if ($age === 24) echo "Your age is ".$age;
 | ==       | Equal     | `$x == $y`  | Returns true if $x is equal to $y                                    |
 | ===      | Identical | `$x === $y` | Returns true if $x is equal to $y,<br/>and they are of the same type |
 
+<br/>
+
+Example of writing if else statement with HMTL:
+
+```php
+<?php if( is_product() ): ?>
+  
+  <div><a class="product-link" href="<?php echo esc_url( get_permalink() ); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></div>
+  
+<?php else: ?>
+  
+  <h3><a class="product-link" href="<?php echo esc_url( get_permalink() ); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
+  
+<?php endif; ?>
+```
+
+Another example: https://www.php.net/manual/en/control-structures.elseif.php
+
+<br/>
+
 ### ternary operator ?
 
 ```php

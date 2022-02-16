@@ -32,6 +32,10 @@ A collection of my personal study notes from various courses, tutorials, article
 * [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
 * [React JS Crash Course 2021 - Traversy Media](./React/ReactCrashCourse.md)
 
+### **Angular**
+
+- [Angular Crash Course 2021 - Traversy Media](./Angular/README.md)
+
 ---
 
 ## Mobile

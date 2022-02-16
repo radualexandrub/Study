@@ -898,7 +898,7 @@ import java.util.Arrays;
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString("hello world. all good".split("\\s+")));
+		System.out.println(Arrays.toString("hello world. all good".split("\\s+"))); // split by space
 	}
 }
 // [hello, world., all, good]
@@ -924,6 +924,8 @@ public static void main(String[] args) {
 	System.out.println(greeting); // olleH
 }
 ```
+
+A String is immutable in Java, while a `StringBuilder` is mutable in Java. An immutable object is an object whose content cannot be changed after it is created. See more differences between String and `StringBuilder` here: https://www.techiedelight.com/difference-between-string-stringbuilder-java/
 
 <br/>
 
@@ -1712,12 +1714,12 @@ For **classes**, you can use either `public` or _default_:
 
 For **attributes, methods and constructors**, you can use the one of the following:
 
-| Modifier    | Description                                                                                                                                                                                                                                                                            |
-| :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `public`    | The code is accessible for all classes                                                                                                                                                                                                                                                 |
-| `private`   | The code is only accessible within the declared class                                                                                                                                                                                                                                  |
-| _default_   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The _default_ modifier is like a _protected_ modifier, you can access/call the attributes/method of a Class in another Class, but only if they are situated in the same package)** |
-| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class).                                                                                                                                                                                     |
+| Modifier    | Description                                                  |
+| :---------- | :----------------------------------------------------------- |
+| `public`    | The code is accessible for all classes                       |
+| `private`   | The code is only accessible within the declared class        |
+| _default_   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The _default_ modifier is like a _protected_ modifier, you can access/call the attributes/method of a Class in another derived Class, but only if they are situated in the same package)** |
+| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class). |
 
 <br/>
 
@@ -2810,11 +2812,36 @@ See more about Wrapper Classes here: https://www.w3schools.com/java/java_wrapper
 
 <br/>
 
+Solution in JavaScript:
+
+```javascript
+/* JavaScript: Given a string, store in an JS Object the frequency/occurrences of all characters */
+
+let countLetterFrequency = (inputString) => {
+    let letterFrequency = {};
+
+    inputString.split("").forEach((letter) => {
+        if (letterFrequency.hasOwnProperty(letter)) {
+            letterFrequency[letter] += 1;
+        } else {
+            letterFrequency[letter] = 1;
+        }
+    });
+    return letterFrequency;
+}
+
+console.log(countLetterFrequency("alphabetically")); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
+```
+
+
+
 <br/>
 
-## Examples
+<br/>
 
-### LinkedList of HashMaps:
+# Examples
+
+## LinkedList of HashMaps:
 
 ```java
 LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
@@ -3103,7 +3130,7 @@ Resources:
 
 <br/>
 
-### LinkedList of objects
+## LinkedList of objects
 
 First, we define these classes:
 
