@@ -74,6 +74,10 @@ A collection of my personal study notes from various courses, tutorials, article
 
 ## Other
 
+### Linux
+
+* [Install Windows Subsystem for Linux (WSL) and Learn these first basic Linux commands](./Linux/WSL-Tutorial-and-Linux-Commands.md)
+
 ### Git
 
 * [About Git and GitHub](./Git/Git-about.md)
