@@ -100,7 +100,7 @@ https://radubulai.com/Study/LiveSassPortfolio
 ## Take these notes offline!
 
 - You can clone this repo and download [Markdown Viewer extension](https://chrome.google.com/webstore/detail/markdown-viewer/ckkdlimhmcjmikdlpkmbgfkaikojcbjk?hl=en) to open all the `.md` (markdown) files in Google Chrome.
-- Or... you can download [Typora editor](https://typora.io/) on your machine to directly open all the `.md` files.
+- Or... you can download [Typora editor](https://typora.io/) on your PC to directly open all the `.md` files (Note: Typora is no longer free to use since December 2021).
 
 ## Find more about me
 
