@@ -75,6 +75,13 @@ You can run `htop` as well:
 
 ![](./WSL-Tutorial-and-Linux/WSL_08.jpg)
 
+Or, we can run other "system information" related commands, like:
+- `uptime`
+- `free` - current memory usage (just like `top`/`htop`)
+- `ps` - show current Linux Processes (`ps -A` to show all the processes)
+- `df -h` - show file system disk space usage
+- `lsblk` - list block devices
+
 <br/>
 
 Now, if you just close the Ubuntu Terminal, the container for Ubuntu subsystem will still run in background (you can check again by running in `wsl -l -v` in a PowerShell window).
@@ -290,6 +297,11 @@ Both `>` and `>>` operators create a file if the mentioned file is not existent 
 
 <br/>
 
+Note: You can see the content of a file by using `cat`. Or, you can see the first 10 lines of a files by running `head` command (`head myfile.txt`), and if you want to see the last 10 lines from a file, run `tail` (`tail myfile.txt`). There are also `more` and `less` commands in order to see the content of a file "page by page" (`more myfile.txt`) or line by line (`less myfile.txt`).
+
+<br/>
+<br/>
+
 You can also use other text editor like `gedit`, or `vim` (that is almost used as an IDE) - you can run `vimtutor` command for a complete `vim` editor walkthrough.
 
 ```bash
@@ -299,6 +311,25 @@ vim myfile.txt
 **Note:** We can also use vim as a "file explorer" by running `vim .` (it is also exited with `:q!`)
 
 ![](./WSL-Tutorial-and-Linux/vim-file-explorer.jpg)
+
+<br/>
+
+Others:
+If you want to see more information about a file (that is not necessarily a text file), you can run the `file` command. For example, viewing more details about a picture/image/photo:
+
+```bash
+file foggyPhoto.jpg
+
+# will return
+# foggyPhoto.jpg: JPEG image data, JFIF standard 1.01, resolution (DPI), density 72x72, segment length 16, progressive, precision 8, 5472x3648, components 3
+```
+
+Or, just for image files, you can also use `identify` (`man identiyf`) command (more on this [here](https://superuser.com/questions/275502/how-to-get-information-about-an-image-picture-from-the-linux-command-line)):
+
+```bash
+identify foggyPhoto.jpg
+foggyPhoto.jpg JPEG 5472x3648 5472x3648+0+0 8-bit sRGB 1.07214MiB 0.000u 0:00.006
+```
 
 <br/>
 
@@ -320,6 +351,8 @@ ls -lah
 - `-c` - used with `-lt`, sort by ctime (time of last modification)
 - `-C` - list entries by columns
 - `--sort` - sort by WORD instead of name, eg `size (-S)`, `time (-t)`, `version (-v)`, `extension (-X)`
+
+For example, to sort files by size within a folder, run `ls --sort=size -lah`.
 
 <br/>
 <br/>
@@ -449,7 +482,7 @@ cp hello.py hello.py.bkp #  the equivalent command
 
 <br/>
 
-### Connecting to a server from a Linux PC
+### Networking. Connecting to a server from a Linux PC
 
 [(min22:20 - Command Line Crash Course)](https://youtu.be/yz7nYlnXLfE?t=1340)
 
@@ -483,6 +516,17 @@ tmux kill-server
 # or
 pkill -f tmux
 ```
+
+<br/>
+
+**Other related networking commands:**
+
+- `ifconfig` - view the configuration of network interface (more about [here](https://www.computerhope.com/unix/uifconfi.htm)). Also used for network configuration.
+
+Note: `ifconfig` needs to be installed with `sudo apt install net-tools`.
+In Windows OS, we have `ipconfig` equivalent command.
+
+- `ip` - newer command for `ifconfig` (`ip` command requests must have an "object" parameter, eg. `ip a`)
 
 <br/>
 
