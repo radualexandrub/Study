@@ -82,6 +82,11 @@ Or, we can run other "system information" related commands, like:
 - `df -h` - show file system disk space usage
 - `lsblk` - list block devices
 
+Display related and other devices/drivers:
+- `lspci` - list all PCI devices (PCI buses) and drivers
+- `nvidia-smi` - provies information about NVIDIA GPUs and drivers
+- `lshw` - list all hardware information on machine (use `lshw -C display` for display/GPU related hardware information)
+
 <br/>
 
 Now, if you just close the Ubuntu Terminal, the container for Ubuntu subsystem will still run in background (you can check again by running in `wsl -l -v` in a PowerShell window).
@@ -262,6 +267,9 @@ Create files with `touch` - Note that `touch` is mainly used to alter the "modif
 
 ```bash
 touch myfile.txt
+
+# You can create multiple files
+nano file1.txt markdownFile.md script.py
 ```
 
 You can create and edit files with `nano` editor (after entering nano editor, you will have multiple options like "save" `CTRL+O`, or "exit" `CTRL+X`):
