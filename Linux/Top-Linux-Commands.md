@@ -195,7 +195,7 @@ ls -lah
 - `-C` - list entries by columns
 - `--sort` - sort by WORD instead of name, eg `size (-S)`, `time (-t)`, `version (-v)`, `extension (-X)`
 
-For example, to sort files by size within a folder, run `ls --sort=size -lah`.
+For example, to sort files by size within a folder, run `ls --sort=size -lah` ("sort by size").
 
 <br/>
 
@@ -261,6 +261,13 @@ mkdir -p ./v2 && cp hello.py $_
 ```
 
 https://stackoverflow.com/questions/1529946/linux-copy-and-create-destination-dir-if-it-does-not-exist
+
+Copy all `.txt` files from a folder into another foder:
+
+```bash
+mkdir ./random/texts_folder
+cp -rv ./random/*.txt ./random/texts_folder
+```
 
 <br/>
 
@@ -329,11 +336,82 @@ cat appliances.txt groceris.txt | wc -l
 cat server1.log server2.log server3.log | wc -l
 ```
 
+<br/>
+
+# Expansions
+
+Note that in Linux, some strings are interpreted as other strings (just like aliases or hotstrings). For example, whenever we write `~` it is expanded to `/home/username` path.
+
+```bash
+echo ~
+# will print /home/username
+```
+
+We can also see some popular Environment Variables (variables in bash start with `$`).
+
+Another example is `*`, that is an expansion to every filename in current directory (`pwd`). And, we can also narrow down to `*.txt` (shows every filename that matches with `.txt` at end). Other use-case of using `*` alias, is listing all files that ends with an extension: `ls -lah *.txt`.
+
+```bash
+echo $USER
+echo $SHELL
+echo $PATH
+```
+
+![](./Top-Linux-Commands-imgs/expansions01.jpg)
+
+<br/>
+
+Another useful alias is `?` (question mark), that matches every single character. Two `??` will match two any-characters in a row, three `???` will match 3 characters and so on.
+
+```bash
+# example: match any filename that ends with an extension of exactly 2 characters
+ls -lah *.??
+```
+
+![](./Top-Linux-Commands-imgs/expansions02.jpg)
+
+<br/>
+
+Another extension is use of curly braces `{}`, where bash will expand to the values within curly braces (separated by `,` comma). 
+
+```bash
+echo {a,b,c}.txt
+# a.txt b.txt c.txt
+
+echo a{d,c,b}e
+# ade ace abe
+
+touch app.{html,css,js,py}
+# will create 4 files: app.html app.css app.js app.py
+ls app.*
+# app.css app.html app.js app.py
+```
+
+We can also expand into ranges, like `{1..10}`, or `{a..z}`.
+
+```bash
+echo {1..10}
+# 1 2 3 4 5 6 7 8 9 10
+
+echo file{01..05}.txt
+# file01.txt file02.txt file03.txt file04.txt file05.txt
+
+touch file{01..10}.txt 
+# will create 10 files
+```
+
+```bash
+echo {Z..A}
+# Z Y X W V U T S R Q P O N M L K J I H G F E D C B A
+```
+
+More on expansions here: https://linuxcommand.org/lc3_lts0080.php
+
 
 
 <br/>
 
-# Searching Linux Commands
+# Searching and Sorting
 
 ## sort
 
@@ -385,24 +463,131 @@ See more about sorting floating point numbers (`general sorting`) here: https://
 
 <br/>
 
-## find
+## uniq
 
-o find files in the entire system (`/` - the root directory) or in current path and folders inside (`.`), we can use `find` (`man find`) - it will output the path(s) to the searched file:
+If we have a text files that has duplicated lines, we can use `uniq` to print out the content of that file without adjacent duplicates lines (consecutive duplicated lines one after another):
 
 ```bash
-find .
-find / -name host.conf
-find . -name docker-compose.yml
+uniq logs.log
+```
+
+If we want to remove all duplicated lines, we can use `uniq` in combination with `sort`:
+
+```bash
+sort langs.txt | uniq
+
+# this is same as running sort -u langs.txt
+sort -u langs.txt
+```
+
+However, if we only want to show us the dupliacated in a file, we can run `sort langs.txt | uniq -d`. And if we want only the lines that appear once (non-duplicates), we can run `sort langs.txt | uniq -u`.
+
+![](./Top-Linux-Commands-imgs/sort_03.jpg)
+
+And, if we want to count how many times each line is repeating, we can use the count option: `sort langs.txt | uniq -c`. And we can even sort that numerically:
+
+```bash
+sort flavours.txt | uniq -c | sort -n
+```
+
+![](./Top-Linux-Commands-imgs/sort_04.jpg)
+
+<br/>
+
+## find
+
+[The Most Popular Linux Commands: find - 2h21m](https://youtu.be/ZtqBQ68cfJc?t=8470)
+
+To find files in the entire system (`/` - the root directory) or in current path (`.`) and folders inside (recursively), we can use `find` (`man find`) - it will output the path(s) to the searched file:
+
+```bash
+find path_name
+
+find / -name "host.conf"
+find . -name "docker-compose.yml"
+```
+
+- We can find files based on filename, modification time, file type / directory, size, etc.
+
+```bash
+# show all .py files in current path and folders inside (recursively)
+find . -name "*.py"  # same as ls *.py
+
+# find a file that has the exact math of "myfile.txt"
+find /path/to/a/folder -name "myfile.txt"
+
+# find by type
+find . -type d  # eg find all directories (d)
+find . -type f  # find only files, not directories
+```
+
+- Note that `find some/path -name` is case-sensitive. For case insensitive we use `-iname`
+
+```bash
+find . -type d -name '*new*'  # find all directories that contain 'new' in their name
+find . -type d -iname '*new*'  # find all directories that contain 'new' or 'New' in their name
+``` 
+
+- We can also use `-or` operator:
+
+```bash
+# eg Find directories under the current tree matching name "node_modules" or "public"
+find . -type d -name "node_modules" -or -name "public"
+```
+
+- We can also exclude a path with `-not` when searching for a file:
+
+```bash
+find . -name "*.md" -not -path "node_modules"
+```
+
+More examples:
+
+- Search for files that have more than 100 characters (bytes) in them:
+
+```bash
+find . -type f -size +100c
+```
+
+- Search files bigger than 100KB but smaller than 2MB:
+
+```bash
+find . -type f -size +100k -size -2M
+```
+
+- Search files edited more than 3 days ago, or edited in the last 24hours
+
+```bash
+find . -type f -mtime +3
+find . -type f -mtime -1
 ```
 
 <br/>
 
-## ack, grep
+With the found files, youn can run another command on them with `-exec` (just like piping, however piping is not supported with `find` command, you can't run something like `find -name "F*.txt" | ls -lah`, but instead you can run `find -name "F*.txt" -exec ls -lah \;`). Note that every command after `-exec` should end with `\;`
 
-To search for strings inside files (and output their path), use `ack` (`man ack`), is just as powerful, but easier as `grep`. Note, it is possible that `ack` needs to be installed (`sudo apt install ack` for Debian based distros).
+- List with details all the files edited in the last 24hours:
 
 ```bash
-ack 'stringpattern'
+find . -type f -mtime -1 -exec ls -lah {} \;
+```
+
+- See all the content from the found files with `cat` (Note that `{}` is filled/replaced with the file names at execution time)
+
+```bash
+find . -name "*.py" -exec cat {} \;  # {} will be replaced with "file1.py file2.py" etc
+```
+
+![](./Top-Linux-Commands-imgs/find_01.jpg)
+
+<br/>
+
+## ack
+
+To search for strings inside files (and output their path), use `ack` (`man ack`), is just as powerful, but easier than `grep`. Note, it is possible that `ack` needs to be installed (`sudo apt install ack` for Debian based distros).
+
+```bash
+ack -i 'stringpattern'
 
 # or grep equivalent
 grep -rni '/path/to/somewhere/' -e 'stringpattern'
@@ -418,45 +603,101 @@ https://stackoverflow.com/questions/16956810/how-do-i-find-all-files-containing-
 
 <br/>
 
+## grep
 
+[The Most Popular Linux Commands: grep - 2h32m](https://youtu.be/ZtqBQ68cfJc?t=9145)
 
-```bash
+`grep` (global regular expression print) is used to search for text inside files.
 
-```
-
-```bash
-
-```
-
-
+- Show the lines (with the line number `-n`) that contains the searched word:
 
 ```bash
+grep -n Sarah employees.txt
 
+# see some Context related to found words (eg show 2 before and 2 lines after)
+grep -nc 2 Sarah employees.txt
 ```
+
+- Search recursively in current directory (in all nested subdirectories) with `-r` and case-insensitive with `-i`
 
 ```bash
-
+grep -ri "hello"
 ```
 
+![](./Top-Linux-Commands-imgs/grep_01.jpg)
 
+<br/>
 
+To use regular expressions in grep, we need to use `-E` flag ("Extended regular expressions", by default it's using `-G` for basic regex)
 
 ```bash
-
+# Search by emails in all files in current directory
+grep -rE -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" .
 ```
+
+![](./Top-Linux-Commands-imgs/grep_02.jpg)
+
+
+<br/>
+
+# Other file commands
+
+## du
+
+- Find size of files and directories (`-h` option for human-readable file sizes)
 
 ```bash
-
+du -h .  # will show all the sizes of directories within current path tree
 ```
 
-
+- We use `-a` if we want to show file sizes too (not just directories)
 
 ```bash
-
+du -ah .
 ```
+
+- And we if want to see all directories (and files with `-a`) "sort by size", we can pipe the command with `sort`
 
 ```bash
+du -ah | sort -h
 
+# we can also use
+ls --sort=size -lahr
+
+# and if we want top 5 largest files
+ls --sort=size -lahr | tail -n 5
+
+# or top 10 largest files using du (and reversing the list)
+du -ah | sort -hr | head
 ```
 
+![](./Top-Linux-Commands-imgs/du_01.jpg)
+
+![](./Top-Linux-Commands-imgs/du_02.jpg)
+
+<br/>
+
+## df
+
+- `df` is used for **mounted** disk usage (like "partitions" on Windows OS) information (is not about files/directories in the mentioned/current path) - `-h` for human-readable sizes.
+
+```bash
+df -h
+```
+
+See the disk usage of the filesystem (like a "partition" but not really) where `~/Desktop` is located
+
+```bash
+df -h ~/Desktop
+
+# will prind something like
+# Filesystem      Size  Used Avail Use% Mounted on
+# /dev/sda5       439G   39G  378G  10% /
+```
+
+<br/>
+
+# history
+
+[The Most Popular Linux Commands: history - 2h44m](https://youtu.be/ZtqBQ68cfJc?t=9853)
 

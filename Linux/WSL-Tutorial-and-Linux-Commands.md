@@ -86,6 +86,7 @@ Display related and other devices/drivers:
 - `lspci` - list all PCI devices (PCI buses) and drivers
 - `nvidia-smi` - provies information about NVIDIA GPUs and drivers
 - `lshw` - list all hardware information on machine (use `lshw -C display` for display/GPU related hardware information)
+- `nvtop` - show GPU related processes, just like `htop` but for discrete graphics (eg. NVIDIA) (`sudo apt install nvtop`)
 
 <br/>
 

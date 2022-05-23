@@ -77,6 +77,7 @@ A collection of my personal study notes from various courses, tutorials, article
 ### Linux
 
 * [Install Windows Subsystem for Linux (WSL) and Learn these first basic Linux commands](./Linux/WSL-Tutorial-and-Linux-Commands.md)
+* [The Most Popular Linux & Terminal Commands](./Linux/Top-Linux-Commands.md)
 
 ### Git
 
