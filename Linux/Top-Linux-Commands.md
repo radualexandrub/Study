@@ -3,6 +3,7 @@
 See the tutorial on "WSL Tutorial and Basic Linux commands" first:
 
 - [Install Windows Subsystem for Linux (WSL) and Learn these first basic Linux commands](./WSL-Tutorial-and-Linux-Commands.md)
+- [The Linux commands Handbook](https://www.freecodecamp.org/news/the-linux-commands-handbook)
 
 <br/>
 
@@ -18,6 +19,42 @@ Table of Contents:
 
 <br/>
 
+<br/>
+
+**Bash Shortcuts**
+
+Most used shortcuts in bash (More [here](https://www.makeuseof.com/linux-bash-terminal-shortcuts/)):
+
+- `CTRL+R` - search through commands history - based on your before-used commands, you can re-run a command by searching part of it (`history`)
+- `CTRL+A` / `CTRL+E` - while you write a command, `CTRL+A` will move your cursor to the start of the command line, `CTRL+E` will move your cursor to the end
+- `Ctrl+U` - Deletes before the cursor until the start of the command
+- `CTRL+L` - clears the command line (`clear`)
+- `Ctrl+D` - Closes the current terminal
+
+Bash Control/Processes
+
+- `Ctrl+S` - Stops command output to the screen
+- `Ctrl+C` - Sends SIGI signal and kills currently executing command
+- `Ctrl+Z` - Suspends current command execution and moves it to the background
+- `Ctrl+Q` - Resumes suspended command
+
+<br/>
+
+**Bash Manual**
+
+Each argument given to `man` command is normaly the name of the program, utility or function, then the information/documentation about that is displayed.
+
+```bash
+man man
+man bash
+man <command>
+man git
+man gcc
+man python3
+```
+
+<br/>
+
 # Basic Linux Commands
 
 ## touch, echo, cat, head, tail, less
@@ -30,6 +67,8 @@ touch myfile.txt
 # You can create multiple files
 nano file1.txt markdownFile.md script.py
 ```
+
+(More on Nano here: [The 50 Most Popular Linux & Terminal Commands - 3h23m48s](https://youtu.be/ZtqBQ68cfJc?t=12228))
 
 You can create and edit files with `nano` editor (after entering nano editor, you will have multiple options like "save" `CTRL+O`, or "exit" `CTRL+X`):
 
@@ -196,6 +235,29 @@ ls -lah
 - `--sort` - sort by WORD instead of name, eg `size (-S)`, `time (-t)`, `version (-v)`, `extension (-X)`
 
 For example, to sort files by size within a folder, run `ls --sort=size -lah` ("sort by size").
+
+Note: Instead of using `ls -la`, you can directly write `ll` (double "L") for the same effect. For human readable sizes, use you can `ll -h` instead of `ls -lah`. `ll` is a predefined alias for `ls -alF` (at least on Ubuntu/Mint/Zorin/other derivates).
+
+```bash
+ll
+
+# sames as
+ls -la
+```
+
+```bash
+type ll
+# ll is aliased to `ls -alF'
+```
+You can edit (permanently) this alias further to `ls -alFh` (for human-readable). Just search and modify the alias in the `~/.bashrc` file (bash script that is executed every time the system boots).
+
+```bash
+nano ~/.bashrc
+
+# press CTRL+W to search for "alias ll"
+```
+
+![](./Top-Linux-Commands-imgs/ls01.jpg)
 
 <br/>
 
@@ -605,6 +667,8 @@ https://stackoverflow.com/questions/16956810/how-do-i-find-all-files-containing-
 
 ## grep
 
+(Sunday, May 22, 2022)
+
 [The Most Popular Linux Commands: grep - 2h32m](https://youtu.be/ZtqBQ68cfJc?t=9145)
 
 `grep` (global regular expression print) is used to search for text inside files.
@@ -637,6 +701,44 @@ grep -rE -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" .
 
 ![](./Top-Linux-Commands-imgs/grep_02.jpg)
 
+<br/>
+
+Some other random examples of using grep:
+
+- If command history was not erased, you can run something like `history | grep "sudo apt install"` and see everything you installed so far on your Linux machine
+
+```bash
+history | grep "sudo apt install" > installed_apps.txt
+
+# or if you want to save to a file without line numbers
+history -w history.txt
+grep "sudo apt install" history.txt > history.txt
+```
+
+![](./Top-Linux-Commands-imgs/grep_03.jpg)
+
+<br/>
+
+- If grep returns something like `Binary file ./app_logs/server_logs.log matches` instead of the line containing the searched word, we need to add the `-a` flag:
+
+```bash
+grep -rnia ./app_logs -e "Request failed"
+```
+
+<br/>
+
+- If we need to see the lines above or below the line that contains the searched string, we need to use (in front of all the other flags) the `-A` (for after) and/or `-B` (for before) flags. We can also use the `-C` flag (for Context) to show both before and after lines.
+
+```bash
+# get the lines that contains "OutOfMemoryError" string
+grep -rnia ./ -e "OutOfMemoryError"
+
+# show the 4 lines before every line that contains "OutOfMemoryError" string
+grep -B 4 -rnia ./ -e "OutOfMemoryError"
+
+# show the 4 lines that comes after every line that contains "OutOfMemoryError" string
+grep -A 4 -rnia ./ -e "OutOfMemoryError"
+```
 
 <br/>
 
@@ -699,5 +801,234 @@ df -h ~/Desktop
 
 # history
 
+(Monday, May 23, 2022)
+
 [The Most Popular Linux Commands: history - 2h44m](https://youtu.be/ZtqBQ68cfJc?t=9853)
+
+The `history` command shows a list of the commands entered since you started the session. You can replay any command from history by using a command such as: `!3` (with exclamation mark and history id from history list, like `!command_id_from_history`)
+
+```bash
+history
+history | less
+
+!145 # runs command 145 from history list
+```
+
+You can also search through history by piping `grep`:
+
+```bash
+# See all apt installs
+history | grep "sudo apt install"
+
+# See all commits made
+history | grep "git commit"
+
+# View compiled C files with gcc or ran/interpreted with Python3
+history | grep "gcc"
+history | grep "python3"
+
+# View all .txt files edited in vim (or nano)
+history | grep -E "vim.*txt"
+```
+
+<br/>
+
+**CTRL+R shortcut**
+
+However, another way to get to this search functionality is by typing `Ctrl+R` to invoke a recursive search of your command history. After typing this, the prompt changes to:
+
+```bash
+(reverse-i-search)`':
+```
+
+Now you can start typing a command, and matching commands will be displayed for you to execute by pressing Return or Enter, or keep pressing `CTRL+R` until you find the match you want.
+
+<br/>
+
+**Erasing history**
+
+From https://opensource.com/article/18/6/history-command: If you want to delete a particular command, enter `history -d <line number>`. To clear the entire contents of the history file, execute `history -c`.
+
+The history file is stored in a file that you can modify, as well. Bash shell users find it in their home directory as `.bash_history`.
+
+```bash
+nano ~/.bash_history
+```
+
+<br/>
+
+# Processes
+
+## ps, htop
+
+[The Most Popular Linux Commands: ps - 2h47m](https://youtu.be/ZtqBQ68cfJc?t=10061)
+
+You can inspect processes (started by current user/you) that running on your Linux machine with `ps`.
+
+To see all the processes by all users run `ps ax` (or, to see all the processes in a GUI you can run `top` and `htop`). To view all the path related to processes you can run `ps axww` (with simple `ps ax` the names gets cut, by adding `ww` word-wrap we can see the entire path).
+
+```bash
+ps axww
+```
+
+<br/>
+
+However, a waaay easier method to manage processes is by installing and using `htop`. See [The htop Command | Linux Essentials Tutorial
+](https://www.youtube.com/watch?v=bKWZJ3_5ODc)
+
+```bash
+htop
+```
+
+<br/>
+
+## kill
+
+Notes taken from the book: https://www.freecodecamp.org/news/the-linux-commands-handbook/#the-linux-kill-command
+
+```bash
+kill <PID>
+```
+
+By default, this sends the TERM signal to the process id specified.
+
+We can use flags to send other signals (Note that we can view all the flags by running `kill -l` that won't kill anything, it will just list all the signals we can use)
+
+```bash
+kill -HUP <PID>
+kill -INT <PID>
+kill -KILL <PID>
+kill -TERM <PID>
+kill -CONT <PID>
+kill -STOP <PID>
+```
+
+![](./Top-Linux-Commands-imgs/processes_01.jpg)
+
+- `HUP` means hang up. It's sent automatically when a terminal window that started a process is closed before terminating the process.
+
+- `INT` means interrupt, and it sends the same signal used when we press ctrl-C in the terminal, which usually terminates the process.
+
+- `KILL` is not sent to the process, but to the operating system kernel, which immediately stops and terminates the process.
+
+- `TERM` means terminate. The process will receive it and terminate itself. It's the default signal sent by kill.
+
+- `CONT` means continue. It can be used to resume a stopped process.
+
+- `STOP` is not sent to the process, but to the operating system kernel, which immediately stops (but does not terminate) the process.
+
+<br/>
+
+## killall
+
+https://www.freecodecamp.org/news/the-linux-commands-handbook/#the-linux-killall-command
+
+Similar to the kill command, killall will send the signal to multiple processes with same **name** at once instead of sending a signal to a specific process id.
+
+```bash
+killall <name>
+```
+
+where name is the name of a program. For example you can have multiple instances of the top program running, and killall top will terminate them all.
+
+<br/>
+
+## jobs, bg, fg
+
+[The Most Popular Linux Commands: jobs, bg, fg - 2h47m](https://youtu.be/ZtqBQ68cfJc?t=10918)
+
+We can put (long) running commands in the background in our terminal, so we can run other commands.
+
+For example, if we run a command that takes a lot of time (eg. `grep -rnia ./huge-logs.log -e "stringpattern"` or `find / -ctime -1` to find all files in root directory that changed in the last 24 hours), the command will run in the foreground, where we can either:
+- stop the process by pressing `CTRL+C`
+- suspend the process (put in on pause, don't stop it) by pressing `CTRL+Z` => if we have some suspended processes, we can then type the `jobs` command to see them (the jobs/suspended processes will be shown with an id associated as well).
+	- Then, to run again the process in the foreground, we can write `fg <id>` with the id of the process (listed when running `jobs`). 
+	- Or, to run again the process in the background, we can write `bg <id>` (we can see the process running in the background by running `jobs` command again)
+
+Note: we can also run a process (a command) directly in the background by adding ` &` at the end of the command (for example `grep -rna ./logs.log -e "timestamp" > logs-today.log &`, or something like `docker-compose up &`).
+
+Note: we can also suspend (`CTRL+Z`) "processes" like editing a file in nano/vim -> while we are in nano/vim, press `ctrl+z`, do something else in the terminal, then run `fg` command to get back to editing a file in nano/vim (this is especially useful on servers while remote with ssh). This is like "minizing" a program/app (or note-taking with vim/nano) in the terminal.
+
+<br/>
+
+# gzip, tar
+
+Gzip is a lossless compression tool that makes large chunks of data smaller ([gzip file compression in 100 Seconds - Fireship.io](https://www.youtube.com/watch?v=NLtt4S9ErIA)).
+
+```bash
+gzip --version
+
+# Compress a file
+gzip filename.txt  # it will create a filename.txt.gz
+
+# Print the compression rate of gzip file
+gzip -l filename.txt.gz
+```
+
+```bash
+# Decompress gz file to original using -d (Method 1)
+gzip -d filename.txt.gz
+
+# Decompress gz file to original using g-unzip (Method 2)
+gunzip filename.txt.gz
+```
+
+Note: `gzip filename.txt` will add filename.txt to the filename.txt.gz compressed file and will delete the filename.txt file. To keep both `filename.txt` and compressed `filename.txt.gz` file, add the `-k` (keep the original) flag: `gzip -k filename.txt`.	
+
+```bash
+gzip -kv changes.txt # -v for verbose
+# changes.txt 86.8% - created changes.txt.gz
+```
+
+<br/>
+
+However, gzip cannot compress a whole directory. We need to use the `tar` (**t**ape **ar**chive) archiver, with `-z` flag that compresses multiple files into a single `.tar.gz` (compressespressed tarball) file.
+
+```bash
+tar -czvf MyArchiveName.tar.gz MyDirectoryName 
+# -c flag is for create
+# -f flag is for providing the filename the tar will have
+# -z flag automatically compresses the archive
+# -v flag is for verbose
+```
+
+To extract files from a tar archive we use the `-x` option (extract):
+
+```bash
+# Archive without compression
+tar -cf MyArchiveName.tar
+
+# View files inside archive with -t option
+tar -tf MyArchiveName.tar
+
+# Extract (in the same directory)
+tar -xf MyArchiveName.tar
+
+# Extract (in the specified directory)
+tar -xf MyArchiveName.tar -C ./extracted
+```
+
+If we want to add multiple selected files into a tar archive:
+
+```bash
+tar -cfv MyArchiveName.tar file1.log file2.log file3.log
+
+gzip -v MyArchiveName.tar
+```
+
+Note that tar command does not compress any files, so every time we create a tar archive of a group of file, we then need to compress the `tar` file with `gzip`. Or we should use the `tar -z` option (for automatic compress) as shown:
+
+```bash
+# Archive and Compress files
+tar -czvf MyArchiveName.tar.gz file1 file2 file3
+
+# Decompress and extract files from archive
+tar -xf MyArchiveName.tar.gz
+```
+
+<br/>
+
+# xargs
+
+([The Most Popular Linux Commands - xargs 3h43m18s](https://youtu.be/ZtqBQ68cfJc?t=13398) and [The Linux xargs command](https://www.freecodecamp.org/news/the-linux-commands-handbook/#the-linux-xargs-command))
 
