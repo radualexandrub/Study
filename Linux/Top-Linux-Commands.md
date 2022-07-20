@@ -53,6 +53,16 @@ man gcc
 man python3
 ```
 
+An alternative to `man` is `tldr` (as in "too long didn't read") command, that only lists some direct/command examples of using the specified command:
+
+```bash
+sudo apt install tldr
+```
+
+![](./Top-Linux-Commands-imgs/man01.jpg)
+
+![](./Top-Linux-Commands-imgs/man02.jpg)
+
 <br/>
 
 # Basic Linux Commands
@@ -203,6 +213,56 @@ rm -r myfolder
 ```bash
 rm file1.txt file2.txt file3.md
 ```
+
+- Delete all JPG files in the current folder
+
+```bash
+rm *.jpg
+```
+
+<br/>
+
+## split
+
+Split large (text) files into smaller files (default is 1000 lines per file). This is useful when we have a huge log file (that contains millions of lines of logs) and we want it to be split in several files that contains around 100,000 (or 200,000) lines in order to be opened by a text editor without freezing our PC (eg. with Notepad++ we can make operations such as highlighting and complex searching).
+
+The base syntax is: `split [options] <name_of_file> <prefix_for_new_files>`.
+
+- Split a large text file into smaller files with 2000 lines each
+
+```bash
+split -l 2000 ./logfile.log logfile_
+```
+
+![](./Top-Linux-Commands-imgs/split01.jpg)
+
+- Split a file and add both a prefix and suffix (such as `.log` extension) to each new subfile
+
+```bash
+split -l 2000 ./logfile.log logfile_ --additional-sufix=".log"
+
+# and if you want to delete the created files after
+rm logfile_*.log
+```
+
+![](./Top-Linux-Commands-imgs/split02.jpg)
+
+- Split using digits/numeric suffix (`-d`) for file incrementation instead of letters/alphabetic.
+
+```bash
+split -l 10000 ./logfile.log log_ --additional-suffix=".log" -d
+
+# Optionally, move the new subfiles into a new folder
+mkdir logsplit
+mv log_*.log ./logsplit
+cd ./logsplit
+
+# And now you can grep through them and open only
+# the file of interest that matched your string pattern
+grep -rnia ./ -e "ERROR_NAME"
+```
+
+![](./Top-Linux-Commands-imgs/split03.jpg)
 
 <br/>
 
@@ -857,6 +917,31 @@ nano ~/.bash_history
 
 <br/>
 
+**See history commands with timestamps**
+
+Solution taken from: https://askubuntu.com/questions/391082/how-to-see-time-stamps-in-bash-history
+
+- Just write the following command in terminal:
+
+```bash
+# for e.g. “1999-02-29 23:59:59”
+HISTTIMEFORMAT="%F %T "
+
+# for e.g. “29/02/99 23:59:59”
+HISTTIMEFORMAT="%d/%m/%y %T "
+```
+
+- To make the change permanent for the current user run:
+
+```bash
+echo 'HISTTIMEFORMAT="%F %T "' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Note that this will only record timestamps for new history items, after HISTTIMEFORMAT is set for sessions, i.e. you can't use this retrospectively.
+
+<br/>
+
 # Processes
 
 ## ps, htop
@@ -953,6 +1038,8 @@ Note: we can also suspend (`CTRL+Z`) "processes" like editing a file in nano/vim
 
 # gzip, tar
 
+(Monday, July 18, 2022)
+
 Gzip is a lossless compression tool that makes large chunks of data smaller ([gzip file compression in 100 Seconds - Fireship.io](https://www.youtube.com/watch?v=NLtt4S9ErIA)).
 
 ```bash
@@ -1031,4 +1118,188 @@ tar -xf MyArchiveName.tar.gz
 # xargs
 
 ([The Most Popular Linux Commands - xargs 3h43m18s](https://youtu.be/ZtqBQ68cfJc?t=13398) and [The Linux xargs command](https://www.freecodecamp.org/news/the-linux-commands-handbook/#the-linux-xargs-command))
+
+(Tuesday, July 19, 2022)
+
+The xargs command is to convert input from standard input into arguments to a command. The syntax for xargs is something like `command1 | xargs command2`. 
+
+Examples:
+
+- We have in a text file (`FilesToDelete.txt`) a list of files that we want to delete. We can take the output of `cat FilesToDelete.txt` and add them as an argument to `rm` command:
+
+```bash
+cat FilesToDelete.txt | xargs rm
+```
+
+We can also add a `-p` option to print a confirmation prompt with the action performed.
+
+![](./Top-Linux-Commands-imgs/xargs_01.jpg)
+
+<br/>
+
+- Another example: we have a list of filenames in `FilesToCreate.txt` that we want to actually create (with `touch`):
+
+```bash
+cat FilesToCreate.txt | xargs touch
+```
+
+![](./Top-Linux-Commands-imgs/xargs_02.jpg)
+
+<br/>
+
+- Detailed list of files that are larger that 10MB. Note that `ls` does not support arguments with simple piping (eg. `find . -size +10M | ls -lh` won't work), therefore we must use `xargs`:
+
+```bash
+# Show detalied list of files that are larger than 10MB
+find . -size +10M | xargs ls -lh
+
+# And remove those files that are larger than 10MB
+find . -size +10M | xargs rm
+```
+
+<br/>
+
+## xargs multiple commands
+
+You can also run multiple commands at once using the `-I` option, that allows you to get the output into a `%` placeholder.
+
+```bash
+command1 | xargs -I % /bin/bash -c 'command2 %; command3 %'
+```
+
+```bash
+# Example
+cat FilesToDelete.txt | xargs -I % /bin/bash -c 'cat %; rm %'
+
+# or you can use "sh -c" instead of "/bin/bash -c"
+cat FilesToDelete.txt | xargs -I % sh -c 'cat %; rm %'
+```
+
+Note: You can swap the `%` symbol used above with anything else – it's a variable.
+
+<br/>
+
+## More xargs examples
+
+- Archive all JPG files into a `tar.gz`
+
+```bash
+ls *.jpg | xargs tar -czvf myjpgs.tar.gz
+
+# and remove them after
+rm *jpg
+```
+
+![](./Top-Linux-Commands-imgs/xargs_03.jpg)
+
+<br/>
+
+- Find all the `.c` files that contains a string
+
+```bash
+find . -name '*.c' | xargs grep 'stdlib.h'
+```
+
+<br/>
+
+- Convert any multi-line output to a single line just by passing the output to `xargs`
+
+```bash
+# Simple example
+ls | xargs
+
+cat ListOfItems.txt | xargs
+```
+
+![](./Top-Linux-Commands-imgs/xargs_04.jpg)
+
+<br/>
+
+- Move all files that contains a certain string to another directory
+
+```bash
+grep -lir 'btn-green, btn-red' ./* | xargs mv -t ./tmp
+grep -li 'img' ./* | xargs mv -t ./tmp_imgs
+```
+
+<br/>
+
+- Delete all files with a .backup extension (-print0 uses a null character to split file names, and -0 uses it as delimiter):
+
+```bash   
+find . -name {{'*.backup'}} -print0 | xargs -0 rm -v
+```
+
+<br/>
+
+
+# Permissions
+
+[Top Linux Commands: permissions - 4h32m](https://youtu.be/ZtqBQ68cfJc?t=16286)
+
+- When viewing a detailed list of files (with `ls -lah`), the first 10 characters of every file represents the file type (`-` for file, `d` for directory, and `l` for symbolic link / "shortcuts")
+
+![](./Top-Linux-Commands-imgs/permissions01.jpg)
+
+- The next 9 characters (3 groups of 3 characters each) represents the following:
+	- the 1st group of 3 characters are the permissions for the Owner of the file/directory
+	- the 2nd group are the permissions for the Group Owner
+	- the 3rd group are the permissions for everyone else (the world at large, everyone else that is not the owner of the file/directory nor an user that belongs to a group)
+
+- The 3 characters of each user group are:
+	- read (`r`) or cannot read (`-`)
+	- write (`w`) or cannot write (`-`)
+	- execute (`x`) or cannot execute (`-`)
+
+![](./Top-Linux-Commands-imgs/permissions02.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions03.jpg)
+
+- Examples
+
+![](./Top-Linux-Commands-imgs/permissions04.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions05.jpg)
+
+<br/>
+
+## chmod
+
+![](./Top-Linux-Commands-imgs/permissions06.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions07.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions08.jpg)
+
+Examples:
+
+![](./Top-Linux-Commands-imgs/permissions09.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions10.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions10-2.jpg)
+
+<br/>
+
+Note: You can also use octals to set permissions to all three groups of users in one command:
+
+![](./Top-Linux-Commands-imgs/permissions11.jpg)
+
+![](./Top-Linux-Commands-imgs/permissions12.jpg)
+
+<br/>
+
+## Making a bash script executable
+
+- Create the file `nano myscript.sh`
+
+- Add `#!/bin/bash` at the top (first line of the file)
+
+- Make the file/script executable by adding `chmod +x myscript.sh`
+
+- Run the script as `./myscript.sh`
+
+![](./Top-Linux-Commands-imgs/permissions_chmodx.jpg)
+
+
 
