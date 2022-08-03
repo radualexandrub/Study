@@ -426,7 +426,46 @@ console.log(txt.length); // 26
 console.log('aaa'.length); // 3
 ```
 
-2. <a name="stringindexof"></a>`indexOf()` method returns the index of (position of) the first occurrence of a specified text in a string
+2. <a name="stringindexof"></a>`indexOf()` method returns the index of (position of) the first occurrence of a specified text in a string. Returns -1 if no occurence is found.
+
+```js
+"Phonenumber1,Phonenumber2".indexOf(',') // 12
+"Phonenumber1".indexOf(',') // -1
+```
+
+Manual implementation of `indexOf()` ([source](https://gist.github.com/sashak007/d19a92207526f72e8cec53bb9c266ffa))
+
+```js
+function indexOfAlternative(str, query) {
+  for(var i = 0; i < str.length; i++) {
+    for(var q = 0; q < query.length; q++) {
+      if (str[i+q] !== query[q]) { break; }
+      if (q === query.length - 1) { return i; }
+    }
+  }
+  return -1;
+}
+```
+
+Random application for indexOf - split a string by the first occurence of a character into an array that contains 2 elements:
+
+```js
+var splitStringInArrByFirstMatch = function(str, characterToMatch) {
+    characterToMatchIdx = str.indexOf(characterToMatch)
+    if (characterToMatchIdx === -1) {
+        return [str]
+    } else {
+        return [str.slice(0, characterToMatchIdx), str.slice(characterToMatchIdx)];
+    }
+}
+
+console.log(splitStringInArrByFirstMatch("075123", ",")); // [ '075123' ]
+console.log(splitStringInArrByFirstMatch("075123,1123", ",")); // [ '075123', ',1123' ]
+console.log(splitStringInArrByFirstMatch("075123,1123,12345", ",")); // [ '075123', ',1123,12345' ]
+
+console.log(splitStringInArrByFirstMatch("prefix-phone-number-digits", "-")); // [ 'prefix', '-phone-number-digits' ]
+console.log(splitStringInArrByFirstMatch("+41-075-123-1234", "-")); // [ '+41', '-075-123-1234' ]
+```
 
 3. `lastIndexOf()` method returns the index of the last occurrence of a specified text in a string
 
@@ -446,6 +485,9 @@ console.log('aaa'.length); // 3
 ```js
 console.log("Please locate where 'locate' occurs!".search("locate")); // 7 
 // search() seems to be the same as indexOf()
+
+console.log("Please locate where 'locate' occurs!".search("banana")); // -1
+// Returns -1 if substring is not found in string
 ```
 - However, The two methods are NOT equal
     - `search()` method cannot take a second start position argument, but can take regular expressions
@@ -971,6 +1013,33 @@ for (let i = 0; i < myArr.length; i++) {
 - `statement2` is used to evaluate the condition of the initial variable. It's also optional, you can omit it in order to create an infinite loop, where you must provide a `break` inside.
 
 - `statement3` increments/decrements the value of the initial variable (`i--`, `i += 5`). It could also be optional/omitted if you increment the values inside the loop.
+
+<br/>
+
+Example: Solving FizzBuzz:
+
+```js
+const FizzBuzzBazz = (num) => {
+  for (let i = 0; i <= num; i++) {
+    let output = "";
+    if (i % 3 === 0) {
+      output += "Fizz";
+    }
+    if (i % 5 === 0) {
+      output += "Buzz";
+    }
+    if (i % 7 === 0) {
+      output += "Bazz";
+    }
+    if (output == "") {
+      output = i;
+    }
+    console.log(output);
+  }
+}
+
+FizzBuzzBazz(18);
+```
 
 ## <a name="Jsforin">`for...in` loops through the properties of an object</a>
 
