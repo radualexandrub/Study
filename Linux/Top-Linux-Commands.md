@@ -15,7 +15,37 @@ Notes taken from:
 
 Table of Contents:
 
-
+- [Basic Linux Commands](#basic-linux-commands)
+	- [touch, echo, cat, head, tail, less](#touch-echo-cat-head-tail-less)
+	- [mkdir, rmdir, rm](#mkdir-rmdir-rm)
+	- [split](#split)
+	- [ls, cd, open](#ls-cd-open)
+	- [mv, cp](#mv-cp)
+	- [wc](#wc)
+- [Piping commands](#piping-commands)
+- [Expansions](#expansions)
+- [Searching and Sorting](#searching-and-sorting)
+	- [sort](#sort)
+	- [uniq](#uniq)
+	- [find](#find)
+	- [ack](#ack)
+	- [grep](#grep)
+- [Other file commands](#other-file-commands)
+	- [du](#du)
+	- [df](#df)
+- [history](#history)
+- [Processes](#processes)
+	- [ps, htop](#ps-htop)
+	- [kill](#kill)
+	- [killall](#killall)
+	- [jobs, bg, fg](#jobs-bg-fg)
+- [gzip, tar](#gzip-tar)
+- [xargs](#xargs)
+	- [xargs multiple commands](#xargs-multiple-commands)
+	- [More xargs examples](#more-xargs-examples)
+- [Permissions](#permissions)
+	- [chmod](#chmod)
+	- [Making a bash script executable](#making-a-bash-script-executable)
 
 <br/>
 
@@ -172,7 +202,6 @@ touch -d '1 June 2018 11:02' file1
 touch myfile1.txt myfile2.txt myfile3.txt
 ```
 
-
 <br/>
 
 ## mkdir, rmdir, rm
@@ -309,6 +338,7 @@ ls -la
 type ll
 # ll is aliased to `ls -alF'
 ```
+
 You can edit (permanently) this alias further to `ls -alFh` (for human-readable). Just search and modify the alias in the `~/.bashrc` file (bash script that is executed every time the system boots).
 
 ```bash
@@ -439,7 +469,7 @@ wc -l greeting.txt
 # 2 lines
 ```
 
-- Count the number of files by piping ls and wc (Note that `ls -l | wc -l` will count *number of files + 1* because `ls -l` will also add a line of size in kbytes... or we can just print the number of lines in wc command `ls | wc -l`)
+- Count the number of files by piping ls and wc (Note that `ls -l | wc -l` will count _number of files + 1_ because `ls -l` will also add a line of size in kbytes... or we can just print the number of lines in wc command `ls | wc -l`)
 
 ```bash
 ls | wc -l
@@ -494,7 +524,7 @@ ls -lah *.??
 
 <br/>
 
-Another extension is use of curly braces `{}`, where bash will expand to the values within curly braces (separated by `,` comma). 
+Another extension is use of curly braces `{}`, where bash will expand to the values within curly braces (separated by `,` comma).
 
 ```bash
 echo {a,b,c}.txt
@@ -518,7 +548,7 @@ echo {1..10}
 echo file{01..05}.txt
 # file01.txt file02.txt file03.txt file04.txt file05.txt
 
-touch file{01..10}.txt 
+touch file{01..10}.txt
 # will create 10 files
 ```
 
@@ -529,8 +559,6 @@ echo {Z..A}
 
 More on expansions here: https://linuxcommand.org/lc3_lts0080.php
 
-
-
 <br/>
 
 # Searching and Sorting
@@ -540,7 +568,6 @@ More on expansions here: https://linuxcommand.org/lc3_lts0080.php
 [The 50 Most Popular Linux Commands - 1h56min](https://youtu.be/ZtqBQ68cfJc?t=7016)
 
 - We can sort the lines from a file. Note that `sort` will not change the content of file, it will just print to console. `sort` is also case sensitive, use `sort -f` to ignore case.
-
 
 ```bash
 sort file.txt
@@ -579,7 +606,6 @@ sort -nrk 3 employees.txt
 ```
 
 ![](./Top-Linux-Commands-imgs/sort_02.jpg)
-
 
 See more about sorting floating point numbers (`general sorting`) here: https://unix.stackexchange.com/questions/459257/how-to-sort-lines-by-float-number.
 
@@ -648,7 +674,7 @@ find . -type f  # find only files, not directories
 ```bash
 find . -type d -name '*new*'  # find all directories that contain 'new' in their name
 find . -type d -iname '*new*'  # find all directories that contain 'new' or 'New' in their name
-``` 
+```
 
 - We can also use `-or` operator:
 
@@ -1025,10 +1051,11 @@ where name is the name of a program. For example you can have multiple instances
 We can put (long) running commands in the background in our terminal, so we can run other commands.
 
 For example, if we run a command that takes a lot of time (eg. `grep -rnia ./huge-logs.log -e "stringpattern"` or `find / -ctime -1` to find all files in root directory that changed in the last 24 hours), the command will run in the foreground, where we can either:
+
 - stop the process by pressing `CTRL+C`
 - suspend the process (put in on pause, don't stop it) by pressing `CTRL+Z` => if we have some suspended processes, we can then type the `jobs` command to see them (the jobs/suspended processes will be shown with an id associated as well).
-	- Then, to run again the process in the foreground, we can write `fg <id>` with the id of the process (listed when running `jobs`). 
-	- Or, to run again the process in the background, we can write `bg <id>` (we can see the process running in the background by running `jobs` command again)
+  - Then, to run again the process in the foreground, we can write `fg <id>` with the id of the process (listed when running `jobs`).
+  - Or, to run again the process in the background, we can write `bg <id>` (we can see the process running in the background by running `jobs` command again)
 
 Note: we can also run a process (a command) directly in the background by adding ` &` at the end of the command (for example `grep -rna ./logs.log -e "timestamp" > logs-today.log &`, or something like `docker-compose up &`).
 
@@ -1060,7 +1087,7 @@ gzip -d filename.txt.gz
 gunzip filename.txt.gz
 ```
 
-Note: `gzip filename.txt` will add filename.txt to the filename.txt.gz compressed file and will delete the filename.txt file. To keep both `filename.txt` and compressed `filename.txt.gz` file, add the `-k` (keep the original) flag: `gzip -k filename.txt`.	
+Note: `gzip filename.txt` will add filename.txt to the filename.txt.gz compressed file and will delete the filename.txt file. To keep both `filename.txt` and compressed `filename.txt.gz` file, add the `-k` (keep the original) flag: `gzip -k filename.txt`.
 
 ```bash
 gzip -kv changes.txt # -v for verbose
@@ -1072,7 +1099,7 @@ gzip -kv changes.txt # -v for verbose
 However, gzip cannot compress a whole directory. We need to use the `tar` (**t**ape **ar**chive) archiver, with `-z` flag that compresses multiple files into a single `.tar.gz` (compressespressed tarball) file.
 
 ```bash
-tar -czvf MyArchiveName.tar.gz MyDirectoryName 
+tar -czvf MyArchiveName.tar.gz MyDirectoryName
 # -c flag is for create
 # -f flag is for providing the filename the tar will have
 # -z flag automatically compresses the archive
@@ -1121,7 +1148,7 @@ tar -xf MyArchiveName.tar.gz
 
 (Tuesday, July 19, 2022)
 
-The xargs command is to convert input from standard input into arguments to a command. The syntax for xargs is something like `command1 | xargs command2`. 
+The xargs command is to convert input from standard input into arguments to a command. The syntax for xargs is something like `command1 | xargs command2`.
 
 Examples:
 
@@ -1226,12 +1253,11 @@ grep -li 'img' ./* | xargs mv -t ./tmp_imgs
 
 - Delete all files with a .backup extension (-print0 uses a null character to split file names, and -0 uses it as delimiter):
 
-```bash   
+```bash
 find . -name {{'*.backup'}} -print0 | xargs -0 rm -v
 ```
 
 <br/>
-
 
 # Permissions
 
@@ -1242,14 +1268,15 @@ find . -name {{'*.backup'}} -print0 | xargs -0 rm -v
 ![](./Top-Linux-Commands-imgs/permissions01.jpg)
 
 - The next 9 characters (3 groups of 3 characters each) represents the following:
-	- the 1st group of 3 characters are the permissions for the Owner of the file/directory
-	- the 2nd group are the permissions for the Group Owner
-	- the 3rd group are the permissions for everyone else (the world at large, everyone else that is not the owner of the file/directory nor an user that belongs to a group)
+
+  - the 1st group of 3 characters are the permissions for the Owner of the file/directory
+  - the 2nd group are the permissions for the Group Owner
+  - the 3rd group are the permissions for everyone else (the world at large, everyone else that is not the owner of the file/directory nor an user that belongs to a group)
 
 - The 3 characters of each user group are:
-	- read (`r`) or cannot read (`-`)
-	- write (`w`) or cannot write (`-`)
-	- execute (`x`) or cannot execute (`-`)
+  - read (`r`) or cannot read (`-`)
+  - write (`w`) or cannot write (`-`)
+  - execute (`x`) or cannot execute (`-`)
 
 ![](./Top-Linux-Commands-imgs/permissions02.jpg)
 
@@ -1300,6 +1327,3 @@ Note: You can also use octals to set permissions to all three groups of users in
 - Run the script as `./myscript.sh`
 
 ![](./Top-Linux-Commands-imgs/permissions_chmodx.jpg)
-
-
-

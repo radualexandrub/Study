@@ -1,6 +1,6 @@
 # My Study Notes
 
-A collection of my personal study notes from various courses, tutorials, articles or lectures.
+My biggest collection of personal study notes from various FREE courses, tutorials, articles or lectures.
 
 ---
 
@@ -56,20 +56,24 @@ A collection of my personal study notes from various courses, tutorials, article
 
 ### **Python**
 
-* [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
-* [Python algorithmic tricks & tips from solving HackerRank challenges - coming soon]
+- [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
+- [Python algorithmic tricks & tips from solving HackerRank challenges - coming soon]
 
 ### **Django**
 
-
+- To be added...
 
 ### **Java**
 
 - [Java Tutorial](./Java/README.md)
 
+### **Spring Boot**
+
+- [Spring Boot Full Stack with Angular Application - Full Course 05-Feb-2021 - Amigoscode](./SpringBoot/SpringBootWithAngularCourse.md)
+
 ### SQL
 
-* [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
+- [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
 
 ---
 
@@ -112,15 +116,14 @@ https://radubulai.com/Study/LiveSassPortfolio
 
 ***My portfolio and blog:*** [radubulai.com](https://radualexandrub.github.io/)
 
-<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.mixcloud.com/radu-alexandru7" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/mixcloud.svg" alt="RaduAlexandru" height="28" width="28" /></a>&nbsp;&nbsp;
+<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" title="GitHub"/></a>&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" title="LinkedIn"/></a>&nbsp;&nbsp;
+<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" title="Dev.to"/></a>&nbsp;&nbsp;
+<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" title="HackerRank"/></a>&nbsp;&nbsp;
+<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" title="Flickr"/></a>&nbsp;&nbsp;
 
 ## License
 
 The Documentation and the Software created from these notes are released under the [MIT license](LICENSE).
 
-Copyright © 2022, [Radu-Alexandru Bulai](https://github.com/radualexandrub). 
+Copyright © 2022 [Radu-Alexandru Bulai](https://github.com/radualexandrub)

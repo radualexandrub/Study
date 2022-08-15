@@ -755,6 +755,8 @@ Usually we will work with a Backend REST API, where we will use The Angular HTTP
 
 The Angular HTTP Client actually returns an _observable_ (so we don't need to import `of` from `rxjs` and convert our data).
 
+### Install and configure Fake JSON Server npm
+
 For this tutorial we can use a dummy pre-made back-end service (REST API), namely **[JSON Server npm - a full fake REST API with zero coding in less than 30 seconds](https://www.npmjs.com/package/json-server)**. To install Fake JSON Server:
 
 - in CMD Prompt/Terminal, we need to run `npm i json-server`.
@@ -789,6 +791,8 @@ For this tutorial we can use a dummy pre-made back-end service (REST API), namel
 - run in CMD Prompt: `npm run server`. Now we will have our Angular Front-End App on http://localhost:4200/, and REST API Back-end on http://localhost:5000/ (where we can make GET/POST/PUT/DELETE requests just like on a real server made with Django/Express.js/Node.js/Spring-Java/etc).
 
 ---
+
+### Using Fake JSON Server npm
 
 Now let's refactor our app to use HttpClient (Note that with React/Vue/VanillaJS we would have used Fetch API, async/await or Axios/AJAX), by importing `import { HttpClient, HttpHeaders } from "@angular/common/http";` in `task.service.ts` and importing `import { HttpClientModule } from "@angular/common/http"`
 
