@@ -1080,3 +1080,37 @@ We can also use [cURL](https://curl.se/) instead of HTTPie.
 
 [Spring Boot Full Stack with Angular - Amigoscode - 1h03m: Creating Angular App](https://youtu.be/Gx4iBLKLVHk?t=3815)
 
+We will use [Angular CLI](https://angular.io/cli) to create our Front-End Angular Application!
+
+```bash
+### Basic example
+
+# Install the Angular CLI: To install the Angular CLI globally, 
+# open a terminal window and run the following command
+# (You will run this only once):
+npm install -g @angular/cli
+
+# To create a new project (a new workspace for an app)
+ng new employeemanager-angular
+
+# Change directory
+cd employeemanager-angular
+
+# The Angular CLI includes a server, for you to build and serve your app locally
+ng server --open
+```
+
+Our new app configuration:
+- Would you like to add Angular routing? (y/N): N (it will be a single page app)
+- Which stylesheet format would you like to use?: CSS
+
+<br/>
+
+Front-End App Architecture (Client):
+
+![](./SpringBootWithAngularCourse/AppArchitecture-UI.jpg)
+
+<br/>
+
+
+

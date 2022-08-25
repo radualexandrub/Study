@@ -30,7 +30,7 @@ Table of Contents:
 	- [find](#find)
 	- [ack](#ack)
 	- [grep](#grep)
-- [Other file commands](#other-file-commands)
+- [Disk usage commands](#disk-usage-commands)
 	- [du](#du)
 	- [df](#df)
 - [history](#history)
@@ -292,6 +292,16 @@ grep -rnia ./ -e "ERROR_NAME"
 ```
 
 ![](./Top-Linux-Commands-imgs/split03.jpg)
+
+🟢 Note, if you want to split by file size (each separate file will have a defined file size in KB or MB), we use `-b (bytes)` option instead of `-l (lines)`:
+
+```bash
+# This will output 100KB files
+split -b 100k ./logfile.log log_ --additional-suffix=".log" -d
+
+# This will output 100MB files
+split -b 100m ./logfile.log log_ --additional-suffix=".log" -d
+```
 
 <br/>
 
@@ -828,7 +838,7 @@ grep -A 4 -rnia ./ -e "OutOfMemoryError"
 
 <br/>
 
-# Other file commands
+# Disk usage commands
 
 ## du
 
