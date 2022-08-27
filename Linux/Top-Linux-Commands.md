@@ -854,6 +854,12 @@ du -h .  # will show all the sizes of directories within current path tree
 du -ah .
 ```
 
+- We can use `-s` (`--summarize`) to display only a total for each argument
+
+```bash
+du -sh /*
+```
+
 - And we if want to see all directories (and files with `-a`) "sort by size", we can pipe the command with `sort`
 
 ```bash
@@ -873,6 +879,8 @@ du -ah | sort -hr | head
 
 ![](./Top-Linux-Commands-imgs/du_02.jpg)
 
+![](./Top-Linux-Commands-imgs/du_03.jpg)
+
 <br/>
 
 ## df
@@ -881,6 +889,10 @@ du -ah | sort -hr | head
 
 ```bash
 df -h
+
+# or
+
+df -h /
 ```
 
 See the disk usage of the filesystem (like a "partition" but not really) where `~/Desktop` is located
@@ -892,6 +904,8 @@ df -h ~/Desktop
 # Filesystem      Size  Used Avail Use% Mounted on
 # /dev/sda5       439G   39G  378G  10% /
 ```
+
+![](./Top-Linux-Commands-imgs/df_01.jpg)
 
 <br/>
 

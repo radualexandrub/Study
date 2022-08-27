@@ -89,7 +89,9 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 * [About Git and GitHub](./Git/Git-about.md)
 * [Git CLI commands](./Git/Git-CLI-commands.md)
 
+### Docker
 
+* [Learn Docker in 7 Easy Steps - Beginner's Tutorial by Fireship.io - 11min, 24-Aug-2020](./Docker/FireshipDockerBeginnerTutorial11m.md)
 
 ---
 
