@@ -4,7 +4,16 @@ Credits / Notes taken from:
 
 <br/>
 
-Table of Contents
+Resources:
+
+- [Spring Boot Full Stack with Angular Application - GITHUB - Amigoscode](https://github.com/getarrays/employeemanagerapp)
+- [Bootdey - Free Bootstrap snippets and examples](https://www.bootdey.com/bootstrap-snippets)
+- [Start Bootstrap - Bootstrap themes, Templates and more](https://startbootstrap.com/)
+- [Getbootstrap.com - Bootstrap4.4 - Modals](https://getbootstrap.com/docs/4.4/components/modal/)
+
+<br/>
+
+Table of Contents:
 
 
 
@@ -23,10 +32,47 @@ Prerequisites:
 
 <br/>
 
+What is REST (API)?
+
+https://30secondsofinterviews.org/
+
+![What is REST API](./SpringBootWithAngularCourse/What-is-REST.jpg)
+
+<br/>
+
 # Back-End
 
 ## Project Setup
 
+### Installing Java
+
+- You should theoretically have Java already installed if on Windows Machine:
+
+![](./SpringBootWithAngularCourse/java01_2.jpg)
+
+However, the "javac" command won't work (we can't compile java to binary classes with Command Prompt using the default Windows's Java)
+
+(Recommended) You can download the JDK (Java Development Toolkit) separately from here: https://www.oracle.com/java/technologies/downloads/#jdk17-windows
+
+**[Setup Java for Windows (Command Prompt) - w3schools](https://www.w3schools.com/java/java_getstarted.asp)**
+
+1. Go to "System Properties" (Can be found on Control Panel > System and Security > System > Advanced System Settings)
+2. Click on the "Environment variables" button under the "Advanced" tab
+3. Then, select the "Path" variable in System variables and click on the "Edit" button
+4. Click on the "New" button and add the path where Java is installed, followed by **\bin**. By default, Java is installed in C:\Program Files\Java\jdk-11.0.1 (If nothing else was specified when you installed it). In that case, You will have to add a new path with: **C:\Program Files\Java\jdk-11.0.1\bin**
+   Then, click "OK", and save the settings
+5. Restart PC
+6. Open Command Prompt (cmd.exe) and type **java -version** to see if Java is running on your machine
+
+![](./SpringBootWithAngularCourse/java01_3.jpg)
+
+![](./SpringBootWithAngularCourse/java01_4.jpg)
+
+Now we can also run "javac" command.
+
+![](./SpringBootWithAngularCourse/java01_5.jpg)
+
+<br/>
 
 ### Installing Maven
 
@@ -363,6 +409,13 @@ public class Employee implements Serializable {
 After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/installer/), we can open "MySQL 8.0 Command Line Client" (from Windows Start Menu), and type commands like `show databases;`.
 
 ![](./SpringBootWithAngularCourse/ConfigureDatabase01.jpg)
+
+<br/>
+
+🔵 Note: If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
+- Open Windows Start Menu, search and open "Services", manually find `MySQL80` service -> Right click it -> Start.
+- (does not work in my case) We can just run (as administrator) the executable from `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe`.
+- See more here: [Can't startup and connect to MySQL server](https://stackoverflow.com/questions/31387036/cant-startup-and-connect-to-mysql-server).
 
 <br/>
 
@@ -839,7 +892,7 @@ public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
 
 <br/>
 
-5. **deleteEmployee** (GET HTTP Request)
+5. **deleteEmployee** (DELETE HTTP Request)
 
 This method will delete an employee from database based on provided Id through request URL/Path:
 
@@ -1108,9 +1161,1086 @@ Our new app configuration:
 
 Front-End App Architecture (Client):
 
+- User Interface (UI): What the user will see on the screen (HTML+CSS)
+- UI will be connected to a Component
+- The Component will have access to a Service that sends HTTP Requests to the Back-End
+
 ![](./SpringBootWithAngularCourse/AppArchitecture-UI.jpg)
 
 <br/>
+
+Entire App Architecture (Front-End + Back-End):
+
+![](./SpringBootWithAngularCourse/AppArchitecture.jpg)
+
+(Saturday, September 03, 2022)
+
+<br/>
+
+## Angular Service (Requests) and Employee Interface Data Type
+
+First we need to create `employee.ts` interface and `employee.service.ts` where we can specify the type of data that the request are going to return.
+
+<br/>
+
+- In the Angular's main `/src/app/app.module.ts` we need to import: `import { HttpClientModule } from '@angular/common/http';`, and also add it to the imports array: `imports: [BrowserModule, HttpClientModule],`
+
+🟠 If we don't import the `HttpClientModule` we will receive the following error from Angular in our browser console: `ERROR NullInjectorError: R3InjectorError(AppModule)[EmployeeService -> HttpClient -> HttpClient -> HttpClient]: NullInjectorError: No provider for HttpClient!`
+
+```typescript
+// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+<br/>
+
+- In the Angular's `/src/app` we will create `employee.ts` interface and here we are going to define all the attributes that the Employee has:
+
+```typescript
+// employee.ts
+export interface Employee {
+  id: number;
+  name: string;
+  email: string;
+  jobTitle: string;
+  phone: string;
+  imageUrl: string;
+  employeeCode: string;
+}
+```
+
+<br/>
+
+We will generate the "employee" service that will contain all the methods for the HTTP Requests. With Angular's CLI, in the Angular project path, run:
+
+```bash
+ng generate service employee
+```
+
+- In the Angular's `/src/app/employee.service.ts` file, we will actually make all the request to our back-end API Server (eg. `getEmployees`)
+
+- We will use Angular's `HttpClient` in order to make HTTP requests (`get`, `post`, `put`, `delete`)
+
+```typescript
+// employee.service.ts
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Employee } from './employee';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EmployeeService {
+  private apiServerUrl = '';
+
+  constructor(private http: HttpClient) {}
+
+  public getEmployees(): Observable<any> {
+    return this.http.get<Employee[]>(`${this.apiServerUrl}/employee/all`);
+  }
+
+  public getEmployeeById(employeeId: number): Observable<Employee> {
+    return this.http.get<Employee>(
+      `${this.apiServerUrl}/employee/delete/${employeeId}`
+    );
+  }
+
+  public addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(
+      `${this.apiServerUrl}/employee/add`,
+      employee
+    );
+  }
+
+  public updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(
+      `${this.apiServerUrl}/employee/update`,
+      employee
+    );
+  }
+
+  public deleteEmployee(employeeId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiServerUrl}/employee/delete/${employeeId}`
+    );
+  }
+}
+```
+
+- `getEmployees()` will not take any parameters, and will return an `Observable` generic object with `<any>` type of data (in our case it will return a list/array of Employee objects).
+
+- `addEmployee()` will take an Employee object as parameter, and will use the `post` method in the http request... with the Angular's `HttpClientModule` (`@angular/common/http`) we can just pass (as argument) to the `http.post()` method the employee object as a payload to the POST request.
+
+- `updateEmployee()` will take an Employee object as parameter, and will use the `put` method
+
+- `deleteEmployee()` will take the EmployeeId (number) as parameter, will use the `delete` type of request to the `/employee/delete/${employeeId}` route/URL. Since this method/this request won't return anything from the server (except the status code), this `deleteEmployee()` method in Angular will return `<void>`.
+
+
+<br/>
+
+Note that on the [Back-End Java Spring **Controller** (`EmployeeResource.java`)](#exposing-the-api---controller) we had the following routes/methods:
+
+```
+getAllEmployees() -> GET /employee/all
+
+getEmployeeById(@PathVariable("id") Long id) -> GET /employee/find/{id}
+
+addEmployee(@RequestBody Employee employee) -> POST /employee/add
+
+updateEmployee(@RequestBody Employee employee) -> PUT /employee/update
+
+deleteEmployee(@PathVariable("id") Long id) -> DELETE /employee/delete/{id}
+```
+
+<br/>
+
+Now, here in `/src/app/employee.service.ts`, we will replace the `private apiServerUrl = '';` with an environment variable:
+
+- First, in `/src/app/environments/environment.ts` we will add the following key-value pair `apiBaseUrl: 'http://localhost:8080'` (our SpringBoot back-end REST Api - eg. http://localhost:8080/employee/all)
+
+```ts
+// environment.ts
+export const environment = {
+  production: false,
+  apiBaseUrl: 'http://localhost:8080',
+};
+```
+
+- Then, in `employee.service.ts` we will replace `private apiServerUrl = '';` with `private apiServerUrl = environment.apiBaseUrl;`
+
+```typescript
+// employee.service.ts
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Employee } from './employee';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EmployeeService {
+  private apiServerUrl = environment.apiBaseUrl;
+
+  constructor(private http: HttpClient) {}
+
+  public getEmployees(): Observable<any> {
+    return this.http.get<Employee[]>(`${this.apiServerUrl}/employee/all`);
+  }
+
+  public getEmployeeById(employeeId: number): Observable<Employee> {
+    return this.http.get<Employee>(
+      `${this.apiServerUrl}/employee/delete/${employeeId}`
+    );
+  }
+
+  public addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(
+      `${this.apiServerUrl}/employee/add`,
+      employee
+    );
+  }
+
+  public updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(
+      `${this.apiServerUrl}/employee/update`,
+      employee
+    );
+  }
+
+  public deleteEmployee(employeeId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiServerUrl}/employee/delete/${employeeId}`
+    );
+  }
+}
+```
+
+<br/>
+
+## Angular component
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h19m: Angular Component](https://youtu.be/Gx4iBLKLVHk?t=4784)
+
+Since we have the `employee` service, we can use it now in our component.
+
+> Ideally we would have separate component for each part of an application (eg. an EmployeesComponent component for visualising and interacting with employees data, and EmployersComponent component for interacting with employers data, or a TasksComponent component for interacting with tasks data, etc) that we would have created with `ng generate component components/employees` or `ng generate component components/employers`, etc.
+
+> But, in this tutorial, since we have only the employee table in our database (which suggests a very simple application), we will write all the code in the Angular project's main `app.component`
+
+<br/>
+
+- In `app.component.ts` we will have our main/global employees variable that will be an array which holds all the Employee objects
+
+- We will create function to call our Angular `employee.service.ts` service. For this we will need to inject the `employee.service.ts`service in this `AppComponent` class by using the `constructor(private employeeService: EmployeeService) {}` (now we have acces to the employee service from the main app component because we have injected it through the app component's class constructor)
+
+```typescript
+// app.component.ts
+import { Component } from '@angular/core';
+import { Employee } from './employee';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  title = 'employeemanager-angular';
+  public employees: Employee[] = [];
+
+  constructor(private employeeService: EmployeeService) {}
+}
+```
+
+- Now we will define `getEmployees()` method where we call the `getEmployees` from the `employee.service`.
+    - Since this method returns an `Observable` object (which the way Angular handles request and responses that could take time), we need to also `subscribe` to this Observable, so our code from subscibe callback will run only after we receive some data from the request / from the Back-End Server (We can think of this `.subscribe()` method as a `.then()` method when we were using Vanilla JS promises).
+    - the `.subscribe` method can receive different callbacks/lambda functions as parameters, namely for success, error, and complete: `(method) Observable<any>.subscribe(next?: ((value: any) => void) | null | undefined, error?: ((error: any) => void) | null | undefined, complete?: (() => void) | null | undefined): Subscription`
+    - in the subscribe method, if we succesfully receive the required data, we will just get the data received from the back-end server (as a `response`) and put it in our global `employees` array of Employee objects.
+    - however, in case we get an error, we can just console.log it
+
+```typescript
+// app.component.ts
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Employee } from './employee';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  title = 'employeemanager-angular';
+  public employees: Employee[] = [];
+
+  constructor(private employeeService: EmployeeService) {}
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  public getEmployees(): void {
+    this.employeeService.getEmployees().subscribe(
+      (response: Employee[]) => {
+        this.employees = response;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.message);
+      }
+    );
+  }
+}
+```
+
+- In order to call this `getEmployees` function whenever `app.component` is loaded, we can make this `AppComponent` class to implement `OnInit` interface (that comes from `@angular/core`). And, we will also need to override `ngOnInit()` method (of the `OnInit` interface): `ngOnInit(): void { this.getEmployees(); }`.
+
+
+<br/>
+
+Now, we can render the `employee` array of Employee objects (that we get from the back-end REST API server) by removing/deleting all the default Angular's placeholder code in `app.component.html` and replacing it with:
+
+- an `*ngFor` directive that will loop through the array of Employee objects (public variable `employees` from `app.component.ts`)
+
+```html
+<!-- app.component.html -->
+<h1>Employee Manager</h1>
+<div *ngFor="let employee of employees">
+  <div>{{employee.name}}</div>
+</div>
+```
+
+<br/>
+
+## Solving "blocked by CORS policy" - CORS Configuration
+
+(Sunday, September 04, 2022)
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h27m: CORS Configuration](https://youtu.be/Gx4iBLKLVHk?t=5269)
+
+Now, if we start the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start), and we are also starting the SpringBoot Back-end Server (`mvn spring-boot:run` and test on http://localhost:8080/employee/all) and the Front-end Angular Application (`ng serve --open` on http://localhost:4200/), we will run into the following CORS issue:
+
+![](./SpringBootWithAngularCourse/CORS_error.jpg)
+
+<br/>
+
+About CORS:
+
+![](./SpringBootWithAngularCourse/CORS_explained.jpg)
+
+> From https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
+> Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources. CORS also relies on a mechanism by which browsers make a "preflight" request to the server hosting the cross-origin resource, in order to check that the server will permit the actual request. In that preflight, the browser sends headers that indicate the HTTP method and headers that will be used in the actual request.
+
+> An example of a cross-origin request: the front-end JavaScript code served from https://domain-a.com uses XMLHttpRequest to make a request for https://domain-b.com/data.json.
+
+> For security reasons, browsers restrict cross-origin HTTP requests initiated from scripts. For example, XMLHttpRequest and the Fetch API follow the same-origin policy. This means that a web application using those APIs can only request resources from the same origin the application was loaded from unless the response from other origins includes the right CORS headers.
+
+<br/>
+
+To solve this issue, we need to tell the back-end to allow the front-end app to run on requested url (origin) in order to access the resources.
+
+On the SpringBoot project, in the main application class `EmployeemangerApplication` we need to add the following CORS Configuration after the `main()` function:
+
+```java
+// EmployeemanagerApplication.java
+package com.radubulai.employeemanager;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+
+@SpringBootApplication
+public class EmployeemanagerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(EmployeemanagerApplication.class, args);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
+                "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
+                "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+}
+```
+
+Now we can successfully retrieve data / make a GET request from our Angular App:
+
+![](./SpringBootWithAngularCourse/CORS_succes.jpg)
+
+![](./SpringBootWithAngularCourse/CORS_succes2.jpg)
+
+<br/>
+
+## User Interface - Building the HTML
+
+### Basic HTML+CSS Template
+
+(Friday, September 09, 2022)
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h27m: UI Intro](https://youtu.be/Gx4iBLKLVHk?t=5564)
+
+For this project, we can download a HTML+BOOTSTRAP4 template right from this link: https://www.bootdey.com/snippets/view/bs4-contact-cards (instead of designing and creating an interface - UI - from scratch). From this resource, we will only use/only download the HTML and CSS.
+
+We will copy the HTML from Bootdey.com into the `app.component.html` file:
+
+- we will use the `*ngFor` directive to create an employee card (in the UI) for each Employee object: `*ngFor="let employee of employees"`
+- we will also replace the dummy html text (placeholders) with our real values from `employee` array (`public employees: Employee[] = [];` from `app.component.ts`); we pass in the:
+    - image: `<img src="{{employee?.imageUrl}}" alt="{{employee.name}}">`
+    - name: `<div class="card--name">{{employee.name}}</div>`
+    - job title: `<p class="m-0">{{employee.jobTitle}}</p>`
+    - email: `<a href="{{'mailto:'+employee.email}}">{{employee.email}}</a>`
+    - tel: `<a href="{{'tel:'+employee.phone}}">{{employee.phone}}</a>`
+
+🔵 Note that we can add for image `{{employee?.imageUrl}}` the safe navigation operator (question mark `?`), that check if the employee exists (in order to access its attributes) in the first place and has an imageUrl property.
+
+```html
+<!-- app.component.html -->
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <h1 style="font-size:1rem;"><a class="navbar-brand" style="color:white;">Employee Manager</a></h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link">Add Employee <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input type="search" id="searchName" class="form-control mr-sm-2" placeholder="Search employees..." required>
+    </form>
+  </div>
+</nav>
+
+<!-- Container -->
+<div class="container">
+  <div class="row">
+    <!-- Employee card -->
+    <div *ngFor="let employee of employees" class="col-md-6 col-xl-3">
+      <div class="card m-b-30">
+        <div class="card-body row">
+          <div class="col-4">
+            <a href="#"><img src="{{employee?.imageUrl}}" alt="{{employee.name}}"
+                title="{{'Picture of ' + employee.name}}" class="img-fluid rounded-circle w-60"></a>
+          </div>
+          <div class="col-8 card-title align-self-center mb-0">
+            <div class="card--name">{{employee.name}}</div>
+            <p class="m-0">{{employee.jobTitle}}</p>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email: <a
+              href="{{'mailto:'+employee.email}}">{{employee.email}}</a></li>
+          <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone: <a
+              href="{{'tel:'+employee.phone}}">{{employee.phone}}</a></li>
+        </ul>
+        <div class="card-body">
+          <div class="float-right btn-group btn-group-sm">
+            <a href="#" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip"
+              data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+            <a href="#" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip"
+              data-original-title="Delete"><i class="fa fa-times"></i></a>
+          </div>
+          <ul class="social-links list-inline mb-0">
+            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href=""
+                data-original-title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href=""
+                data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href=""
+                data-original-title="Skype"><i class="fa fa-skype"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no employees -->
+<div *ngIf="employees?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NO EMPLOYEES!</h4>
+    <p>No Employees were found.</p>
+  </div>
+</div>
+```
+
+<br/>
+
+We will copy the CSS into the `src/styles.css` file and copy the style:
+
+- we also import Bootstrap4 and Fontawesome
+
+```css
+@import "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css";
+@import "htpps://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css";
+
+body {
+  background: #fafafa;
+  font-size: 16px;
+}
+.container {
+  margin-top: 2rem;
+}
+.card {
+  border: none;
+  box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+}
+.card--name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.w-60 {
+  width: 4rem;
+}
+
+.social-links li a {
+  -webkit-border-radius: 50%;
+  background-color: rgba(89, 206, 181, 0.85);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 30px;
+  font-size: 12px;
+}
+a {
+  color: #707070;
+}
+
+```
+
+<br/>
+
+Here's our result:
+
+![](./SpringBootWithAngularCourse/UI_01.jpg)
+
+<br/>
+
+## Adding UI Functionalities
+
+### Modal Logic
+
+(Saturday, September 10, 2022)
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h40m: UI Modal Logic](https://youtu.be/Gx4iBLKLVHk?t=6028)
+
+When we want to add, edit, or delete an employee, we will have a pop-up modal with the necesary inputs and save/cancel buttons.
+
+The modals will be based on this template: https://getbootstrap.com/docs/4.4/components/modal/. The HTML for these modals will be the following:
+
+```html
+<!-- HTML for the ADD, EDIT and DELETE modals -->
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)">
+          <div class="form-group">
+             <label for="name">Name</label>
+             <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+             <label for="email">Email Address</label>
+             <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Job title</label>
+             <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Job title" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Phone</label>
+             <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" required>
+          </div>
+          <div class="form-group">
+             <label for="phone">Image URL</label>
+             <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+          </div>
+          <div class="modal-footer">
+             <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+</div>
+```
+
+```HTML
+<!-- Edit Modal -->
+<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="updateEmployeeModalLabel">Edit Employee {{editEmployee?.name}}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #editForm="ngForm">
+              <div class="form-group">
+                 <label for="name">Name</label>
+                 <input type="text" ngModel="{{editEmployee?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+              </div>
+              <input type="hidden" ngModel="{{editEmployee?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+              <input type="hidden" ngModel="{{editEmployee?.employeeCode}}" name="userCode" class="form-control" id="userCode" placeholder="Email">
+              <div class="form-group">
+                 <label for="email">Email Address</label>
+                 <input type="email" ngModel="{{editEmployee?.email}}" name="email" class="form-control" id="email" placeholder="Email">
+              </div>
+              <div class="form-group">
+                 <label for="phone">Job title</label>
+                 <input type="text" ngModel="{{editEmployee?.jobTitle}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
+              </div>
+              <div class="form-group">
+                 <label for="phone">Phone</label>
+                 <input type="text" ngModel="{{editEmployee?.phone}}" name="phone" class="form-control" id="phone" name="phone" placeholder="Phone">
+              </div>
+              <div class="form-group">
+                 <label for="phone">Image URL</label>
+                 <input type="text" ngModel="{{editEmployee?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL">
+              </div>
+              <div class="modal-footer">
+                 <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                 <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+```
+
+```HTML
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete Employee</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>Are you sure you want to delete employee {{deleteEmployee?.name}}?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="onDeleteEmloyee(deleteEmployee?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+```
+
+<br/>
+
+For the modal logic (opening a modal by pressing a button):
+
+- first we need to "import" / add the following bootstrap4 JS libraries to our app, in the main Angular `index.html` file, we'll add the following links from https://getbootstrap.com/docs/4.5/getting-started/introduction/:
+
+```html
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" defer></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" defer></script>
+```
+
+> I know, this tutorial is using JQUERY and AJAX for an Angular App 😶... this is not the best practice for a front-end Angular App (or React/Vue/Svelte/etc), in most of the times on a project you will either build the Modal functionalities from scratch via TypeScript and CSS (to show/hide/animate the modal), or you will use an npm package that handles modals...
+
+> 🔴 Please do not import libraries such as jQuery or Ajax within an Angular/React/Vue/Svelte Front-End App for your personal projects (that are build from scratch) or on your currect company project. This tutorial main focus was to create and consume a REST API made with Java SpringBoot. Such libraries have big dimensions that are needed to be downloaded on client's PC/browser, along with their hidden implementation complexity could make the app slower.
+
+- we will create a `onOpenModal` function (in `app.component.ts`) that will have as parameter an employee and the "mode" of the model, that will tell us what the user is wanting to do (or what button has been pressed: ADD, EDIT, or DELETE button) -> this will determine which modal will be opened: `public onOpenModal(employee: Employee, mode: string): void {}`
+    - in `onOpenModal` we will create a button (by default, when we createElement button, its default type is "type=submit", but we can change it to "type=button")
+    - the button attribute `data-toggle` will be "modal" (needed for Bootstrap4)
+    - the button attribute `data-target` will be dynamic (received from the function parameter)
+
+    ```typescript
+    // app.component.ts
+      public onOpenModal(employee: Employee | null, mode: string): void {
+        const container = document.getElementById('main-container');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.style.display = 'none';
+        button.setAttribute('data-toggle', 'modal');
+
+        if (mode == 'add') {
+          button.setAttribute('data-target', '#addEmployeeModal');
+        }
+        if (mode == 'edit') {
+          button.setAttribute('data-target', '#editEmployeeModal');
+        }
+        if (mode == 'delete') {
+          button.setAttribute('data-target', '#deleteEmployeeModal');
+        }
+
+        container?.appendChild(button);
+        button.click();
+      }
+    ```
+
+    - we want to add these buttons (that opens a specific modal) dinamically to our UI (`app.component.html`): we first can add an ID to the container div in HTML: `<div class="container" id="main-container">`
+    - get the container in `app.component.ts`: `const container = document.getElementById('main-container');`
+    - append the created button to the div container (in DOM) and click it: `container?.appendChild(button); button.click();`
+
+(From tutorial: *"This implementation of creating an artificially invisible button (from `onOpenModal()`) and virtually pressing it makes our code a bit cleaner.. another method was to implement 3 different functions for add, edit and delete buttons/modals"*... Although, personally I would not recommend this implementation at all... because, every time we press an add/edit/delete button to open the desired modal, a button element will be created and added to the DOM in the `#main-container` div element 😶😶. Luckily, we can just add `button.remove();` right after `button.click()` and everything will be fine ✅)
+
+- within `app.component.html`, we will add a click listener to the add, edit and delete buttons:
+    - Add button: `<a class="nav-link" (click)="onOpenModal(null, 'add')">Add Employee <span class="sr-only">(current)</span></a>`
+
+    - Edit button: `<a (click)="onOpenModal(employee, 'edit')" href="#" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit" title="Edit employee"><i class="fa fa-pencil"></i> </a>`
+
+    - Delete button: `<a (click)="onOpenModal(employee, 'delete')" href="#" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete" title="Delete employee"><i class="fa fa-times"></i></a>`
+
+![](./SpringBootWithAngularCourse/UI_Modal.gif)
+
+<br/>
+
+### Debugging Modal Logic
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h55m: Testing Modal Logic](https://youtu.be/Gx4iBLKLVHk?t=6893)
+
+Within our Chrome Browser -> Dev Tools (F12), we can currently check and add breakpoints to our code in order to run the modal functionality line by line.
+
+Our Angular source code can be found on `webpack/src/app/app.component.ts` path.
+
+![](./SpringBootWithAngularCourse/UI_02.jpg)
+
+
+![](./SpringBootWithAngularCourse/UI_03.jpg)
+
+![](./SpringBootWithAngularCourse/UI_04.jpg)
+
+<br/>
+
+### Angular Form Logic
+
+[Spring Boot Full Stack with Angular - Amigoscode - 1h59m: Testing Modal Logic](https://youtu.be/Gx4iBLKLVHk?t=7147)
+
+First, we need to add the `FormsModule` in the main `app.module.ts` file: `import { FormsModule } from '@angular/forms';`
+
+```ts
+// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule, FormsModule],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+<br/>
+
+#### Add Employee Form
+
+🟢 Now, in the `app.component.html`, in the Add modal, inside `<form>` we can add an Angular Reference such as `<form #addForm="ngForm">`. We will also add an action (eg. calling the `onAddEmployee` method where we will pass in the `<form>` with all of its data) for the submit: `<form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">`
+
+> See Element references inside a HTML template in Angular: https://ultimatecourses.com/blog/element-refs-in-angular-templates
+
+<br/>
+
+> Note 😶: Ideally, we should have had multiple components, such as a Modal/Form Component, and each Add/Edit/Delete form would have been derived from the main abstract Modal/Form Component. We'll just follow along with this tutorial.
+
+<br/>
+
+- On `app.component.html`, normally, each `<input>` field would have the `name` attribute with its key in order to retrieve that value (either with Vanilla JS or with PHP). With Angular, in order to access those values in the form, we will need to add an additional property called `ngModel`.
+
+- We can also add a `[disabled]="addForm.invalid"` on the `Save` Button within our Add Employee Modal, therefore, when the Form does not have all the `required` inputs completed, the user will not be able to press the Save button. (Although ideally there should have been some sort of form validation instead of just disabling the button 😶)... **However this whole functionality of having the button disabled if `required` inputs are not filled is a nice prebuild feature from Angular.**
+
+```html
+<!-- app.component.html -->
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="addEmployeeModalLabel">Add Employee</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Job title</label>
+            <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Job title"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Image URL</label>
+            <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL"
+              required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-employee-form-close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+<br/>
+
+- Back in `app.component.ts`, we will create the `onAddEmployee()` method:
+    
+    - First we will call the `employeeService.addEmployee()` method from `employee.service.ts`, that will take as an input the provided parameter: `addForm.value`, which will be a JSON will all the data from the Form (Angular server us the data from the form by default as a JSON, which is really nice).
+
+    ![](./SpringBootWithAngularCourse/UI_05.jpg)
+
+    - `employeeService.addEmployee()` method, we will also add the `subscribe()` call to it (like a `.then()` method), where we will check if we have a response from the Back-End server or not.
+        - if we receive a response (with success), we will just call `this.getEmployees();` method that renders all the UI with all the employees from the MySQL Database
+        - if we receive an error, we will console.log it. Ideally we should also alert the user somehow with a push notification with a message like "There has been an error in adding the employee".
+
+    ```typescript
+    // app.component.ts
+    public onAddEmployee(addForm: NgForm): void {
+    let methodName = 'onAddEmployee() ';
+    this.employeeService.addEmployee(addForm.value).subscribe(
+      (response: Employee) => {
+        console.debug(
+          methodName + 'Response Received: ' + JSON.stringify(response)
+        );
+        this.getEmployees();
+        document.getElementById('add-employee-form-close')?.click();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+    }
+    ```
+
+    - Also at the end we will virtually press the "Close" button for that modal, so after sending Add a new Employee Request and everything is succesful, we will close the modal (not added in the demo below).
+
+Demo of Adding a new employee:
+
+![](./SpringBootWithAngularCourse/UI_AddEmployee.gif)
+
+![](./SpringBootWithAngularCourse/UI_06.jpg)
+
+<br/>
+
+#### Update Employee Form
+
+[Spring Boot Full Stack with Angular - Amigoscode - 2h08m: Update Form Functionality](https://youtu.be/Gx4iBLKLVHk?t=7681)
+
+In `app.component.ts` we will create the `onUpdateEmployee` method that will take in as parameter an employee; will call the `updateEmployee` method from `employee.service.ts` and on a succesful response we will re-render the list of employees.
+
+Note that we have added several debug logs (adding the method name, and on success and on error logs).
+
+```typescript
+public onUpdateEmployee(employee: Employee): void {
+const methodName = 'onUpdateEmployee() ';
+this.employeeService.updateEmployee(employee).subscribe(
+  (response: Employee) => {
+    console.debug(
+      methodName + 'Response Received: ' + JSON.stringify(response)
+    );
+    this.getEmployees();
+    document.getElementById('edit-employee-form-close')?.click();
+  },
+  (error: HttpErrorResponse) => {
+    console.error(methodName + error.message);
+  }
+);
+}
+```
+
+Now, in `app.component.ts` we will need to call this `onUpdateEmployee` method... however, we don't really have access to the current employee object in our HTML for edit modal `<form>`.
+
+- We need to bind the current employee from the HTML template.
+
+- In `OnInit` method from `app.component.ts`, we add a new `public editEmployee!: Employee;` variable (we used the exclamation mark `!` in order to allow this variable to not have an initial value - we added [a TypeScript definite assigment assertion](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#definite-assignment-assertions))
+
+- On `onOpenModal` method, we will add `this.editEmployee = employee;`... therefore, within our list of employees objects from `app.component.html`, whenever the user click on edit button, that employee object will be passed to the `editEmployee` public variable from `app.component.ts`, that can be accessed on our `onUpdateEmployee` method.
+
+```typescript
+// app.component.ts
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Employee } from './employee';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  title = 'employeemanager-angular';
+  public employees: Employee[] = [];
+  public editEmployee!: Employee;
+
+  constructor(private employeeService: EmployeeService) {}
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  public getEmployees(): void {
+    const methodName = 'onAddEmployee() ';
+    this.employeeService.getEmployees().subscribe(
+      (response: Employee[]) => {
+        this.employees = response;
+        console.debug(
+          methodName +
+            'Response Received. Showing first two objects: ' +
+            JSON.stringify(response.slice(0, 2))
+        );
+      },
+      (error: HttpErrorResponse) => {
+        console.error(methodName + error.message);
+      }
+    );
+  }
+
+  public onOpenModal(employee: Employee, mode: string): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+
+    if (mode == 'add') {
+      button.setAttribute('data-target', '#addEmployeeModal');
+    }
+    if (mode == 'edit') {
+      this.editEmployee = employee;
+      button.setAttribute('data-target', '#editEmployeeModal');
+    }
+    if (mode == 'delete') {
+      button.setAttribute('data-target', '#deleteEmployeeModal');
+    }
+
+    container?.appendChild(button);
+    button.click();
+    button.remove();
+  }
+
+  public onAddEmployee(addForm: NgForm): void {
+    const methodName = 'onAddEmployee() ';
+    this.employeeService.addEmployee(addForm.value).subscribe(
+      (response: Employee) => {
+        console.debug(
+          methodName + 'Response Received: ' + JSON.stringify(response)
+        );
+        this.getEmployees();
+        document.getElementById('add-employee-form-close')?.click();
+      },
+      (error: HttpErrorResponse) => {
+        console.error(methodName + error.message);
+      }
+    );
+  }
+
+  public onUpdateEmployee(employee: Employee): void {
+    const methodName = 'onUpdateEmployee() ';
+    this.employeeService.updateEmployee(employee).subscribe(
+      (response: Employee) => {
+        console.debug(
+          methodName + 'Response Received: ' + JSON.stringify(response)
+        );
+        this.getEmployees();
+        document.getElementById('edit-employee-form-close')?.click();
+      },
+      (error: HttpErrorResponse) => {
+        console.error(methodName + error.message);
+      }
+    );
+  }
+}
+```
+
+- On `app.component.html` we will add a reference to the edit form: `<form #editForm="ngForm">`, so we can use this reference in the `onUpdateEmployee` method and pass the employee value (JSON object), namely in the `<button (click)="onUpdateEmployee(editForm.value)" data-dismiss="modal" class="btn btn-primary">Save changes</button>` call.
+
+- Now we need to add `ngModel` to every input field, but here each ngModel will be equal to the received `editEmployee.inputField` variable, eg. `<input type="text" ngModel="{{editEmployee.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">`
+
+```html
+<!-- app.component.html -->
+<!-- Edit Modal -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="updateEmployeeModalLabel">Edit Employee</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" ngModel="{{editEmployee?.name}}" name="name" class="form-control" id="name"
+              aria-describedby="emailHelp" required>
+          </div>
+          <input type="hidden" ngModel="{{editEmployee?.id}}" name="id" class="form-control" id="id">
+          <input type="hidden" ngModel="{{editEmployee?.employeeCode}}" name="userCode" class="form-control"
+            id="userCode">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" ngModel="{{editEmployee?.email}}" name="email" class="form-control" id="email"
+              placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Job title *</label>
+            <input type="text" ngModel="{{editEmployee?.jobTitle}}" name="jobTitle" class="form-control" id="jobTitle"
+              placeholder="Developer, Manager, Support, etc" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input type="text" ngModel="{{editEmployee?.phone}}" name="phone" class="form-control" id="phone"
+              placeholder="Phone" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Image URL *</label>
+            <input type="text" ngModel="{{editEmployee?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl"
+              placeholder="Image URL" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Website URL</label>
+            <input type="text" ngModel name="websiteUrl" class="form-control" id="websiteUrl"
+              placeholder="https://www.employees-website.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">LinkedIn URL</label>
+            <input type="text" ngModel name="linkedinUrl" class="form-control" id="linkedinUrl"
+              placeholder="https://www.linkedin.com/in/employee-name/">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="edit-employee-form-close" data-dismiss="modal"
+              class="btn btn-secondary">Close</button>
+            <button (click)="onUpdateEmployee(editForm.value)" [disabled]="editForm.invalid" data-dismiss="modal"
+              class="btn btn-primary">Save
+              changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+``` 
+
+
+
+<br/><br/>
+
+# Refactoring our app after tutorial
+
+
 
 
 
