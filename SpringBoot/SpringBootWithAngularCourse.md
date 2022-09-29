@@ -19,6 +19,7 @@ Resources:
 
 Table of Contents:
 
+- [Spring Boot Full Stack with Angular Application](#spring-boot-full-stack-with-angular-application)
 - [Back-End](#back-end)
   - [Project Setup](#project-setup)
     - [Installing Java](#installing-java)
@@ -47,6 +48,13 @@ Table of Contents:
       - [Delete Employee](#delete-employee)
     - [Angular Search Functionality](#angular-search-functionality)
 - [Refactoring our app after tutorial](#refactoring-our-app-after-tutorial)
+  - [Changing SpringBoot API URLs](#changing-springboot-api-urls)
+  - [Refactoring Angular App](#refactoring-angular-app)
+    - [Header Navbar Component](#header-navbar-component)
+    - [Employee Card Component](#employee-card-component)
+    - [Add Employee Modal Component](#add-employee-modal-component)
+    - [Edit Employee Modal Component](#edit-employee-modal-component)
+    - [Delete Employee Modal Component](#delete-employee-modal-component)
 
 <br/>
 
@@ -2763,3 +2771,718 @@ For the search functionality, the implementation will be based on [indexOf() met
 <br/><br/>
 
 # Refactoring our app after tutorial
+
+The complete project (MySQL + SpringBoot BackEnd + Angular FrontEnd) can be started in Windows with these steps:
+
+- start the MySQL Server by opening Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start
+- start the SpringBoot Back-end Server with **`mvn spring-boot:run`** and test on http://localhost:8080/api/employees
+- start the Front-end Angular Application with **`ng serve --open`** and open http://localhost:4200/
+
+<br/>
+
+## Changing SpringBoot API URLs
+
+First thing that we'll refactor, are the URLs (routes) that we created for our API in order to be consumed by a front-end application:
+
+We will respect the REST API URLs structure ( from https://30secondsofinterviews.org/ and https://apiguide.readthedocs.io/en/latest/build_and_publish/use_HTTP_methods.html ):
+
+![What is REST API](./SpringBootWithAngularCourse/What-is-REST.jpg)
+
+<br/>
+
+👉 So, instead of having the following URLs (from tutorial):
+
+- `http://localhost:8080/employee/all` - GET Request - getAllEmployees()
+
+- `http://localhost:8080/employee/find/{id}` - GET Request - `getEmployeeById(@PathVariable("id") Long id)`
+
+- `http://localhost:8080/employee/add` - POST Request `addEmployee(@RequestBody Employee employee)`
+
+- `http://localhost:8080/employee/update` - PUT Request - `updateEmployee(@RequestBody Employee employee)`
+
+- `http://localhost:8080/employee/delete/{id}` - DELETE Request - `deleteEmployee(@PathVariable("id") Long id)`
+
+<br/>
+
+👍 We will change with the following URLs:
+
+- `http://localhost:8080/api/employees` - GET - `getAllEmployees()`
+
+- `http://localhost:8080/api/employees/{id}` - GET - `getEmployeeById(@PathVariable("id") Long id)`
+
+- `http://localhost:8080/api/employees/new` - POST - `addEmployee(@RequestBody Employee employee)`
+
+- `http://localhost:8080/api/employees/update` - PUT - `updateEmployee(@RequestBody Employee employee)`
+
+- `http://localhost:8080/api/employees/{id}` - DELETE - `deleteEmployee(@PathVariable("id") Long id)`
+
+<br/>
+
+<br/>
+
+For this, we will change the code within SpringBoot BackEnd `EmployeeResource.java` file, and the code within Angular FE `employee.service.ts` file:
+
+```java
+// EmployeeResource.java
+package com.radubulai.employeemanager;
+
+import com.radubulai.employeemanager.model.Employee;
+import com.radubulai.employeemanager.service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/employees")
+public class EmployeeResource {
+    private final EmployeeService employeeService;
+
+    public EmployeeResource(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        List<Employee> employees = employeeService.findAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
+        Employee employee = employeeService.findEmployeeById(id);
+        return new ResponseEntity<>(employee, HttpStatus.OK);
+    }
+
+    @PostMapping("/new")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        Employee newEmployee = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}
+```
+
+```ts
+// employee.service.ts
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
+import { Employee } from "./employee";
+
+@Injectable({
+  providedIn: "root",
+})
+export class EmployeeService {
+  private apiServerUrl = environment.apiBaseUrl + "/api/employees";
+
+  constructor(private http: HttpClient) {}
+
+  public getEmployees(): Observable<any> {
+    const methodName = "getEmployees() ";
+    console.debug(methodName + "Request Sent");
+    return this.http.get<Employee[]>(`${this.apiServerUrl}`);
+  }
+
+  public getEmployeeById(employeeId: number): Observable<Employee> {
+    const methodName = "getEmployeeById() ";
+    console.debug(methodName + "Request Sent: " + employeeId);
+    return this.http.get<Employee>(`${this.apiServerUrl}/${employeeId}`);
+  }
+
+  public addEmployee(employee: Employee): Observable<Employee> {
+    const methodName = "addEmployee() ";
+    console.debug(methodName + "Request Sent: " + JSON.stringify(employee));
+    return this.http.post<Employee>(`${this.apiServerUrl}/new`, employee);
+  }
+
+  public updateEmployee(employee: Employee): Observable<Employee> {
+    const methodName = "updateEmployee() ";
+    console.debug(methodName + "Request Sent: " + JSON.stringify(employee));
+    return this.http.put<Employee>(`${this.apiServerUrl}/update`, employee);
+  }
+
+  public deleteEmployee(employeeId: number): Observable<void> {
+    const methodName = "deleteEmployee() ";
+    console.debug(methodName + "Request Sent: " + employeeId);
+    return this.http.delete<void>(`${this.apiServerUrl}/${employeeId}`);
+  }
+}
+```
+
+<br/><br/>
+
+## Refactoring Angular App
+
+(Wednesday, September 28, 2022)
+
+One of the first simplest thing we can do, instead of having the `employee.service.ts` (and `employee.service.spec.ts`) files directly in the main `app` folder, we can have them in `app/services` subfolder. For this, we only need to create the `seervices` subfolder and move these files directly (VS Code will handle the imports in all the other files automatically, eg. for `app.component.ts`).
+
+<br/>
+
+### Header Navbar Component
+
+Instead of having the entire Navigation Bar (Header) inside `app.component.html`, we will have it separated as an Angular Component. To create a new Component in Angular, we need to open our terminal in the project's folder and type:
+
+```bash
+ng generate component components/header
+```
+
+- We will then move the entire `<!-- Navigation bar --> <nav>` element (code from `app.component.html`) to the `app/components/header/header.component.html` file
+
+Also, in order to use methods like `onOpenModal` and `searchEmployees` inside this new header component, we can (for now) just import them from `import { AppComponent } from 'src/app/app.component';`.
+
+```ts
+// app/components/header/header.component.ts
+import { Component, OnInit } from "@angular/core";
+import { AppComponent } from "src/app/app.component";
+import { Employee } from "src/app/employee";
+
+@Component({
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.css"],
+})
+export class HeaderComponent implements OnInit {
+  constructor(private appComponent: AppComponent) {}
+
+  ngOnInit(): void {}
+
+  onOpenModal(employee: Employee, mode: string): void {
+    this.appComponent.onOpenModal(employee, mode);
+  }
+
+  searchEmployees(keyword: string): void {
+    this.appComponent.searchEmployees(keyword);
+  }
+}
+```
+
+<br/><br/>
+
+### Employee Card Component
+
+```bash
+ng generate component components/employee-card
+```
+
+```html
+<!-- employee-card.component.html -->
+<div class="card m-b-30">
+  <div class="card-body row">
+    <div class="col-4">
+      <img
+        src="{{employee?.imageUrl}}"
+        alt="{{employee.name}}"
+        title="{{'Picture of ' + employee.name}}"
+        class="card--img img-fluid rounded-circle w-60"
+      />
+    </div>
+    <div class="col-8 card-title align-self-center mb-0">
+      <div class="card--name">{{employee.name}}</div>
+      <p class="m-0">{{employee.jobTitle}}</p>
+    </div>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <i class="fa fa-envelope float-right"></i>Email:
+      <a href="{{'mailto:'+employee.email}}">{{employee.email}}</a>
+    </li>
+    <li class="list-group-item">
+      <i class="fa fa-phone float-right"></i>Phone:
+      <a href="{{'tel:'+employee.phone}}">{{employee.phone}}</a>
+    </li>
+  </ul>
+  <div class="card-body">
+    <div class="float-right btn-group btn-group-sm">
+      <a
+        (click)="onOpenModal(employee, 'edit')"
+        href="#"
+        class="btn btn-primary tooltips"
+        data-placement="top"
+        data-toggle="tooltip"
+        data-original-title="Edit"
+        title="Edit employee"
+        ><i class="fa fa-pencil"></i>
+      </a>
+      <a
+        (click)="onOpenModal(employee, 'delete')"
+        href="#"
+        class="btn btn-secondary tooltips"
+        data-placement="top"
+        data-toggle="tooltip"
+        data-original-title="Delete"
+        title="Delete employee"
+        ><i class="fa fa-times"></i
+      ></a>
+    </div>
+    <ul class="social-links list-inline mb-0">
+      <li *ngIf="employee?.websiteUrl" class="list-inline-item">
+        <a
+          data-placement="top"
+          data-toggle="tooltip"
+          class="tooltips"
+          href="{{employee?.websiteUrl}}"
+          target="_blank"
+          data-original-title="Website"
+          title="{{employee.name+'\'s website'}}"
+          ><i class="fa fa-globe"></i
+        ></a>
+      </li>
+      <li *ngIf="employee?.linkedinUrl" class="list-inline-item">
+        <a
+          data-placement="top"
+          data-toggle="tooltip"
+          class="tooltips"
+          href="{{employee?.linkedinUrl}}"
+          target="_blank"
+          data-original-title="LinkedIn"
+          title="{{employee.name+'\'s LinkedIn'}}"
+          ><i class="fa fa-linkedin"></i
+        ></a>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+```html
+<!-- Navigation bar -->
+<app-header></app-header>
+
+<!-- Container -->
+<div class="container" id="main-container">
+  <div class="row">
+    <!-- Employee card -->
+    <app-employee-card
+      class="col-md-6 col-xl-3"
+      *ngFor="let employee of employees"
+      [employee]="employee"
+    >
+    </app-employee-card>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div
+  class="modal fade"
+  id="addEmployeeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addEmployeeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="addEmployeeModalLabel">
+          Add new employee
+        </div>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input
+              type="text"
+              ngModel
+              name="name"
+              class="form-control"
+              id="name"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              type="email"
+              ngModel
+              name="email"
+              class="form-control"
+              id="email"
+              placeholder="name@example.com"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Job title *</label>
+            <input
+              type="text"
+              ngModel
+              name="jobTitle"
+              class="form-control"
+              id="jobTile"
+              placeholder="Developer, Manager, Support, etc"
+              list="jobTitle"
+              required
+            />
+            <datalist id="jobTitle">
+              <option value="Project Manager"></option>
+              <option value="Developer"></option>
+              <option value="Designer"></option>
+              <option value="Support"></option>
+              <option value="System Admin"></option>
+              <option value="SEO Specialist"></option>
+              <option value="Recruiter"></option>
+              <option value="HR Manager"></option>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input
+              type="text"
+              ngModel
+              name="phone"
+              class="form-control"
+              id="phone"
+              placeholder="Phone"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Image URL *</label>
+            <input
+              type="text"
+              ngModel
+              name="imageUrl"
+              class="form-control"
+              id="imageUrl"
+              placeholder="Image URL"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Website URL</label>
+            <input
+              type="text"
+              ngModel
+              name="websiteUrl"
+              class="form-control"
+              id="websiteUrl"
+              placeholder="https://www.employees-website.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">LinkedIn URL</label>
+            <input
+              type="text"
+              ngModel
+              name="linkedinUrl"
+              class="form-control"
+              id="linkedinUrl"
+              placeholder="https://www.linkedin.com/in/employee-name/"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="add-employee-form-close"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              [disabled]="addForm.invalid"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Add employee
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div
+  class="modal fade"
+  id="editEmployeeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="employeeEditModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="updateEmployeeModalLabel">
+          Edit employee {{editEmployee?.name}}
+        </div>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.name}}"
+              name="name"
+              class="form-control"
+              id="name"
+              aria-describedby="emailHelp"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <input
+            type="hidden"
+            ngModel="{{editEmployee?.id}}"
+            name="id"
+            class="form-control"
+            id="id"
+          />
+          <input
+            type="hidden"
+            ngModel="{{editEmployee?.employeeCode}}"
+            name="userCode"
+            class="form-control"
+            id="userCode"
+          />
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              type="email"
+              ngModel="{{editEmployee?.email}}"
+              name="email"
+              class="form-control"
+              id="email"
+              placeholder="name@example.com"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Job title *</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.jobTitle}}"
+              name="jobTitle"
+              class="form-control"
+              id="jobTitle"
+              placeholder="Developer, Manager, Support, etc"
+              list="jobTitle"
+              required
+            />
+            <datalist id="jobTitle">
+              <option value="Project Manager"></option>
+              <option value="Developer"></option>
+              <option value="Designer"></option>
+              <option value="Support"></option>
+              <option value="System Admin"></option>
+              <option value="SEO Specialist"></option>
+              <option value="Recruiter"></option>
+              <option value="HR Manager"></option>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.phone}}"
+              name="phone"
+              class="form-control"
+              id="phone"
+              placeholder="Phone"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Image URL *</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.imageUrl}}"
+              name="imageUrl"
+              class="form-control"
+              id="imageUrl"
+              placeholder="Image URL"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Website URL</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.websiteUrl}}"
+              name="websiteUrl"
+              class="form-control"
+              id="websiteUrl"
+              placeholder="https://www.employees-website.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">LinkedIn URL</label>
+            <input
+              type="text"
+              ngModel="{{editEmployee?.linkedinUrl}}"
+              name="linkedinUrl"
+              class="form-control"
+              id="linkedinUrl"
+              placeholder="https://www.linkedin.com/in/employee-name/"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="edit-employee-form-close"
+              data-dismiss="modal"
+              class="btn btn-secondary"
+            >
+              Close
+            </button>
+            <button
+              (click)="onUpdateEmployee(editForm.value)"
+              [disabled]="editForm.invalid"
+              data-dismiss="modal"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div
+  class="modal fade"
+  id="deleteEmployeeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModelLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="deleteModelLabel">
+          Delete employee {{deleteEmployee?.name}}
+        </div>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to delete employee {{deleteEmployee?.name}}?
+        </p>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="delete-employee-form-close"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            No
+          </button>
+          <button
+            (click)="onDeleteEmployee(deleteEmployee!.id)"
+            class="btn btn-danger"
+            data-dismiss="modal"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notification for no employees -->
+<div *ngIf="employees?.length === 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <div class="alert-heading alert-title">NO EMPLOYEES!</div>
+    <p>No Employees were found.</p>
+  </div>
+</div>
+```
+
+```ts
+// employee-card.component.ts
+import { Component, OnInit, Input } from "@angular/core";
+import { Employee } from "src/app/employee";
+import { AppComponent } from "src/app/app.component";
+
+@Component({
+  selector: "app-employee-card",
+  templateUrl: "./employee-card.component.html",
+  styleUrls: ["./employee-card.component.css"],
+})
+export class EmployeeCardComponent implements OnInit {
+  @Input() employee!: Employee;
+
+  constructor(private appComponent: AppComponent) {}
+
+  ngOnInit(): void {}
+
+  onOpenModal(employee: Employee, mode: string): void {
+    this.appComponent.onOpenModal(employee, mode);
+  }
+}
+```
+
+<br/><br/>
+
+### Add Employee Modal Component
+
+```bash
+ng generate component components/modals/add-employee-modal
+```
+
+<br/><br/>
+
+### Edit Employee Modal Component
+
+```bash
+ng generate component components/modals/edit-employee-modal
+```
+
+<br/><br/>
+
+### Delete Employee Modal Component
+
+```bash
+ng generate component components/modals/delete-employee-modal
+```
