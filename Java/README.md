@@ -244,6 +244,12 @@ public class Main {
 
 <br/>
 
+🔵 Note: From [DigitalOcean: Overriding vs Overloading in Java](https://www.digitalocean.com/community/tutorials/overriding-vs-overloading-in-java) article:
+
+![Override vs Overload | Overload vs Override](./LearnJava_imgs/overriding-vs-overloading-in-java.png)
+
+<br/>
+
 **Final keyword for methods within a Class**
 
 Final methods means that these methods cannot be overridden.
@@ -1527,6 +1533,12 @@ public static void main(String[] args) {
 However, all the above examples are functions written in Java `Main` Class.
 
 A better approach would be to write (and group) all our functions within Interfaces, as `public` (interfaces have public methods by default) and `static` methods , so we can access them everywhere. For example, we can write useful functions within a `CustomMath` interface, or useful functions in a `ImageProcessing` interface, or functions specific to a custom `DatabaseMethods` interface, etc...
+
+<br/>
+
+![Override vs Overload | Overload vs Override](./LearnJava_imgs/overriding-vs-overloading-in-java.png)
+
+<br/>
 
 ## Lambda functions
 
