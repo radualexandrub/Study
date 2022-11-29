@@ -51,9 +51,9 @@ Table of Contents:
 	- [Java Maps](#java-maps)
 - [HashMaps](#hashmaps)
 	- [TreeMap](#treemap)
-	- [Examples](#examples)
-		- [LinkedList of HashMaps:](#linkedlist-of-hashmaps)
-		- [LinkedList of objects](#linkedlist-of-objects)
+- [Examples](#examples)
+	- [LinkedList of HashMaps:](#linkedlist-of-hashmaps)
+	- [LinkedList of objects](#linkedlist-of-objects)
 - [Java Stream](#java-stream)
 	- [Java Stream.reduce](#java-streamreduce)
 
@@ -285,7 +285,7 @@ eg. Raster, ImageSprite, Student, Person, Employee
 Interface names should be adjectives and capitalized.
 
 ```
-eg. Storing, RasterDelegate, Runable, Readable, Remote, Printable
+eg. Storing, RasterDelegate, Runable, Readable, Remote, Printable, BaseMessage
 ```
 
 <br/>
@@ -295,7 +295,7 @@ eg. Storing, RasterDelegate, Runable, Readable, Remote, Printable
 Methods should be verbs, using camelCase.
 
 ```
-eg. print(), run(), actionPerformed(), runFast(), getBackground(), draw()
+eg. print(), run(), actionPerformed(), runFast(), getBackground(), draw(), sendMessage(), retryWithDeviceId()
 ```
 
 <br/>
@@ -483,6 +483,41 @@ or
 ```java
 int i = 1234;
 String str = Integer.toString(i);
+```
+
+<br/>
+
+**Convert String to Integer**
+
+https://www.freecodecamp.org/news/java-string-to-int-how-to-convert-a-string-to-an-integer/
+
+1. Use `Integer.parseInt()` to Convert a String to a **primitive type int**.
+
+- If the string does not contain a valid integer then it will throw a NumberFormatException.
+
+```java
+String str = "25";
+try {
+		int number = Integer.parseInt(str);
+		System.out.println(number); // output = 25
+} catch (NumberFormatException ex){
+		ex.printStackTrace();
+}
+```
+
+1. Use `Integer.valueOf()` to Convert a String to an **Integer Object**.
+
+- From the [Java documentation](<https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#valueOf(java.lang.String)>), `Integer.valueOf()` returns an integer object which is equivalent to a `new Integer(Integer.parseInt(s))`
+- If the string does not contain a valid integer then it will throw a NumberFormatException.
+
+```java
+String str = "25";
+try {
+		Integer number = Integer.valueOf(str);
+		System.out.println(number); // output = 25
+} catch (NumberFormatException ex){
+		ex.printStackTrace();
+}
 ```
 
 <br/>
@@ -1008,6 +1043,19 @@ The `lastIndexOf()` method returns the position of the last occurrence of specif
 ```java
 System.out.println("hey there".indexOf("there")); // 4
 System.out.println("hey there there".lastIndexOf("there")); // 10
+```
+
+<br/>
+
+**`format()` Returns a formatted string using the specified locale, format string, and arguments**
+
+```java
+System.out.println(String.format("Hello %s, how are you today?"), userName);
+```
+
+```java
+const methodName = "parsePopInformationData()";
+System.out.println(String.format("%s for user %s with userId %d"), methodName, userName, userId);
 ```
 
 <br/>
@@ -1631,7 +1679,7 @@ You will often see Java programs that have either `static` or `public` attribute
 
 - `static` method means that it can be accessed without creating an object of the class (the static methods can be used within the Class itself), unlike `public` methods
 - `public` methods can be only accessed by objects (instances) of that Class
-- both `public static` means that the method can be accessed within its Class and/or accessed by objects its Class.
+- both `public static` means that the method can be accessed within its Class and/or accessed by objects in its Class.
 
 Example within/using the **Main Class**
 
@@ -1656,7 +1704,9 @@ public class Main {
 		obj.publicMethod(); // prints Public methods must be called by creating objects
 
 		publicStaticMethod(); // prints Public static method can be called anywhere by anyone
-		obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone -- although for this one we get warning: The static method publicStaticMethod() from the type Main should be accessed in a static way */
+		obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone
+		-- although for this one we get warning:
+		The static method publicStaticMethod() from the type Main should be accessed in a static way */
 	}
 }
 ```
@@ -1701,7 +1751,7 @@ public class Person {
 }
 ```
 
-Note: we can override constructors (by using different parameters), and we can access the properties (variables) within the class using `this` keyword _(just to be more specific, mandatory only when we have the same variable names as the Class properties used as parameters in constructors --- in other words, we use this keyword only when the constructor parameters/variables have the same variable names as the Class properties/variables)_.
+Note: we can overeload constructors (by using different parameters), and we can access the properties (variables) within the class using `this` keyword _(just to be more specific, mandatory only when we have the same variable names as the Class properties used as parameters in constructors --- in other words, we use this keyword when the constructor parameters/variables have the same variable names as the Class properties/variables)_.
 
 <br/>
 
@@ -1726,12 +1776,12 @@ For **classes**, you can use either `public` or _default_:
 
 For **attributes, methods and constructors**, you can use the one of the following:
 
-| Modifier    | Description                                                  |
-| :---------- | :----------------------------------------------------------- |
-| `public`    | The code is accessible for all classes                       |
-| `private`   | The code is only accessible within the declared class        |
+| Modifier    | Description                                                                                                                                                                                                                                                                                    |
+| :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `public`    | The code is accessible for all classes                                                                                                                                                                                                                                                         |
+| `private`   | The code is only accessible within the declared class                                                                                                                                                                                                                                          |
 | _default_   | The code is only accessible in the same package. This is used when you don't specify a modifier. **(The _default_ modifier is like a _protected_ modifier, you can access/call the attributes/method of a Class in another derived Class, but only if they are situated in the same package)** |
-| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class). |
+| `protected` | The code is accessible in the same package and **subclasses** (classes inherited from that class).                                                                                                                                                                                             |
 
 <br/>
 
@@ -2830,22 +2880,20 @@ Solution in JavaScript:
 /* JavaScript: Given a string, store in an JS Object the frequency/occurrences of all characters */
 
 let countLetterFrequency = (inputString) => {
-    let letterFrequency = {};
+  let letterFrequency = {};
 
-    inputString.split("").forEach((letter) => {
-        if (letterFrequency.hasOwnProperty(letter)) {
-            letterFrequency[letter] += 1;
-        } else {
-            letterFrequency[letter] = 1;
-        }
-    });
-    return letterFrequency;
-}
+  inputString.split("").forEach((letter) => {
+    if (letterFrequency.hasOwnProperty(letter)) {
+      letterFrequency[letter] += 1;
+    } else {
+      letterFrequency[letter] = 1;
+    }
+  });
+  return letterFrequency;
+};
 
 console.log(countLetterFrequency("alphabetically")); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
 ```
-
-
 
 <br/>
 

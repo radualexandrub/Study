@@ -6,25 +6,25 @@ Notes with **_Git CLI commands_** taken from on-line tutorials such as:
 Table of Contents:
 
 - [Git basic commands](#git-basic-commands)
-	- [git help](#git-help)
-	- [Set up global configuration variables](#set-up-global-configuration-variables)
-	- [Create own local empty repository **_init_** VS. **_clone_** an existing repository as a local repository in your PC](#create-own-local-empty-repository-init-vs-clone-an-existing-repository-as-a-local-repository-in-your-pc)
-	- [git status](#git-status)
-	- [git diff](#git-diff)
+  - [git help](#git-help)
+  - [Set up global configuration variables](#set-up-global-configuration-variables)
+  - [Create own local empty repository **_init_** VS. **_clone_** an existing repository as a local repository in your PC](#create-own-local-empty-repository-init-vs-clone-an-existing-repository-as-a-local-repository-in-your-pc)
+  - [git status](#git-status)
+  - [git diff](#git-diff)
 - [Git work-flow (on master branch)](#git-work-flow-on-master-branch)
-	- [Schema: Working Directory, Staging Area, Git Remote Repository](#schema-working-directory-staging-area-git-remote-repository)
-	- [Create a new branch from CLI](#create-a-new-branch-from-cli)
-	- [Git **Complete Workflow** - Work from another branch](#git-complete-workflow---work-from-another-branch)
-	- [Create a new repo from a locally existing/completed project (mini-workflow)](#create-a-new-repo-from-a-locally-existingcompleted-project-mini-workflow)
+  - [Schema: Working Directory, Staging Area, Git Remote Repository](#schema-working-directory-staging-area-git-remote-repository)
+  - [Create a new branch from CLI](#create-a-new-branch-from-cli)
+  - [Git **Complete Workflow** - Work from another branch](#git-complete-workflow---work-from-another-branch)
+  - [Create a new repo from a locally existing/completed project (mini-workflow)](#create-a-new-repo-from-a-locally-existingcompleted-project-mini-workflow)
 - [Locally Mistakes that could've been made](#locally-mistakes-that-couldve-been-made)
-	- [If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):](#if-we-made-changes-to-a-single_file-but-then-we-dont-want-to-keep-the-changes-to-that-file-anymore-we-want-to-undogo-back)
-	- [We mess up a commit -m message. We want to modify the last commit message without doing another commit](#we-mess-up-a-commit--m-message-we-want-to-modify-the-last-commit-message-without-doing-another-commit)
-	- [We forgot to add a file to the last commit. We want the add the file without commiting again.](#we-forgot-to-add-a-file-to-the-last-commit-we-want-the-add-the-file-without-commiting-again)
-	- [We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch](#we-made-commits-to-the-master-branch-instead-of-our-working-branch-fix-we-move-a-commithash-to-the-master-and-return-the-state-of-the-master-branch)
+  - [If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):](#if-we-made-changes-to-a-single_file-but-then-we-dont-want-to-keep-the-changes-to-that-file-anymore-we-want-to-undogo-back)
+  - [We mess up a commit -m message. We want to modify the last commit message without doing another commit](#we-mess-up-a-commit--m-message-we-want-to-modify-the-last-commit-message-without-doing-another-commit)
+  - [We forgot to add a file to the last commit. We want the add the file without commiting again.](#we-forgot-to-add-a-file-to-the-last-commit-we-want-the-add-the-file-without-commiting-again)
+  - [We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch](#we-made-commits-to-the-master-branch-instead-of-our-working-branch-fix-we-move-a-commithash-to-the-master-and-return-the-state-of-the-master-branch)
 - [Types of git resets](#types-of-git-resets)
-	- [**_SOFT RESET_**](#soft-reset)
-	- [**_MIXED RESET_** (DEFAULT)](#mixed-reset-default)
-	- [**_HARD RESET_**](#hard-reset)
+  - [**_SOFT RESET_**](#soft-reset)
+  - [**_MIXED RESET_** (DEFAULT)](#mixed-reset-default)
+  - [**_HARD RESET_**](#hard-reset)
 - [**Fatal: We did a hard reset on some changes but we realized that we actually need them: `git reflog` (or we deleted last commits)**](#fatal-we-did-a-hard-reset-on-some-changes-but-we-realized-that-we-actually-need-them-git-reflog-or-we-deleted-last-commits)
 - [Undoing a commit after pushing to remote server. Fix **without changing the git history**](#undoing-a-commit-after-pushing-to-remote-server-fix-without-changing-the-git-history)
 - [Using the **`git stash`** command ("temporary" commits)](#using-the-git-stash-command-temporary-commits)
@@ -494,6 +494,14 @@ The commands to discard all local changes in Git are:
 git reset –hard
 git clean -fxd
 ```
+
+Explanation:
+
+- `git reset –hard` reset will set us back to the the last commit AND will make all the changes in files to match the state that they were in the specified commit
+- `git clean` removes untracked files from the working tree
+  - `-d` Normally, when no <path> is specified, git clean will not recurse into untracked directories to avoid removing too much. Specify -d to have it recurse into such directories as well. If any paths are specified, -d is irrelevant; all untracked files matching the specified paths (with exceptions for nested git directories mentioned under --force) will be removed.
+  - `x` This allows removing all untracked files, including build products. This can be used (possibly in conjunction with git restore or git reset) to create a pristine working directory to test a clean build.
+  - `f` / `--force`
 
 <hr/>
 

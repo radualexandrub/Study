@@ -2,6 +2,13 @@
 
 My biggest collection of personal study notes from various FREE courses, tutorials, articles or lectures.
 
+<!--- See https://shields.io for customizable shields --->
+![Github followers](https://img.shields.io/github/followers/radualexandrub)
+![GitHub repo size](https://img.shields.io/github/repo-size/radualexandrub/Study)
+![GitHub stars](https://img.shields.io/github/stars/radualexandrub/Study)
+![GitHub forks](https://img.shields.io/github/forks/radualexandrub/Study)
+![GitHub license](https://img.shields.io/github/license/radualexandrub/Study)
+
 ---
 
 ## Front-end
