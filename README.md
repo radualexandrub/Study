@@ -81,6 +81,7 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 ### SQL
 
 - [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
+- [SQL Tutorial](https://www.scaler.com/topics/sql/)
 
 ---
 
