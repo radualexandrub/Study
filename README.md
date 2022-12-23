@@ -61,26 +61,26 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 - [PHP Tutorial Part 1 (Data types, Conditionals & Loops, Functions, OOP, Files, cURL)](./PHP/phpTutorial.md)
 - [PHP Tutorial Part 2 (MySQL, PHP Forms)](./PHP/phpTutorial_part2.md)
 
-### **Python**
+### Python
 
 - [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
-- [Python algorithmic tricks & tips from solving HackerRank challenges - coming soon]
 
-### **Django**
+### Django
 
 - To be added...
 
-### **Java**
+### Java
 
 - [Java Tutorial](./Java/README.md)
 
-### **Spring Boot**
+### Spring Boot
 
 - [Spring Boot Full Stack with Angular Application - Full Course 05-Feb-2021 - Amigoscode](./SpringBoot/SpringBootWithAngularCourse.md)
 
 ### SQL
 
 - [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
+- [MySQL Tutorial for a Personal Project Management Application - Documentation Made with ChatGPT](./SQL/MySQL_ChatGPT.md)
 
 ---
 
@@ -123,13 +123,13 @@ https://radubulai.com/Study/LiveSassPortfolio
 
 ## Find more about me
 
-***My portfolio and blog:*** [radubulai.com](https://radualexandrub.github.io/)
+🌍 My portfolio: **[radubulai.com](https://radubulai.com/)**
 
-<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" title="GitHub"/></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" title="LinkedIn"/></a>&nbsp;&nbsp;
-<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" title="Dev.to"/></a>&nbsp;&nbsp;
-<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" title="HackerRank"/></a>&nbsp;&nbsp;
-<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" title="Flickr"/></a>&nbsp;&nbsp;
+🥂 Social:<br/>
+<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://img.shields.io/badge/GitHub-58a6da?style=flat&logo=github" alt="radualexandrub" /></a>
+<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" /></a>
+<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://img.shields.io/badge/Dev.to-2B627C?style=flat&logo=devdotto" alt="radualexandrub" /></a>
+<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://img.shields.io/badge/-Hackerrank-3F6328?style=flat&logo=HackerRank" alt="RaduAlexandruB" /></a>
 
 ## License
 

@@ -92,7 +92,7 @@ SHOW TABLES;
 🔵 All the code above converted from SQL to MySQL:
 
 Notes:
-- To convert the given code from SQL to MySQL, you can simply remove the type INTEGER and replace it with INT, like this:
+- To convert the given code from SQL to MySQL, you can simply remove the type INTEGER and replace it with INT.
 - `Error Code: 1170. BLOB/TEXT column 'email' used in key specification without a key length` - This error occurs because you are trying to define the email column as a unique key, but the data type of the column is TEXT, which is a variable-length string type. In MySQL, the maximum size of a TEXT column is 65535 characters, which means that it can potentially hold very large strings. To fix this error, you can either change the data type of the email column to a fixed-length string type, such as CHAR or VARCHAR, and specify a maximum length for the column.
 
 
@@ -200,7 +200,7 @@ In this schema, the users table has a one-to-many relationship with the projects
 
 ### View the Schema Diagram in MySQL Workbench
 
-🔵 Optional: In MySQL Workbench, go to `Database` > R`everse Engineer...` > `Next` > `Next` > Select desired database > `Next`  > `Next` > Check `Import MySQL Table Objects` > `Execute`.
+🔵 Optional: In MySQL Workbench, go to `Database` > `Reverse Engineer...` > `Next` > `Next` > Select desired database > `Next`  > `Next` > Check `Import MySQL Table Objects` > `Execute`.
 
 ![MySQL Workbench Schema Diagram](./MySQL_Images/MySQL_Workbench_Schema_Diagram.jpg)
 
