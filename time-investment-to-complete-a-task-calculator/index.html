@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time to Complete a Task App</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      /* useful for sticking the footer to bottom of page */
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <body>
+    <div class="container mt-3">
+      <h1>Time Investment to Complete a Task Calculator</h1>
+      <p>
+        Find the amount of time needed (in hours per day) in order to complete a
+        task in a certain amount of time.
+      </p>
+      <form>
+        <div class="form-group">
+          <label for="taskNameInput">Task Name</label>
+          <input type="text" class="form-control" id="taskNameInput" />
+        </div>
+        <div class="form-group">
+          <label for="estimatedHoursInput"
+            >Estimated Hours for Task Completion</label
+          >
+          <input type="number" class="form-control" id="estimatedHoursInput" />
+        </div>
+        <div class="form-group">
+          <label for="desiredTimeInput">Desired Time to Complete</label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="desiredTimeInput" />
+            <div class="input-group-append">
+              <select class="custom-select" id="desiredTimeUnit">
+                <option value="days">days</option>
+                <option value="weeks">weeks</option>
+                <option value="months">months</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          onclick="calculateHoursPerDay(event);"
+        >
+          Calculate
+        </button>
+      </form>
+      <div id="outputContainer" class="mt-3">
+        <!-- Output will be displayed here -->
+      </div>
+      <div id="outputTable" class="mt-3">
+        <!-- Output list will be displayed here -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-auto">
+      <div class="container text-center">
+        <div class="mt-2" title="See the code on GitHub">
+          <a href="https://github.com/radualexandrub/Study" target="_blank"
+            ><i class="fab fa-github fa-2x"></i
+          ></a>
+        </div>
+        <p class="m-0 mt-2">Made with Bootstrap CSS &amp; Vanilla JS</p>
+        <p class="m-0 mt-2">
+          Copyright 2022 ©
+          <a target="_blank" href="https://radubulai.com/">Radu-Alexandru B.</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+  <script>
+    var calculationList = []; // Initialize an empty array to store the calculations
+
+    // Check if the calculationList array is stored in local storage
+    if (localStorage.getItem("calculationList")) {
+      // If it is, retrieve it from local storage
+      calculationList = JSON.parse(localStorage.getItem("calculationList"));
+      displayCalculationList();
+    }
+
+    function getFormattedDate(dateString) {
+      let dateObject = new Date(dateString);
+      let year = dateObject.getFullYear();
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      let month = months[dateObject.getMonth()];
+      let day = dateObject.getDate().toString().padStart(2, "0");
+
+      return day + "-" + month + "-" + year;
+    }
+
+    function calculateHoursPerDay(event) {
+      // Prevent the form from being submitted
+      event.preventDefault();
+
+      // Get the values of the input fields and dropdown menu
+      var taskName = document.getElementById("taskNameInput").value;
+      var estimatedHours = document.getElementById("estimatedHoursInput").value;
+      var desiredTimeInDays = document.getElementById("desiredTimeInput").value;
+      var desiredTimeUnit = document.getElementById("desiredTimeUnit").value;
+
+      if (!(taskName && estimatedHours && desiredTimeInDays)) {
+        document.getElementById("outputContainer").innerHTML =
+          "Please make sure that all the inputs are not empty.";
+        return;
+      }
+
+      // Convert the desired time to days if necessary
+      if (desiredTimeUnit === "weeks") {
+        desiredTimeInDays *= 7;
+      } else if (desiredTimeUnit === "months") {
+        desiredTimeInDays *= 30;
+      }
+
+      // Perform the calculation
+      var hoursPerDay = estimatedHours / desiredTimeInDays;
+
+      // Save the input and output in an object
+      var calculation = {
+        taskName: taskName,
+        estimatedHours: estimatedHours,
+        desiredTime: desiredTimeInDays,
+        desiredTimeUnit: desiredTimeUnit,
+        hoursPerDay: hoursPerDay,
+        addDate: new Date(),
+      };
+
+      // Add the calculation object to the list
+      calculationList.push(calculation);
+
+      // Save the updated calculationList array to local storage
+      localStorage.setItem("calculationList", JSON.stringify(calculationList));
+
+      // Update the inner HTML of the output container
+      document.getElementById("outputContainer").innerHTML =
+        '<p>To complete the task "' +
+        taskName +
+        '" in ' +
+        desiredTimeInDays +
+        " days" +
+        " (i.e. " +
+        (calculation.desiredTime / 30).toFixed(2) +
+        " month(s)), you need to invest " +
+        hoursPerDay.toFixed(2) +
+        " hours per day.</p>";
+
+      // Display the updated calculation list
+      displayCalculationList();
+    }
+
+    function deleteCalculation(index) {
+      // Remove the calculation at the given index from the calculationList array
+      calculationList.splice(index, 1);
+
+      // Save the updated calculationList array to local storage
+      localStorage.setItem("calculationList", JSON.stringify(calculationList));
+
+      // Display the updated calculation list
+      displayCalculationList();
+    }
+
+    function displayCalculationList() {
+      // Clear the output container
+      document.getElementById("outputTable").innerHTML = "";
+
+      // Check if the calculationList array is empty
+      if (calculationList.length === 0) {
+        // If it is, display a message
+        document.getElementById("outputTable").innerHTML =
+          "<p>No calculations to display.</p>";
+      } else {
+        // If it is not, construct the HTML for the table
+        var tableHTML = '<div class="table-responsive">';
+        tableHTML += '<table class="table">';
+        tableHTML += "<thead>";
+        tableHTML += "<tr>";
+        tableHTML += '<th scope="col">#</th>';
+        tableHTML += '<th scope="col">Task Name</th>';
+        tableHTML += '<th scope="col">Estimated Hours</th>';
+        tableHTML += '<th scope="col">Desired Time</th>';
+        tableHTML += '<th scope="col">Hours per Day</th>';
+        tableHTML += '<th scope="col">Add Date</th>';
+        tableHTML += '<th scope="col"></th>';
+        tableHTML += "</tr>";
+        tableHTML += "</thead>";
+        tableHTML += "<tbody>";
+
+        // Iterate over the calculationList array
+        for (var i = 0; i < calculationList.length; i++) {
+          // Get the current calculation
+          var calculation = calculationList[i];
+
+          // Construct the HTML for the calculation
+          tableHTML += "<tr>";
+          tableHTML += '<th scope="row">' + (i + 1) + "</th>";
+          tableHTML += "<td>" + calculation.taskName + "</td>";
+          tableHTML += "<td>" + calculation.estimatedHours + "</td>";
+          tableHTML +=
+            "<td>" +
+            calculation.desiredTime +
+            " days" +
+            " (i.e. " +
+            (calculation.desiredTime / 30).toFixed(2) +
+            " month(s))</td>";
+          tableHTML += "<td>" + calculation.hoursPerDay.toFixed(2) + "</td>";
+          tableHTML += "<td>" + getFormattedDate(calculation.addDate) + "</td>";
+          tableHTML +=
+            '<td><button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' +
+            i +
+            ')">Delete</button></td>';
+          tableHTML += "</tr>";
+        }
+
+        // Close the table HTML
+        tableHTML += "</tbody>";
+        tableHTML += "</table>";
+
+        // Add the table HTML to the output container
+        document.getElementById("outputTable").innerHTML = tableHTML;
+      }
+    }
+  </script>
+</html>

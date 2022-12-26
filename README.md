@@ -34,6 +34,10 @@ My biggest collection of personal study notes from various FREE courses, tutoria
   * [**Dynamic Programming - Learn to Solve Algorithmic Problems & Coding Challenges**](./JavaScript/JavaScriptDynamicProgramming.md)
 * [JavaScript Algorithms from solving freeCodeCamp & HackerRank challenges](./JavaScript/JavaScriptAlgorithms.md)
 
+Others:
+
+* [Using ChatGPT to create a CRUD (without update) Vanilla JS App - "Time Investment in Hours per Day to Complete a Task Calculator"](./time-investment-to-complete-a-task-calculator/TimeInvestmentCalculatorREADME.md) with [App Live Link](https://radubulai.com/Study/time-investment-to-complete-a-task-calculator)
+
 ### **React**
 
 * [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
@@ -104,17 +108,23 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 
 
 
-## Deployed Apps from these Notes
+## Apps & Deployed Apps from these Notes
 
-https://radubulai.com/Study/React/todo
+Deployed Apps:
 
-https://radubulai.com/Study/JavaScript/VanillaJS_ToDo
+- https://radubulai.com/Study/React/todo
 
-https://radubulai.com/Study/LiveQualiaSoft
+- https://radubulai.com/Study/JavaScript/VanillaJS_ToDo
 
-https://radubulai.com/Study/LiveSassPortfolio
+- https://radubulai.com/Study/LiveQualiaSoft
 
+- https://radubulai.com/Study/LiveSassPortfolio
 
+Other Apps / Repos:
+
+- https://github.com/radualexandrub/angular-crash-course-traversy
+
+- https://radubulai.com/Study/time-investment-to-complete-a-task-calculator
 
 ## Take these notes offline!
 
