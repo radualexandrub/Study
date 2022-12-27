@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="Radu Bulai" />
     <title>Time to Complete a Task App</title>
+    <link rel="canonical" href="/" />
+    <meta
+      name="description"
+      content="Calculate the amount of time needed (in hours per day) in order to complete a task in a certain amount of time."
+    />
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -20,18 +27,69 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- Custom Styles -->
+    <style>
+      /* Utilities */
+      :root {
+        --primary-color: hsl(211, 91%, 49%);
+        --primary-color-lighten: hsl(211, 89%, 56%);
+        --background-color: #fefefe;
+        --background-color-secondary: #fff;
+        --font-main-color: hsl(210, 11%, 10%);
+      }
+      [data-theme="dark"] {
+        --background-color: #0b1014;
+        --background-color-secondary: #121a20;
+        --font-main-color: #fff;
+      }
+      ::selection {
+        background: var(--primary-color);
+        color: #fff;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        /* useful for sticking the footer to bottom of page */
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        color: var(--font-main-color);
+        background-color: var(--background-color);
+        transition: background-color 200ms ease-in;
+      }
+      .table {
+        color: var(--font-main-color);
+      }
+      /* Dark mode toggle */
+      .toggle-dark-mode {
+        position: relative;
+        margin-left: 1em;
+      }
+      .toggle-dark-mode input[type="checkbox"] {
+        width: 1.5em;
+        height: 1.5em;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .toggle-dark-mode input[type="checkbox"] ~ .dark-mode-icon::before {
+        content: "\f186";
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        font-size: 1.7rem;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: #fff;
+      }
+      .toggle-dark-mode
+        input[type="checkbox"]:checked
+        ~ .dark-mode-icon::before {
+        content: "\f185";
+      }
+    </style>
   </head>
-  <style>
-    html {
-      height: 100%;
-    }
-    body {
-      /* useful for sticking the footer to bottom of page */
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-  </style>
   <body>
     <div class="container mt-3">
       <h1>Time Investment to Complete a Task Calculator</h1>
@@ -44,22 +102,28 @@
           <label for="taskNameInput">Task Name</label>
           <input type="text" class="form-control" id="taskNameInput" />
         </div>
-        <div class="form-group">
-          <label for="estimatedHoursInput"
-            >Estimated Hours for Task Completion</label
-          >
-          <input type="number" class="form-control" id="estimatedHoursInput" />
-        </div>
-        <div class="form-group">
-          <label for="desiredTimeInput">Desired Time to Complete</label>
-          <div class="input-group">
-            <input type="number" class="form-control" id="desiredTimeInput" />
-            <div class="input-group-append">
-              <select class="custom-select" id="desiredTimeUnit">
-                <option value="days">days</option>
-                <option value="weeks">weeks</option>
-                <option value="months">months</option>
-              </select>
+        <div class="d-flex" style="gap: 1rem">
+          <div class="form-group w-100">
+            <label for="estimatedHoursInput"
+              >Estimated Hours for Task Completion</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="estimatedHoursInput"
+            />
+          </div>
+          <div class="form-group w-100">
+            <label for="desiredTimeInput">Desired Time to Complete</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="desiredTimeInput" />
+              <div class="input-group-append">
+                <select class="custom-select" id="desiredTimeUnit">
+                  <option value="days">days</option>
+                  <option value="weeks">weeks</option>
+                  <option value="months">months</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -82,10 +146,20 @@
     <!-- Footer -->
     <footer class="bg-dark text-white py-3 mt-auto">
       <div class="container text-center">
-        <div class="mt-2" title="See the code on GitHub">
-          <a href="https://github.com/radualexandrub/Study" target="_blank"
-            ><i class="fab fa-github fa-2x"></i
-          ></a>
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="mt-2" title="See the code on GitHub">
+            <a href="https://github.com/radualexandrub/Study" target="_blank"
+              ><i class="fab fa-github fa-2x"></i
+            ></a>
+          </div>
+          <div class="toggle-dark-mode">
+            <input
+              type="checkbox"
+              id="toggleDarkMode"
+              title="Toggle between light and dark theme"
+            />
+            <span class="dark-mode-icon"></span>
+          </div>
         </div>
         <p class="m-0 mt-2">Made with Bootstrap CSS &amp; Vanilla JS</p>
         <p class="m-0 mt-2">
@@ -140,7 +214,7 @@
 
       if (!(taskName && estimatedHours && desiredTimeInDays)) {
         document.getElementById("outputContainer").innerHTML =
-          "Please make sure that all the inputs are not empty.";
+          '<p class="text-danger">Please make sure that all the inputs are not empty.</p>';
         return;
       }
 
@@ -256,6 +330,29 @@
 
         // Add the table HTML to the output container
         document.getElementById("outputTable").innerHTML = tableHTML;
+      }
+    }
+
+    /* Dark Mode */
+    const checkboxDarkTheme = document.getElementById("toggleDarkMode");
+    const currentTheme = localStorage.getItem("theme")
+      ? localStorage.getItem("theme")
+      : null;
+    if (currentTheme) {
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      if (currentTheme === "dark") {
+        checkboxDarkTheme.checked = true;
+      }
+    }
+
+    checkboxDarkTheme.addEventListener("change", toggleDarkTheme);
+    function toggleDarkTheme(e) {
+      if (e.target.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
       }
     }
   </script>

@@ -677,3 +677,27 @@ I hope this helps! Let me know if you have any questions.
 
 ***There are still many limitations on the code max output characters***
 
+<br/>
+
+<br/>
+
+> What other features would you add to this app?
+
+There are many possible features that could be added to this app to make it more useful and user-friendly. Here are a few ideas:
+
+Sorting: Allow the user to sort the calculations in the table by task name, estimated hours, desired time, hours per day, or add date.
+
+1. `Filtering`: Allow the user to filter the calculations in the table by task name or desired time unit.
+2. `Editing`: Allow the user to edit an existing calculation by clicking on a row in the table.
+3. `Validation`: Implement form validation to ensure that the user enters valid input (e.g. a task name that is not empty, an estimated number of hours that is a positive number).
+4. `Persistence`: Use a server-side database or a cloud service like Firebase to store the calculations so that they persist even when the user closes the app or clears their local storage.
+5. `Security`: Implement authentication and authorization to ensure that only authorized users can access and modify the calculations.
+
+I hope these suggestions are helpful! Let me know if you have any questions.
+
+***Nice, I would also add:***
+- ***Add "End Date" (editable, but automatically calculated as Start Date + number of desired days at first)***
+- ***Add "Last Updated Date" (if all tasks will be editable)*** 
+- ***Add ability for authenticated user to edit/add hours to each task (eg. 5h were added to the task "Research Papers of 100 hours") --- completely optional: an animation of a bucket with the hours completed vs. the total hours needed could be shown***
+- ***Each "time addition towards goal completion" could be saved (with the date/day when addition was added) to display a graph with overall progress per hours worked/days for that goal. Namely, x-axis: dates when hours were added, y-axis: quantitative hours added on that day.***
+- ***If user did not add any hours towards task completion for a day, send a notification (browser notification)***
