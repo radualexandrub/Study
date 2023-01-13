@@ -242,6 +242,8 @@ The contents of `pom.xml` file that will be generated:
 
 Finally, we can click on "GENERATE" button to generate our Spring project! And we can extract the `employeemanager.zip` archive into a `employeemanager` folder.
 
+### Open project with IntelliJ
+
 We can open our project in IntelliJ IDEA by opening the `pom.xml` file -> "Open as Project".
 
 ![SpringInitializr](./SpringBootWithAngularCourse/SpringInitializr02.jpg)

@@ -179,7 +179,7 @@
       displayCalculationList();
     }
 
-    function getFormattedDate(dateString) {
+    function getFormattedDate(dateString, showDayOfWeek = false) {
       let dateObject = new Date(dateString);
       let year = dateObject.getFullYear();
       const months = [
@@ -198,6 +198,20 @@
       ];
       let month = months[dateObject.getMonth()];
       let day = dateObject.getDate().toString().padStart(2, "0");
+
+      if (showDayOfWeek) {
+        let dayNames = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        const dayOfWeek = dayNames[dateObject.getDay()];
+        return dayOfWeek + ", " + day + "-" + month + "-" + year;
+      }
 
       return day + "-" + month + "-" + year;
     }
@@ -225,6 +239,11 @@
         desiredTimeInDays *= 30;
       }
 
+      // Calculate the End Date (Deadline)
+      var addDate = new Date();
+      var endDate = new Date();
+      var endDate = endDate.setDate(addDate.getDate() + desiredTimeInDays);
+
       // Perform the calculation
       var hoursPerDay = estimatedHours / desiredTimeInDays;
 
@@ -235,7 +254,8 @@
         desiredTime: desiredTimeInDays,
         desiredTimeUnit: desiredTimeUnit,
         hoursPerDay: hoursPerDay,
-        addDate: new Date(),
+        addDate: addDate,
+        endDate: endDate,
       };
 
       // Add the calculation object to the list
@@ -253,7 +273,7 @@
         " days" +
         " (i.e. " +
         (calculation.desiredTime / 30).toFixed(2) +
-        " month(s)), you need to invest " +
+        " months), you need to invest " +
         hoursPerDay.toFixed(2) +
         " hours per day.</p>";
 
@@ -289,10 +309,16 @@
         tableHTML += "<tr>";
         tableHTML += '<th scope="col">#</th>';
         tableHTML += '<th scope="col">Task Name</th>';
-        tableHTML += '<th scope="col">Estimated Hours</th>';
-        tableHTML += '<th scope="col">Desired Time</th>';
-        tableHTML += '<th scope="col">Hours per Day</th>';
-        tableHTML += '<th scope="col">Add Date</th>';
+        tableHTML +=
+          '<th scope="col" title="Estimated hours for task completion">Estimated Hours</th>';
+        tableHTML +=
+          '<th scope="col" title="Desired time to complete the task">Desired Time</th>';
+        tableHTML +=
+          '<th scope="col" title="Time needed to be invested in hours per day">Hours per Day</th>';
+        tableHTML +=
+          '<th scope="col" title="Added/Last update Date">Add/Update Date</th>';
+        tableHTML +=
+          '<th scope="col" title="Possible end date for task completion">End Date</th>';
         tableHTML += '<th scope="col"></th>';
         tableHTML += "</tr>";
         tableHTML += "</thead>";
@@ -312,15 +338,22 @@
             "<td>" +
             calculation.desiredTime +
             " days" +
-            " (i.e. " +
+            " (" +
             (calculation.desiredTime / 30).toFixed(2) +
-            " month(s))</td>";
+            " months)</td>";
           tableHTML += "<td>" + calculation.hoursPerDay.toFixed(2) + "</td>";
-          tableHTML += "<td>" + getFormattedDate(calculation.addDate) + "</td>";
+          tableHTML += `<td title="${getFormattedDate(
+            calculation.addDate,
+            true
+          )}">${getFormattedDate(calculation.addDate)}</td>`;
+          tableHTML += `<td title="${getFormattedDate(
+            calculation.endDate,
+            true
+          )}">${getFormattedDate(calculation.endDate)}</td>`;
           tableHTML +=
             '<td><button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' +
             i +
-            ')">Delete</button></td>';
+            ')" title="Delete this task">Delete</button></td>';
           tableHTML += "</tr>";
         }
 

@@ -8,6 +8,24 @@ This is a simple web application that helps you plan and track your progress on 
 
 <br>
 
+Contents:
+
+- [Time Investment to Complete a Task Calculator](#time-investment-to-complete-a-task-calculator)
+  - [Features](#features)
+  - [Building the app with ChatGPT assistance](#building-the-app-with-chatgpt-assistance)
+    - [App input](#app-input)
+    - [App HTML](#app-html)
+    - [App JS](#app-js)
+    - [App JS LocalStorage](#app-js-localstorage)
+    - [App JS Deleteion](#app-js-deleteion)
+    - [App Inputs and Outputs examples](#app-inputs-and-outputs-examples)
+    - [App README.md](#app-readmemd)
+    - [App HTML Table output](#app-html-table-output)
+    - [More features to add](#more-features-to-add)
+
+
+<br>
+
 ## Features
 
 - Input a task name, the estimated number of hours required to complete the task, and the desired time to complete the task in days, weeks, or months.
@@ -680,6 +698,8 @@ I hope this helps! Let me know if you have any questions.
 <br/>
 
 <br/>
+
+### More features to add
 
 > What other features would you add to this app?
 
