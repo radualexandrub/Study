@@ -23,7 +23,6 @@ Contents:
     - [App HTML Table output](#app-html-table-output)
     - [More features to add](#more-features-to-add)
 
-
 <br>
 
 ## Features
@@ -42,13 +41,13 @@ Conversation generated on Monday, December 26, 2022
 ### App input
 
 > I have the followings inputs for an application:
-> 
-> 1) Task Name
-> 2) Estimated Hours for Task Completion
-> 3) Desired time to Complete (eg. in a few days/weeks/months)
-> 
+>
+> 1. Task Name
+> 2. Estimated Hours for Task Completion
+> 3. Desired time to Complete (eg. in a few days/weeks/months)
+>
 > and the output should be The Hours necessary to invest per day in order to complete the task in the desired interval
-> 
+>
 > What would be the formula to compute the Hours necessary to invest per day in order to complete the task in the desired interval?
 
 To compute the number of hours you need to invest per day in order to complete a task in a given time interval, you can use the following formula:
@@ -59,7 +58,7 @@ For example, if you have a task that will take an estimated 20 hours to complete
 
 (20 hours) / (5 days) = 4 hours/day
 
-Note that in this formula, the "Desired time to Complete" should be expressed in days. If you want to complete the task in a few weeks or months, you will need to convert that time interval into days. For example, if you want to complete the task in 3 weeks, you can multiply the number of weeks by the number of days per week (e.g., 3 weeks * 7 days/week = 21 days).
+Note that in this formula, the "Desired time to Complete" should be expressed in days. If you want to complete the task in a few weeks or months, you will need to convert that time interval into days. For example, if you want to complete the task in 3 weeks, you can multiply the number of weeks by the number of days per week (e.g., 3 weeks \* 7 days/week = 21 days).
 
 <br/>
 
@@ -67,22 +66,21 @@ Note that in this formula, the "Desired time to Complete" should be expressed in
 
 > Could you please write the HTML for the input form using Bootstrap CSS?
 
-
 Certainly! Here is an example of an HTML input form using Bootstrap CSS that includes fields for the "Task Name," "Estimated Hours for Task Completion," and "Desired time to Complete" inputs you mentioned:
 
 ```html
 <form>
   <div class="form-group">
     <label for="taskNameInput">Task Name</label>
-    <input type="text" class="form-control" id="taskNameInput">
+    <input type="text" class="form-control" id="taskNameInput" />
   </div>
   <div class="form-group">
     <label for="estimatedHoursInput">Estimated Hours for Task Completion</label>
-    <input type="number" class="form-control" id="estimatedHoursInput">
+    <input type="number" class="form-control" id="estimatedHoursInput" />
   </div>
   <div class="form-group">
     <label for="desiredTimeInput">Desired Time to Complete</label>
-    <input type="text" class="form-control" id="desiredTimeInput">
+    <input type="text" class="form-control" id="desiredTimeInput" />
   </div>
   <button type="submit" class="btn btn-primary">Calculate</button>
 </form>
@@ -100,16 +98,16 @@ Certainly! Here is an example of how you could modify the HTML input form to inc
 <form>
   <div class="form-group">
     <label for="taskNameInput">Task Name</label>
-    <input type="text" class="form-control" id="taskNameInput">
+    <input type="text" class="form-control" id="taskNameInput" />
   </div>
   <div class="form-group">
     <label for="estimatedHoursInput">Estimated Hours for Task Completion</label>
-    <input type="number" class="form-control" id="estimatedHoursInput">
+    <input type="number" class="form-control" id="estimatedHoursInput" />
   </div>
   <div class="form-group">
     <label for="desiredTimeInput">Desired Time to Complete</label>
     <div class="input-group">
-      <input type="number" class="form-control" id="desiredTimeInput">
+      <input type="number" class="form-control" id="desiredTimeInput" />
       <div class="input-group-append">
         <select class="custom-select" id="desiredTimeUnit">
           <option value="days">days</option>
@@ -130,8 +128,6 @@ This form includes the same three input fields as the previous example, but it r
 ### App JS
 
 > Thanks. Can you write the HTML for displaying the output?
-
-+
 
 > Thanks. Could you please add a preventDefault to the JS code (without any other commentary)?
 
@@ -155,15 +151,15 @@ function calculateHoursPerDay() {
   event.preventDefault();
 
   // Get the values of the input fields and dropdown menu
-  var taskName = document.getElementById('taskNameInput').value;
-  var estimatedHours = document.getElementById('estimatedHoursInput').value;
-  var desiredTime = document.getElementById('desiredTimeInput').value;
-  var desiredTimeUnit = document.getElementById('desiredTimeUnit').value;
+  var taskName = document.getElementById("taskNameInput").value;
+  var estimatedHours = document.getElementById("estimatedHoursInput").value;
+  var desiredTime = document.getElementById("desiredTimeInput").value;
+  var desiredTimeUnit = document.getElementById("desiredTimeUnit").value;
 
   // Convert the desired time to days if necessary
-  if (desiredTimeUnit === 'weeks') {
+  if (desiredTimeUnit === "weeks") {
     desiredTime *= 7;
-  } else if (desiredTimeUnit === 'months') {
+  } else if (desiredTimeUnit === "months") {
     desiredTime *= 30;
   }
 
@@ -171,8 +167,16 @@ function calculateHoursPerDay() {
   var hoursPerDay = estimatedHours / desiredTime;
 
   // Update the inner HTML of the output container
-  document.getElementById('outputContainer').innerHTML =
-    '<p>To complete the task "' + taskName + '" in ' + desiredTime + ' ' + desiredTimeUnit + ', you need to invest ' + hoursPerDay.toFixed(2) + ' hours per day.</p>';
+  document.getElementById("outputContainer").innerHTML =
+    '<p>To complete the task "' +
+    taskName +
+    '" in ' +
+    desiredTime +
+    " " +
+    desiredTimeUnit +
+    ", you need to invest " +
+    hoursPerDay.toFixed(2) +
+    " hours per day.</p>";
 }
 ```
 
@@ -181,7 +185,9 @@ This function retrieves the values of the input fields and dropdown menu using t
 To call this function when the form is submitted, you can add an onclick attribute to the submit button:
 
 ```html
-<button type="submit" class="btn btn-primary" onclick="calculateHoursPerDay();">Calculate</button>
+<button type="submit" class="btn btn-primary" onclick="calculateHoursPerDay();">
+  Calculate
+</button>
 ```
 
 <br/>
@@ -198,15 +204,15 @@ function calculateHoursPerDay(event) {
   event.preventDefault();
 
   // Get the values of the input fields and dropdown menu
-  var taskName = document.getElementById('taskNameInput').value;
-  var estimatedHours = document.getElementById('estimatedHoursInput').value;
-  var desiredTime = document.getElementById('desiredTimeInput').value;
-  var desiredTimeUnit = document.getElementById('desiredTimeUnit').value;
+  var taskName = document.getElementById("taskNameInput").value;
+  var estimatedHours = document.getElementById("estimatedHoursInput").value;
+  var desiredTime = document.getElementById("desiredTimeInput").value;
+  var desiredTimeUnit = document.getElementById("desiredTimeUnit").value;
 
   // Convert the desired time to days if necessary
-  if (desiredTimeUnit === 'weeks') {
+  if (desiredTimeUnit === "weeks") {
     desiredTime *= 7;
-  } else if (desiredTimeUnit === 'months') {
+  } else if (desiredTimeUnit === "months") {
     desiredTime *= 30;
   }
 
@@ -219,15 +225,25 @@ function calculateHoursPerDay(event) {
     estimatedHours: estimatedHours,
     desiredTime: desiredTime,
     desiredTimeUnit: desiredTimeUnit,
-    hoursPerDay: hoursPerDay
+    hoursPerDay: hoursPerDay,
   };
 
   // Add the calculation object to the list
   calculationList.push(calculation);
 
   // Update the inner HTML of the output container
-  document.getElementById('outputContainer').innerHTML =
-    '<p>To complete the task "' + taskName + '" in ' + desiredTime + ' ' + desiredTimeUnit.slice(0, -1) + ' (i.e. ' + desiredTime / 30 + ' month(s)), you need to invest ' + hoursPerDay.toFixed(2) + ' hours per day.</p>';
+  document.getElementById("outputContainer").innerHTML =
+    '<p>To complete the task "' +
+    taskName +
+    '" in ' +
+    desiredTime +
+    " " +
+    desiredTimeUnit.slice(0, -1) +
+    " (i.e. " +
+    desiredTime / 30 +
+    " month(s)), you need to invest " +
+    hoursPerDay.toFixed(2) +
+    " hours per day.</p>";
 }
 ```
 
@@ -236,8 +252,15 @@ In this version of the code, I added an empty array called calculationList at th
 You can then use this list to display a history of all the calculations that have been performed. For example, you could add a button to the form that displays the list of calculations when clicked:
 
 ```html
-<button type="button" class="btn btn-secondary" onclick="displayCalculationList()">Show Calculation List</button>
+<button
+  type="button"
+  class="btn btn-secondary"
+  onclick="displayCalculationList()"
+>
+  Show Calculation List
+</button>
 ```
+
 And you could define a function called displayCalculationList() to iterate over the calculationList array and display the input and output of each calculation:
 
 ```js
@@ -263,7 +286,7 @@ Certainly! Here is the rest of the displayCalculationList() function:
 ```js
 function displayCalculationList() {
   // Clear the output container
-  document.getElementById('outputContainer').innerHTML = '';
+  document.getElementById("outputContainer").innerHTML = "";
 
   // Iterate over the calculationList array
   for (var i = 0; i < calculationList.length; i++) {
@@ -272,15 +295,24 @@ function displayCalculationList() {
 
     // Construct the HTML for the calculation
     var calculationHTML = '<div class="calculation">';
-    calculationHTML += '<h4>Calculation ' + (i + 1) + '</h4>';
-    calculationHTML += '<p>Task Name: ' + calculation.taskName + '</p>';
-    calculationHTML += '<p>Estimated Hours: ' + calculation.estimatedHours + '</p>';
-    calculationHTML += '<p>Desired Time: ' + calculation.desiredTime + ' ' + calculation.desiredTimeUnit.slice(0, -1) + ' (i.e. ' + calculation.desiredTime / 30 + ' month(s))</p>';
-    calculationHTML += '<p>Hours per Day: ' + calculation.hoursPerDay.toFixed(2) + '</p>';
-    calculationHTML += '</div>';
+    calculationHTML += "<h4>Calculation " + (i + 1) + "</h4>";
+    calculationHTML += "<p>Task Name: " + calculation.taskName + "</p>";
+    calculationHTML +=
+      "<p>Estimated Hours: " + calculation.estimatedHours + "</p>";
+    calculationHTML +=
+      "<p>Desired Time: " +
+      calculation.desiredTime +
+      " " +
+      calculation.desiredTimeUnit.slice(0, -1) +
+      " (i.e. " +
+      calculation.desiredTime / 30 +
+      " month(s))</p>";
+    calculationHTML +=
+      "<p>Hours per Day: " + calculation.hoursPerDay.toFixed(2) + "</p>";
+    calculationHTML += "</div>";
 
     // Add the calculation HTML to the output container
-    document.getElementById('outputContainer').innerHTML += calculationHTML;
+    document.getElementById("outputContainer").innerHTML += calculationHTML;
   }
 }
 ```
@@ -299,9 +331,9 @@ Certainly! Here is an example of how you could modify the JavaScript code to sav
 
 ```js
 // Check if the calculationList array is stored in local storage
-if (localStorage.getItem('calculationList')) {
+if (localStorage.getItem("calculationList")) {
   // If it is, retrieve it from local storage
-  calculationList = JSON.parse(localStorage.getItem('calculationList'));
+  calculationList = JSON.parse(localStorage.getItem("calculationList"));
 }
 
 function calculateHoursPerDay(event) {
@@ -309,15 +341,15 @@ function calculateHoursPerDay(event) {
   event.preventDefault();
 
   // Get the values of the input fields and dropdown menu
-  var taskName = document.getElementById('taskNameInput').value;
-  var estimatedHours = document.getElementById('estimatedHoursInput').value;
-  var desiredTime = document.getElementById('desiredTimeInput').value;
-  var desiredTimeUnit = document.getElementById('desiredTimeUnit').value;
+  var taskName = document.getElementById("taskNameInput").value;
+  var estimatedHours = document.getElementById("estimatedHoursInput").value;
+  var desiredTime = document.getElementById("desiredTimeInput").value;
+  var desiredTimeUnit = document.getElementById("desiredTimeUnit").value;
 
   // Convert the desired time to days if necessary
-  if (desiredTimeUnit === 'weeks') {
+  if (desiredTimeUnit === "weeks") {
     desiredTime *= 7;
-  } else if (desiredTimeUnit === 'months') {
+  } else if (desiredTimeUnit === "months") {
     desiredTime *= 30;
   }
 
@@ -330,18 +362,28 @@ function calculateHoursPerDay(event) {
     estimatedHours: estimatedHours,
     desiredTime: desiredTime,
     desiredTimeUnit: desiredTimeUnit,
-    hoursPerDay: hoursPerDay
+    hoursPerDay: hoursPerDay,
   };
 
   // Add the calculation object to the list
   calculationList.push(calculation);
 
   // Save the updated calculationList array to local storage
-  localStorage.setItem('calculationList', JSON.stringify(calculationList));
+  localStorage.setItem("calculationList", JSON.stringify(calculationList));
 
   // Update the inner HTML of the output container
-  document.getElementById('outputContainer').innerHTML =
-    '<p>To complete the task "' + taskName + '" in ' + desiredTime + ' ' + desiredTimeUnit.slice(0, -1) + ' (i.e. ' + desiredTime / 30 + ' month(s)), you need to invest ' + hoursPerDay.toFixed(2) + ' hours per day.</p>';
+  document.getElementById("outputContainer").innerHTML =
+    '<p>To complete the task "' +
+    taskName +
+    '" in ' +
+    desiredTime +
+    " " +
+    desiredTimeUnit.slice(0, -1) +
+    " (i.e. " +
+    desiredTime / 30 +
+    " month(s)), you need to invest " +
+    hoursPerDay.toFixed(2) +
+    " hours per day.</p>";
 }
 ```
 
@@ -357,9 +399,9 @@ Certainly! Here is an example of how you could modify the JavaScript code to add
 
 ```js
 // Check if the calculationList array is stored in local storage
-if (localStorage.getItem('calculationList')) {
+if (localStorage.getItem("calculationList")) {
   // If it is, retrieve it from local storage
-  calculationList = JSON.parse(localStorage.getItem('calculationList'));
+  calculationList = JSON.parse(localStorage.getItem("calculationList"));
 }
 
 function calculateHoursPerDay(event) {
@@ -367,15 +409,15 @@ function calculateHoursPerDay(event) {
   event.preventDefault();
 
   // Get the values of the input fields and dropdown menu
-  var taskName = document.getElementById('taskNameInput').value;
-  var estimatedHours = document.getElementById('estimatedHoursInput').value;
-  var desiredTime = document.getElementById('desiredTimeInput').value;
-  var desiredTimeUnit = document.getElementById('desiredTimeUnit').value;
+  var taskName = document.getElementById("taskNameInput").value;
+  var estimatedHours = document.getElementById("estimatedHoursInput").value;
+  var desiredTime = document.getElementById("desiredTimeInput").value;
+  var desiredTimeUnit = document.getElementById("desiredTimeUnit").value;
 
   // Convert the desired time to days if necessary
-  if (desiredTimeUnit === 'weeks') {
+  if (desiredTimeUnit === "weeks") {
     desiredTime *= 7;
-  } else if (desiredTimeUnit === 'months') {
+  } else if (desiredTimeUnit === "months") {
     desiredTime *= 30;
   }
 
@@ -388,19 +430,31 @@ function calculateHoursPerDay(event) {
     estimatedHours: estimatedHours,
     desiredTime: desiredTime,
     desiredTimeUnit: desiredTimeUnit,
-    hoursPerDay: hoursPerDay
+    hoursPerDay: hoursPerDay,
   };
 
   // Add the calculation object to the list
   calculationList.push(calculation);
 
   // Save the updated calculationList array to local storage
-  localStorage.setItem('calculationList', JSON.stringify(calculationList));
+  localStorage.setItem("calculationList", JSON.stringify(calculationList));
 
   // Update the inner HTML of the output container
-  document.getElementById('outputContainer').innerHTML =
-    '<p>To complete the task "' + taskName + '" in ' + desiredTime + ' ' + desiredTimeUnit.slice(0, -1) + ' (i.e. ' + desiredTime / 30 + ' month(s)), you need to invest ' + hoursPerDay.toFixed(2) + ' hours per day.</p>' +
-    '<button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' + (calculationList.length - 1) + ')">Delete</button>';
+  document.getElementById("outputContainer").innerHTML =
+    '<p>To complete the task "' +
+    taskName +
+    '" in ' +
+    desiredTime +
+    " " +
+    desiredTimeUnit.slice(0, -1) +
+    " (i.e. " +
+    desiredTime / 30 +
+    " month(s)), you need to invest " +
+    hoursPerDay.toFixed(2) +
+    " hours per day.</p>" +
+    '<button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' +
+    (calculationList.length - 1) +
+    ')">Delete</button>';
 }
 
 function deleteCalculation(index) {
@@ -408,7 +462,7 @@ function deleteCalculation(index) {
   calculationList.splice(index, 1);
 
   // Save the updated calculationList array to local storage
-  localStorage.setItem('calculationList', JSON.stringify(calculationList));
+  localStorage.setItem("calculationList", JSON.stringify(calculationList));
 
   // Display the updated calculation list
   displayCalculationList();
@@ -424,7 +478,7 @@ Certainly! Here is the rest of the modified displayCalculationList() function:
 ```js
 function displayCalculationList() {
   // Clear the output container
-  document.getElementById('outputContainer').innerHTML = '';
+  document.getElementById("outputContainer").innerHTML = "";
 
   // Iterate over the calculationList array
   for (var i = 0; i < calculationList.length; i++) {
@@ -433,16 +487,28 @@ function displayCalculationList() {
 
     // Construct the HTML for the calculation
     var calculationHTML = '<div class="calculation">';
-    calculationHTML += '<h4>Calculation ' + (i + 1) + '</h4>';
-    calculationHTML += '<p>Task Name: ' + calculation.taskName + '</p>';
-    calculationHTML += '<p>Estimated Hours: ' + calculation.estimatedHours + '</p>';
-    calculationHTML += '<p>Desired Time: ' + calculation.desiredTime + ' ' + calculation.desiredTimeUnit.slice(0, -1) + ' (i.e. ' + calculation.desiredTime / 30 + ' month(s))</p>';
-    calculationHTML += '<p>Hours per Day: ' + calculation.hoursPerDay.toFixed(2) + '</p>';
-    calculationHTML += '<button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' + i + ')">Delete</button>';
-    calculationHTML += '</div>';
+    calculationHTML += "<h4>Calculation " + (i + 1) + "</h4>";
+    calculationHTML += "<p>Task Name: " + calculation.taskName + "</p>";
+    calculationHTML +=
+      "<p>Estimated Hours: " + calculation.estimatedHours + "</p>";
+    calculationHTML +=
+      "<p>Desired Time: " +
+      calculation.desiredTime +
+      " " +
+      calculation.desiredTimeUnit.slice(0, -1) +
+      " (i.e. " +
+      calculation.desiredTime / 30 +
+      " month(s))</p>";
+    calculationHTML +=
+      "<p>Hours per Day: " + calculation.hoursPerDay.toFixed(2) + "</p>";
+    calculationHTML +=
+      '<button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' +
+      i +
+      ')">Delete</button>';
+    calculationHTML += "</div>";
 
     // Add the calculation HTML to the output container
-    document.getElementById('outputContainer').innerHTML += calculationHTML;
+    document.getElementById("outputContainer").innerHTML += calculationHTML;
   }
 }
 ```
@@ -491,7 +557,7 @@ I hope these examples give you some ideas of how to use the app! Let me know if 
 
 ![](./TimeInvestmentCalculator_ChatGPT.jpg)
 
-***My commentary here: the last example is kind of funny as it doesn't make any sense***
+**_My commentary here: the last example is kind of funny as it doesn't make any sense_**
 
 <br/>
 
@@ -521,6 +587,7 @@ I hope this helps! Let me know if you have any questions.
 This is a simple web application that helps you plan and track your progress on a task by calculating the number of hours per day you need to invest in order to complete the task in a certain amount of time.
 
 ## Features
+
 - Input a task name, the estimated number of hours required to complete the task, and the desired time to complete the task in days, weeks, or months.
 - View the number of hours per day you need to invest in order to complete the task in the desired time frame.
 - Save and view a list of your previous calculations.
@@ -586,7 +653,7 @@ function displayCalculationList() {
       tableHTML += '<td>' + calculation.estimatedHours + '</td>';
       tableHTML += '<td>' + calculation.desiredTime + ' ' + calculation.desiredTimeUnit.slice(0, -1) + ' (i.e. ' + calculation.desiredTime / 30 + ' month(s))</td>';
       tableHTML += '<td>' + calculation.hoursPerDay.toFixed(2) + '</td>';
-     
+
 ```
 
 > Please continue the code without any commentary/comments
@@ -596,7 +663,6 @@ function displayCalculationList() {
 > Please display only the for (var i = 0; i < calculationList.length; i++) loop
 
 > Can you show the code after this foor loop inside this displayCalculationList function?
-
 
 Certainly! Here is the modified displayCalculationList() function with only the loop that iterates over the calculationList array:
 
@@ -608,17 +674,27 @@ function displayCalculationList() {
     var calculation = calculationList[i];
 
     // Construct the HTML for the calculation
-    var calculationHTML = '<tr>';
-    calculationHTML += '<th scope="row">' + (i + 1) + '</th>';
-    calculationHTML += '<td>' + calculation.taskName + '</td>';
-    calculationHTML += '<td>' + calculation.estimatedHours + '</td>';
-    calculationHTML += '<td>' + calculation.desiredTime + ' ' + calculation.desiredTimeUnit.slice(0, -1) + ' (i.e. ' + calculation.desiredTime / 30 + ' month(s))</td>';
-    calculationHTML += '<td>' + calculation.hoursPerDay.toFixed(2) + '</td>';
-    calculationHTML += '<td><button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' + i + ')">Delete</button></td>';
-    calculationHTML += '</tr>';
+    var calculationHTML = "<tr>";
+    calculationHTML += '<th scope="row">' + (i + 1) + "</th>";
+    calculationHTML += "<td>" + calculation.taskName + "</td>";
+    calculationHTML += "<td>" + calculation.estimatedHours + "</td>";
+    calculationHTML +=
+      "<td>" +
+      calculation.desiredTime +
+      " " +
+      calculation.desiredTimeUnit.slice(0, -1) +
+      " (i.e. " +
+      calculation.desiredTime / 30 +
+      " month(s))</td>";
+    calculationHTML += "<td>" + calculation.hoursPerDay.toFixed(2) + "</td>";
+    calculationHTML +=
+      '<td><button type="button" class="btn btn-secondary delete-button" onclick="deleteCalculation(' +
+      i +
+      ')">Delete</button></td>';
+    calculationHTML += "</tr>";
 
     // Add the calculation HTML to the output container
-    document.getElementById('outputContainer').innerHTML += calculationHTML;
+    document.getElementById("outputContainer").innerHTML += calculationHTML;
   }
 }
 ```
@@ -672,7 +748,7 @@ function displayCalculationList() {
     // Close the table HTML
     tableHTML += '</tbody>';
     tableHTML +=
-````
+```
 
 > Could you please only display the code after "// Close the table HTML"
 
@@ -693,7 +769,7 @@ This code closes the `<tbody>` and `<table>` elements, and then sets the innerHT
 
 I hope this helps! Let me know if you have any questions.
 
-***There are still many limitations on the code max output characters***
+**_There are still many limitations on the code max output characters_**
 
 <br/>
 
@@ -715,9 +791,10 @@ Sorting: Allow the user to sort the calculations in the table by task name, esti
 
 I hope these suggestions are helpful! Let me know if you have any questions.
 
-***Nice, I would also add:***
-- ***Add "End Date" (editable, but automatically calculated as Start Date + number of desired days at first)***
-- ***Add "Last Updated Date" (if all tasks will be editable)*** 
-- ***Add ability for authenticated user to edit/add hours to each task (eg. 5h were added to the task "Research Papers of 100 hours") --- completely optional: an animation of a bucket with the hours completed vs. the total hours needed could be shown***
-- ***Each "time addition towards goal completion" could be saved (with the date/day when addition was added) to display a graph with overall progress per hours worked/days for that goal. Namely, x-axis: dates when hours were added, y-axis: quantitative hours added on that day.***
-- ***If user did not add any hours towards task completion for a day, send a notification (browser notification)***
+**_Nice, I would also add:_**
+
+- **_Add "End Date" (editable, but automatically calculated as Start Date + number of desired days at first)_**
+- **_Add "Last Updated Date" (if all tasks will be editable)_**
+- **_Add ability for authenticated user to edit/add hours to each task (eg. 5h were added to the task "Research Papers of 100 hours") --- completely optional: an animation of a bucket with the hours completed vs. the total hours needed could be shown_**
+- **_Each "time addition towards goal completion" could be saved (with the date/day when addition was added) to display a graph with overall progress per hours worked/days for that goal. Namely, x-axis: dates when hours were added, y-axis: quantitative hours added on that day._**
+- **_If user did not add any hours towards task completion for a day, send a notification (browser notification)_**
