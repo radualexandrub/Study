@@ -155,6 +155,21 @@
       <div id="outputTable" class="mt-3">
         <!-- Output list will be displayed here -->
       </div>
+      <div id="exportOrImportList">
+        <a
+          href="#"
+          title="Export List as JSON"
+          onclick="exportListAsJSON()"
+          class="mr-3"
+          >Export List</a
+        >
+        <!-- <a
+          href="#"
+          title="Import List as JSON"
+          onclick="importListAsJSON(event)"
+          >Import List</a
+        > -->
+      </div>
     </div>
 
     <!-- Footer -->
@@ -525,7 +540,9 @@
             " (" +
             (calculation.desiredTime / 30).toFixed(2) +
             " months)</td>";
-          tableHTML += "<td>" + calculation.hoursPerDay.toFixed(2) + "</td>";
+          tableHTML += `<td title="${(calculation.hoursPerDay * 60).toFixed(
+            0
+          )} minutes">${calculation.hoursPerDay.toFixed(2)}</td>`;
           tableHTML += `<td title="${getFormattedDate(
             calculation.addDate,
             true
@@ -548,6 +565,29 @@
         // Add the table HTML to the output container
         document.getElementById("outputTable").innerHTML = tableHTML;
       }
+    }
+
+    /* Export and Import Tasks List as JSON */
+    function exportListAsJSON() {
+      // https://stackoverflow.com/questions/33780271/export-a-json-object-to-a-text-file
+      const filename = `TasksList_${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
+      const jsonStr = JSON.stringify(calculationList);
+
+      let element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(jsonStr)
+      );
+      element.setAttribute("download", filename);
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
     }
 
     /* Dark Mode */
