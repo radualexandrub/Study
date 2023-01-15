@@ -45,58 +45,115 @@
   </head>
   <body>
     <div class="container mt-3">
-      <h1>Time Investment to Complete a Task Calculator</h1>
-      <p>
-        Find the amount of time needed (in hours per day) in order to complete a
-        task in a certain amount of time.
-      </p>
-      <form>
-        <div class="form-group">
-          <label for="taskNameInput">Task Name</label>
-          <input type="text" class="form-control" id="taskNameInput" />
+      <div class="d-flex app-header justify-content-between align-items-center">
+        <div>
+          <h1>Time Investment to Complete a Task Calculator</h1>
+          <p>
+            Find the amount of time needed (in hours per day) in order to
+            complete a task in a certain amount of time.
+          </p>
         </div>
-        <div class="d-flex" style="gap: 1rem">
-          <div class="form-group w-100">
-            <label for="estimatedHoursInput"
-              >Estimated Hours for Task Completion</label
-            >
-            <input
-              type="number"
-              min="1"
-              class="form-control"
-              id="estimatedHoursInput"
-            />
-          </div>
-          <div class="form-group w-100">
-            <label for="desiredTimeInput">Desired Time to Complete</label>
-            <div class="input-group">
-              <input
-                type="number"
-                min="1"
-                class="form-control"
-                id="desiredTimeInput"
-              />
-              <div class="input-group-append">
-                <select class="custom-select" id="desiredTimeUnit">
-                  <option value="days">days</option>
-                  <option value="weeks">weeks</option>
-                  <option value="months">months</option>
-                </select>
-              </div>
+        <div>
+          <button
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#taskAddModal"
+          >
+            Add Task
+          </button>
+        </div>
+      </div>
+
+      <!-- Add modal -->
+      <div
+        class="modal fade"
+        id="taskAddModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="taskAddModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" style="max-width: 600px" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <p class="modal-title font-weight-bold" id="taskAddModalLabel">
+                Add new task
+              </p>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                title="Close Edit Modal"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="addTaskForm">
+                <div class="form-group">
+                  <label for="taskNameInput">Task Name</label>
+                  <input type="text" class="form-control" id="taskNameInput" />
+                </div>
+                <div class="d-flex" style="gap: 1rem">
+                  <div class="form-group w-100">
+                    <label for="estimatedHoursInput"
+                      >Estimated Hours for Task Completion</label
+                    >
+                    <input
+                      type="number"
+                      min="1"
+                      class="form-control"
+                      id="estimatedHoursInput"
+                    />
+                  </div>
+                  <div class="form-group w-100">
+                    <label for="desiredTimeInput"
+                      >Desired Time to Complete</label
+                    >
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        min="1"
+                        class="form-control"
+                        id="desiredTimeInput"
+                      />
+                      <div class="input-group-append">
+                        <select class="custom-select" id="desiredTimeUnit">
+                          <option value="days">days</option>
+                          <option value="weeks">weeks</option>
+                          <option value="months">months</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="outputContainer" class="mt-3">
+                  <!-- Output will be displayed here -->
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button
+                    type="button"
+                    class="btn btn-secondary mr-2"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    onclick="calculateHoursPerDay(event);"
+                  >
+                    Calculate
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          onclick="calculateHoursPerDay(event);"
-        >
-          Calculate
-        </button>
-      </form>
-      <div id="outputContainer" class="mt-3">
-        <!-- Output will be displayed here -->
       </div>
+      <!-- End of Add modal -->
+
       <div id="outputTable" class="mt-3">
         <!-- Output list will be displayed here -->
       </div>

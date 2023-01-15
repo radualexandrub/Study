@@ -97,7 +97,7 @@ function calculateHoursPerDay(event) {
   // Update the inner HTML of the output container
   document.getElementById(
     "outputContainer"
-  ).innerHTML = `<p>To complete the task "${taskName}" in ${desiredTimeInDays} days (i.e. ${(
+  ).innerHTML = `<p>Task "${taskName}" was added to list!</p><p>To complete "${taskName}" in ${desiredTimeInDays} days (i.e. ${(
     calculation.desiredTime / 30
   ).toFixed(2)} months), 
           you need to invest ${hoursPerDay.toFixed(
@@ -109,6 +109,9 @@ function calculateHoursPerDay(event) {
 
   // Display the updated calculation list
   displayCalculationList();
+
+  // Clear all form's inputs
+  document.getElementById("addTaskForm").reset();
 }
 
 function deleteCalculation(index) {

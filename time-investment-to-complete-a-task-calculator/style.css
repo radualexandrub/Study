@@ -38,6 +38,12 @@ body {
     max-width: 1366px !important;
   }
 }
+@media (max-width: 1200px) {
+  .app-header {
+    flex-direction: column;
+    align-items: baseline !important;
+  }
+}
 input {
   color: var(--font-main-color) !important;
   background-color: var(--background-color-secondary) !important;
