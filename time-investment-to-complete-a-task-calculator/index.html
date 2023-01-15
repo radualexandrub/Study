@@ -61,12 +61,30 @@
         height: 100%;
       }
       body {
+        font-family: sans-serif, "Open Sans", "Segoe UI";
+        color: var(--font-main-color);
+        background-color: var(--background-color);
+        transition: background-color 200ms ease-in;
         /* useful for sticking the footer to bottom of page */
         min-height: 100%;
         display: flex;
         flex-direction: column;
-        color: var(--font-main-color);
-        background-color: var(--background-color);
+      }
+      input {
+        color: var(--font-main-color) !important;
+        background-color: var(--background-color-secondary) !important;
+        transition: background-color 200ms ease-in !important;
+      }
+      .custom-select {
+        color: var(--font-main-color) !important;
+        background: var(--background-color-secondary)
+          url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e")
+          no-repeat right 0.75rem center/8px 10px;
+        transition: background-color 200ms ease-in !important;
+      }
+      footer {
+        box-shadow: -2px -3px 8px #0000001a;
+        background-color: var(--background-color-secondary);
         transition: background-color 200ms ease-in;
       }
       .modal-content {
@@ -95,7 +113,7 @@
         font-size: 1.7rem;
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
-        color: #fff;
+        color: var(--primary-color);
       }
       .toggle-dark-mode
         input[type="checkbox"]:checked
@@ -173,7 +191,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-3 mt-auto">
+    <footer class="py-3 mt-auto">
       <div class="container text-center">
         <div class="d-flex justify-content-center align-items-center">
           <div class="mt-2" title="See the code on GitHub">
@@ -193,7 +211,7 @@
           </div>
         </div>
         <p class="m-0 mt-2">Made with Bootstrap CSS &amp; Vanilla JS</p>
-        <p class="m-0 mt-2">
+        <p class="m-0">
           Copyright 2023 ©
           <a target="_blank" href="https://radubulai.com/">Radu-Alexandru B.</a>
         </p>
@@ -388,17 +406,17 @@
       localStorage.setItem("calculationList", JSON.stringify(calculationList));
 
       // Update the inner HTML of the output container
-      document.getElementById("outputContainer").innerHTML =
-        '<p>To complete the task "' +
-        taskName +
-        '" in ' +
-        desiredTimeInDays +
-        " days" +
-        " (i.e. " +
-        (calculation.desiredTime / 30).toFixed(2) +
-        " months), you need to invest " +
-        hoursPerDay.toFixed(2) +
-        " hours per day.</p>";
+      document.getElementById(
+        "outputContainer"
+      ).innerHTML = `<p>To complete the task "${taskName}" in ${desiredTimeInDays} days (i.e. ${(
+        calculation.desiredTime / 30
+      ).toFixed(2)} months), 
+          you need to invest ${hoursPerDay.toFixed(
+            2
+          )} hours per day. By starting today, this task would be completed by ${getFormattedDate(
+        endDate,
+        true
+      )}.</p>`;
 
       // Display the updated calculation list
       displayCalculationList();
@@ -551,7 +569,7 @@
             calculation.endDate,
             true
           )}">${getFormattedDate(calculation.endDate)}</td>`;
-          tableHTML += `<td><button type="button" class="btn btn-secondary edit-button" data-toggle="modal" data-target="#taskEditModal"
+          tableHTML += `<td><button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#taskEditModal"
             onclick="editCalculation(event, 'openModal')" title="Edit this task">Edit</button></td>`;
           tableHTML += `<td><button type="button" class="btn btn-danger delete-button"
             onclick="deleteCalculation(${i})" title="Delete this task">X</button></td>`;
