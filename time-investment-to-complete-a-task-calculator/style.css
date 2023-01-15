@@ -1,0 +1,78 @@
+/* Utilities */
+:root {
+  --primary-color: hsl(211, 91%, 49%);
+  --primary-color-lighten: hsl(211, 89%, 56%);
+  --background-color: #fefefe;
+  --background-color-secondary: #fff;
+  --font-main-color: hsl(210, 11%, 10%);
+}
+[data-theme="dark"] {
+  --background-color: #0b1014;
+  --background-color-secondary: #121a20;
+  --font-main-color: #fff;
+}
+::selection {
+  background: var(--primary-color);
+  color: #fff;
+}
+html {
+  height: 100%;
+}
+body {
+  font-family: sans-serif, "Open Sans", "Segoe UI";
+  color: var(--font-main-color);
+  background-color: var(--background-color);
+  transition: background-color 200ms ease-in;
+  /* useful for sticking the footer to bottom of page */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+input {
+  color: var(--font-main-color) !important;
+  background-color: var(--background-color-secondary) !important;
+  transition: background-color 200ms ease-in !important;
+}
+.custom-select {
+  color: var(--font-main-color) !important;
+  background: var(--background-color-secondary)
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e")
+    no-repeat right 0.75rem center/8px 10px;
+  transition: background-color 200ms ease-in !important;
+}
+footer {
+  box-shadow: -2px -3px 8px #0000001a;
+  background-color: var(--background-color-secondary);
+  transition: background-color 200ms ease-in;
+}
+.modal-content {
+  background-color: var(--background-color);
+}
+.table {
+  color: var(--font-main-color);
+}
+/* Dark mode toggle */
+.toggle-dark-mode {
+  position: relative;
+  margin-left: 1em;
+}
+.toggle-dark-mode input[type="checkbox"] {
+  width: 1.5em;
+  height: 1.5em;
+  opacity: 0;
+  cursor: pointer;
+}
+.toggle-dark-mode input[type="checkbox"] ~ .dark-mode-icon::before {
+  content: "\f186";
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  font-size: 1.7rem;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: var(--primary-color);
+}
+.toggle-dark-mode input[type="checkbox"]:checked ~ .dark-mode-icon::before {
+  content: "\f185";
+}
