@@ -45,7 +45,7 @@ function getFormattedDate(dateString, showDayOfWeek = false) {
 }
 
 function calculateHoursPerDay(event) {
-  // Prevent the form from being submitted
+  methodName = "calculateHoursPerDay()";
   event.preventDefault();
 
   // Get the values of the input fields and dropdown menu
@@ -79,9 +79,9 @@ function calculateHoursPerDay(event) {
   var calculation = {
     taskId: Math.random().toString(16).slice(2),
     taskName: taskName,
+    workedHours: 0,
     estimatedHours: estimatedHours,
     desiredTime: desiredTimeInDays,
-    desiredTimeUnit: desiredTimeUnit,
     hoursPerDay: hoursPerDay,
     addDate: addDate,
     endDate: endDate,
@@ -92,6 +92,7 @@ function calculateHoursPerDay(event) {
 
   // Save the updated calculationList array to local storage
   localStorage.setItem("calculationList", JSON.stringify(calculationList));
+  console.debug(`${methodName} Task was saved ${JSON.stringify(calculation)}`);
 
   // Update the inner HTML of the output container
   document.getElementById(
@@ -125,6 +126,7 @@ let taskIdToEdit;
 let taskFound;
 let taskFoundIndex;
 function editCalculation(event, action) {
+  methodName = "editCalculation()";
   if (action === "openModal") {
     // Retrieve Selected Task to Edit
     taskIdToEdit =
@@ -133,19 +135,29 @@ function editCalculation(event, action) {
     taskFoundIndex = calculationList.findIndex(
       (task) => task.taskId === taskIdToEdit
     );
+    console.debug(`${methodName} Editing Task ${JSON.stringify(taskFound)}`);
 
     // Populate Modal with Current Task Information
     document.getElementById("taskNameInputEdit").value = taskFound.taskName;
+    document.getElementById("workedHoursInputEdit").value =
+      taskFound.workedHours;
     document.getElementById("estimatedHoursInputEdit").value =
       taskFound.estimatedHours;
     document.getElementById("desiredTimeInputEdit").value =
       taskFound.desiredTime;
     document.getElementById("desiredTimeUnitEdit").value = "days";
+    document.getElementById("addDateInputEdit").value = taskFound.addDate.slice(
+      0,
+      10
+    );
   } else if (action === "saveTask") {
     // Get new Task Information
     let taskNewName = document.getElementById("taskNameInputEdit").value;
     let taskNewEstimatedHours = document.getElementById(
       "estimatedHoursInputEdit"
+    ).value;
+    let taskNewWorkedHours = document.getElementById(
+      "workedHoursInputEdit"
     ).value;
     let taskNewDesiredTimeInDays = document.getElementById(
       "desiredTimeInputEdit"
@@ -153,11 +165,13 @@ function editCalculation(event, action) {
     let taskNewDesiredTimeUnit = document.getElementById(
       "desiredTimeUnitEdit"
     ).value;
+    let taskNewAddDate = document.getElementById("addDateInputEdit").value;
 
     // Update Task Information
     {
-      // Update Task New Name and New Estimated Hourds
+      // Update Task New Name and New Estimated Hours
       calculationList[taskFoundIndex].taskName = taskNewName;
+      calculationList[taskFoundIndex].workedHours = taskNewWorkedHours;
       calculationList[taskFoundIndex].estimatedHours = taskNewEstimatedHours;
 
       // Convert the desired time to days if necessary
@@ -170,13 +184,13 @@ function editCalculation(event, action) {
       calculationList[taskFoundIndex].desiredTime = taskNewDesiredTimeInDays;
 
       // Update Task New Date and End Date
-      let newAddDate = new Date();
+      let newAddDate = new Date(taskNewAddDate);
       let newEndDate = new Date();
       newEndDate.setDate(
         newAddDate.getDate() + parseInt(taskNewDesiredTimeInDays)
       );
-      calculationList[taskFoundIndex].addDate = newAddDate;
-      calculationList[taskFoundIndex].endDate = newEndDate;
+      calculationList[taskFoundIndex].addDate = newAddDate.toISOString();
+      calculationList[taskFoundIndex].endDate = newEndDate.toISOString();
 
       // Perform the calculation and Update Task New Hours per Day
       let newHoursPerDay = taskNewEstimatedHours / taskNewDesiredTimeInDays;
@@ -204,20 +218,24 @@ function displayCalculationList() {
     tableHTML += '<table class="table">';
     tableHTML += "<thead>";
     tableHTML += "<tr>";
-    tableHTML += '<th scope="col">#</th>';
-    tableHTML += '<th scope="col">Task Name</th>';
+    tableHTML += '<th class="align-middle" scope="col">#</th>';
+    tableHTML += '<th class="align-middle" scope="col">Task Name</th>';
     tableHTML +=
-      '<th scope="col" title="Estimated hours for task completion">Estimated Hours</th>';
+      '<th class="align-middle" scope="col" title="Worked hours for task completion">Worked</th>';
     tableHTML +=
-      '<th scope="col" title="Desired time to complete the task">Desired Time</th>';
+      '<th class="align-middle" scope="col" title="Estimated hours for task completion">Estimated</th>';
     tableHTML +=
-      '<th scope="col" title="Time needed to be invested in hours per day">Hours per Day</th>';
+      '<th class="align-middle" scope="col" title="Worked / Estimated hours completion rate">%</th>';
     tableHTML +=
-      '<th scope="col" title="Add/Last updated Date">Add/Update Date</th>';
+      '<th class="align-middle"scope="col" title="Desired time to complete the task">Desired Time</th>';
     tableHTML +=
-      '<th scope="col" title="Possible end date for task completion">End Date</th>';
-    tableHTML += '<th scope="col"></th>';
-    tableHTML += '<th scope="col"></th>';
+      '<th class="align-middle" scope="col" title="Time needed to be invested in hours per day">Hours per Day</th>';
+    tableHTML +=
+      '<th class="align-middle" scope="col" title="Date when Task was added">Add Date</th>';
+    tableHTML +=
+      '<th class="align-middle" scope="col" title="Possible end date for task completion">End Date</th>';
+    tableHTML += '<th class="align-middle" scope="col"></th>';
+    tableHTML += '<th class="align-middle" scope="col"></th>';
     tableHTML += "</tr>";
     tableHTML += "</thead>";
     tableHTML += "<tbody>";
@@ -231,7 +249,12 @@ function displayCalculationList() {
       tableHTML += `<tr data-key=${calculation.taskId}>`;
       tableHTML += '<th scope="row">' + (i + 1) + "</th>";
       tableHTML += "<td>" + calculation.taskName + "</td>";
-      tableHTML += "<td>" + calculation.estimatedHours + "</td>";
+      tableHTML += `<td>${calculation.workedHours} hours</td>`;
+      tableHTML += `<td>${calculation.estimatedHours} hours</td>`;
+      tableHTML += `<td>${(
+        (calculation.workedHours / calculation.estimatedHours) *
+        100
+      ).toFixed(0)}%</td>`;
       tableHTML +=
         "<td>" +
         calculation.desiredTime +

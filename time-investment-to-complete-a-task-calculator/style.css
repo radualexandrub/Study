@@ -28,6 +28,16 @@ body {
   display: flex;
   flex-direction: column;
 }
+@media (min-width: 1200px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
+    /* max-width: 1140px; */
+    max-width: 1366px !important;
+  }
+}
 input {
   color: var(--font-main-color) !important;
   background-color: var(--background-color-secondary) !important;
@@ -63,7 +73,7 @@ footer {
   cursor: pointer;
 }
 .toggle-dark-mode input[type="checkbox"] ~ .dark-mode-icon::before {
-  content: "\f186";
+  content: "\f185";
   position: absolute;
   top: 0;
   left: 0;
@@ -74,5 +84,5 @@ footer {
   color: var(--primary-color);
 }
 .toggle-dark-mode input[type="checkbox"]:checked ~ .dark-mode-icon::before {
-  content: "\f185";
+  content: "\f186";
 }
