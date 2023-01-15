@@ -220,7 +220,7 @@ function displayCalculationList() {
     var tableHTML = '<div class="table-responsive">';
     tableHTML += '<table class="table">';
     tableHTML += "<thead>";
-    tableHTML += "<tr>";
+    tableHTML += "<tr style='color: var(--primary-color)'>";
     tableHTML += '<th class="align-middle" scope="col">#</th>';
     tableHTML += '<th class="align-middle" scope="col">Task Name</th>';
     tableHTML +=
@@ -292,7 +292,7 @@ function displayCalculationList() {
   }
 }
 
-/* Export and Import Tasks List as JSON */
+/* Export Tasks List as JSON */
 function exportListAsJSON() {
   // https://stackoverflow.com/questions/33780271/export-a-json-object-to-a-text-file
   const filename = `TasksList_${new Date().toISOString().slice(0, 10)}.json`;
@@ -311,6 +311,54 @@ function exportListAsJSON() {
   element.click();
 
   document.body.removeChild(element);
+}
+
+/* Import Tasks List from JSON */
+document
+  .getElementById("importJSONFileForm")
+  .addEventListener("submit", importListAsJSON);
+function importListAsJSON(event) {
+  event.preventDefault();
+
+  let file = document.getElementById("JSONFileInput");
+  let importFileOutputMessage = document.getElementById(
+    "importJSONFileFormOutputMessages"
+  );
+  if (!file.value.length) {
+    importFileOutputMessage.innerHTML =
+      '<p class="text-danger">Please select a file to continue.</p>';
+    return;
+  }
+
+  const importListAsJSONonloadCallback = (event) => {
+    methodName = "importListAsJSONonloadCallback()";
+    let tasksListJSON = JSON.parse(event.target.result);
+    console.debug(`${methodName} JSON Read ${JSON.stringify(tasksListJSON)}`);
+
+    // Overwrite or Concatenate to current Tasks list
+    let radioInput = Array.from(
+      document.getElementsByName("JSONFileRadioInputs")
+    ).find((r) => r.checked).value;
+    if (radioInput === "JSONFileRadioConcatenateList") {
+      calculationList = calculationList.concat(tasksListJSON);
+      importFileOutputMessage.innerHTML = `<p>Current Tasks list was concated with Tasks from ${file.files[0].name}.</p>`;
+    } else if (radioInput === "JSONFileRadioOverwriteList") {
+      calculationList = tasksListJSON;
+      importFileOutputMessage.innerHTML = `<p>Current Tasks list was overwrited with Tasks from ${file.files[0].name}.</p>`;
+    }
+
+    localStorage.setItem("calculationList", JSON.stringify(calculationList));
+    displayCalculationList();
+    document.getElementById("importJSONFileForm").reset();
+  };
+
+  let reader = new FileReader();
+  reader.onload = importListAsJSONonloadCallback; // Callback event to run when the file is read
+  reader.readAsText(file.files[0]); // Read the file
+
+  // Note: If form is reset here, then the first radio button is always selected
+  // since everything else is executed before calling the callback function
+  // document.getElementById("importJSONFileForm").reset();
 }
 
 /* Dark Mode */

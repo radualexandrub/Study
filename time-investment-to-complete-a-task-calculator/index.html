@@ -47,7 +47,9 @@
     <div class="container mt-3">
       <div class="d-flex app-header justify-content-between align-items-center">
         <div>
-          <h1>Time Investment to Complete a Task Calculator</h1>
+          <h1 style="color: var(--primary-color)">
+            Time Investment to Complete a Task Calculator
+          </h1>
           <p>
             Find the amount of time needed (in hours per day) in order to
             complete a task in a certain amount of time.
@@ -165,12 +167,13 @@
           class="mr-3"
           >Export List</a
         >
-        <!-- <a
+        <a
           href="#"
-          title="Import List as JSON"
-          onclick="importListAsJSON(event)"
+          title="Import List from JSON"
+          data-toggle="modal"
+          data-target="#importJSONFileModal"
           >Import List</a
-        > -->
+        >
       </div>
     </div>
 
@@ -309,5 +312,98 @@
       </div>
     </div>
     <!-- End of Edit Modal -->
+
+    <!-- Import JSON File Modal -->
+    <div
+      class="modal fade"
+      id="importJSONFileModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="importJSONFileModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <p
+              class="modal-title font-weight-bold"
+              id="importJSONFileModalLabel"
+            >
+              Import Tasks List from JSON file
+            </p>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              title="Close Edit Modal"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="importJSONFileForm" class="d-flex flex-column">
+              <!-- File Input -->
+              <div class="form-group">
+                <label for="JSONFileInput"
+                  >Please select a JSON File containing Tasks</label
+                >
+                <input type="file" id="JSONFileInput" accept=".json" />
+              </div>
+              <!-- Radio Buttons Inputs -->
+              <label
+                >Select whether to overwrite or add to current Tasks list</label
+              >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="JSONFileRadioInputs"
+                  id="JSONFileRadioConcatenateList"
+                  value="JSONFileRadioConcatenateList"
+                  checked="checked"
+                />
+                <label
+                  class="form-check-label"
+                  for="JSONFileRadioConcatenateList"
+                >
+                  Add (Concatenate) to current list
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="JSONFileRadioInputs"
+                  id="JSONFileRadioOverwriteList"
+                  value="JSONFileRadioOverwriteList"
+                />
+                <label
+                  class="form-check-label"
+                  for="JSONFileRadioOverwriteList"
+                >
+                  Overwrite current list
+                </label>
+              </div>
+              <div id="importJSONFileFormOutputMessages" class="mt-3">
+                <!-- Import Output Messages will be displayed here -->
+              </div>
+              <!-- Submit/Upload Button -->
+              <div class="d-flex justify-content-end">
+                <button
+                  type="button"
+                  class="btn btn-secondary mr-2"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Import JSON File Modal -->
   </body>
 </html>
