@@ -1,10 +1,10 @@
-var calculationList = []; // Initialize an empty array to store the calculations
+let calculationList = []; // Initialize an empty array to store the calculations
 
 // Check if the calculationList array is stored in local storage
 if (localStorage.getItem("calculationList")) {
   // If it is, retrieve it from local storage
   calculationList = JSON.parse(localStorage.getItem("calculationList"));
-  displayCalculationList();
+  displayCalculationList(calculationList);
 }
 
 function getFormattedDate(dateString, showDayOfWeek = false) {
@@ -108,7 +108,7 @@ function calculateHoursPerDay(event) {
   )}.</p>`;
 
   // Display the updated calculation list
-  displayCalculationList();
+  displayCalculationList(calculationList);
 
   // Clear all form's inputs
   document.getElementById("addTaskForm").reset();
@@ -209,16 +209,37 @@ function editCalculation(event, action) {
 
     // Save & Display the updated calculationList array to local storage
     localStorage.setItem("calculationList", JSON.stringify(calculationList));
-    displayCalculationList();
+    displayCalculationList(calculationList);
   }
 }
 
-function displayCalculationList() {
+document
+  .getElementById("inputSearchThroughList")
+  .addEventListener("keyup", searchThroughList);
+function searchThroughList(event) {
+  event.preventDefault();
+  let resultedTasksList = [];
+  let searchedText = event.target.value.toLowerCase().trim();
+  for (const task of calculationList) {
+    if (task.taskName.toLowerCase().indexOf(searchedText) !== -1) {
+      resultedTasksList.push(task);
+    }
+  }
+
+  // if input field for Search is empty
+  if (!searchedText) {
+    displayCalculationList(calculationList);
+  } else {
+    displayCalculationList(resultedTasksList);
+  }
+}
+
+function displayCalculationList(list) {
   // Clear the output container
   document.getElementById("outputTable").innerHTML = "";
 
   // Check if the calculationList array is empty
-  if (calculationList.length === 0) {
+  if (list.length === 0) {
     // If it is, display a message
     document.getElementById("outputTable").innerHTML =
       "<p>No calculations to display.</p>";
@@ -250,10 +271,10 @@ function displayCalculationList() {
     tableHTML += "</thead>";
     tableHTML += "<tbody>";
 
-    // Iterate over the calculationList array
-    for (var i = 0; i < calculationList.length; i++) {
+    // Iterate over the list array
+    for (var i = 0; i < list.length; i++) {
       // Get the current calculation
-      var calculation = calculationList[i];
+      var calculation = list[i];
 
       // Construct the HTML for the calculation
       tableHTML += `<tr data-key=${calculation.taskId}>`;
@@ -358,7 +379,7 @@ function importListAsJSON(event) {
     }
 
     localStorage.setItem("calculationList", JSON.stringify(calculationList));
-    displayCalculationList();
+    displayCalculationList(calculationList);
     document.getElementById("importJSONFileForm").reset();
   };
 

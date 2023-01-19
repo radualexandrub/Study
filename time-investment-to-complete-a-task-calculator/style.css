@@ -67,6 +67,23 @@ footer {
 .table {
   color: var(--font-main-color);
 }
+.form-btn-group {
+  width: 100%;
+}
+@media screen and (min-width: 1200px) {
+  .form-btn-group {
+    width: unset;
+  }
+  .search-form {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .search-form input {
+    margin-top: 0;
+    max-width: 16rem;
+  }
+}
 /* Dark mode toggle */
 .toggle-dark-mode {
   position: relative;
