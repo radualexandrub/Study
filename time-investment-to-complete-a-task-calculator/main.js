@@ -114,12 +114,19 @@ function calculateHoursPerDay(event) {
   document.getElementById("addTaskForm").reset();
 }
 
-function deleteCalculation(index) {
-  // Remove the calculation at the given index from the calculationList array
-  calculationList.splice(index, 1);
+function deleteCalculation(event) {
+  const methodName = "deleteCalculation()";
+  let taskIdToDelete =
+    event.target.parentElement.parentElement.getAttribute("data-key");
+  calculationList = calculationList.filter(
+    (task) => task.taskId !== taskIdToDelete
+  );
 
   // Save the updated calculationList array to local storage
   localStorage.setItem("calculationList", JSON.stringify(calculationList));
+  console.debug(
+    `${methodName} task with id=${taskIdToDelete} deleted from list.`
+  );
 
   // Display the updated calculation list
   displayCalculationList();
@@ -279,7 +286,7 @@ function displayCalculationList() {
       tableHTML += `<td><button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#taskEditModal"
             onclick="editCalculation(event, 'openModal')" title="Edit this task">Edit</button></td>`;
       tableHTML += `<td><button type="button" class="btn btn-danger delete-button"
-            onclick="deleteCalculation(${i})" title="Delete this task">X</button></td>`;
+            onclick="deleteCalculation(event)" title="Delete this task">X</button></td>`;
       tableHTML += "</tr>";
     }
 
@@ -295,6 +302,7 @@ function displayCalculationList() {
 /* Export Tasks List as JSON */
 function exportListAsJSON() {
   // https://stackoverflow.com/questions/33780271/export-a-json-object-to-a-text-file
+  const methodName = "exportListAsJSON()";
   const filename = `TasksList_${new Date().toISOString().slice(0, 10)}.json`;
   const jsonStr = JSON.stringify(calculationList);
 
@@ -309,7 +317,9 @@ function exportListAsJSON() {
   document.body.appendChild(element);
 
   element.click();
-
+  console.debug(
+    `${methodName} ${calculationList.length} tasks exported to JSON File.`
+  );
   document.body.removeChild(element);
 }
 
@@ -341,10 +351,10 @@ function importListAsJSON(event) {
     ).find((r) => r.checked).value;
     if (radioInput === "JSONFileRadioConcatenateList") {
       calculationList = calculationList.concat(tasksListJSON);
-      importFileOutputMessage.innerHTML = `<p>Current Tasks list was concated with Tasks from ${file.files[0].name}.</p>`;
+      importFileOutputMessage.innerHTML = `<p>The current Tasks list was concatenated with ${tasksListJSON.length} tasks found from ${file.files[0].name}.</p>`;
     } else if (radioInput === "JSONFileRadioOverwriteList") {
       calculationList = tasksListJSON;
-      importFileOutputMessage.innerHTML = `<p>Current Tasks list was overwrited with Tasks from ${file.files[0].name}.</p>`;
+      importFileOutputMessage.innerHTML = `<p>The current Tasks list was overwritten with ${tasksListJSON.length} tasks found from ${file.files[0].name}.</p>`;
     }
 
     localStorage.setItem("calculationList", JSON.stringify(calculationList));
