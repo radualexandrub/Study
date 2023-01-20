@@ -84,6 +84,15 @@ footer {
     max-width: 16rem;
   }
 }
+.form-checkbox {
+  accent-color: var(--primary-color);
+  width: 1.25em;
+  height: 1.25em;
+}
+td:has(input[type="checkbox"]:checked) ~ td {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
 /* Dark mode toggle */
 .toggle-dark-mode {
   position: relative;

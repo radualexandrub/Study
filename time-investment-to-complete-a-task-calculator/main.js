@@ -79,6 +79,7 @@ function calculateHoursPerDay(event) {
   var calculation = {
     taskId: Math.random().toString(16).slice(2),
     taskName: taskName,
+    checked: false,
     workedHours: 0,
     estimatedHours: estimatedHours,
     desiredTime: desiredTimeInDays,
@@ -129,7 +130,7 @@ function deleteCalculation(event) {
   );
 
   // Display the updated calculation list
-  displayCalculationList();
+  displayCalculationList(calculationList);
 }
 
 let taskIdToEdit;
@@ -213,6 +214,22 @@ function editCalculation(event, action) {
   }
 }
 
+function toggleCheckedTask(event) {
+  taskIdToEdit =
+    event.target.parentElement.parentElement.getAttribute("data-key");
+  taskFoundIndex = calculationList.findIndex(
+    (task) => task.taskId === taskIdToEdit
+  );
+
+  if (event.target.checked) {
+    calculationList[taskFoundIndex].checked = true;
+  } else {
+    calculationList[taskFoundIndex].checked = false;
+  }
+
+  localStorage.setItem("calculationList", JSON.stringify(calculationList));
+}
+
 document
   .getElementById("inputSearchThroughList")
   .addEventListener("keyup", searchThroughList);
@@ -249,6 +266,7 @@ function displayCalculationList(list) {
     tableHTML += '<table class="table">';
     tableHTML += "<thead>";
     tableHTML += "<tr style='color: var(--primary-color)'>";
+    tableHTML += '<th class="align-middle" scope="col"></th>';
     tableHTML += '<th class="align-middle" scope="col">#</th>';
     tableHTML += '<th class="align-middle" scope="col">Task Name</th>';
     tableHTML +=
@@ -278,7 +296,10 @@ function displayCalculationList(list) {
 
       // Construct the HTML for the calculation
       tableHTML += `<tr data-key=${calculation.taskId}>`;
-      tableHTML += '<th scope="row">' + (i + 1) + "</th>";
+      tableHTML += `<td title="Toggle task completion" scope="row"><input ${
+        calculation.checked ? "checked" : ""
+      } class="form-checkbox" type="checkbox" onclick="toggleCheckedTask(event)"></th>`;
+      tableHTML += '<td scope="row">' + (i + 1) + "</th>";
       tableHTML += "<td>" + calculation.taskName + "</td>";
       tableHTML += `<td>${calculation.workedHours} hours</td>`;
       tableHTML += `<td>${calculation.estimatedHours} hours</td>`;
