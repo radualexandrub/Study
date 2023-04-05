@@ -33,9 +33,9 @@ Table of Contents:
 
 ---
 
-## Git basic commands
+# Git basic commands
 
-### git help
+## git help
 
 Display help (all commands) in CLI:
 
@@ -59,7 +59,7 @@ git config --help # is the same as git help config
 git add --help
 ```
 
-### Set up global configuration variables
+## Set up global configuration variables
 
 - Needed to push local repository to GitHub remote server
 - Also useful when working in a team to see who changed the code (with **blame** command)
@@ -75,7 +75,9 @@ git config --list # list all configurations
 
 ---
 
-### Create own local empty repository **_init_** VS. **_clone_** an existing repository as a local repository in your PC
+## Create local empty repo or clone an existing repo
+
+### git init
 
 - Create own local empty repo (**_init_**) (it will create a new folder **_.git_** with all the informations about that repo):
 
@@ -84,7 +86,9 @@ cd my_new_project_folder_name
 git init
 ```
 
-- Copy/Download an existing repo (**_clone_**)
+### git clone
+
+- Copy/Download an existing repo (**_clone_**) as a local repository in your PC
 
 ```bash
 git clone <url> <optional:where_to_clone>
@@ -94,7 +98,7 @@ git clone https://github/username/android-app AndroidAppFolder
 
 ---
 
-### git status
+## git status
 
 ```bash
 git status
@@ -114,7 +118,7 @@ Also, .gitignore should be included (_git add .gitignore_) to prevent a team col
 
 ---
 
-### git diff
+## git diff
 
 Git diff shows the changes made to the code within modified files (git status shows only which files have been modified/created).
 
@@ -124,7 +128,7 @@ git diff
 
 ---
 
-## Git work-flow (on master branch)
+# Git work-flow (on master branch)
 
 - Add files to the staging area (= add all the files that are ready to be commited except the files from _.gitignore_)
 
@@ -207,13 +211,13 @@ NOTE3: git checkout HEAD^1 is roughly the same as git reset HEAD^1, but:
 - Use reset if you want to undo staging of a modified file !!!
 - Use checkout if you want to discard changes to unstaged file/s !!! (however it is still possible to recover lost files with git reflog and cherry-pick, check [locally mistakes section](#mistakes_locally)).
 
-### Schema: Working Directory, Staging Area, Git Remote Repository
+## Schema: Working Directory, Staging Area, Git Remote Repository
 
 ![Git Schema Working Directory](./GitWorkflowDiagram.png)
 
 ---
 
-### Create a new branch from CLI
+## Create a new branch from CLI
 
 - git branch, git checkout
   To create and move to a new branch:
@@ -253,7 +257,7 @@ git push origin --delete <my_branch_ive_worked_on> # globally/definitely delete 
 
 ---
 
-### Git **Complete Workflow** - Work from another branch
+## Git **Complete Workflow** - Work from another branch
 
 ```bash
 git config --global user.name
@@ -263,6 +267,7 @@ git branch <my_new_branch_name>
 git checkout my_new_branch
 # (make changes to the code ...)
 git status
+git add -A
 git commit -m "Add @function in views.py | Solve bug in models.py that fixes #8"
 git push -u origin my_new_branch
 # (wait for unit tests to complete)
@@ -273,13 +278,118 @@ git merge my_new_branch
 git push origin master
 # (now time to delete my_new_branch)
 git branch -d my_new_branch
-git branch -a
+git branch -a # shows/list all branches
 git push origin --delete my_new_branch
 ```
 
+<br/>
+
+(Wednesday, April 05, 2023, 19:43)
+
+**Or, use this step-by-step workflow using stash and a new hotfix/enhancement branch after you just finished writing (and locally testing) the code for the hotfix/enhancement on the main/parent branch:**
+
+1.  Before creating a new branch, ensure that your local repository is up-to-date with the remote repository:
+    -   `git fetch` (This command will download any changes from the remote repository without merging them)
+    -   (optional) `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+
+2.  Stash your code:
+    -   `git stash save "TICKETNUMBER-42 Fixed duplicated TaskComplete request` (This command will save your current changes in the stash with a description message)
+
+3.  Discard changes and checkout to the created hotfix/enhancement branch:
+    -   `git checkout <branch-name>` (This will discard your current changes and switch to the specified branch)
+
+    Best practice is to add the ticket number in the branch name and the commit as well!
+    Example: `git checkout "TICKETNUMBER-42-Fixed-duplicated-request"` (Note branch names don't have spaces ` `)
+
+    Note: If there are still some changes left and you cannot checkout to new branch, run `git reset –-hard` to get rid of any unwanted changes/code modifications. 
+
+4.  Apply the stash:
+    -   `git stash apply` (This command will apply the most recently saved stash)
+
+    Note: You can see before-hand the stashes you have with `git stash list` and apply a stash by its number, such as `git stash apply stash@{0}`.
+    Or you can apply a stash by its name `git stash apply <stash-name>`.
+    You can also use the `git stash pop` command to apply the most recent stash and remove it from the stash list at the same time
+
+    -   Check that the code has been applied correctly with `git status`
+
+5.  Make the necessary changes and commit with a meaningful message:
+    -   `git add <file(s)>` (This command will stage the specified file(s) for commit)
+    -   `git commit -m "TICKETNUMBER-42 Fixed duplicated TaskComplete request"` (This command will commit the changes with a descriptive message)
+
+    Note: You can also run `git commit` (without `-m "message"`) and the commit message that needs to be written will be opened in Vim. In Vim, you can write an even more meaningful commit message with title and bullet points:
+
+    ```
+    TICKETNUMBER-42 Fixed duplicated TaskComplete request
+    - TaskEventHandler.ts: Within onTaskComplete() method, eliminate the need to check again the condition X that sends the TaskComplete request
+    - TaskEventHandler.spec.ts: Modify unit tests to accomodate the change
+    - Note that the request JSON sent to SpringAPI Back-end Server looks like this:
+    {
+      "taskId": 1234,
+      "completedBy": "John Smith",
+      "completedAt": "2023-04-05T14:30:00Z",
+      "notes": "Task to create a build was completed successfully",
+      "isChecked": true
+    }
+    ```
+
+    In other words: Document your changes! If you make changes that are not immediately obvious from the code, make sure to document them in the commit message AND pull request message (it can be the same message for both commit and pull request).
+
+6.  After commit, wait for unit tests to pass.
+
+7.  Push the code to the remote repository:
+    -   `git push -u origin <branch-name>` (This command will push the new branch to the remote repository and set the upstream branch)
+
+    Example: `git push -u origin "TICKETNUMBER-42-Fixed-duplicated-request"`
+
+    Note: If the branch already exists on the remote repository (e.g. was created already on BitBucket / GitHub), you can omit the `-u` flag.
+
+8.  Create a pull request:
+    -   Go to the remote repository (e.g. Bitbucket / GitHub) and create a pull request from the new branch to the parent branch.
+
+9.  Wait for the pull request to be approved by at least two other developers
+
+    Note: Make sure that it has been reviewed by at least one or two other person on your team. This will help catch any bugs or issues before they make it into the main codebase.
+
+10. If you encounter merge conflicts while applying the stash or merging the new branch:
+-   Resolve the conflicts manually by editing the affected files
+-   `git add <file(s)>` (This command will stage the resolved files for commit)
+-   `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
+
+11. (Optional) If you want to rebase your new branch onto the latest version of the parent branch before merging:
+-   `git checkout <parent-branch>` (This command will switch to the parent branch)
+-   `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+-   `git checkout <branch-name>` (This command will switch back to your new branch)
+-   `git rebase <parent-branch>` (This command will apply your new branch's changes on top of the latest parent branch changes)
+-   Resolve any conflicts that arise during the rebase process
+-   `git add <file(s)>` (This command will stage the resolved files for commit)
+-   `git rebase --continue` (This command will continue the rebase process after resolving conflicts)
+-   `git push -f` (This command will force push the rebased new branch to the remote repository)
+
+    Note: Rebasing a branch can alter the commit history and should be used with caution. It is also important to communicate any changes made to the branch with other team members who may have been working on it.
+
+12. Merge the code:
+    -   Once the pull request has been approved, merge the new branch:
+    -   `git checkout <parent-branch>` (This command will switch to the parent branch)
+    -   `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+    -   `git merge --no-ff <branch-name>` (This command will merge the new branch into the parent branch without fast-forwarding)
+    -   Resolve any conflicts that arise during the merge process
+    -   `git add <file(s)>` (This command will stage the resolved files for commit)
+    -   `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
+    -   `git push` (This command will push the merged changes to the remote repository)
+
+13.  Checkout to parent branch:
+    -   `git checkout <parent-branch>` (This command will switch to the parent branch)
+
+14.  Delete hotfix/enhancement branch:
+    -   `git branch -d <branch-name>` (This command will delete the specified branch locally)
+    -   `git push origin --delete <branch-name>` (This command will delete the specified branch on the remote repository)
+
+
+<br/>
+
 ---
 
-### Create a new repo from a locally existing/completed project (mini-workflow)
+## Create a new repo from a locally existing/completed project (mini-workflow)
 
 - On GitHub.com website:
   - Create a new repository (write name & description)
@@ -302,9 +412,9 @@ git push origin master
 
 ---
 
-## Locally Mistakes that could've been made
+# Locally Mistakes that could've been made
 
-### If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):
+## If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):
 
 ```bash
 git checkout single_file.py
@@ -322,7 +432,7 @@ Also, if we want to delete/get rid of untracked files (newly created files):
 git clean -fd # force directories
 ```
 
-### We mess up a commit -m message. We want to modify the last commit message without doing another commit
+## We mess up a commit -m message. We want to modify the last commit message without doing another commit
 
 **WARNING: The following commands in this section will change the hash of previous commits => THIS WILL CHANGE _GIT HISTORY_ => IF OTHER PEOPLE WILL PULL THE CHANGES AFTER EXECUTING THESE COMMANDS, THE CHANGED HISTORY COULD CAUSE BIG PROBLEMS TO THEIR REPOSITORIES. We can only change git history when we're the only one owners of the repository.**
 
@@ -330,7 +440,7 @@ git clean -fd # force directories
 git commit --amend -m "Corrected commit message"
 ```
 
-### We forgot to add a file to the last commit. We want the add the file without commiting again.
+## We forgot to add a file to the last commit. We want the add the file without commiting again.
 
 ```bash
 git add file.c # get the file in the staging area
@@ -339,7 +449,7 @@ git log --stat # show file changes in commits
 # The last commit hash will be changed, so the git history will be changed
 ```
 
-### We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch
+## We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch
 
 ```bash
 # from master's branch
@@ -439,7 +549,7 @@ git diff [1b818d3] [hash from revert commit]
 
 ---
 
-## Using the **`git stash`** command ("temporary" commits)
+# Using the **`git stash`** command ("temporary" commits)
 
 Useful for changes that you are not ready to commit yet, but you need to switch branches (or revert back to another code) work temporarily in another part of the project.
 NOTE: If you don't commit your changes (modified files) and you switch to another branch, your code will be lost.
@@ -481,7 +591,7 @@ NOTE: **The same stash list is accesible to every branch** => Useful scenario: I
 
 <hr/>
 
-## Discard / Drop local changes in Git
+# Discard / Drop local changes in Git
 
 From: **How to discard your local changes in Git** / **Remove and revert uncommitted Git changes**
 https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/remove-revert-discard-local-uncommitted-changes-Git-how-to
@@ -491,7 +601,7 @@ There are two Git commands a developer must use in order to discard all local ch
 The commands to discard all local changes in Git are:
 
 ```bash
-git reset –hard
+git reset –-hard
 git clean -fxd
 ```
 
@@ -503,16 +613,16 @@ Explanation:
   - `x` This allows removing all untracked files, including build products. This can be used (possibly in conjunction with git restore or git reset) to create a pristine working directory to test a clean build.
   - `f` / `--force`
 
+<br/>
+<br/>
+
 <hr/>
 
-## Find me on my Social's
+_Find me on my Social Pages_
 
-**_My portfolio:_** [radubulai.com](https://radualexandrub.github.io/)<br>
-**_My blog:_** [CodingTranquillity](https://codingtranquillity.herokuapp.com/)
+🌍 My portfolio: **[radubulai.com](https://radubulai.com/)**
 
-<a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.mixcloud.com/radu-alexandru7" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/mixcloud.svg" alt="RaduAlexandru" height="28" width="28" /></a>&nbsp;&nbsp;
+🥂 Social:<br/>
+<a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" /></a>
+<a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://img.shields.io/badge/dev.to-2B627C?style=flat&logo=devdotto" alt="radualexandrub" /></a>
+<a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://img.shields.io/badge/-Hackerrank-3F6328?style=flat&logo=HackerRank" alt="RaduAlexandruB" /></a>

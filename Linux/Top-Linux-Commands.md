@@ -838,6 +838,18 @@ grep -A 4 -rnia ./ -e "OutOfMemoryError"
 
 <br/>
 
+## pdfgrep
+
+[Search text within multiple pdfs and docs - askubuntu.com](https://askubuntu.com/questions/558812/search-text-within-multiple-pdfs-and-docs)
+
+```bash
+sudo apt install pdfgrep
+```
+
+If you know where your PDF files are, you can simplify the command to just `pdfgrep -r "my expression"` where `-r` searches recursively through directories.
+
+<br/>
+
 # Disk usage commands
 
 ## du
