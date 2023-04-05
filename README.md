@@ -145,4 +145,4 @@ Other Apps / Repos:
 
 The Documentation and the Software created from these notes are released under the [MIT license](LICENSE).
 
-Copyright © 2022 [Radu-Alexandru Bulai](https://github.com/radualexandrub)
+Copyright (c) 2020-2023 [Radu-Alexandru Bulai](https://github.com/radualexandrub)

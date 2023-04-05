@@ -8,7 +8,9 @@ Table of Contents:
 - [Git basic commands](#git-basic-commands)
   - [git help](#git-help)
   - [Set up global configuration variables](#set-up-global-configuration-variables)
-  - [Create own local empty repository **_init_** VS. **_clone_** an existing repository as a local repository in your PC](#create-own-local-empty-repository-init-vs-clone-an-existing-repository-as-a-local-repository-in-your-pc)
+  - [Create local empty repo or clone an existing repo](#create-local-empty-repo-or-clone-an-existing-repo)
+    - [git init](#git-init)
+    - [git clone](#git-clone)
   - [git status](#git-status)
   - [git diff](#git-diff)
 - [Git work-flow (on master branch)](#git-work-flow-on-master-branch)
@@ -17,19 +19,18 @@ Table of Contents:
   - [Git **Complete Workflow** - Work from another branch](#git-complete-workflow---work-from-another-branch)
   - [Create a new repo from a locally existing/completed project (mini-workflow)](#create-a-new-repo-from-a-locally-existingcompleted-project-mini-workflow)
 - [Locally Mistakes that could've been made](#locally-mistakes-that-couldve-been-made)
-  - [If we made changes to a single_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):](#if-we-made-changes-to-a-single_file-but-then-we-dont-want-to-keep-the-changes-to-that-file-anymore-we-want-to-undogo-back)
+  - [If we made changes to a single\_file but then we don't want to keep the changes to that file anymore (we want to undo/go back):](#if-we-made-changes-to-a-single_file-but-then-we-dont-want-to-keep-the-changes-to-that-file-anymore-we-want-to-undogo-back)
   - [We mess up a commit -m message. We want to modify the last commit message without doing another commit](#we-mess-up-a-commit--m-message-we-want-to-modify-the-last-commit-message-without-doing-another-commit)
   - [We forgot to add a file to the last commit. We want the add the file without commiting again.](#we-forgot-to-add-a-file-to-the-last-commit-we-want-the-add-the-file-without-commiting-again)
   - [We made commits to the master branch instead of our working branch. Fix: we "move" a commit(hash) to the master and return the state of the master branch](#we-made-commits-to-the-master-branch-instead-of-our-working-branch-fix-we-move-a-commithash-to-the-master-and-return-the-state-of-the-master-branch)
-- [Types of git resets](#types-of-git-resets)
-  - [**_SOFT RESET_**](#soft-reset)
-  - [**_MIXED RESET_** (DEFAULT)](#mixed-reset-default)
-  - [**_HARD RESET_**](#hard-reset)
-- [**Fatal: We did a hard reset on some changes but we realized that we actually need them: `git reflog` (or we deleted last commits)**](#fatal-we-did-a-hard-reset-on-some-changes-but-we-realized-that-we-actually-need-them-git-reflog-or-we-deleted-last-commits)
-- [Undoing a commit after pushing to remote server. Fix **without changing the git history**](#undoing-a-commit-after-pushing-to-remote-server-fix-without-changing-the-git-history)
+  - [Types of git resets](#types-of-git-resets)
+    - [**_SOFT RESET_**](#soft-reset)
+    - [**_MIXED RESET_** (DEFAULT)](#mixed-reset-default)
+    - [**_HARD RESET_**](#hard-reset)
+  - [**Fatal: We did a hard reset on some changes but we realized that we actually need them: `git reflog` (or we deleted last commits)**](#fatal-we-did-a-hard-reset-on-some-changes-but-we-realized-that-we-actually-need-them-git-reflog-or-we-deleted-last-commits)
+  - [Undoing a commit after pushing to remote server. Fix **without changing the git history**](#undoing-a-commit-after-pushing-to-remote-server-fix-without-changing-the-git-history)
 - [Using the **`git stash`** command ("temporary" commits)](#using-the-git-stash-command-temporary-commits)
 - [Discard / Drop local changes in Git](#discard--drop-local-changes-in-git)
-- [Find me on my Social's](#find-me-on-my-socials)
 
 ---
 
@@ -286,35 +287,40 @@ git push origin --delete my_new_branch
 
 (Wednesday, April 05, 2023, 19:43)
 
-**Or, use this step-by-step workflow using stash and a new hotfix/enhancement branch after you just finished writing (and locally testing) the code for the hotfix/enhancement on the main/parent branch:**
+<u>**Or, use this step-by-step workflow using stash and a new hotfix/enhancement branch after you just finished writing (and locally testing) the code for the hotfix/enhancement on the main/parent branch:**</u>
 
 1.  Before creating a new branch, ensure that your local repository is up-to-date with the remote repository:
-    -   `git fetch` (This command will download any changes from the remote repository without merging them)
-    -   (optional) `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+
+    - `git fetch` (This command will download any changes from the remote repository without merging them)
+    - (optional) `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
 
 2.  Stash your code:
-    -   `git stash save "TICKETNUMBER-42 Fixed duplicated TaskComplete request` (This command will save your current changes in the stash with a description message)
+
+    - `git stash save "TICKETNUMBER-42 Fixed duplicated TaskComplete request` (This command will save your current changes in the stash with a description message)
 
 3.  Discard changes and checkout to the created hotfix/enhancement branch:
-    -   `git checkout <branch-name>` (This will discard your current changes and switch to the specified branch)
+
+    - `git checkout <branch-name>` (This will discard your current changes and switch to the specified branch)
 
     Best practice is to add the ticket number in the branch name and the commit as well!
     Example: `git checkout "TICKETNUMBER-42-Fixed-duplicated-request"` (Note branch names don't have spaces ` `)
 
-    Note: If there are still some changes left and you cannot checkout to new branch, run `git reset –-hard` to get rid of any unwanted changes/code modifications. 
+    Note: If there are still some changes left and you cannot checkout to new branch, run `git reset –-hard` to get rid of any unwanted changes/code modifications.
 
 4.  Apply the stash:
-    -   `git stash apply` (This command will apply the most recently saved stash)
+
+    - `git stash apply` (This command will apply the most recently saved stash)
 
     Note: You can see before-hand the stashes you have with `git stash list` and apply a stash by its number, such as `git stash apply stash@{0}`.
     Or you can apply a stash by its name `git stash apply <stash-name>`.
     You can also use the `git stash pop` command to apply the most recent stash and remove it from the stash list at the same time
 
-    -   Check that the code has been applied correctly with `git status`
+    - Check that the code has been applied correctly with `git status`
 
 5.  Make the necessary changes and commit with a meaningful message:
-    -   `git add <file(s)>` (This command will stage the specified file(s) for commit)
-    -   `git commit -m "TICKETNUMBER-42 Fixed duplicated TaskComplete request"` (This command will commit the changes with a descriptive message)
+
+    - `git add <file(s)>` (This command will stage the specified file(s) for commit)
+    - `git commit -m "TICKETNUMBER-42 Fixed duplicated TaskComplete request"` (This command will commit the changes with a descriptive message)
 
     Note: You can also run `git commit` (without `-m "message"`) and the commit message that needs to be written will be opened in Vim. In Vim, you can write an even more meaningful commit message with title and bullet points:
 
@@ -337,53 +343,59 @@ git push origin --delete my_new_branch
 6.  After commit, wait for unit tests to pass.
 
 7.  Push the code to the remote repository:
-    -   `git push -u origin <branch-name>` (This command will push the new branch to the remote repository and set the upstream branch)
+
+    - `git push -u origin <branch-name>` (This command will push the new branch to the remote repository and set the upstream branch)
 
     Example: `git push -u origin "TICKETNUMBER-42-Fixed-duplicated-request"`
 
     Note: If the branch already exists on the remote repository (e.g. was created already on BitBucket / GitHub), you can omit the `-u` flag.
 
 8.  Create a pull request:
-    -   Go to the remote repository (e.g. Bitbucket / GitHub) and create a pull request from the new branch to the parent branch.
+
+    - Go to the remote repository (e.g. Bitbucket / GitHub) and create a pull request from the new branch to the parent branch.
 
 9.  Wait for the pull request to be approved by at least two other developers
 
     Note: Make sure that it has been reviewed by at least one or two other person on your team. This will help catch any bugs or issues before they make it into the main codebase.
 
 10. If you encounter merge conflicts while applying the stash or merging the new branch:
--   Resolve the conflicts manually by editing the affected files
--   `git add <file(s)>` (This command will stage the resolved files for commit)
--   `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
+
+    - Resolve the conflicts manually by editing the affected files
+    - `git add <file(s)>` (This command will stage the resolved files for commit)
+    - `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
 
 11. (Optional) If you want to rebase your new branch onto the latest version of the parent branch before merging:
--   `git checkout <parent-branch>` (This command will switch to the parent branch)
--   `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
--   `git checkout <branch-name>` (This command will switch back to your new branch)
--   `git rebase <parent-branch>` (This command will apply your new branch's changes on top of the latest parent branch changes)
--   Resolve any conflicts that arise during the rebase process
--   `git add <file(s)>` (This command will stage the resolved files for commit)
--   `git rebase --continue` (This command will continue the rebase process after resolving conflicts)
--   `git push -f` (This command will force push the rebased new branch to the remote repository)
 
-    Note: Rebasing a branch can alter the commit history and should be used with caution. It is also important to communicate any changes made to the branch with other team members who may have been working on it.
+    - `git checkout <parent-branch>` (This command will switch to the parent branch)
+    - `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+    - `git checkout <branch-name>` (This command will switch back to your new branch)
+    - `git rebase <parent-branch>` (This command will apply your new branch's changes on top of the latest parent branch changes)
+    - Resolve any conflicts that arise during the rebase process
+    - `git add <file(s)>` (This command will stage the resolved files for commit)
+    - `git rebase --continue` (This command will continue the rebase process after resolving conflicts)
+    - `git push -f` (This command will force push the rebased new branch to the remote repository)
 
-12. Merge the code:
-    -   Once the pull request has been approved, merge the new branch:
-    -   `git checkout <parent-branch>` (This command will switch to the parent branch)
-    -   `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
-    -   `git merge --no-ff <branch-name>` (This command will merge the new branch into the parent branch without fast-forwarding)
-    -   Resolve any conflicts that arise during the merge process
-    -   `git add <file(s)>` (This command will stage the resolved files for commit)
-    -   `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
-    -   `git push` (This command will push the merged changes to the remote repository)
+Note: Rebasing a branch can alter the commit history and should be used with caution. It is also important to communicate any changes made to the branch with other team members who may have been working on it.
 
-13.  Checkout to parent branch:
-    -   `git checkout <parent-branch>` (This command will switch to the parent branch)
+1.  Merge the code:
 
-14.  Delete hotfix/enhancement branch:
-    -   `git branch -d <branch-name>` (This command will delete the specified branch locally)
-    -   `git push origin --delete <branch-name>` (This command will delete the specified branch on the remote repository)
+    - Once the pull request has been approved, merge the new branch:
+    - `git checkout <parent-branch>` (This command will switch to the parent branch)
+    - `git pull` (This command will fetch and merge any changes from the remote repository into your local repository)
+    - `git merge --no-ff <branch-name>` (This command will merge the new branch into the parent branch without fast-forwarding)
+    - Resolve any conflicts that arise during the merge process
+    - `git add <file(s)>` (This command will stage the resolved files for commit)
+    - `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
+    - `git push` (This command will push the merged changes to the remote repository)
 
+2.  Checkout to parent branch:
+
+    - `git checkout <parent-branch>` (This command will switch to the parent branch)
+
+3.  Delete hotfix/enhancement branch:
+
+    - `git branch -d <branch-name>` (This command will delete the specified branch locally)
+    - `git push origin --delete <branch-name>` (This command will delete the specified branch on the remote repository)
 
 <br/>
 
