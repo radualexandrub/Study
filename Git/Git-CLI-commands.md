@@ -156,6 +156,7 @@ git reset [file.ext]
 ```
 
 - Git log shows all the made commits (with hash number, author, date of each commit). By default, the log opens in Vim text editor.
+Keywords: `show all commits`, `see all commits`
 
 ```bash
 git log
