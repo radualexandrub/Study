@@ -4,7 +4,7 @@ This is a simple web application that helps you plan and track your progress on 
 
 🚀 [App Live Link](https://radubulai.com/Study/time-investment-to-complete-a-task-calculator)
 
-![](./TimeInvestmentCalculator_01.jpg)
+![](./screenshots/TimeInvestmentCalculator_01.jpg)
 
 <br>
 
@@ -555,7 +555,7 @@ Output:
 
 I hope these examples give you some ideas of how to use the app! Let me know if you have any questions.
 
-![](./TimeInvestmentCalculator_ChatGPT.jpg)
+![](./screenshots/TimeInvestmentCalculator_ChatGPT.jpg)
 
 **_My commentary here: the last example is kind of funny as it doesn't make any sense_**
 

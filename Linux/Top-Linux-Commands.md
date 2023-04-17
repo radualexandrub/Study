@@ -16,36 +16,39 @@ Notes taken from:
 Table of Contents:
 
 - [Basic Linux Commands](#basic-linux-commands)
-	- [touch, echo, cat, head, tail, less](#touch-echo-cat-head-tail-less)
-	- [mkdir, rmdir, rm](#mkdir-rmdir-rm)
-	- [split](#split)
-	- [ls, cd, open](#ls-cd-open)
-	- [mv, cp](#mv-cp)
-	- [wc](#wc)
+  - [touch, echo, cat, head, tail, less](#touch-echo-cat-head-tail-less)
+  - [mkdir, rmdir, rm](#mkdir-rmdir-rm)
+  - [split](#split)
+  - [ls, cd, open](#ls-cd-open)
+  - [mv, cp](#mv-cp)
+  - [wc](#wc)
 - [Piping commands](#piping-commands)
 - [Expansions](#expansions)
-- [Searching and Sorting](#searching-and-sorting)
-	- [sort](#sort)
-	- [uniq](#uniq)
-	- [find](#find)
-	- [ack](#ack)
-	- [grep](#grep)
+- [Searching, Sorting, Replacing](#searching-sorting-replacing)
+  - [sort](#sort)
+  - [uniq](#uniq)
+  - [find](#find)
+  - [ack](#ack)
+  - [grep](#grep)
+  - [pdfgrep](#pdfgrep)
+  - [sed](#sed)
 - [Disk usage commands](#disk-usage-commands)
-	- [du](#du)
-	- [df](#df)
+  - [du](#du)
+  - [df](#df)
 - [history](#history)
 - [Processes](#processes)
-	- [ps, htop](#ps-htop)
-	- [kill](#kill)
-	- [killall](#killall)
-	- [jobs, bg, fg](#jobs-bg-fg)
+  - [ps, htop](#ps-htop)
+  - [kill](#kill)
+  - [killall](#killall)
+  - [jobs, bg, fg](#jobs-bg-fg)
 - [gzip, tar](#gzip-tar)
+- [wget](#wget)
 - [xargs](#xargs)
-	- [xargs multiple commands](#xargs-multiple-commands)
-	- [More xargs examples](#more-xargs-examples)
+  - [xargs multiple commands](#xargs-multiple-commands)
+  - [More xargs examples](#more-xargs-examples)
 - [Permissions](#permissions)
-	- [chmod](#chmod)
-	- [Making a bash script executable](#making-a-bash-script-executable)
+  - [chmod](#chmod)
+  - [Making a bash script executable](#making-a-bash-script-executable)
 
 <br/>
 
@@ -571,7 +574,7 @@ More on expansions here: https://linuxcommand.org/lc3_lts0080.php
 
 <br/>
 
-# Searching and Sorting
+# Searching, Sorting, Replacing
 
 ## sort
 
@@ -846,7 +849,92 @@ grep -A 4 -rnia ./ -e "OutOfMemoryError"
 sudo apt install pdfgrep
 ```
 
-If you know where your PDF files are, you can simplify the command to just `pdfgrep -r "my expression"` where `-r` searches recursively through directories.
+Search text within multiple PDFs by using `pdfgrep -r "my expression"` where `-r` searches recursively through directories.
+
+```bash
+# Example
+pdfgrep -B 4 -A 4 -rnia ./ -e "storage.*limitation"
+```
+
+<br/>
+
+## sed
+
+(Monday, April 17, 2023)
+
+SED command in UNIX stands for stream editor and it can perform lots of functions on file like searching, find and replace, insertion or deletion. However, most common use of **SED command is for substitution or for find and replace**. Syntax: `sed OPTIONS... [SCRIPT] [INPUTFILE...]`
+
+Example: `sed 's/unix/linux/g' sedExample.txt`, where:
+
+- `s` specifies the substitution operation
+- `/` is a delimiter, where the “unix” is the search pattern and the “linux” is the replacement string
+- `/g` the substitute flag (global replacement) specifies the sed command to replace all the occurrences of the string in the line
+
+```bash
+cat sedExample.txt
+# Unix is great OS. unix is opensource. unix is a free os.
+# Operating Unix is a great skill to know in 2023
+
+sed 's/unix/linux/g' sedExample.txt
+# Unix is great OS. linux is opensource. linux is a free os.
+# Operating Unix is a great skill to know in 2023
+
+# ^^ Note that the above command was case sensitive and "Unix" was not replaced
+```
+
+![](./Top-Linux-Commands-imgs/sed_01.jpg)
+
+- for case insensitive we can use `/i` flag: `sed 's/unix/linux/gi' sedExample.txt`
+
+![](./Top-Linux-Commands-imgs/sed_02.jpg)
+
+<br/>
+
+Another example: Parenthesize first character of each word:
+
+```bash
+echo "Welcome aboard, Captain!" | sed 's/\(\b[A-Z]\)/\(\1\)/gi'
+# (W)elcome (a)board, (C)aptain!
+```
+
+![](./Top-Linux-Commands-imgs/sed_03.jpg)
+
+<br/>
+
+Another more complex example:
+
+```bash
+sed -i s/${bamboo.POM_LEAD_VERSION}.${bamboo.POM_VERSION}/${bamboo.releaseBuildNumber}/g ./pom.xml
+```
+
+- `sed`: This is the command to invoke the sed tool for text editing.
+- `-i`: This option tells sed to edit the file in place, meaning the changes will be made directly to the file `pom.xml` without creating a backup.
+- `s/`: This is the beginning of a substitution command in sed, indicating that text substitution is going to take place.
+- `${bamboo.POM_LEAD_VERSION}.${bamboo.POM_VERSION}`: This is a regular expression pattern that will be searched for in the file `pom.xml`. It appears to be a placeholder for a version number, likely read from a Bamboo build system variable or property called `bamboo.POM_LEAD_VERSION` and `bamboo.POM_VERSION`.
+- `/`: This is a delimiter that separates the search pattern from the replacement pattern in the sed command.
+- `${bamboo.releaseBuildNumber}`: This is the replacement pattern that will replace the matched pattern in `pom.xml`. It appears to be another Bamboo build system variable or property called `bamboo.releaseBuildNumber`.
+- `/`: This is another delimiter that separates the replacement pattern from the options in the sed command.
+- `g`: This is an option that tells sed to perform the substitution globally, meaning it will replace all occurrences of the search pattern in the file, not just the first occurrence.
+- `./pom.xml`: This is the path to the file `pom.xml` on which the sed command will be applied. The `.` indicates the current directory where the command is executed.
+
+Let's say the value of `bamboo.POM_LEAD_VERSION` is "1.0" and the value of `bamboo.POM_VERSION` is "SNAPSHOT" and the value of `bamboo.releaseBuildNumber` is "12". The `pom.xml` file contains the following line:
+
+```xml
+<version>1.0.SNAPSHOT</version>
+```
+
+After running the sed command you provided, the `pom.xml` file will be modified in place, and the line will be changed to:
+
+```xml
+<version>12</version>
+```
+
+<br/>
+
+Some of the above notes for `sed` command were taken from:
+
+- https://www.geeksforgeeks.org/sed-command-in-linux-unix-with-examples/
+- https://stackoverflow.com/questions/20802056/python-regular-expression-1
 
 <br/>
 
@@ -1175,6 +1263,28 @@ tar -czvf MyArchiveName.tar.gz file1 file2 file3
 # Decompress and extract files from archive
 tar -xf MyArchiveName.tar.gz
 ```
+
+<br/>
+
+# wget
+
+Wget command is the non-interactive network downloader which is used to download files from the server even when the user has not logged on to the system and it can work in the background without hindering the current process. Syntax: `wget [option] [URL]`
+
+Examples:
+
+1. To simply a webpage: `wget http://example.com/sample.php`
+
+2. To download the file in background: `wget -b http://www.example.com/samplepage.php`
+
+3. To overwrite the log while of the wget command: `wget http://www.example.com/filename.txt -o /path/filename.txt`
+
+4. To resume a partially downloaded file: `wget -c http://example.com/samplefile.tar.gz`
+
+![](./Top-Linux-Commands-imgs/wget_01.jpg)
+
+<br/>
+
+Notes from: https://www.geeksforgeeks.org/wget-command-in-linux-unix/.
 
 <br/>
 

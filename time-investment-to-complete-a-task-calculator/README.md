@@ -36,13 +36,13 @@ Contents:
 
 ## Screenshots
 
-![](./TimeInvestmentCalculator_02.jpg)
+![](./screenshots/TimeInvestmentCalculator_02.jpg)
 
-![](./TimeInvestmentCalculator_03.jpg)
+![](./screenshots/TimeInvestmentCalculator_03.jpg)
 
-![](./TimeInvestmentCalculator_04.jpg)
+![](./screenshots/TimeInvestmentCalculator_04.jpg)
 
-![](./TimeInvestmentCalculator_05.jpg)
+![](./screenshots/TimeInvestmentCalculator_05.jpg)
 
 <br/>
 
