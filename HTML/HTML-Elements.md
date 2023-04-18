@@ -1,3 +1,125 @@
+Table of Contents:
+
+- [Modals](#modals)
+  - [Vanilla JavaScript and CSS Modal Popup](#vanilla-javascript-and-css-modal-popup)
+- [Navbars](#navbars)
+  - [Responsive Navbar with Animated Dropdowns](#responsive-navbar-with-animated-dropdowns)
+  - [Navbar from Sass Portfolio tutorial](#navbar-from-sass-portfolio-tutorial)
+  - [Responsive Navigation Bar - DevEd](#responsive-navigation-bar---deved)
+  - [Responsive Navigation Bar 2](#responsive-navigation-bar-2)
+
+# Modals
+
+## Vanilla JavaScript and CSS Modal Popup
+
+(April 17, 2023, 23:52)
+
+Credits to modal code from https://daily-dev-tips.com/posts/vanilla-javascript-modal-pop-up/ (https://codepen.io/rebelchris/pen/MWyyLXR) with slight modifications:
+
+Note: This modal can be closed by clicking anywhere outside modal!
+
+![Vanilla JavaScript and CSS Modal Popup](./HTML-Elements-imgs/modal-vanillajs-css-popup01.jpg)
+
+HTML:
+
+```html
+<div class="container">
+  <button data-modal="modal-one">Open Modal</button>
+</div>
+
+<div class="modal" id="modal-one">
+  <div class="modal__bg modal__exit"></div>
+  <div class="modal__container">
+    <h2>Amazing Modal</h2>
+    <p>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et ut eos fugit
+      corrupti adipisci repellendus repudiandae nulla soluta, esse eligendi
+      aliquid qui hic illum neque natus quos ab libero! Praesentium, ipsa
+      debitis deserunt sunt laboriosam molestias voluptates deleniti dolores
+      officiis eligendi magnam tenetur eaque neque. Exercitationem illo adipisci
+      necessitatibus alias!
+    </p>
+    <button class="modal__close modal__exit">X</button>
+  </div>
+</div>
+```
+
+CSS:
+
+```css
+.container {
+  /* delete this CSS class when copying the modal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal.modal__open {
+  visibility: visible;
+  opacity: 1;
+}
+.modal__bg {
+  position: absolute;
+  background: rgba(0, 0, 0, 50%);
+  width: 100%;
+  height: 100%;
+}
+.modal__container {
+  border-radius: 0.725rem;
+  background: #fff;
+  position: relative;
+  width: calc(90% - 2rem);
+  padding: 1.5rem;
+}
+.modal__close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  outline: none;
+  appearance: none;
+  color: #000;
+  background: none;
+  border: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+```
+
+JavaScript:
+
+```js
+const VanillaJSModals = document.querySelectorAll("[data-modal]");
+VanillaJSModals.forEach(function (modalTrigger) {
+  modalTrigger.addEventListener("click", function (event) {
+    event.preventDefault();
+    const modal = document.getElementById(modalTrigger.dataset.modal);
+    modal.classList.add("modal__open");
+    const modalExits = modal.querySelectorAll(".modal__exit");
+    modalExits.forEach(function (exit) {
+      exit.addEventListener("click", function (event) {
+        event.preventDefault();
+        modal.classList.remove("modal__open");
+      });
+    });
+  });
+});
+```
+
+<br/>
+
 # Navbars
 
 ## Responsive Navbar with Animated Dropdowns
@@ -9,10 +131,14 @@ Credits:
 🔴 Not usable in real world applications.
 
 ```html
-  <title>Responsive Navigation with Animated Dropdown</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css"
-    integrity="sha512-0/rEDduZGrqo4riUlwqyuHDQzp2D1ZCgH/gFIfjMIL5az8so6ZiXyhf1Rg8i6xsjv+z/Ubc4tt1thLigEcu6Ug=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<title>Responsive Navigation with Animated Dropdown</title>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css"
+  integrity="sha512-0/rEDduZGrqo4riUlwqyuHDQzp2D1ZCgH/gFIfjMIL5az8so6ZiXyhf1Rg8i6xsjv+z/Ubc4tt1thLigEcu6Ug=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 ```
 
 <br/>
@@ -51,13 +177,17 @@ Most of the navbar is hardcoded (the height and the position absolute of the ite
               <a href="#">Pricing</a>
             </li>
             <li>
-              <a href="#">Portfolio <i class="icon ion-md-arrow-dropdown"></i></a>
+              <a href="#"
+                >Portfolio <i class="icon ion-md-arrow-dropdown"></i
+              ></a>
               <ul class="sub-menu">
                 <li><a href="#">Ecommerce Sites</a></li>
                 <li><a href="#">Showcase Sites</a></li>
                 <li><a href="#">Landing Pages</a></li>
                 <li>
-                  <a href="#">Mobile Apps <i class="icon ion-md-arrow-dropdown"></i></a>
+                  <a href="#"
+                    >Mobile Apps <i class="icon ion-md-arrow-dropdown"></i
+                  ></a>
                   <ul class="sub-menu">
                     <li><a href="#">Android</a></li>
                     <li><a href="#">iOS</a></li>
@@ -84,11 +214,9 @@ Most of the navbar is hardcoded (the height and the position absolute of the ite
       </div>
     </div>
   </header>
-  
+
   <main>
-  	<section class="container">
-    	Lorem Ipsum
-    </section>
+    <section class="container">Lorem Ipsum</section>
   </main>
 </body>
 ```
@@ -114,7 +242,7 @@ Most of the navbar is hardcoded (the height and the position absolute of the ite
 }
 
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
 }
 
@@ -159,7 +287,7 @@ header {
 .navbar nav {
   width: 100%;
   height: var(--nav-height);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
 }
@@ -225,13 +353,13 @@ header {
 }
 
 /* Show submenus on hover */
-.navbar .nav-list li:hover>.sub-menu {
+.navbar .nav-list li:hover > .sub-menu {
   transform: translateY(-5rem);
   opacity: 1;
   visibility: visible;
 }
 
-.navbar .sub-menu li:hover>.sub-menu {
+.navbar .sub-menu li:hover > .sub-menu {
   transform: translateX(100%);
 }
 
@@ -282,7 +410,7 @@ header {
     z-index: 99;
   }
 
-  .navbar .nav-list>li {
+  .navbar .nav-list > li {
     line-height: var(--nav-height);
   }
 
@@ -298,7 +426,7 @@ header {
     display: none;
   }
 
-  .navbar .nav-list li:hover>.sub-menu {
+  .navbar .nav-list li:hover > .sub-menu {
     transform: none;
     opacity: 1;
     visibility: visible;
@@ -351,9 +479,11 @@ header {
 **JavaScript**
 
 ```js
-document.querySelector(".navbar .menu-icons").addEventListener("click", function () {
-  document.querySelector(".navbar nav").classList.toggle('active');
-});
+document
+  .querySelector(".navbar .menu-icons")
+  .addEventListener("click", function () {
+    document.querySelector(".navbar nav").classList.toggle("active");
+  });
 ```
 
 ![Navbar Example Mobile](./HTML-Elements-imgs/navbar-dropdown02.jpg)
@@ -407,9 +537,7 @@ This navbar has nice "hamburger" to "close" button animation and also transition
 
   <main>
     <section>
-    	<p>
-        Lorem ipsum...
-      </p>
+      <p>Lorem ipsum...</p>
     </section>
   </main>
 </body>
@@ -485,7 +613,7 @@ a {
   transform: translateX(0);
 }
 
-.nav .menu-nav__item.active>a {
+.nav .menu-nav__item.active > a {
   color: #40d0fc;
 }
 
@@ -690,9 +818,7 @@ This navbar doesn't depend on `position: absolute` elements (except the mobile n
 
   <main>
     <section class="section container">
-      <p>
-        Lorem ipsum...
-      </p>
+      <p>Lorem ipsum...</p>
     </section>
   </main>
 </body>
@@ -774,7 +900,7 @@ body {
   font-weight: 600;
 }
 
-.nav-list li+li {
+.nav-list li + li {
   margin-left: 1rem;
 }
 
@@ -806,8 +932,6 @@ body {
   transform: rotate(45deg) translate(-3px, -6px);
 }
 
-
-
 @media screen and (max-width: 1024px) {
   .nav .container {
     position: relative;
@@ -819,7 +943,7 @@ body {
     padding: 0 1rem;
   }
 
-  .nav-list li+li {
+  .nav-list li + li {
     margin-left: 0;
     margin-top: 1rem;
   }
@@ -885,11 +1009,13 @@ function navSlide() {
       if (link.style.animation) {
         link.style.animation = ``;
       } else {
-        link.style.animation = `navLinkFade 400ms ease-in-out forwards ${index / 15 + 0.15}s`;
+        link.style.animation = `navLinkFade 400ms ease-in-out forwards ${
+          index / 15 + 0.15
+        }s`;
       }
     });
 
-    burgerMenu.classList.toggle('nav-burger-toggle');
+    burgerMenu.classList.toggle("nav-burger-toggle");
   });
 }
 
@@ -910,7 +1036,7 @@ Also, this navbar auto-collapses it's menu on mobile when user clicks/taps outsi
 
 Further more, it's easy to change the container of the navbar to be full-width or be the same as the whole web page container. Also it is easy to reorganize to support "Call to Action" buttons on the right side, while keeping the menu on the middle (center). For this, we can set to `.nav .container` a property of `justify-content: space-between;`, and we can also set on each child of that container a `flex-grow: 1` (for logo left), `flex-grow: 2` (for the middle main menu center) and `flex-grow: 1` (for the right CTA buttons) --- also we can get rid of `margin-left: auto`.
 
- ✅This navbar is usable in real-word simple applications (it doesn't have any dropdown functionality)
+✅This navbar is usable in real-word simple applications (it doesn't have any dropdown functionality)
 
 **HTML**
 
@@ -940,8 +1066,7 @@ Further more, it's easy to change the container of the navbar to be full-width o
     </nav>
   </header>
 
-  <main>
-  </main>
+  <main></main>
 </body>
 ```
 
@@ -961,7 +1086,7 @@ body {
 }
 
 :root {
-  --primary-color: #2B627C;
+  --primary-color: #2b627c;
   --primary-color: rgb(43, 98, 124);
   --primary-color-op95: rgba(43, 98, 124, 0.95);
   --primary-light-color: rgb(191, 236, 255);
@@ -1033,7 +1158,7 @@ body {
   color: rgba(255, 255, 255, 1);
 }
 
-.nav-list li+li {
+.nav-list li + li {
   margin-left: 1rem;
 }
 
@@ -1066,8 +1191,6 @@ body {
   transform: rotate(45deg) translate(-3px, -6px);
 }
 
-
-
 @media screen and (max-width: 1024px) {
   .nav .container {
     position: relative;
@@ -1079,7 +1202,7 @@ body {
     padding: 0 1rem;
   }
 
-  .nav-list li+li {
+  .nav-list li + li {
     margin-left: 0;
     margin-top: 2rem;
   }
@@ -1146,18 +1269,21 @@ function navSlide() {
       document.querySelector(".nav-fixed").style.top = "0";
     } else {
       document.querySelector(".nav-fixed").style.top = "-5rem";
-      if (navList.classList.contains("nav-list-active") && burgerMenu.classList.contains('nav-burger-toggle')) {
+      if (
+        navList.classList.contains("nav-list-active") &&
+        burgerMenu.classList.contains("nav-burger-toggle")
+      ) {
         navLinks.forEach(function (link, index) {
           if (link.style.animation) {
             link.style.animation = ``;
           }
         });
         navList.classList.remove("nav-list-active");
-        burgerMenu.classList.remove('nav-burger-toggle');
+        burgerMenu.classList.remove("nav-burger-toggle");
       }
     }
     prevScrollpos = currentScrollPos;
-  }
+  };
 
   burgerMenu.addEventListener("click", function () {
     navList.classList.toggle("nav-list-active");
@@ -1166,26 +1292,35 @@ function navSlide() {
       if (link.style.animation) {
         link.style.animation = ``;
       } else {
-        link.style.animation = `navLinkFade 400ms ease-in-out forwards ${index / 15 + 0.15}s`;
+        link.style.animation = `navLinkFade 400ms ease-in-out forwards ${
+          index / 15 + 0.15
+        }s`;
       }
     });
 
-    burgerMenu.classList.toggle('nav-burger-toggle');
+    burgerMenu.classList.toggle("nav-burger-toggle");
   });
 
-  document.querySelector('body').addEventListener("click", function (e) {
-    if (e.target !== burgerMenu && e.target !== navList && e.target !== navLinks) {
-      if (navList.classList.contains("nav-list-active") && burgerMenu.classList.contains('nav-burger-toggle')) {
+  document.querySelector("body").addEventListener("click", function (e) {
+    if (
+      e.target !== burgerMenu &&
+      e.target !== navList &&
+      e.target !== navLinks
+    ) {
+      if (
+        navList.classList.contains("nav-list-active") &&
+        burgerMenu.classList.contains("nav-burger-toggle")
+      ) {
         navLinks.forEach(function (link, index) {
           if (link.style.animation) {
             link.style.animation = ``;
           }
         });
         navList.classList.remove("nav-list-active");
-        burgerMenu.classList.remove('nav-burger-toggle');
+        burgerMenu.classList.remove("nav-burger-toggle");
       }
     }
-  })
+  });
 }
 
 navSlide();

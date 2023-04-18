@@ -19,7 +19,8 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 * [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
 * [Build a Responsive Website - HTML, CSS Grid, Flexbox & More - Brad Traversy](./CSS/BuildResponsiveWebsiteHTML.md)
 * [HTML Forms and Forms Customization with CSS, and JS Form Validation](./CSS/HTMLFormsAndCustomization.md)
-* [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md) 
+* [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md)
+* [HTML, CSS & Vanilla JS Ready-to-use elements - modals, navbars, etc](./HTML/HTML-Elements.md)
 
 ### **JavaScript**
 
