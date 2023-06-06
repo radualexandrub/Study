@@ -52,6 +52,24 @@ Table of Contents:
 
 <br/>
 
+For reference: A table listing some popular Linux distributions along with their associated operating systems and the package managers they use:
+
+| Distribution | Associated Operating Systems | Package Manager | Possible Desktop Environments |
+| --- | --- | --- | --- |
+| Red Hat | CentOS, Fedora, Oracle Linux, Rocky Linux | RPM | GNOME, KDE, Xfce, Cinnamon, LXQt |
+| Debian | Ubuntu, Linux Mint, KDE neon, Zorin OS, Kali Linux, Pop! OS, MX Linux, Elementary OS, Raspberry Pi OS | APT | GNOME, KDE, Xfce, Cinnamon, LXQt, MATE |
+| Arch Linux | Manjaro, Antergos, EndeavourOS, ArcoLinux | Pacman | GNOME, KDE, Xfce, Cinnamon, LXQt |
+| SUSE Linux | openSUSE, SUSE Linux Enterprise Server | Zypper | GNOME, KDE, Xfce, LXQt |
+| Slackware | Absolute Linux, Zenwalk Linux, Slax | pkgtools | Xfce, Fluxbox, KDE, MATE |
+| Gentoo | Sabayon, Funtoo, Calculate Linux | Portage | GNOME, KDE, Xfce, LXQt, MATE |
+| Alpine Linux | postmarketOS, Adélie Linux, NixOS | APK | XFCE, i3, Fluxbox, MATE |
+| Mageia | OpenMandriva, PCLinuxOS, ROSA Linux | urpmi | GNOME, KDE, Xfce, LXQt |
+| Solus | Budgie, GNOME, MATE, Plasma | eopkg | Budgie, GNOME, MATE, Plasma |
+| Void Linux | Artix Linux, Obarun, Adélie Linux | XBPS | Xfce, Cinnamon, Enlightenment, MATE |
+| macOS | - | Homebrew | Aqua (default) |
+
+Note: macOS is a proprietary operating system (is not a Linux distribution) developed by Apple and differs significantly from Linux distributions in terms of its core architecture and package management.
+
 <br/>
 
 **Bash Shortcuts**

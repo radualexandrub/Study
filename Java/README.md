@@ -2320,6 +2320,200 @@ public class Main {
 
 # Java Enums
 
+Notes from: https://www.w3schools.com/java/java_enums.asp
+
+An `enum` is a special "class" that represents a group of constants (unchangeable variables, like `final` variables).
+
+Simple Enum Example:
+
+```java
+public class Main {
+  enum Level {
+    LOW,
+    MEDIUM,
+    HIGH
+  }
+
+  public static void main(String[] args) {
+    Level myVar = Level.MEDIUM;
+
+    System.out.println(myVar); // prints "MEDIUM"
+    switch(myVar) {
+      case LOW:
+        System.out.println("Low level");
+        break;
+      case MEDIUM:
+         System.out.println("Medium level");
+        break;
+      case HIGH:
+        System.out.println("High level");
+        break;
+    }
+
+
+    // Loop through an Enum
+    for (Level myVar : Level.values()) {
+      System.out.println(myVar);
+    }
+    /* will print
+      LOW
+      MEDIUM
+      HIGH
+    */
+  }
+}
+```
+
+<br/>
+
+## Enums in a class example
+
+> prompt: You're Java Expert. Can you write a real-world scenario using Java enums? use a class, inside that class have an enum (besides other properties), then in the main class, give an example where you're comparing two enums from instances of a class.
+
+```java
+package enumExample;
+class Employee {
+    private String name;
+    private Department department;
+    enum Department {
+        SALES,
+        MARKETING,
+        IT,
+        HR
+    }
+
+    public Employee(String name, Department department) {
+        this.name = name;
+        this.department = department;
+    }
+    public String getName() {
+        return name;
+    }
+    public Department getDepartment() {
+        return department;
+    }
+}
+
+// Main class
+public class EnumExample {
+    public static void main(String[] args) {
+        Employee employee1 = new Employee("John", Employee.Department.SALES);
+        Employee employee2 = new Employee("Jane", Employee.Department.MARKETING);
+
+        // Compare the departments of two employees
+        if (employee1.getDepartment() == employee2.getDepartment()) {
+            System.out.println("Both employees belong to the same department.");
+        } else {
+            System.out.println("Employees belong to different departments.");
+        }
+    }
+}
+```
+
+![](./LearnJava_imgs/java_enums01.jpg)
+
+<br/>
+
+## Enhanced/Extended Enums with constructors
+
+Let's enhance the previous example by adding a few additional features to the Employee class and the Department enum:
+
+```java
+package enumExample;
+import java.util.ArrayList;
+import java.util.List;
+
+class Employee {
+    private String name;
+    private Department department;
+    private List<Role> roles;
+
+    enum Department {
+        /* Each enum constant (e.g., SALES, MARKETING, etc.)
+        is created with a specific argument,
+        and the constructor assigns the argument value
+        to the displayName field of each enum constant.
+        */
+        SALES("Sales Department"),
+        MARKETING("Marketing Department"),
+        IT("IT Department"),
+        HR("Human Resources Department");
+
+        private final String displayName;
+
+        Department(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    enum Role {
+        MANAGER,
+        DEVELOPER,
+        ANALYST,
+        INTERN
+    }
+
+    // Constructor
+    public Employee(String name, Department department, List<Role> roles) {
+        this.name = name;
+        this.department = department;
+        this.roles = roles;
+    }
+    // Getters and setters
+    public String getName() {
+        return name;
+    }
+    public Department getDepartment() {
+        return department;
+    }
+    public List<Role> getRoles() {
+        return roles;
+    }
+}
+
+// Main class
+public class EnumExample {
+    public static void main(String[] args) {
+        // Create instances of Employee
+        List<Employee.Role> roles1 = new ArrayList<>();
+        roles1.add(Employee.Role.DEVELOPER);
+        roles1.add(Employee.Role.ANALYST);
+        Employee employee1 = new Employee("John", Employee.Department.IT, roles1);
+
+        List<Employee.Role> roles2 = new ArrayList<>();
+        roles2.add(Employee.Role.MANAGER);
+        Employee employee2 = new Employee("Jane", Employee.Department.SALES, roles2);
+
+        // Compare the department of one employee
+        if (employee1.getDepartment() == Employee.Department.IT) {
+            System.out.println(String.format("%s is in %s", employee1.getName(), employee1.getDepartment().getDisplayName()));
+            // Prints "John is in IT Department"
+        }
+
+        // Check if an employee has a specific role (e.g., developer) by using the contains method of the List interface.
+        if (employee1.getRoles().contains(Employee.Role.DEVELOPER)) {
+            System.out.println(employee1.getName() + " is a developer."); // John is a developer.
+        }
+
+        // List all departments
+        System.out.println("Departments:");
+        for (Employee.Department department : Employee.Department.values()) {
+            System.out.println(department.getDisplayName());
+        }
+        /* Will print 
+          Sales Department
+          Marketing Department
+          IT Department
+          Human Resources Department
+        */
+    }
+}
+```
+
 <br/>
 
 # Sets, ArrayLists, LinkedLists
@@ -3525,3 +3719,5 @@ This functionality – _java.util.stream_ – supports functional-style operatio
 <br/>
 
 ## Java Stream.reduce
+
+lorem

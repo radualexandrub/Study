@@ -156,7 +156,7 @@ git reset [file.ext]
 ```
 
 - Git log shows all the made commits (with hash number, author, date of each commit). By default, the log opens in Vim text editor.
-Keywords: `show all commits`, `see all commits`
+Keywords: `show all commits`, `see all commits`, `see last commits`, `show last commits`
 
 ```bash
 git log
@@ -303,6 +303,8 @@ git push origin --delete my_new_branch
 
     - `git checkout <branch-name>` (This will discard your current changes and switch to the specified branch)
 
+    Note: To create a new branch from CLI use `-b` flag: `git checkout -b <branch-name>`
+
     Best practice is to add the ticket number in the branch name and the commit as well!
     Example: `git checkout "TICKETNUMBER-42-Fixed-duplicated-request"` (Note branch names don't have spaces ` `)
 
@@ -378,7 +380,7 @@ git push origin --delete my_new_branch
 
 Note: Rebasing a branch can alter the commit history and should be used with caution. It is also important to communicate any changes made to the branch with other team members who may have been working on it.
 
-1.  Merge the code:
+12.  Merge the code:
 
     - Once the pull request has been approved, merge the new branch:
     - `git checkout <parent-branch>` (This command will switch to the parent branch)
@@ -389,11 +391,11 @@ Note: Rebasing a branch can alter the commit history and should be used with cau
     - `git commit -m "<commit-message>"` (This command will commit the changes with a descriptive message)
     - `git push` (This command will push the merged changes to the remote repository)
 
-2.  Checkout to parent branch:
+13.  Checkout to parent branch:
 
     - `git checkout <parent-branch>` (This command will switch to the parent branch)
 
-3.  Delete hotfix/enhancement branch:
+14.  Delete hotfix/enhancement branch:
 
     - `git branch -d <branch-name>` (This command will delete the specified branch locally)
     - `git push origin --delete <branch-name>` (This command will delete the specified branch on the remote repository)
