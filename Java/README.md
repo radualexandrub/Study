@@ -10,63 +10,114 @@ Credits / Notes taken from:
 Table of Contents:
 
 - [Java Tutorial](#java-tutorial)
-	- [Java Introduction](#java-introduction)
-	- [First Java Project](#first-java-project)
+  - [Java Introduction](#java-introduction)
+  - [First Java Project](#first-java-project)
 - [Java Syntax / Keywords](#java-syntax--keywords)
-	- [Classes](#classes)
-	- [Package](#package)
-	- [Final keyword](#final-keyword)
-	- [Naming Conventions](#naming-conventions)
+  - [Classes](#classes)
+  - [Package](#package)
+  - [Final keyword](#final-keyword)
+  - [Naming Conventions](#naming-conventions)
 - [Java Data Types and Operators](#java-data-types-and-operators)
-	- [Primitive Data Types](#primitive-data-types)
-	- [Type Casting](#type-casting)
-	- [Java Operators](#java-operators)
-	- [Java Math functions](#java-math-functions)
+  - [Primitive Data Types](#primitive-data-types)
+  - [Type Casting](#type-casting)
+  - [Java Operators](#java-operators)
+  - [Java Math functions](#java-math-functions)
 - [Java User Input and Scanners](#java-user-input-and-scanners)
 - [Java Strings and String Methods](#java-strings-and-string-methods)
 - [Java Built-in default Arrays](#java-built-in-default-arrays)
-	- [Array Methods](#array-methods)
+  - [Array Methods](#array-methods)
 - [Java Conditions and Loops](#java-conditions-and-loops)
-	- [Java Conditions](#java-conditions)
-	- [Java Loops](#java-loops)
-		- [for each loops](#for-each-loops)
+  - [Java Conditions](#java-conditions)
+  - [Java Loops](#java-loops)
+    - [for each loops](#for-each-loops)
 - [Java Functions / Methods](#java-functions--methods)
-	- [Lambda functions](#lambda-functions)
+  - [Lambda functions](#lambda-functions)
 - [Java OOP](#java-oop)
-	- [Static vs non-static (public) methods](#static-vs-non-static-public-methods)
-	- [Constructors](#constructors)
-	- [Modifiers](#modifiers)
-		- [Access modifiers](#access-modifiers)
-		- [Non-access modifiers](#non-access-modifiers)
-	- [Encapsulation](#encapsulation)
-	- [Inheritance](#inheritance)
-	- [Abstraction](#abstraction)
-	- [Java Interface](#java-interface)
-	- [Java Inner Classes](#java-inner-classes)
+  - [Static vs non-static (public) methods](#static-vs-non-static-public-methods)
+  - [Constructors](#constructors)
+  - [Modifiers](#modifiers)
+    - [Access modifiers](#access-modifiers)
+    - [Non-access modifiers](#non-access-modifiers)
+  - [Encapsulation](#encapsulation)
+  - [Inheritance](#inheritance)
+  - [Abstraction](#abstraction)
+  - [Java Interface](#java-interface)
+  - [Java Inner Classes](#java-inner-classes)
 - [Java Enums](#java-enums)
+  - [Enums in a class example](#enums-in-a-class-example)
+  - [Enhanced/Extended Enums with constructors](#enhancedextended-enums-with-constructors)
 - [Sets, ArrayLists, LinkedLists](#sets-arraylists-linkedlists)
-	- [Java Sets / Hashsets](#java-sets--hashsets)
-	- [Java ArrayList](#java-arraylist)
-	- [Java LinkedList](#java-linkedlist)
-	- [Java Maps](#java-maps)
+  - [Java Sets / Hashsets](#java-sets--hashsets)
+  - [Java ArrayList](#java-arraylist)
+  - [Java LinkedList](#java-linkedlist)
+  - [Java Maps](#java-maps)
 - [HashMaps](#hashmaps)
-	- [TreeMap](#treemap)
+  - [TreeMap](#treemap)
 - [Examples](#examples)
-	- [LinkedList of HashMaps:](#linkedlist-of-hashmaps)
-	- [LinkedList of objects](#linkedlist-of-objects)
+  - [LinkedList of HashMaps:](#linkedlist-of-hashmaps)
+  - [LinkedList of objects](#linkedlist-of-objects)
 - [Java Stream](#java-stream)
-	- [Java Stream.reduce](#java-streamreduce)
+  - [Java Stream.reduce and Stream.filter](#java-streamreduce-and-streamfilter)
+    - [Example 01 Stream.reduce](#example-01-streamreduce)
+    - [Example 02 Stream.filter and Stream.sum](#example-02-streamfilter-and-streamsum)
+    - [Example 03 Stream.reduce to find max value](#example-03-streamreduce-to-find-max-value)
+    - [More on Stream.reduce and Stream.filter](#more-on-streamreduce-and-streamfilter)
 
 ## Java Introduction
 
-[to be updated]
+Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying computer architecture _(Note from https://endoflife.date/java - Saturday, June 10, 2023)_.
 
-- **Java Frameworks**
-  - [Spring](https://spring.io/) - lightweight web application development framework used for Enterprise Java (JEE)
-  - [Hibernate](https://hibernate.org/) - object-relational mapping framework for relational database management systems (RDBMS)
-  - [JSF (JavaServer Faces)](https://www.oracle.com/java/technologies/javaserverfaces.html)
-  - [GWT (Google Web Toolkit)](http://www.gwtproject.org/)
-  - See also: [10 of the Most Popular Java Frameworks of 2020](https://stackify.com/10-of-the-most-popular-java-frameworks-of-2020/) and [Top 10 Java Frameworks You Should Know](https://www.edureka.co/blog/java-frameworks/)
+Java versions 17, 11 and 8 are the currently supported _long-term support (LTS)_ versions.
+
+**Java versions table**
+
+| Java Version | Release Date | LTS | Major Changes/Features                                                                                                                                                 | End of Public Updates | End of Extended Support | JVM Implementation  | Security Enhancements                                                                                                      | Deprecated Features                                                                                                               |
+| ------------ | ------------ | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Java SE 1    | Jan 23, 1996 | No  |                                                                                                                                                                        |                       |                         |                     |                                                                                                                            |                                                                                                                                   |
+| Java SE 2    | Dec 4, 1998  | No  |                                                                                                                                                                        |                       |                         |                     |                                                                                                                            |                                                                                                                                   |
+| Java SE 3    | May 8, 2000  | No  |                                                                                                                                                                        |                       |                         |                     |                                                                                                                            |                                                                                                                                   |
+| Java SE 4    | Feb 6, 2002  | No  | Enhanced performance and scalability, introduction of assert keyword, Java Web Start                                                                                   | Oct 30, 2008          | -                       | Oracle JDK          | -                                                                                                                          | -                                                                                                                                 |
+| Java SE 5    | Sep 30, 2004 | No  | Generics, enhanced for loop, autoboxing/unboxing, varargs, enum types, annotations, improved security with JVM and language-level enhancements                         | Oct 8, 2009           | -                       | Oracle JDK, OpenJDK | -                                                                                                                          | -                                                                                                                                 |
+| Java SE 6    | Dec 11, 2006 | No  | Scripting support with the introduction of the javax.script package, improved performance and stability, integration of JAXB for XML processing                        | Feb 3, 2013           | -                       | Oracle JDK, OpenJDK | -                                                                                                                          | -                                                                                                                                 |
+| Java SE 7    | Jul 28, 2011 | No  | Switch statement enhancements, try-with-resources statement, diamond operator for generic instance creation, support for dynamic languages with invokedynamic bytecode | Apr 2015              | -                       | Oracle JDK, OpenJDK | Security enhancements, including stronger algorithm implementations, secure random number generation, SSL/TLS improvements | -                                                                                                                                 |
+| Java SE 8    | Mar 18, 2014 | Yes | Lambda expressions, Stream API, Date and Time API (java.time package), default and static methods in interfaces, Nashorn JavaScript engine                             | Mar 2022              | Mar 2025                | Oracle JDK, OpenJDK | Improved security, including enhanced SSL/TLS support, stronger cryptographic algorithms                                   | Some features and APIs marked as deprecated, including some Date and Time classes                                                 |
+| Java SE 9    | Sep 21, 2017 | No  | Modularity with the introduction of the Java Platform Module System (JPMS), REPL tool (JShell), new version-string scheme, improved garbage collection                 | Mar 2018              | Mar 2025                | Oracle JDK, OpenJDK | Enhanced security with the introduction of new security APIs, improved cryptography                                        | Some features and APIs marked as deprecated, including some deprecated Java EE and CORBA modules                                  |
+| Java SE 10   | Mar 20, 2018 | No  | Local variable type inference with the var keyword, JIT compiler enhancements, standardized and simplified JVM logs                                                    | Sep 2018              | -                       | Oracle JDK, OpenJDK | Security enhancements, including the addition of new root certificates                                                     | Some features and APIs marked as deprecated, including the JavaFX module                                                          |
+| Java SE 11   | Sep 25, 2018 | Yes | Long-term support (LTS) release, removal of Java EE and CORBA modules, introduction of HttpClient API, launch single-file source-code programs with java command       | Sep 2023              | Sep 2026                | Oracle JDK, OpenJDK | Enhanced security with TLS 1.3 support, cryptographic improvements, stronger algorithms                                    | Some features and APIs marked as deprecated, including some deprecated Java EE modules                                            |
+| Java SE 12   | Mar 19, 2019 | No  | Switch expressions (preview feature), improvements to garbage collection, microbenchmarking with JMH (Java Microbenchmark Harness)                                     | Sep 2019              | -                       | Oracle JDK, OpenJDK | Security enhancements, including stronger encryption algorithms, secure random number generation                           | Some features and APIs marked as deprecated, including the Nashorn JavaScript engine                                              |
+| Java SE 13   | Sep 17, 2019 | No  | Text blocks (preview feature), improvements to garbage collection, dynamic CDS archives                                                                                | Mar 2020              | -                       | Oracle JDK, OpenJDK | Enhanced security, including stronger cryptographic algorithms and secure random number generation                         | Some features and APIs marked as deprecated, including some APIs in the java.sql and java.desktop packages                        |
+| Java SE 14   | Mar 17, 2020 | No  | Records (preview feature), pattern matching for instanceof (preview feature), improved NullPointerException messages                                                   | Sep 2020              | -                       | Oracle JDK, OpenJDK | Enhanced security with the introduction of the Secure Hash Algorithm 3 (SHA-3)                                             | Some features and APIs marked as deprecated, including the Nashorn JavaScript engine                                              |
+| Java SE 15   | Sep 15, 2020 | No  | Sealed classes (preview feature), hidden classes, ZGC (garbage collector) enhancements                                                                                 | Mar 2021              | -                       | Oracle JDK, OpenJDK | Enhanced security with the introduction of the Edwards-curve Digital Signature Algorithm (EdDSA)                           | Some features and APIs marked as deprecated, including the Security Manager and the Concurrent Mark Sweep (CMS) garbage collector |
+| Java SE 16   | Mar 16, 2021 | No  | Records, pattern matching for instanceof, foreign function and memory API (Incubator), Unix-Domain Socket Channel                                                      | Sep 2021              | -                       | Oracle JDK, OpenJDK | Enhanced security, including stronger algorithms and protocols                                                             | Some features and APIs marked as deprecated, including the Security Manager and some APIs in the java.xml.bind package            |
+| Java SE 17   | Sep 14, 2021 | Yes | Sealed classes, pattern matching for switch (standard feature), preview features removed (incubator features finalized), improved security algorithms and protocols    | Sep 2025              | Sep 2028                | Oracle JDK, OpenJDK | Enhanced security with the introduction of the Edwards-curve Digital Signature Algorithm (EdDSA), improved TLS support     | Some features and APIs marked as deprecated, including the Security Manager                                                       |
+
+<br/>
+
+**Official Java-related sources:**
+
+- Oracle Java SE Documentation: https://docs.oracle.com/en/java/javase/index.html
+- OpenJDK: https://openjdk.java.net/
+- Java SE Release Notes: https://www.oracle.com/java/technologies/javase/jdk-relnotes-index.html
+
+<br/>
+
+**Java Frameworks**
+
+- [Spring](https://spring.io/) - lightweight web application development framework used for Enterprise Java (JEE)
+  - [Spring vs Spring Boot](https://www.baeldung.com/spring-vs-spring-boot) - Spring Boot is basically an extension of the Spring framework, which eliminates the boilerplate configurations required for setting up a Spring application.
+- [Hibernate](https://hibernate.org/) - object-relational mapping framework for relational database management systems (RDBMS)
+- [JSF (JavaServer Faces)](https://www.oracle.com/java/technologies/javaserverfaces.html)
+- [GWT (Google Web Toolkit)](http://www.gwtproject.org/)
+- See also: [10 of the Most Popular Java Frameworks of 2020](https://stackify.com/10-of-the-most-popular-java-frameworks-of-2020/) and [Top 10 Java Frameworks You Should Know](https://www.edureka.co/blog/java-frameworks/)
+
+<br/>
+
+**Notes on deprecated features from the above table**
+
+- **JavaFX**
+  - JavaFX is a Java library used to develop Desktop applications as well as Rich Internet Applications (RIA). The applications built in JavaFX, can run on multiple platforms including Web, Mobile and Desktops. JavaFX is intended to replace swing in Java applications as a GUI framework (_from https://www.javatpoint.com/javafx-tutorial_).
+  - JavaFX will be removed from the Java JDK as of JDK 11, which is due in September 2018. It is bundled in the current JDK 9 and will remain in JDK 10, due this spring. Commercial support for JavaFX in JDK 8 will continue through at least 2022 ([Source from infoworld.com](https://www.infoworld.com/article/3261066/javafx-will-be-removed-from-the-java-jdk.html)).
+  - E.g. tutorial for creating GUI (Graphical User Interface) Java applications using JavaFX: [JavaFX GUI Full Course ☕ - 4h20m, posted on 22-Mar-2021](https://www.youtube.com/watch?v=9XJicRt_FaI)
 
 <br/>
 
@@ -185,7 +236,7 @@ public static void main(String[] args) {
   System.out.println("Hello " + userName); // Hello Alex
 
   int x = 1, y = 2, z = 3;
-	System.out.println(x + y + z); // 6
+  System.out.println(x + y + z); // 6
 }
 ```
 
@@ -215,14 +266,14 @@ By default you can override existing values of attributes (obviously) - https://
 ```java
 public class Main {
 
-	int x = 5;
+  int x = 5;
 
-	public static void main(String[] args) {
-		Main obj = new Main();
-		obj.x = 8;
+  public static void main(String[] args) {
+    Main obj = new Main();
+    obj.x = 8;
 
-		System.out.println(obj.x); // 8
-	}
+    System.out.println(obj.x); // 8
+  }
 }
 ```
 
@@ -231,14 +282,14 @@ If you don't want the ability to override existing values, declare the attribute
 ```java
 public class Main {
 
-	final int x = 5;
+  final int x = 5;
 
-	public static void main(String[] args) {
-		Main obj = new Main();
-		obj.x = 8; // Error: The final field Main.x cannot be assigned
+  public static void main(String[] args) {
+    Main obj = new Main();
+    obj.x = 8; // Error: The final field Main.x cannot be assigned
 
-		System.out.println(obj.x);
-	}
+    System.out.println(obj.x);
+  }
 }
 ```
 
@@ -412,11 +463,11 @@ Example:
 
 ```java
 public class Main {
-	public static final int MAX_SECONDS = 25;
+  public static final int MAX_SECONDS = 25;
 
-	public static void main(String[] args) {
-		System.out.println(MAX_SECONDS); // 25
-	}
+  public static void main(String[] args) {
+    System.out.println(MAX_SECONDS); // 25
+  }
 }
 ```
 
@@ -498,10 +549,10 @@ https://www.freecodecamp.org/news/java-string-to-int-how-to-convert-a-string-to-
 ```java
 String str = "25";
 try {
-		int number = Integer.parseInt(str);
-		System.out.println(number); // output = 25
+    int number = Integer.parseInt(str);
+    System.out.println(number); // output = 25
 } catch (NumberFormatException ex){
-		ex.printStackTrace();
+    ex.printStackTrace();
 }
 ```
 
@@ -513,10 +564,10 @@ try {
 ```java
 String str = "25";
 try {
-		Integer number = Integer.valueOf(str);
-		System.out.println(number); // output = 25
+    Integer number = Integer.valueOf(str);
+    System.out.println(number); // output = 25
 } catch (NumberFormatException ex){
-		ex.printStackTrace();
+    ex.printStackTrace();
 }
 ```
 
@@ -596,7 +647,7 @@ Increment / Decrement:
 
 ```java
 public static void main(String[] args) {
-	System.out.println(Math.max(5.4, 10)); // prints 10.0
+  System.out.println(Math.max(5.4, 10)); // prints 10.0
 }
 ```
 
@@ -609,13 +660,13 @@ import java.util.DoubleSummaryStatistics;
 import java.util.Arrays;
 
 public class Main {
-	public static void main(String[] args) {
-		double[] numberArr = {2.3, 4.5, 8.94, 4.42, 11.5};
+  public static void main(String[] args) {
+    double[] numberArr = {2.3, 4.5, 8.94, 4.42, 11.5};
 
-		DoubleSummaryStatistics stat = Arrays.stream(numberArr).summaryStatistics();
-		System.out.println(stat.getMin());
-		System.out.println(stat.getMax());
-	}
+    DoubleSummaryStatistics stat = Arrays.stream(numberArr).summaryStatistics();
+    System.out.println(stat.getMin());
+    System.out.println(stat.getMax());
+  }
 }
 ```
 
@@ -744,13 +795,13 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Scanner scannerObj = new Scanner(System.in);
-		System.out.print("Enter username: ");
+  public static void main(String[] args) {
+    Scanner scannerObj = new Scanner(System.in);
+    System.out.print("Enter username: ");
 
-		String userName = scannerObj.nextLine();
-		System.out.println("Username: " + userName);
-	}
+    String userName = scannerObj.nextLine();
+    System.out.println("Username: " + userName);
+  }
 }
 
 // Enter username: Daniel
@@ -850,15 +901,15 @@ import java.util.Scanner;
 class Main {
   public static void main(String[] args) {
 
-	  Scanner scannerObj = new Scanner(System.in);
-	  String[] names = new String[4];
+    Scanner scannerObj = new Scanner(System.in);
+    String[] names = new String[4];
 
-	  for (int idx = 0; idx < names.length; idx++) {
-		  System.out.println("Input: ");
-		  names[idx] = scannerObj.nextLine();
-	  }
+    for (int idx = 0; idx < names.length; idx++) {
+      System.out.println("Input: ");
+      names[idx] = scannerObj.nextLine();
+    }
 
-	  System.out.println(Arrays.toString(names));
+    System.out.println(Arrays.toString(names));
   }
 }
 /*
@@ -938,9 +989,9 @@ System.out.println("hello".equals("hello")); // true
 import java.util.Arrays;
 
 public class Main {
-	public static void main(String[] args) {
-		System.out.println(Arrays.toString("hello world. all good".split("\\s+"))); // split by space
-	}
+  public static void main(String[] args) {
+    System.out.println(Arrays.toString("hello world. all good".split("\\s+"))); // split by space
+  }
 }
 // [hello, world., all, good]
 ```
@@ -961,8 +1012,8 @@ System.out.println("hello world, all good".split("\\s+").length); // 4
 
 ```java
 public static void main(String[] args) {
-	String greeting = new StringBuilder("Hello").reverse().toString();
-	System.out.println(greeting); // olleH
+  String greeting = new StringBuilder("Hello").reverse().toString();
+  System.out.println(greeting); // olleH
 }
 ```
 
@@ -1194,13 +1245,13 @@ https://www.programcreek.com/2013/09/top-10-methods-for-java-arrays/
 import java.util.Arrays;
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		int arr[] = {32, -76, 34, 12, 3, 37, 54, 21, 49};
-		Arrays.sort(arr);
+    int arr[] = {32, -76, 34, 12, 3, 37, 54, 21, 49};
+    Arrays.sort(arr);
 
-		System.out.println(Arrays.toString(arr)); // [-76, 3, 12, 21, 32, 34, 37, 49, 54]
-	}
+    System.out.println(Arrays.toString(arr)); // [-76, 3, 12, 21, 32, 34, 37, 49, 54]
+  }
 }
 ```
 
@@ -1222,20 +1273,20 @@ public class Main {
 import java.time.LocalDateTime; // needs Java 8
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		int hour = LocalDateTime.now().getHour();
+    int hour = LocalDateTime.now().getHour();
 
-		if (hour >= 5 && hour < 12) {
-			System.out.println("Good morning");
-		} else if (hour < 18) {
-			System.out.println("Good afternoon");
-		} else {
-			System.out.println("Good evening");
-		}
+    if (hour >= 5 && hour < 12) {
+      System.out.println("Good morning");
+    } else if (hour < 18) {
+      System.out.println("Good afternoon");
+    } else {
+      System.out.println("Good evening");
+    }
 
     System.out.println(hour);
-	}
+  }
 }
 // Good evening
 // 22
@@ -1266,40 +1317,40 @@ System.out.println(result);
 import java.util.Calendar;
 
 public class Main {
-	public static String getCurrentDayName() {
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_WEEK);
-		String dayName = "";
+  public static String getCurrentDayName() {
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_WEEK);
+    String dayName = "";
 
-		switch (day) {
-		  case 1:
-		    dayName = "Sunday";
-		    break;
-		  case 2:
-		    dayName = "Monday";
-		    break;
-		  case 3:
-		    dayName = "Tuesday";
-		    break;
-		  case 4:
-		    dayName = "Wednesday";
-		    break;
-		  case 5:
-		    dayName = "Thursday";
-		    break;
-		  case 6:
-		    dayName = "Friday";
-		    break;
-		  case 7:
-		    dayName = "Saturday";
-		    break;
-		}
-		return dayName;
-	}
+    switch (day) {
+      case 1:
+        dayName = "Sunday";
+        break;
+      case 2:
+        dayName = "Monday";
+        break;
+      case 3:
+        dayName = "Tuesday";
+        break;
+      case 4:
+        dayName = "Wednesday";
+        break;
+      case 5:
+        dayName = "Thursday";
+        break;
+      case 6:
+        dayName = "Friday";
+        break;
+      case 7:
+        dayName = "Saturday";
+        break;
+    }
+    return dayName;
+  }
 
-	public static void main(String[] args) {
-		System.out.println(getCurrentDayName());
-	}
+  public static void main(String[] args) {
+    System.out.println(getCurrentDayName());
+  }
 }
 // Tuesday
 ```
@@ -1339,17 +1390,17 @@ Or instead of using switch case, we could just use a simple String "array":
 import java.util.Calendar;
 
 public class Main {
-	public static String getCurrentDayName() {
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_WEEK); // returns int from 1 to 7
+  public static String getCurrentDayName() {
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_WEEK); // returns int from 1 to 7
 
-		String dayNames[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-		return dayNames[day - 1];
-	}
+    String dayNames[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    return dayNames[day - 1];
+  }
 
-	public static void main(String[] args) {
-		System.out.println(getCurrentDayName());
-	}
+  public static void main(String[] args) {
+    System.out.println(getCurrentDayName());
+  }
 }
 // Tuesday
 ```
@@ -1618,13 +1669,13 @@ In Java, you can create an object (instance of a class) within the class itself 
 ```java
 public class Main {
 
-	int x = 5;
+  int x = 5;
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		Main obj = new Main();
-		System.out.println(obj.x); // 5
-	}
+    Main obj = new Main();
+    System.out.println(obj.x); // 5
+  }
 }
 ```
 
@@ -1639,7 +1690,7 @@ We can have multiple classes (classes separated in .java files). If the classes 
 package helloworld;
 
 public class Person {
-	int age = 0;
+  int age = 0;
 }
 ```
 
@@ -1649,13 +1700,13 @@ package helloworld;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		Person Donna = new Person();
-		Donna.age = 25;
+    Person Donna = new Person();
+    Donna.age = 25;
 
-		System.out.println(Donna.age); // 25
-	}
+    System.out.println(Donna.age); // 25
+  }
 }
 ```
 
@@ -1686,28 +1737,28 @@ Example within/using the **Main Class**
 ```java
 public class Main {
 
-	static void staticMethod() {
-		System.out.println("Static methods can be called without creating objects");
-	}
-	public void publicMethod() {
-		System.out.println("Public methods must be called by creating objects");
-	}
-	public static void publicStaticMethod() {
-		System.out.println("Public static method can be called anywhere by anyone");
-	}
+  static void staticMethod() {
+    System.out.println("Static methods can be called without creating objects");
+  }
+  public void publicMethod() {
+    System.out.println("Public methods must be called by creating objects");
+  }
+  public static void publicStaticMethod() {
+    System.out.println("Public static method can be called anywhere by anyone");
+  }
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		staticMethod(); // prints Static methods can be called without creating objects
+    staticMethod(); // prints Static methods can be called without creating objects
 
-		Main obj = new Main();
-		obj.publicMethod(); // prints Public methods must be called by creating objects
+    Main obj = new Main();
+    obj.publicMethod(); // prints Public methods must be called by creating objects
 
-		publicStaticMethod(); // prints Public static method can be called anywhere by anyone
-		obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone
-		-- although for this one we get warning:
-		The static method publicStaticMethod() from the type Main should be accessed in a static way */
-	}
+    publicStaticMethod(); // prints Public static method can be called anywhere by anyone
+    obj.publicStaticMethod(); /* prints Public static method can be called anywhere by anyone
+    -- although for this one we get warning:
+    The static method publicStaticMethod() from the type Main should be accessed in a static way */
+  }
 }
 ```
 
@@ -1729,25 +1780,25 @@ A constructor in Java is a **special method** that is used to initialize objects
 // Person.java
 public class Person {
 
-	private String name;
-	private String surname;
-	private String email;
-	private int age;
-	private double credits;
+  private String name;
+  private String surname;
+  private String email;
+  private int age;
+  private double credits;
 
-	public Person() {
-		this.name = "";
-		this.surname = "";
-		this.email = "";
-		this.credits = 0.0;
-	}
+  public Person() {
+    this.name = "";
+    this.surname = "";
+    this.email = "";
+    this.credits = 0.0;
+  }
 
-	public Person(String name, String surname, String email) {
-		this.name = name;
-		this.surname = surname;
-		this.email = email;
-		this.credits = 0.0;
-	}
+  public Person(String name, String surname, String email) {
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.credits = 0.0;
+  }
 }
 ```
 
@@ -1846,25 +1897,25 @@ To inherit from a class, use the `extends` keyword.
 // User.java
 public class User {
 
-	protected String name;
-	protected String family_name;
-	protected String email;
+  protected String name;
+  protected String family_name;
+  protected String email;
 
-	public User() {
-		this.name = "";
-		this.family_name = "";
-		this.email = "";
-	}
-	public User(String name, String family_name, String email) {
-		this.name = name;
-		this.family_name = family_name;
-		this.email = email;
-	}
+  public User() {
+    this.name = "";
+    this.family_name = "";
+    this.email = "";
+  }
+  public User(String name, String family_name, String email) {
+    this.name = name;
+    this.family_name = family_name;
+    this.email = email;
+  }
 
-	public String toString() {
-		/* Override toString - Return a String representation when printing the object directly */
-		return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email + "]";
-	}
+  public String toString() {
+    /* Override toString - Return a String representation when printing the object directly */
+    return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email + "]";
+  }
 }
 ```
 
@@ -1874,16 +1925,16 @@ import java.util.ArrayList;
 
 public class Author extends User {
 
-	private ArrayList<String> articlesWritten;
+  private ArrayList<String> articlesWritten;
 
-	public Author(String name, String family_name, String email, ArrayList<String> articlesWritten) {
-		super(name, family_name, email);
-		this.articlesWritten = articlesWritten;
-	}
+  public Author(String name, String family_name, String email, ArrayList<String> articlesWritten) {
+    super(name, family_name, email);
+    this.articlesWritten = articlesWritten;
+  }
 
-	public ArrayList<String> getArticlesWritten() {
-		return this.articlesWritten;
-	}
+  public ArrayList<String> getArticlesWritten() {
+    return this.articlesWritten;
+  }
 }
 ```
 
@@ -1895,17 +1946,17 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> author1Articles = new ArrayList<String>();
-		author1Articles.add("How to eat well");
-		author1Articles.add("Practice meditation");
+    ArrayList<String> author1Articles = new ArrayList<String>();
+    author1Articles.add("How to eat well");
+    author1Articles.add("Practice meditation");
 
-		Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
+    Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
 
-		System.out.println(author1);
-		System.out.println(author1.getArticlesWritten());
-	}
+    System.out.println(author1);
+    System.out.println(author1.getArticlesWritten());
+  }
 }
 /* output
 [fullname: Anna Doe, email: anna@example.com]
@@ -1925,24 +1976,24 @@ import java.util.ArrayList;
 
 public class Contributor extends User {
 
-	private ArrayList<String> articlesEdited;
+  private ArrayList<String> articlesEdited;
 
-	public Contributor(String name, String family_name, String email) {
-		super(name, family_name, email);
-	}
+  public Contributor(String name, String family_name, String email) {
+    super(name, family_name, email);
+  }
 
-	public ArrayList<String> getArticlesEdited() {
-		return articlesEdited;
-	}
-	public void setArticlesEdited(ArrayList<String> articlesEdited) {
-		this.articlesEdited = articlesEdited;
-	}
+  public ArrayList<String> getArticlesEdited() {
+    return articlesEdited;
+  }
+  public void setArticlesEdited(ArrayList<String> articlesEdited) {
+    this.articlesEdited = articlesEdited;
+  }
 
-	@Override
-	public String toString() {
-		return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email +
-				", editedArticles: " + this.getArticlesEdited().toString() + "]";
-	}
+  @Override
+  public String toString() {
+    return "[fullname: " + this.name + " " + this.family_name + ", email: " + this.email +
+        ", editedArticles: " + this.getArticlesEdited().toString() + "]";
+  }
 }
 
 ```
@@ -1953,27 +2004,27 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> author1Articles = new ArrayList<String>();
-		author1Articles.add("How to eat well");
-		author1Articles.add("Practice meditation");
+    ArrayList<String> author1Articles = new ArrayList<String>();
+    author1Articles.add("How to eat well");
+    author1Articles.add("Practice meditation");
 
-		Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
+    Author author1 = new Author("Anna", "Doe", "anna@example.com", author1Articles);
 
-		System.out.println(author1); // [fullname: Anna Doe, email: anna@example.com]
-		System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
+    System.out.println(author1); // [fullname: Anna Doe, email: anna@example.com]
+    System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
 
 
-		ArrayList<String> contributor1Articles = new ArrayList<String>();
-		contributor1Articles.add("Practice meditation");
-		contributor1Articles.add("Reading everyday");
+    ArrayList<String> contributor1Articles = new ArrayList<String>();
+    contributor1Articles.add("Practice meditation");
+    contributor1Articles.add("Reading everyday");
 
-		Contributor contributor1 = new Contributor("Andrew", "Christmas", "andrew.c@example.com");
-		contributor1.setArticlesEdited(contributor1Articles);
-		System.out.println(contributor1);
+    Contributor contributor1 = new Contributor("Andrew", "Christmas", "andrew.c@example.com");
+    contributor1.setArticlesEdited(contributor1Articles);
+    System.out.println(contributor1);
     /* [fullname: Andrew Christmas, email: andrew.c@example.com, editedArticles: [Practice meditation, Reading everyday]] */
-	}
+  }
 }
 ```
 
@@ -2053,67 +2104,67 @@ Another example based on the User example before:
 // User.java
 public abstract class User {
 
-	protected String userName;
-	protected String hashedPassword;
-	protected String foreName; // first name
-	protected String surName; // family name
-	protected String email;
+  protected String userName;
+  protected String hashedPassword;
+  protected String foreName; // first name
+  protected String surName; // family name
+  protected String email;
 
-	public User(String userName, String password) {
-		this.setUserName(userName);
-		this.hashedPassword = Integer.toString(password.hashCode());
-	}
-	public User(String userName, String password, String first_name, String family_name, String email) {
-		this.setUserName(userName);
-		this.hashedPassword = hashPassword(password);
-		this.setForeName(first_name);
-		this.setSurName(family_name);
-		this.setEmail(email);
-	}
+  public User(String userName, String password) {
+    this.setUserName(userName);
+    this.hashedPassword = Integer.toString(password.hashCode());
+  }
+  public User(String userName, String password, String first_name, String family_name, String email) {
+    this.setUserName(userName);
+    this.hashedPassword = hashPassword(password);
+    this.setForeName(first_name);
+    this.setSurName(family_name);
+    this.setEmail(email);
+  }
 
-	public static String hashPassword(String password) {
-		return Integer.toString(password.hashCode());
-	}
+  public static String hashPassword(String password) {
+    return Integer.toString(password.hashCode());
+  }
 
-	public Boolean login(String userName, String password) {
-		return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
-	}
+  public Boolean login(String userName, String password) {
+    return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
+  }
 
-	public String toString() {
-		/* Override toString - Return a String representation when printing the object directly */
-		return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
-	}
+  public String toString() {
+    /* Override toString - Return a String representation when printing the object directly */
+    return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
+  }
 
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getHashedPassword() {
-		return hashedPassword;
-	}
-	public void setHashedPassword(String password) {
-		this.hashedPassword = hashPassword(password);
-	}
-	public String getForeName() {
-		return foreName;
-	}
-	public void setForeName(String foreName) {
-		this.foreName = foreName;
-	}
-	public String getSurName() {
-		return surName;
-	}
-	public void setSurName(String surName) {
-		this.surName = surName;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getUserName() {
+    return userName;
+  }
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+  public String getHashedPassword() {
+    return hashedPassword;
+  }
+  public void setHashedPassword(String password) {
+    this.hashedPassword = hashPassword(password);
+  }
+  public String getForeName() {
+    return foreName;
+  }
+  public void setForeName(String foreName) {
+    this.foreName = foreName;
+  }
+  public String getSurName() {
+    return surName;
+  }
+  public void setSurName(String surName) {
+    this.surName = surName;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }
 ```
 
@@ -2123,27 +2174,27 @@ import java.util.ArrayList;
 
 public class Author extends User {
 
-	private ArrayList<String> articlesWritten;
+  private ArrayList<String> articlesWritten;
 
-	public Author(String userName, String password) {
-		super(userName, password);
-	}
-	public Author(String userName, String password, ArrayList<String> articlesWritten) {
-		super(userName, password);
-		this.setArticlesWritten(articlesWritten);
-	}
-	public Author(String userName, String password, String first_name, String family_name, String email,
-			ArrayList<String> articlesWritten) {
-		super(userName, password, first_name, family_name, email);
-		this.setArticlesWritten(articlesWritten);
-	}
+  public Author(String userName, String password) {
+    super(userName, password);
+  }
+  public Author(String userName, String password, ArrayList<String> articlesWritten) {
+    super(userName, password);
+    this.setArticlesWritten(articlesWritten);
+  }
+  public Author(String userName, String password, String first_name, String family_name, String email,
+      ArrayList<String> articlesWritten) {
+    super(userName, password, first_name, family_name, email);
+    this.setArticlesWritten(articlesWritten);
+  }
 
-	public ArrayList<String> getArticlesWritten() {
-		return this.articlesWritten;
-	}
-	public void setArticlesWritten(ArrayList<String> articlesWritten) {
-		this.articlesWritten = articlesWritten;
-	}
+  public ArrayList<String> getArticlesWritten() {
+    return this.articlesWritten;
+  }
+  public void setArticlesWritten(ArrayList<String> articlesWritten) {
+    this.articlesWritten = articlesWritten;
+  }
 }
 ```
 
@@ -2153,26 +2204,26 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> author1Articles = new ArrayList<String>();
-		author1Articles.add("How to eat well");
-		author1Articles.add("Practice meditation");
+    ArrayList<String> author1Articles = new ArrayList<String>();
+    author1Articles.add("How to eat well");
+    author1Articles.add("Practice meditation");
 
-		Author author1 = new Author("alice_m", "helloworld");
-		author1.setForeName("Alice");
-		author1.setSurName("Mackie");
-		author1.setArticlesWritten(author1Articles);
+    Author author1 = new Author("alice_m", "helloworld");
+    author1.setForeName("Alice");
+    author1.setSurName("Mackie");
+    author1.setArticlesWritten(author1Articles);
 
-		System.out.println(author1); // User(userName: alice_m, foreName: Alice, surName: Mackie, email: null)
-		System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
+    System.out.println(author1); // User(userName: alice_m, foreName: Alice, surName: Mackie, email: null)
+    System.out.println(author1.getArticlesWritten()); // [How to eat well, Practice meditation]
 
-		System.out.println(author1.getHashedPassword()); // -1524582912
-		System.out.println(author1.login("alice_m", "helloworlzz")); // false
-		System.out.println(author1.login("alice_m", "helloworld")); // true
+    System.out.println(author1.getHashedPassword()); // -1524582912
+    System.out.println(author1.login("alice_m", "helloworlzz")); // false
+    System.out.println(author1.login("alice_m", "helloworld")); // true
 
-		// User user1 = new User("betty", "password123"); // ERROR: Cannot instantiate the type User
-	}
+    // User user1 = new User("betty", "password123"); // ERROR: Cannot instantiate the type User
+  }
 }
 ```
 
@@ -2504,7 +2555,7 @@ public class EnumExample {
         for (Employee.Department department : Employee.Department.values()) {
             System.out.println(department.getDisplayName());
         }
-        /* Will print 
+        /* Will print
           Sales Department
           Marketing Department
           IT Department
@@ -2553,12 +2604,12 @@ import java.util.Set;
 class Main {
   public static void main(String[] args) {
 
-	  Set<String> daysSet = new HashSet<String>();
-	  daysSet.add("Monday");
-	  daysSet.add("Monday"); // "Monday" value already exist
-	  daysSet.add("Tuesday");
+    Set<String> daysSet = new HashSet<String>();
+    daysSet.add("Monday");
+    daysSet.add("Monday"); // "Monday" value already exist
+    daysSet.add("Tuesday");
 
-	  System.out.println(daysSet); // [Monday, Tuesday]
+    System.out.println(daysSet); // [Monday, Tuesday]
   }
 }
 ```
@@ -2655,14 +2706,14 @@ The difference between a built-in array and an `ArrayList` in Java, is that the 
 import java.util.ArrayList;
 
 public class Main {
-	public static void main(String[] args) {
-		ArrayList<String> shoppingList = new ArrayList<String>();
+  public static void main(String[] args) {
+    ArrayList<String> shoppingList = new ArrayList<String>();
 
-		shoppingList.add("Banana");
-		shoppingList.add("Kiwi");
+    shoppingList.add("Banana");
+    shoppingList.add("Kiwi");
 
-		System.out.println(shoppingList); // [Banana, Kiwi]
-	}
+    System.out.println(shoppingList); // [Banana, Kiwi]
+  }
 }
 ```
 
@@ -2814,14 +2865,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		Map persons = new HashMap();
-		persons.put("Alex", 18);
-		persons.put("Andrew", 23);
+    Map persons = new HashMap();
+    persons.put("Alex", 18);
+    persons.put("Andrew", 23);
 
-		System.out.println(persons); // {Alex=18, Andrew=23}
-	}
+    System.out.println(persons); // {Alex=18, Andrew=23}
+  }
 }
 ```
 
@@ -2876,16 +2927,16 @@ One object is used as a key (index) to another object (value). It can store diff
 import java.util.HashMap;
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		HashMap<String, String> capitalCities = new HashMap<String, String>();
-		capitalCities.put("Romania", "Bucharest");
-		capitalCities.put("France", "Paris");
-		capitalCities.put("Germany", "Berlin");
-		capitalCities.put("Poland", "Warsaw");
+    HashMap<String, String> capitalCities = new HashMap<String, String>();
+    capitalCities.put("Romania", "Bucharest");
+    capitalCities.put("France", "Paris");
+    capitalCities.put("Germany", "Berlin");
+    capitalCities.put("Poland", "Warsaw");
 
-		System.out.println(capitalCities); // {Romania=Bucharest, Poland=Warsaw, France=Paris, Germany=Berlin}
-	}
+    System.out.println(capitalCities); // {Romania=Bucharest, Poland=Warsaw, France=Paris, Germany=Berlin}
+  }
 }
 ```
 
@@ -3028,26 +3079,26 @@ Example: Given a **string**, store in a TreeMap the frequency of all characters 
 import java.util.TreeMap;
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		TreeMap<Character, Integer> letterFrequency = new TreeMap<Character, Integer>();
-		String inputString = "alphabetically";
+    TreeMap<Character, Integer> letterFrequency = new TreeMap<Character, Integer>();
+    String inputString = "alphabetically";
 
-		/* Or input from scanner */
-		// Scanner scannerObj = new Scanner(System.in);
-		// String inputString = scannerObj.nextLine();
+    /* Or input from scanner */
+    // Scanner scannerObj = new Scanner(System.in);
+    // String inputString = scannerObj.nextLine();
 
-		for (int i = 0; i < inputString.length(); i++) {
-			char currentLetter = inputString.charAt(i);
-			if (letterFrequency.containsKey(currentLetter)) {
-				letterFrequency.put(currentLetter, letterFrequency.get(currentLetter) + 1);
-			} else {
-				letterFrequency.put(currentLetter, 1);
-			}
-		}
+    for (int i = 0; i < inputString.length(); i++) {
+      char currentLetter = inputString.charAt(i);
+      if (letterFrequency.containsKey(currentLetter)) {
+        letterFrequency.put(currentLetter, letterFrequency.get(currentLetter) + 1);
+      } else {
+        letterFrequency.put(currentLetter, 1);
+      }
+    }
 
-		System.out.println(letterFrequency); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
-	}
+    System.out.println(letterFrequency); // {a=3, b=1, c=1, e=1, h=1, i=1, l=3, p=1, t=1, y=1}
+  }
 }
 ```
 
@@ -3151,52 +3202,52 @@ import java.util.LinkedList;
 import java.util.Comparator;
 
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
+    LinkedList<HashMap<String, String>> persons = new LinkedList<HashMap<String, String>>();
 
-		HashMap<String, String> person1 = new HashMap<String, String>();
-		person1.put("name", "Alex");
-		person1.put("email", "alex@example.com");
-		person1.put("age", "23");
+    HashMap<String, String> person1 = new HashMap<String, String>();
+    person1.put("name", "Alex");
+    person1.put("email", "alex@example.com");
+    person1.put("age", "23");
 
-		HashMap<String, String> person2 = new HashMap<String, String>();
-		person2.put("name", "Daniel");
-		person2.put("email", "daniel@example.com");
-		person2.put("age", "28");
+    HashMap<String, String> person2 = new HashMap<String, String>();
+    person2.put("name", "Daniel");
+    person2.put("email", "daniel@example.com");
+    person2.put("age", "28");
 
-		HashMap<String, String> person3 = new HashMap<String, String>();
-		person3.put("name", "Emma");
-		person3.put("email", "emma.n@example.com");
-		person3.put("age", "22");
+    HashMap<String, String> person3 = new HashMap<String, String>();
+    person3.put("name", "Emma");
+    person3.put("email", "emma.n@example.com");
+    person3.put("age", "22");
 
-		HashMap<String, String> person4 = new HashMap<String, String>();
-		person4.put("name", "Brittany");
-		person4.put("email", "britt.a@example.com");
-		person4.put("age", "25");
+    HashMap<String, String> person4 = new HashMap<String, String>();
+    person4.put("name", "Brittany");
+    person4.put("email", "britt.a@example.com");
+    person4.put("age", "25");
 
-		HashMap<String, String> person5 = new HashMap<String, String>();
-		person5.put("name", "Diana");
-		person5.put("email", "diana.z@example.com");
-		person5.put("age", "19");
+    HashMap<String, String> person5 = new HashMap<String, String>();
+    person5.put("name", "Diana");
+    person5.put("email", "diana.z@example.com");
+    person5.put("age", "19");
 
-		persons.add(person1);
-		persons.add(person2);
-		persons.add(person3);
-		persons.add(person4);
-		persons.add(person5);
+    persons.add(person1);
+    persons.add(person2);
+    persons.add(person3);
+    persons.add(person4);
+    persons.add(person5);
 
-		Collections.sort(persons, new Comparator<HashMap<String, String>>() {
-			@Override
-			public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
-				return Integer.parseInt(o1.get("age")) - Integer.parseInt(o2.get("age"));
-			}
-		});
+    Collections.sort(persons, new Comparator<HashMap<String, String>>() {
+      @Override
+      public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+        return Integer.parseInt(o1.get("age")) - Integer.parseInt(o2.get("age"));
+      }
+    });
 
-		for (HashMap<String, String> person : persons) {
-			System.out.println(person);
-		}
-	}
+    for (HashMap<String, String> person : persons) {
+      System.out.println(person);
+    }
+  }
 }
 /* output:
 {name=Diana, email=diana.z@example.com, age=19}
@@ -3256,46 +3307,46 @@ References:
 
 ```java
 public class Main {
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		LinkedList<HashMap<String, String>> shoppingList = new LinkedList<HashMap<String, String>>();
+    LinkedList<HashMap<String, String>> shoppingList = new LinkedList<HashMap<String, String>>();
 
-		HashMap<String, String> item1 = new HashMap<String, String>();
-		item1.put("name", "Keyboard");
-		item1.put("checked", "true");
-		item1.put("price", "40.00");
+    HashMap<String, String> item1 = new HashMap<String, String>();
+    item1.put("name", "Keyboard");
+    item1.put("checked", "true");
+    item1.put("price", "40.00");
 
-		HashMap<String, String> item2 = new HashMap<String, String>();
-		item2.put("name", "Display");
-		item2.put("checked", "false");
-		item2.put("price", "200.00");
+    HashMap<String, String> item2 = new HashMap<String, String>();
+    item2.put("name", "Display");
+    item2.put("checked", "false");
+    item2.put("price", "200.00");
 
-		HashMap<String, String> item3 = new HashMap<String, String>();
-		item3.put("name", "Mouse");
-		item3.put("checked", "true");
-		item3.put("price", "20.00");
+    HashMap<String, String> item3 = new HashMap<String, String>();
+    item3.put("name", "Mouse");
+    item3.put("checked", "true");
+    item3.put("price", "20.00");
 
-		HashMap<String, String> item4 = new HashMap<String, String>();
-		item4.put("name", "Hard-disk");
-		item4.put("checked", "false");
-		item4.put("price", "35.00");
+    HashMap<String, String> item4 = new HashMap<String, String>();
+    item4.put("name", "Hard-disk");
+    item4.put("checked", "false");
+    item4.put("price", "35.00");
 
-		HashMap<String, String> item5 = new HashMap<String, String>();
-		item5.put("name", "Speakers");
-		item5.put("checked", "false");
-		item5.put("price", "25.00");
+    HashMap<String, String> item5 = new HashMap<String, String>();
+    item5.put("name", "Speakers");
+    item5.put("checked", "false");
+    item5.put("price", "25.00");
 
 
-		shoppingList.add(item1);
-		shoppingList.add(item2);
-		shoppingList.add(item3);
-		shoppingList.add(item4);
-		shoppingList.add(item5);
+    shoppingList.add(item1);
+    shoppingList.add(item2);
+    shoppingList.add(item3);
+    shoppingList.add(item4);
+    shoppingList.add(item5);
 
-		for (HashMap<String, String> item : shoppingList) {
-			System.out.println(item);
-		}
-	}
+    for (HashMap<String, String> item : shoppingList) {
+      System.out.println(item);
+    }
+  }
 }
 /* outputs:
 {price=40.00, name=Keyboard, checked=true}
@@ -3392,67 +3443,67 @@ First, we define these classes:
 // User.java
 public abstract class User {
 
-	protected String userName;
-	protected String hashedPassword;
-	protected String foreName; // first name
-	protected String surName; // family name
-	protected String email;
+  protected String userName;
+  protected String hashedPassword;
+  protected String foreName; // first name
+  protected String surName; // family name
+  protected String email;
 
-	public static String hashPassword(String password) {
-		return Integer.toString(password.hashCode());
-	}
+  public static String hashPassword(String password) {
+    return Integer.toString(password.hashCode());
+  }
 
-	public User(String userName, String password) {
-		this.setUserName(userName);
-		this.hashedPassword = hashPassword(password);
-	}
-	public User(String userName, String password, String first_name, String family_name, String email) {
-		this.setUserName(userName);
-		this.hashedPassword = hashPassword(password);
-		this.setForeName(first_name);
-		this.setSurName(family_name);
-		this.setEmail(email);
-	}
+  public User(String userName, String password) {
+    this.setUserName(userName);
+    this.hashedPassword = hashPassword(password);
+  }
+  public User(String userName, String password, String first_name, String family_name, String email) {
+    this.setUserName(userName);
+    this.hashedPassword = hashPassword(password);
+    this.setForeName(first_name);
+    this.setSurName(family_name);
+    this.setEmail(email);
+  }
 
-	public Boolean login(String userName, String password) {
-		return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
-	}
+  public Boolean login(String userName, String password) {
+    return (this.getUserName().equals(userName) && this.hashedPassword.equals(hashPassword(password)));
+  }
 
-	public String toString() {
-		/* Override toString - Return a String representation when printing the object directly */
-		return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
-	}
+  public String toString() {
+    /* Override toString - Return a String representation when printing the object directly */
+    return "User(userName: "+this.userName+", foreName: "+this.foreName+", surName: "+this.surName+", email: "+this.email+")";
+  }
 
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getHashedPassword() {
-		return hashedPassword;
-	}
-	public void setHashedPassword(String password) {
-		this.hashedPassword = hashPassword(password);
-	}
-	public String getForeName() {
-		return foreName;
-	}
-	public void setForeName(String foreName) {
-		this.foreName = foreName;
-	}
-	public String getSurName() {
-		return surName;
-	}
-	public void setSurName(String surName) {
-		this.surName = surName;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getUserName() {
+    return userName;
+  }
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+  public String getHashedPassword() {
+    return hashedPassword;
+  }
+  public void setHashedPassword(String password) {
+    this.hashedPassword = hashPassword(password);
+  }
+  public String getForeName() {
+    return foreName;
+  }
+  public void setForeName(String foreName) {
+    this.foreName = foreName;
+  }
+  public String getSurName() {
+    return surName;
+  }
+  public void setSurName(String surName) {
+    this.surName = surName;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }
 ```
 
@@ -3460,26 +3511,26 @@ public abstract class User {
 // Customer.java
 public class Customer extends User {
 
-	private ArrayList<String> itemsBought = new ArrayList<String>();
-	private int noOfItemsBought = getNoOfItemsBought();
+  private ArrayList<String> itemsBought = new ArrayList<String>();
+  private int noOfItemsBought = getNoOfItemsBought();
 
-	public Customer(String userName, String password) {
-		super(userName, password);
-	}
-	public Customer(String userName, String password, ArrayList<String> itemsBought) {
-		super(userName, password);
-		this.setItemsBought(itemsBought);
-	}
+  public Customer(String userName, String password) {
+    super(userName, password);
+  }
+  public Customer(String userName, String password, ArrayList<String> itemsBought) {
+    super(userName, password);
+    this.setItemsBought(itemsBought);
+  }
 
-	public int getNoOfItemsBought() {
-		return this.getItemsBought().size();
-	}
-	public ArrayList<String> getItemsBought() {
-		return itemsBought;
-	}
-	public void setItemsBought(ArrayList<String> itemsBought) {
-		this.itemsBought = itemsBought;
-	}
+  public int getNoOfItemsBought() {
+    return this.getItemsBought().size();
+  }
+  public ArrayList<String> getItemsBought() {
+    return itemsBought;
+  }
+  public void setItemsBought(ArrayList<String> itemsBought) {
+    this.itemsBought = itemsBought;
+  }
 }
 ```
 
@@ -3491,20 +3542,20 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
-		customer1ItemsBought.add("Lenovo Laptop");
-		customer1ItemsBought.add("RAM 32GB Kit");
-		customer1ItemsBought.add("SSD 1TB NVMe");
+    ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+    customer1ItemsBought.add("Lenovo Laptop");
+    customer1ItemsBought.add("RAM 32GB Kit");
+    customer1ItemsBought.add("SSD 1TB NVMe");
 
-		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
-		customer1.setEmail("zacky95@example.com");
+    Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+    customer1.setEmail("zacky95@example.com");
 
-		System.out.println(customer1); // User(userName: zack95, foreName: null, surName: null, email: zacky95@example.com)
-		System.out.println(customer1.getItemsBought()); // [Lenovo Laptop, RAM 32GB Kit, SSD 1TB NVMe]
-		System.out.println(customer1.getNoOfItemsBought()); // 3
-	}
+    System.out.println(customer1); // User(userName: zack95, foreName: null, surName: null, email: zacky95@example.com)
+    System.out.println(customer1.getItemsBought()); // [Lenovo Laptop, RAM 32GB Kit, SSD 1TB NVMe]
+    System.out.println(customer1.getNoOfItemsBought()); // 3
+  }
 }
 ```
 
@@ -3520,32 +3571,32 @@ import java.util.LinkedList;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
-		customer1ItemsBought.add("Lenovo Laptop");
-		customer1ItemsBought.add("RAM 32GB Kit");
-		customer1ItemsBought.add("SSD 1TB NVMe");
+    ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+    customer1ItemsBought.add("Lenovo Laptop");
+    customer1ItemsBought.add("RAM 32GB Kit");
+    customer1ItemsBought.add("SSD 1TB NVMe");
 
-		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
-		customer1.setEmail("zacky95@example.com");
-		customer1.setForeName("Zack");
-		customer1.setSurName("Hillbert");
+    Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+    customer1.setEmail("zacky95@example.com");
+    customer1.setForeName("Zack");
+    customer1.setSurName("Hillbert");
 
-		Customer customer2 = new Customer("emily_w", "TheNextEpisode");
+    Customer customer2 = new Customer("emily_w", "TheNextEpisode");
 
-		Customer customer3 = new Customer("sarah01", "EnterSandman01");
-		customer3.setEmail("sarahh@example.com");
+    Customer customer3 = new Customer("sarah01", "EnterSandman01");
+    customer3.setEmail("sarahh@example.com");
 
-		Customer customer4 = new Customer("scott_x", "airplanes321");
+    Customer customer4 = new Customer("scott_x", "airplanes321");
 
-		LinkedList<Customer> customers = new LinkedList<Customer>(
-				Arrays.asList(customer1, customer2, customer3, customer4));
+    LinkedList<Customer> customers = new LinkedList<Customer>(
+        Arrays.asList(customer1, customer2, customer3, customer4));
 
-		for(Customer customer : customers) {
-			System.out.println(customer);
-		}
-	}
+    for(Customer customer : customers) {
+      System.out.println(customer);
+    }
+  }
 }
 /* outputs
 User(userName: zack95, foreName: Zack, surName: Hillbert, email: zacky95@example.com)
@@ -3571,41 +3622,41 @@ import java.util.Comparator;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> customer1ItemsBought = new ArrayList<String>();
-		customer1ItemsBought.add("Lenovo Laptop");
-		customer1ItemsBought.add("RAM 32GB Kit");
-		customer1ItemsBought.add("SSD 1TB NVMe");
+    ArrayList<String> customer1ItemsBought = new ArrayList<String>();
+    customer1ItemsBought.add("Lenovo Laptop");
+    customer1ItemsBought.add("RAM 32GB Kit");
+    customer1ItemsBought.add("SSD 1TB NVMe");
 
-		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
-		customer1.setEmail("zacky95@example.com");
-		customer1.setForeName("Zack");
-		customer1.setSurName("Hillbert");
+    Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+    customer1.setEmail("zacky95@example.com");
+    customer1.setForeName("Zack");
+    customer1.setSurName("Hillbert");
 
-		Customer customer2 = new Customer("emily_w", "TheNextEpisode");
+    Customer customer2 = new Customer("emily_w", "TheNextEpisode");
 
-		Customer customer3 = new Customer("sarah01", "EnterSandman01");
-		customer3.setEmail("sarahh@example.com");
+    Customer customer3 = new Customer("sarah01", "EnterSandman01");
+    customer3.setEmail("sarahh@example.com");
 
-		Customer customer4 = new Customer("scott_x", "airplanes321");
+    Customer customer4 = new Customer("scott_x", "airplanes321");
 
-		Customer customer5 = new Customer("anna_marie", "password1234");
+    Customer customer5 = new Customer("anna_marie", "password1234");
 
-		LinkedList<Customer> customers = new LinkedList<Customer>(
-				Arrays.asList(customer1, customer2, customer3, customer4, customer5));
+    LinkedList<Customer> customers = new LinkedList<Customer>(
+        Arrays.asList(customer1, customer2, customer3, customer4, customer5));
 
-		Collections.sort(customers, new Comparator<Customer>() {
-			@Override
-			public int compare(Customer o1, Customer o2) {
-				return String.CASE_INSENSITIVE_ORDER.compare(o1.getUserName(), o2.getUserName());
-			}
-		});
+    Collections.sort(customers, new Comparator<Customer>() {
+      @Override
+      public int compare(Customer o1, Customer o2) {
+        return String.CASE_INSENSITIVE_ORDER.compare(o1.getUserName(), o2.getUserName());
+      }
+    });
 
-		for(Customer customer : customers) {
-			System.out.println(customer);
-		}
-	}
+    for(Customer customer : customers) {
+      System.out.println(customer);
+    }
+  }
 }
 /* outputs
 User(userName: anna_marie, foreName: null, surName: null, email: null)
@@ -3629,44 +3680,44 @@ import java.util.Comparator;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		ArrayList<String> customer1ItemsBought = new ArrayList<String>(
-				Arrays.asList("Lenovo Laptop", "RAM 32GB Kit", "SSD 1TB NVMe"));
-		Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
-		customer1.setEmail("zacky95@example.com");
-		customer1.setForeName("Zack");
+    ArrayList<String> customer1ItemsBought = new ArrayList<String>(
+        Arrays.asList("Lenovo Laptop", "RAM 32GB Kit", "SSD 1TB NVMe"));
+    Customer customer1 = new Customer("zack95", "GamingLife#123", customer1ItemsBought);
+    customer1.setEmail("zacky95@example.com");
+    customer1.setForeName("Zack");
 
-		ArrayList<String> customer2ItemsBought = new ArrayList<String>(
-				Arrays.asList("External Battery", "Power Cable"));
-		Customer customer2 = new Customer("emily_w", "TheNextEpisode", customer2ItemsBought);
+    ArrayList<String> customer2ItemsBought = new ArrayList<String>(
+        Arrays.asList("External Battery", "Power Cable"));
+    Customer customer2 = new Customer("emily_w", "TheNextEpisode", customer2ItemsBought);
 
-		Customer customer3 = new Customer("sarah01", "EnterSandman01");
-		customer3.setEmail("sarahh@example.com");
+    Customer customer3 = new Customer("sarah01", "EnterSandman01");
+    customer3.setEmail("sarahh@example.com");
 
-		ArrayList<String> customer4ItemsBought = new ArrayList<String>(
-				Arrays.asList("HDMI Adapter", "Samsung Phone", "External Display", "Fast Wall Charger"));
-		Customer customer4 = new Customer("scott_x", "airplanes321", customer4ItemsBought);
+    ArrayList<String> customer4ItemsBought = new ArrayList<String>(
+        Arrays.asList("HDMI Adapter", "Samsung Phone", "External Display", "Fast Wall Charger"));
+    Customer customer4 = new Customer("scott_x", "airplanes321", customer4ItemsBought);
 
-		ArrayList<String> customer5ItemsBought = new ArrayList<String>(
-				Arrays.asList("Bluetooth Speakers", "Microphone"));
-		Customer customer5 = new Customer("anne_m", "password1234", customer5ItemsBought);
+    ArrayList<String> customer5ItemsBought = new ArrayList<String>(
+        Arrays.asList("Bluetooth Speakers", "Microphone"));
+    Customer customer5 = new Customer("anne_m", "password1234", customer5ItemsBought);
 
 
-		LinkedList<Customer> customers = new LinkedList<Customer>(
-				Arrays.asList(customer1, customer2, customer3, customer4, customer5));
+    LinkedList<Customer> customers = new LinkedList<Customer>(
+        Arrays.asList(customer1, customer2, customer3, customer4, customer5));
 
-		Collections.sort(customers, new Comparator<Customer>() {
-			@Override
-			public int compare(Customer o1, Customer o2) {
-				return o1.getNoOfItemsBought() - o2.getNoOfItemsBought();
-			}
-		});
+    Collections.sort(customers, new Comparator<Customer>() {
+      @Override
+      public int compare(Customer o1, Customer o2) {
+        return o1.getNoOfItemsBought() - o2.getNoOfItemsBought();
+      }
+    });
 
-		for(Customer customer : customers) {
-			System.out.printf("%-8s- %d items: %s \n", customer.getUserName(), customer.getNoOfItemsBought(), customer.getItemsBought());
-		}
-	}
+    for(Customer customer : customers) {
+      System.out.printf("%-8s- %d items: %s \n", customer.getUserName(), customer.getNoOfItemsBought(), customer.getItemsBought());
+    }
+  }
 }
 /* outputs
 sarah01 - 0 items: []
@@ -3706,11 +3757,11 @@ Resources on Java Stream:
 - https://stackify.com/streams-guide-java-8/
 - https://www.baeldung.com/java-8-streams
 - https://www.baeldung.com/java-stream-reduce
-- https://mkyong.com/java8/java-8-stream-reduce-examples/
+- **https://mkyong.com/java8/java-8-stream-reduce-examples/**
 
 <br/>
 
-The addition of the _Stream_ was one of the major features added to Java 8, that allows to operate with a data source and making bulk processing convenient and fast. Java 8 Streams should not be confused with Java I/O streams (ex: _FileInputStream_ etc).
+The addition of the _Stream_ was one of the major features added to Java 8 (released on March 18, 2014), that allows to operate with a data source and making bulk processing convenient and fast. Java 8 Streams should not be confused with Java I/O streams (ex: _FileInputStream_ etc).
 
 **A stream does not store data and, in that sense, is not a data structure. It also <u>never modifies the underlying data source</u>.**
 
@@ -3718,6 +3769,243 @@ This functionality – _java.util.stream_ – supports functional-style operatio
 
 <br/>
 
-## Java Stream.reduce
+## Java Stream.reduce and Stream.filter
 
-lorem
+Using the reduce operation in Java Stream allows you to perform complex calculations or aggregations on a collection of objects efficiently and concisely.
+
+### Example 01 Stream.reduce
+
+Real-world example on a scenario where you have a list of transactions representing purchases made by customers:
+
+- You want to calculate the total revenue generated from these transactions
+- The `Transaction` class that represents a purchase made by a customer
+- Each `Transaction` object has a product name and the corresponding price
+- In the `main` method, we create a list of `Transaction` objects representing different purchases and then use the Java Stream API to calculate the total revenue generated from these transactions:
+  1.  We start with the `transactions` list and call `stream()` to convert it into a stream of elements.
+  2.  We then use the `mapToDouble` operation to extract the price of each transaction as a `double` value.
+  3.  Finally, we use the `reduce` operation with an initial value of `0` and the `Double::sum` binary operator to add up all the prices and obtain the total revenue.
+  4.  The result is stored in the `totalRevenue` variable, and we print it out to display the total revenue generated from the transactions.
+
+```java
+package streamExample;
+
+import java.util.ArrayList;
+
+class Transaction {
+    private String product;
+    private double price;
+
+    public Transaction(String product, double price) {
+        this.product = product;
+        this.price = price;
+    }
+    public String getProduct() { return product; }
+    public double getPrice() { return price; }
+}
+
+public class streamExample {
+    public static void main(String[] args) {
+        // Create a list of transactions
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        transactions.add(new Transaction("Apple", 2.5));
+        transactions.add(new Transaction("Banana", 1.5));
+        transactions.add(new Transaction("Orange", 3.0));
+        transactions.add(new Transaction("Mango", 2.0));
+        transactions.add(new Transaction("Grapes", 4.5));
+
+        // Calculate the total revenue using reduce
+        double totalRevenue = transactions.stream()
+                .mapToDouble(Transaction::getPrice)
+                .reduce(0, Double::sum);
+
+        System.out.println("Total revenue: $" + totalRevenue);
+        // Total revenue: $13.5
+    }
+}
+```
+
+![](./LearnJava_imgs/java_stream01.jpg)
+
+### Example 02 Stream.filter and Stream.sum
+
+In this updated example:
+
+- We introduced the `startDate` and `endDate` variables of type `LocalDate` to represent the desired time range for calculating the total revenue
+- We modified the stream pipeline to include a `filter` operation
+- The `filter` operation ensures that only transactions with dates falling between the `startDate` and `endDate` (exclusive) are considered
+- The `sum` operation is used instead of `reduce` to directly calculate the sum of the filtered prices
+- Finally, we display the total revenue between the specified dates
+
+```java
+package streamExample;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+class Transaction {
+    private String product;
+    private double price;
+    private LocalDate date;
+
+    public Transaction(String product, double price, LocalDate date) {
+        this.product = product;
+        this.price = price;
+        this.date = date;
+    }
+    public String getProduct() { return product; }
+    public double getPrice() { return price; }
+    public LocalDate getDate() { return date; }
+}
+
+public class streamExample {
+    public static void main(String[] args) {
+        // Create a list of transactions
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        transactions.add(new Transaction("Apple", 2.5, LocalDate.of(2023, 5, 1)));
+        transactions.add(new Transaction("Banana", 1.5, LocalDate.of(2023, 5, 2)));
+        transactions.add(new Transaction("Orange", 3.0, LocalDate.of(2023, 5, 3)));
+        transactions.add(new Transaction("Mango", 2.0, LocalDate.of(2023, 5, 4)));
+        transactions.add(new Transaction("Grapes", 4.5, LocalDate.of(2023, 5, 5)));
+
+        // Define the start and end dates
+        LocalDate startDate = LocalDate.of(2023, 5, 2);
+        LocalDate endDate = LocalDate.of(2023, 5, 5);
+
+        // Calculate the total revenue between the start and end dates (exclusive)
+        double totalRevenue = transactions.stream()
+                .filter(transaction -> transaction.getDate().isAfter(startDate) && transaction.getDate().isBefore(endDate))
+                .mapToDouble(Transaction::getPrice)
+                .sum();
+
+        System.out.println("Total revenue between " + startDate + " and " + endDate + ": $" + totalRevenue);
+        // Total revenue between 2023-05-02 and 2023-05-05: $5.0
+    }
+}
+```
+
+### Example 03 Stream.reduce to find max value
+
+(Saturday, June 10, 2023, 12:17)
+
+In this updated example:
+
+- We modified the stream pipeline to use the `reduce` operation to find the maximum value of a transaction between two specific dates
+  1.  We start with the `transactions` list and convert it into a stream using the `stream()` method.
+  2.  We apply the `filter` operation to include only transactions with dates falling between the `startDate` and `endDate` (exclusive).
+  3.  We use the `map` operation to extract the price of each transaction as a `Double` value.
+  4.  Finally, we apply the `reduce` operation with the `Double::max` binary operator to find the maximum value among the filtered transaction prices.
+- The result is stored in an `Optional<Double>` object, `maxTransactionValue`.
+- We check if a maximum value exists using `isPresent()`. If a maximum value is found, we print it along with the specified date range. Otherwise, we print a message indicating that no transactions were found within the given date range.
+
+```java
+package streamExample;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+
+class Transaction {
+    private String product;
+    private double price;
+    private LocalDate date;
+
+    public Transaction(String product, double price, LocalDate date) {
+        this.product = product;
+        this.price = price;
+        this.date = date;
+    }
+    public String getProduct() { return product; }
+    public double getPrice() { return price; }
+    public LocalDate getDate() { return date; }
+}
+
+public class streamExample {
+    public static void main(String[] args) {
+
+        ArrayList<Transaction> transactions = new ArrayList<Transaction>(Arrays.asList(
+            new Transaction("Apple", 2.5, LocalDate.of(2023, 5, 1)),
+            new Transaction("Banana", 1.5, LocalDate.of(2023, 5, 2)),
+            new Transaction("Orange", 3.0, LocalDate.of(2023, 5, 3)),
+            new Transaction("Mango", 2.0, LocalDate.of(2023, 5, 4)),
+            new Transaction("Grapes", 4.5, LocalDate.of(2023, 5, 5))
+        ));
+
+        LocalDate startDate = LocalDate.of(2023, 5, 2);
+        LocalDate endDate = LocalDate.of(2023, 5, 4);
+
+        // Find the maximum transaction value between the start and end dates using reduce
+        Optional<Double> maxTransactionValue = transactions.stream()
+                .filter(transaction -> transaction.getDate().isAfter(startDate) && transaction.getDate().isBefore(endDate))
+                .map(Transaction::getPrice)
+                .reduce(Double::max);
+
+        if (maxTransactionValue.isPresent()) {
+            System.out.println("Maximum transaction value between " + startDate + " and " + endDate + ": $" + maxTransactionValue.get());
+        } else {
+            System.out.println("No transactions found between " + startDate + " and " + endDate);
+        }
+        // Will print: Maximum transaction value between 2023-05-02 and 2023-05-04: $3.0
+    }
+}
+```
+
+### More on Stream.reduce and Stream.filter
+
+`Stream.reduce`:
+
+- The `reduce` operation combines the elements of a stream into a single result by repeatedly applying a binary operator to the elements.
+- Normally, it takes two arguments: an identity value (initial value) and a binary operator.
+- The binary operator is a function that takes two parameters of the stream's element type and returns a result of the same type.
+- The `reduce` operation processes the elements in the stream in a way that allows parallelization and efficient processing.
+- There are three versions of the `reduce` operation: `reduce(identity, accumulator)`, `reduce(identity, accumulator, combiner)`, and `reduce(accumulator)`.
+- The `reduce` operation is commonly used for tasks like summing, finding the maximum or minimum value, concatenating strings, etc.
+
+`Stream.filter`:
+
+- The `filter` operation returns a new stream consisting of the elements that match the specified predicate (a boolean-valued function).
+- It takes a single argument: the predicate that defines the filtering condition.
+- The `filter` operation is a non-terminal operation, meaning it returns a new stream and allows further stream operations to be chained.
+- Only elements for which the predicate returns `true` are included in the resulting stream.
+- The `filter` operation is commonly used to select or exclude specific elements from a stream based on a given condition.
+
+<br/>
+
+Notes: Here are some important methods besides `filter` and `reduce`:
+
+1.  `map`: Transforms each element of a stream into another object by applying a given function. It returns a new stream consisting of the transformed elements.
+
+2.  `flatMap`: Applies a mapping function to each element of a stream and flattens the results into a single stream. It is useful when you want to transform each element into multiple elements and merge them into a single stream.
+
+3.  `collect`: Performs a mutable reduction operation on the elements of a stream and collects the results into a mutable container, such as a `List`, `Set`, or `Map`.
+
+4.  `distinct`: Returns a stream consisting of distinct elements based on their natural order or the result of a provided equality function.
+
+5.  `sorted`: Sorts the elements of a stream based on their natural order or a provided comparator.
+
+6.  `limit`: Returns a stream consisting of a maximum number of elements from the start of the stream.
+
+7.  `skip`: Skips a specified number of elements from the start of the stream and returns a new stream with the remaining elements.
+
+8.  `anyMatch`, `allMatch`, `noneMatch`: Check if any, all, or none of the elements in the stream match a given predicate.
+
+    - `anyMatch:` Returns true if any element is found matching with the predicate. Predicate will not be applied to other elements if any matching found.
+    - `allMatch:` Returns true if all elements are matching to the given predicate.
+    - `noneMatch:` Returns true if none of the elements are matching to the predicate.
+    - Example:
+      ```java
+      import java.util.stream.Stream;
+      Stream.of(5, 10, 15, 20).anyMatch(i -> i % 10 == 0); // true
+      Stream.of(5, 10, 15, 20).allMatch(i -> i % 5 == 0); // true
+      Stream.of(5, 10, 15, 20).noneMatch(i -> i % 3 == 0); // false
+      ```
+
+9.  `findFirst`, `findAny`: Returns an `Optional` containing the first element or any element of the stream, respectively.
+    - Example:
+      ```java
+      Stream.of(5, 10, 15).filter(i -> i % 20 == 0).findAny().orElse(0); // 0
+      Stream.of(5, 10, 15, 20).filter(i -> i % 20 == 0).findAny().orElse(0); // 20
+      Stream.of(5, 10, 15).map(i -> i * 2).findFirst().get(); // 10
+      ```
+
+These are just a few of the commonly used methods in the Stream API. There are many more available, including methods for grouping, partitioning, joining, and more. See the [Java documentation for the `java.util.stream.Stream` class](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html) or [Stream API with examples](https://java-8-tips.readthedocs.io/en/stable/streamsapi.html) for all the methods and their capabilities.
