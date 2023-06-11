@@ -11,6 +11,9 @@ Table of Contents:
 
 - [Java Tutorial](#java-tutorial)
   - [Java Introduction](#java-introduction)
+    - [Java versions table](#java-versions-table)
+    - [Java Frameworks](#java-frameworks)
+    - [Spring Framework, Spring Boot, JHipster versions tables](#spring-framework-spring-boot-jhipster-versions-tables)
   - [First Java Project](#first-java-project)
 - [Java Syntax / Keywords](#java-syntax--keywords)
   - [Classes](#classes)
@@ -69,7 +72,17 @@ Java is a high-level, class-based, object-oriented programming language that is 
 
 Java versions 17, 11 and 8 are the currently supported _long-term support (LTS)_ versions.
 
-**Java versions table**
+<br/>
+
+**Official Java-related sources:**
+
+- Oracle Java SE Documentation: https://docs.oracle.com/en/java/javase/index.html
+- OpenJDK: https://openjdk.java.net/
+- Java SE Release Notes: https://www.oracle.com/java/technologies/javase/jdk-relnotes-index.html
+
+<br/>
+
+### Java versions table
 
 | Java Version | Release Date | LTS | Major Changes/Features                                                                                                                                                 | End of Public Updates | End of Extended Support | JVM Implementation  | Security Enhancements                                                                                                      | Deprecated Features                                                                                                               |
 | ------------ | ------------ | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
@@ -91,17 +104,16 @@ Java versions 17, 11 and 8 are the currently supported _long-term support (LTS)_
 | Java SE 16   | Mar 16, 2021 | No  | Records, pattern matching for instanceof, foreign function and memory API (Incubator), Unix-Domain Socket Channel                                                      | Sep 2021              | -                       | Oracle JDK, OpenJDK | Enhanced security, including stronger algorithms and protocols                                                             | Some features and APIs marked as deprecated, including the Security Manager and some APIs in the java.xml.bind package            |
 | Java SE 17   | Sep 14, 2021 | Yes | Sealed classes, pattern matching for switch (standard feature), preview features removed (incubator features finalized), improved security algorithms and protocols    | Sep 2025              | Sep 2028                | Oracle JDK, OpenJDK | Enhanced security with the introduction of the Edwards-curve Digital Signature Algorithm (EdDSA), improved TLS support     | Some features and APIs marked as deprecated, including the Security Manager                                                       |
 
+**Notes on deprecated features from the above table**
+
+- **JavaFX**
+  - JavaFX is a Java library used to develop Desktop applications as well as Rich Internet Applications (RIA). The applications built in JavaFX, can run on multiple platforms including Web, Mobile and Desktops. JavaFX is intended to replace swing in Java applications as a GUI framework (_from https://www.javatpoint.com/javafx-tutorial_).
+  - JavaFX will be removed from the Java JDK as of JDK 11, which is due in September 2018. It is bundled in the current JDK 9 and will remain in JDK 10, due this spring. Commercial support for JavaFX in JDK 8 will continue through at least 2022 ([Source from infoworld.com](https://www.infoworld.com/article/3261066/javafx-will-be-removed-from-the-java-jdk.html)).
+  - E.g. tutorial for creating GUI (Graphical User Interface) Java applications using JavaFX: [JavaFX GUI Full Course ☕ - 4h20m, posted on 22-Mar-2021](https://www.youtube.com/watch?v=9XJicRt_FaI)
+
 <br/>
 
-**Official Java-related sources:**
-
-- Oracle Java SE Documentation: https://docs.oracle.com/en/java/javase/index.html
-- OpenJDK: https://openjdk.java.net/
-- Java SE Release Notes: https://www.oracle.com/java/technologies/javase/jdk-relnotes-index.html
-
-<br/>
-
-**Java Frameworks**
+### Java Frameworks
 
 - [Spring](https://spring.io/) - lightweight web application development framework used for Enterprise Java (JEE)
   - [Spring vs Spring Boot](https://www.baeldung.com/spring-vs-spring-boot) - Spring Boot is basically an extension of the Spring framework, which eliminates the boilerplate configurations required for setting up a Spring application.
@@ -112,12 +124,51 @@ Java versions 17, 11 and 8 are the currently supported _long-term support (LTS)_
 
 <br/>
 
-**Notes on deprecated features from the above table**
+### Spring Framework, Spring Boot, JHipster versions tables
 
-- **JavaFX**
-  - JavaFX is a Java library used to develop Desktop applications as well as Rich Internet Applications (RIA). The applications built in JavaFX, can run on multiple platforms including Web, Mobile and Desktops. JavaFX is intended to replace swing in Java applications as a GUI framework (_from https://www.javatpoint.com/javafx-tutorial_).
-  - JavaFX will be removed from the Java JDK as of JDK 11, which is due in September 2018. It is bundled in the current JDK 9 and will remain in JDK 10, due this spring. Commercial support for JavaFX in JDK 8 will continue through at least 2022 ([Source from infoworld.com](https://www.infoworld.com/article/3261066/javafx-will-be-removed-from-the-java-jdk.html)).
-  - E.g. tutorial for creating GUI (Graphical User Interface) Java applications using JavaFX: [JavaFX GUI Full Course ☕ - 4h20m, posted on 22-Mar-2021](https://www.youtube.com/watch?v=9XJicRt_FaI)
+_(Note: You can skip this table as Spring will not be covered in this markdown file!)_
+
+**_Spring Framework:_**
+
+| Release Version | Release Date | Major Changes/Features                                                                                                                        | Compatible Java Version |
+| --------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Spring 1.0      | Mar 24, 2004 | Initial release of the Spring Framework, providing support for dependency injection, aspect-oriented programming, and lightweight containers  | Java 1.3 or later       |
+| Spring 2.0      | Oct 10, 2006 | Introduction of Spring MVC, support for Java 5 features, enhanced XML configuration, simplified testing with the Spring TestContext Framework | Java 1.4 or later       |
+| Spring 3.0      | Dec 2, 2009  | Introduction of Spring Expression Language (SpEL), RESTful web service support, enhanced configuration options with Java-based configuration  | Java 5 or later         |
+| Spring 4.0      | Dec 12, 2013 | Support for Java 8 features, introduction of the Spring Boot project, WebSocket support, improved REST support with Spring MVC                | Java 6 or later         |
+| Spring 5.0      | Sep 28, 2017 | Full compatibility with Java 9, support for reactive programming with Spring WebFlux and Spring Data Reactive                                 | Java 8 or later         |
+
+<br/>
+
+**_Spring Boot:_**
+
+| Release Version | Release Date | Major Changes/Features                                                                                                                  | Spring Compatibility | Compatible Java Version |
+| --------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------- |
+| Spring Boot 1.0 | Apr 1, 2014  | Initial release of Spring Boot, providing auto-configuration, embedded server support, production-ready metrics and health checks       | Spring 4.x           | Java 7 or later         |
+| Spring Boot 1.5 | Jan 12, 2017 | Enhanced actuator endpoints, support for building microservices with Spring Cloud, improved developer experience                        | Spring 4.3 - 4.3.24  | Java 7 or later         |
+| Spring Boot 2.0 | Mar 20, 2018 | Java 8 baseline, support for Spring Framework 5, reactive web support with Spring WebFlux, improved metrics and monitoring capabilities | Spring 5.x           | Java 8 or later         |
+| Spring Boot 2.1 | Oct 30, 2018 | Integration with Spring Cloud Gateway, improved support for Kotlin, upgraded dependencies, enhanced testing features                    | Spring 5.x - 5.1.x   | Java 8 or later         |
+| Spring Boot 2.2 | Oct 15, 2019 | Improved support for building reactive applications, enhanced security features, updated dependencies and module versions               | Spring 5.x - 5.2.x   | Java 8 or later         |
+
+<br/>
+
+**_JHipster:_**
+
+| JHipster Version | Release Date | Major Changes/Features                                                                                                                                    | Java Compatibility | Spring Boot Version |
+| ---------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------- |
+| JHipster 1.0     | Oct 1, 2013  | Initial release of JHipster, providing support for generating a monolithic Java web application with AngularJS and Spring Boot                            | Java 7             | Spring Boot 1.x     |
+| JHipster 2.0     | Jul 1, 2014  | Added support for generating microservice architecture with Spring Cloud, JHipster Registry, and AngularJS with AngularJS Material                        | Java 7             | Spring Boot 1.x     |
+| JHipster 3.0     | Oct 19, 2015 | Upgraded to AngularJS 1.4 and added support for Angular 2 (later versions), JHipster Entities, JDL Studio, improved Docker support, Elasticsearch support | Java 8             | Spring Boot 1.x     |
+| JHipster 4.0     | Mar 30, 2017 | Added support for generating microservices with reactive stack (Spring WebFlux, Reactor), improved Angular support, OAuth 2.0 improvements                | Java 8             | Spring Boot 1.x     |
+| JHipster 5.0     | Jun 11, 2018 | Introduced JHipster 5 with support for generating applications with Angular 6, upgraded Spring Boot to version 2.0, Kubernetes support                    | Java 8             | Spring Boot 2.x     |
+| JHipster 6.0     | Sep 23, 2019 | Added support for generating applications with Angular 8, improved Docker support, JWT authentication improvements, new generator options                 | Java 8             | Spring Boot 2.x     |
+| JHipster 7.0     | Jun 29, 2021 | Introduced JHipster 7 with support for generating applications with Angular 12, upgraded Spring Boot to version 2.5, Vue.js support                       | Java 11            | Spring Boot 2.x     |
+
+Note: The Java compatibility mentioned in the table represents the minimum required Java version for running JHipster-generated applications
+
+---
+
+**🔴 Note: The tables above were written with the help of ChatGPT 3.5 (limited in knowledge to cutoff date September 2021) and may not be 100% correct!**
 
 <br/>
 
