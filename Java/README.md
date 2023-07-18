@@ -3118,6 +3118,115 @@ System.out.println(capitalCitiesCopy); // {Poland=Warsaw, Romania=Bucharest, Fra
 
 <br/>
 
+<br/>
+
+🔵 Note: **Simple example of call by reference vs call by value:**
+
+> In Java, all arguments are passed by value, including object references. However, when passing an object reference, the value being passed is the memory address (reference) of the object. Therefore, it can give the illusion of "passing by reference" when modifying the state of the object.
+
+```java
+class Circle {
+    private String color;
+
+    public Circle(String color) { this.color = color; }
+
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Circle myCircle = new Circle("Blue");
+        System.out.println("Before changeColor method: " + myCircle.getColor());
+        
+        changeColor(myCircle);
+        
+        System.out.println("After changeColor method: " + myCircle.getColor());
+    }
+
+    public static void changeColor(Circle circle) {
+        circle.setColor("Red");
+    }
+}
+```
+
+> Output:
+
+```
+Before changeColor method: Blue
+After changeColor method: Red
+```
+
+> Even though Java passes the reference by value, modifying the object's state through the reference within the changeColor method updates the original object outside of the method scope.
+
+![](./LearnJava_imgs/call_by_reference_vs_value_gif.gif)
+
+<br/>
+
+🔵 Note: **Simple example of copy by reference vs copy by value:**
+
+```java
+package circleExample;
+
+class Circle {
+    private String color;
+
+    public Circle(String color) { this.color = color; }
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
+}
+
+public class CircleExample {
+
+    public static void main(String[] args) {
+        Circle originalCircle = new Circle("Blue");
+        System.out.println("Original Circle color: " + originalCircle.getColor());
+
+        Circle copiedCircleByValue = copyByValue(originalCircle);
+        copiedCircleByValue.setColor("Red");
+        System.out.println("\nCopied Circle by Value color: " + copiedCircleByValue.getColor());
+        System.out.println("Original Circle color after copying by value: " + originalCircle.getColor());
+
+        Circle copiedCircleByReference = copyByReference(originalCircle);
+        // or
+        // Circle copiedCircleByReference = originalCircle;
+        copiedCircleByReference.setColor("Green");
+        System.out.println("\nCopied Circle by Reference color: " + copiedCircleByReference.getColor());
+        System.out.println("Original Circle color after copying by reference: " + originalCircle.getColor());
+    }
+
+    public static Circle copyByValue(Circle circle) {
+        return new Circle(circle.getColor());
+    }
+
+    public static Circle copyByReference(Circle circle) {
+        return circle;
+    }
+}
+```
+
+> Output
+
+```
+Original Circle color: Blue
+
+Copied Circle by Value color: Red
+Original Circle color after copying by value: Blue
+
+Copied Circle by Reference color: Green
+Original Circle color after copying by reference: Green
+```
+
+> In the `copyByValue` method, a new `Circle` object is created, and the `color` value is explicitly assigned to the new object. Modifying the copied object does not affect the original object.
+
+> In the `copyByReference` method, the same object reference is returned. Therefore, any modifications made to the copied object will reflect in the original object since they both reference the same memory location.
+
+> It's important to note that in Java, assignment of objects does not create a new copy of the object itself. Instead, it creates a new reference pointing to the same object in memory.
+
+> 🔵 Note: If you want to perform a deep copy of custom objects or arrays in Java, you would need to implement it explicitly. This typically involves creating a new instance of the object and copying each field or element individually, either manually or using serialization/deserialization techniques.
+
+<br/>
+
 ## TreeMap
 
 A TreeMap is like a HashMap but it is sorted according to the [natural ordering](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html) of its keys (or based on a custom [Comparator](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html) that you can provide at the time of creation of the TreeMap).

@@ -484,6 +484,20 @@ Note: The `echo -e` option enables interpretion of backslash, meaning `/n` will 
 
 <br/>
 
+# Linux File System
+
+![](./Top-Linux-Commands-imgs/linuxfilesystem01.jpg)
+
+<br/>
+
+From:
+- https://www.linuxfoundation.org/blog/blog/classic-sysadmin-the-linux-filesystem-explained:
+- https://www.blackmoreops.com/2015/02/14/linux-file-system-hierarchy/
+
+![](./Top-Linux-Commands-imgs/linuxfilesystem02.jpg)
+
+<br/>
+
 # Piping commands
 
 We can take the output of a command, and pass it as an input to another command. Examples:

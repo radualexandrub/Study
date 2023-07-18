@@ -804,7 +804,7 @@ public class ServerResource {
 }
 ```
 
-- `@GetMapping("")`: Spring Framework annotation that maps the function to handle GET requests on the base URL ("/api/servers"). The empty string within the `@GetMapping` annotation indicates that this function will handle GET requests to the base URL itself.
+- `@GetMapping("")`: Spring Framework annotation that maps the function to handle GET requests on the base URL ("/api/servers"). The empty string within the `@GetMapping` annotation indicates that the function will handle GET requests to the base URL itself.
 - `public ResponseEntity<Response> getAllServers()`: returns a `ResponseEntity<Response>` object, which represents the HTTP response that will be sent back to the client. The `Response` class is a custom class that encapsulates the response data.
 - `ResponseEntity.ok(...)`: method is used to create a `ResponseEntity` object with an HTTP status of 200 (OK). It indicates that the request was successful, and the response will contain the desired data.
 - `Response.builder()`: uses the builder pattern (from Lombok library) to create a new `Response` object.
@@ -1052,12 +1052,47 @@ Note on July 10, 2023, 22:00: Additional methods were added:
 
 After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/installer/), we can open "MySQL 8.0 Command Line Client" (from Windows Start Menu).
 
-🔵 Note: If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
+🔵 Note: *(On Windows)* If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
 -   Open Windows Start Menu, search and open "Services", manually find `MySQL80` service -> Right click it -> Start.
 -   (does not work in my case) We can just run (as administrator) the executable from `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe`.
 -   See more here: [Can't startup and connect to MySQL server](https://stackoverflow.com/questions/31387036/cant-startup-and-connect-to-mysql-server).
 
+<br/>
+
+> Alternative: Using MySQL Docker image instead of installing MySQL 8.0 Server *on Linux (or Windows)* PC
+> - Install [Docker](https://www.docker.com/). 
+> - *(In Linux)* Check if Docker service is running by `systemctl status docker` (use `systemctl start docker` if service is not running)
+> - Run `sudo docker images -a` to view current images
+> - Run `sudo docker pull mysql` to pull the latest MySQL image from https://hub.docker.com/_/mysql
+> - Run the below command that will create a MySQL server container with the following configurations:
+>   - Container name: mysql-server
+>   - Root password: yourpassword
+>   - Database name: pingstatustracker
+>   - Exposed port: 3306
+> 
+> ```shell
+> sudo docker run -d \
+>   --name mysql-server \
+>   -e MYSQL_ROOT_PASSWORD=yourpassword \
+>   -e MYSQL_DATABASE=pingstatustracker \
+>   -p 3306:3306 \
+>   mysql:latest \
+>   --character-set-server=utf8mb4 \
+>   --collation-server=utf8mb4_unicode_ci \
+>   --default-authentication-plugin=mysql_native_password \
+>   --sql-mode=NO_ENGINE_SUBSTITUTION \
+>   --innodb-flush-log-at-trx-commit=0
+> ```
+>
+> - Check if the MySQL container was created with `sudo docker container ls`. You can also check images, containers, cache size with `sudo docker system df`
+> - Check if the MySQL container is running with `sudo docker container ls -a`. If MySQL:latest container is up, you can start the Spring Boot Application by running `mvn spring-boot:run` - if application ran with no errors, then the Spring Boot app did successfully connect to MySQL running as docker image!
+>
+> - You can run `sudo docker exec -it mysql-server mysql -uroot -pyourpassword -D pingstatustracker` to enter the MySQL image and run some INSERT SQL queries, e.g.: `INSERT INTO server (id, ip_address, name, network, status) VALUES (1, '8.8.8.8', 'Google 1', 'External', '0');`
+> - Check http://localhost:8080/api/servers if servers from MySQL database running in Docker can be retrieved
+
 <hr/>
+
+<br/>
 
 To set up our database in our Java Spring Application, we need to go to `src/main/resource/application.yml` (Note: `application.properties` can be easily renamed/refactored to `application.yml`):
 
@@ -1285,6 +1320,571 @@ Another example:
 
 # Frontend Angular
 
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 13](https://www.youtube.com/watch?v=Bwl2WAsC-8Y&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=13)
+
+We will use [Node.js](https://nodejs.org/en/download) and [Angular CLI](https://angular.io/cli) to create our Front-End Angular Application!
+
+Currently installed on system:
+
+```shell
+node --version
+# v18.16.1
+
+npm --version
+# 9.5.1
+
+ng version
+#      _                      _                 ____ _     ___
+#     / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+#    / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+#   / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+#  /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+#                 |___/
+#
+# Angular CLI: 16.1.4
+# Node: 18.16.1
+# Package Manager: npm 9.5.1
+# OS: win32 x64
+# 
+# Package                      Version
+# ------------------------------------------------------
+# @angular-devkit/architect    0.1601.4 (cli-only)
+# @angular-devkit/core         16.1.4 (cli-only)
+# @angular-devkit/schematics   16.1.4 (cli-only)
+# @schematics/angular          16.1.4 (cli-only)
+```
+
+(Tuesday, July 11, 2023, 23:42)
+
 <br/>
+
+In main app's folder after installing Node.js:
+
+```shell
+# Install the Angular CLI: To install the Angular CLI globally,
+# open a terminal window and run the following command
+# (You will run this only once):
+npm install -g @angular/cli
+
+# To create a new project (a new workspace for an app)
+ng new serverpingstatustracker-app
+
+# Change directory
+cd serverpingstatustracker-app
+
+# The Angular CLI includes a server, for you to build and serve your app locally
+ng serve --open
+```
+
+- Would you like to add Angular routing? (y/N): y
+- Which stylesheet format would you like to use?: CSS
+
+<br/>
+
+## package.json
+
+```json
+// package.json
+{
+  "name": "serverpingstatustracker-app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.1.0",
+    "@angular/common": "^16.1.0",
+    "@angular/compiler": "^16.1.0",
+    "@angular/core": "^16.1.0",
+    "@angular/forms": "^16.1.0",
+    "@angular/platform-browser": "^16.1.0",
+    "@angular/platform-browser-dynamic": "^16.1.0",
+    "@angular/router": "^16.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.1.4",
+    "@angular/cli": "~16.1.4",
+    "@angular/compiler-cli": "^16.1.0",
+    "@types/jasmine": "~4.3.0",
+    "jasmine-core": "~4.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.1.3"
+  }
+}
+```
+
+-   `package.json`: this fo;e contains the metadata and configuration for your project, including the dependencies and scripts. It serves as a manifest for your application, specifying what libraries and versions are required.
+-   `package-lock.json`: this file is automatically generated by `npm` when you install or update dependencies. It provides a detailed and deterministic description of the dependency tree, including the specific versions of each dependency installed. It ensures that all developers working on the project get the same dependency versions, helping to maintain consistency and avoid dependency conflicts.
+
+Brief explanation of above packages:
+
+1.  rxjs (~7.8.0): RxJS is imported by default in Angular. RxJS is a library for reactive programming (opposite of procedural programming) using Observables, enabling you to work with asynchronous data streams. The version "~7.8.0" indicates that any version starting with 7.8.x is acceptable, allowing minor updates but keeping the major version fixed.
+
+2.  tslib (^2.3.0): tslib is a runtime library for TypeScript that provides helper functions used by the generated JavaScript code. The "^2.3.0" version specifier means that any version equal to or higher than 2.3.0 can be used, allowing both minor and patch updates.
+
+3.  zone.js (~0.13.0): Zone.js is a library that helps with managing asynchronous operations in JavaScript. It provides execution context and hooks into asynchronous operations. The version "~0.13.0" indicates that any version starting with 0.13.x is acceptable, allowing minor updates.
+
+4.  jasmine-core (~4.6.0): Jasmine is a behavior-driven development (BDD) testing framework for JavaScript. It provides a clean and readable syntax for writing tests. The version "~4.6.0" indicates that any version starting with 4.6.x is acceptable, allowing minor updates.
+
+5.  karma (~6.4.0): Karma is a test runner for JavaScript that enables you to execute tests in multiple browsers simultaneously. It provides a simple and consistent way to run tests, capture browsers, and generate test reports. The version "~6.4.0" means that any version starting with 6.4.x is acceptable, allowing minor updates.
+
+6.  karma-chrome-launcher (~3.2.0): Karma Chrome Launcher is a plugin for Karma that launches Google Chrome to run tests in it. The version "~3.2.0" means that any version starting with 3.2.x is acceptable, allowing minor updates.
+
+7.  karma-coverage (~2.2.0): Karma Coverage is a plugin for Karma that generates code coverage reports for your tests, showing how much of your code is covered by tests. The version "~2.2.0" indicates that any version starting with 2.2.x is acceptable, allowing minor updates.
+
+8.  karma-jasmine (~5.1.0): Karma Jasmine is a plugin for Karma that integrates the Jasmine testing framework, allowing you to write and run Jasmine tests using Karma. The version "~5.1.0" means that any version starting with 5.1.x is acceptable, allowing minor updates.
+
+9.  karma-jasmine-html-reporter (~2.1.0): Karma Jasmine HTML Reporter is a plugin for Karma that generates an HTML report with the results of Jasmine tests executed by Karma. The version "~2.1.0" indicates that any version starting with 2.1.x is acceptable, allowing minor updates.
+
+<br/>
+
+## Enums, interfaces, services
+
+### Server status.enum.ts and date-state.enum.ts
+
+First, we can create a folder that will contain all the enumerations within the Angular Project:
+
+- create `./src/app/enum/status.enum.ts`
+
+```ts
+// status.enum.ts
+export enum Status {
+  ALL = 'ALL',
+  SERVER_UP = 'SERVER_UP',
+  SERVER_DOWN = 'SERVER_DOWN',
+}
+```
+
+- with `ALL` we will have the option to select (from font-end/UI) all the servers no matter the status - we can then filter the servers based on the SERVER_UP or SERVER_DOWN statuses.
+
+<br/>
+
+- create `./src/app/enum/data-state.enum.ts` that will represent the "Data state" of the data that is in progress to be retrieved
+
+```ts
+// data-state.enum.ts
+export enum DataState {
+  LOADING_STATE = 'LOADING_STATE',
+  LOADED_STATE = 'LOADED_STATE',
+  ERROR_STATE = 'ERROR_STATE',
+}
+```
+
+<br/>
+
+### Server and Response interface/model 
+
+- create `./src/app/interface/server.ts`
+- define all the attributes that the Server model (in Spring API & database) has:
+
+```ts
+// server.ts
+import { Status } from '../enum/status.enum';
+
+export interface Server {
+  id: number;
+  ipAddress: string;
+  name: string;
+  network: string;
+  status: Status;
+}
+```
+
+<br/>
+
+- create `./src/app/interface/custom-response.ts`
+- define all the attributes that the Response model (in Spring API) has:
+    - the response that the client gets back from Spring API BackEnd could either have a server or multiple servers as data
+
+```ts
+// custom-response.ts
+import { Server } from './server';
+
+export interface CustomResponse {
+  timeStamp: Date;
+  statusCode: number;
+  status: string;
+  reason: string;
+  message: string;
+  developerMessage: string;
+  data: { servers?: Server[]; server?: Server };
+}
+```
+
+(Saturday, July 15, 2023)
+
+<br/>
+
+### Application state interface app-state.ts
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 15](https://www.youtube.com/watch?v=4ucfk6znWjM&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=15)
+
+For a reactive approach, we will habe the state of the entire application at any given moment:
+- create `./src/app/interface/app-state.ts`
+    - the state will be defined from the above enum `enum DataState { LOADING_STATE = 'LOADING_STATE', LOADED_STATE = 'LOADED_STATE', ERROR_STATE = 'ERROR_STATE' }`
+    - `appData` will be generic (`<T>`)
+    - since we cannot get the data and an error at the same time, `appData?` and `error?` will be both optional 
+
+```ts
+// app-state.ts
+import { DataState } from '../enum/data-state.enum';
+
+export interface AppState<T> {
+  dataState: DataState;
+  appData?: T;
+  error?: string;
+}
+```
+
+![Angular Interfaces Enums](./SpringBootAngularPingStatusApp/Angular_Interfaces_Enums.jpg)
+
+<br/>
+
+### Server Angular Service
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 16](https://www.youtube.com/watch?v=4ucfk6znWjM&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=16)
+
+First, before working on server service, un the Angular's main `/src/app/app.module.ts` we need to import: `import { HttpClientModule } from '@angular/common/http';`, and also add it to the imports array: `imports: [BrowserModule, HttpClientModule],`. 🟠 Note: If we don't import the `HttpClientModule` we will receive the following error from Angular in our browser console: `ERROR NullInjectorError: R3InjectorError(AppModule)[EmployeeService -> HttpClient -> HttpClient -> HttpClient]: NullInjectorError: No provider for HttpClient!`
+
+```ts
+// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+<br/>
+
+We will now generate the "server" service that will contain all the methods for the HTTP Requests. With Angular's CLI, in the Angular project path, run:
+
+```shell
+ng generate service services/server
+```
+
+<br/>
+
+In `server.service.ts` we will use Angular's `HttpClient` in order to make HTTP requests (`get`, `post`, `put`, `delete`) that'll be injected in the constructor: `export class ServerService { constructor(private http: HttpClient) {} }`
+
+<br/>
+
+<u>The **procedural approach** of implementing the `ServerService` class that provides methods to interact with the backend API would be the following:</u>
+
+```ts
+// server.service.ts - The procedural approach
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CustomResponse } from '../interfaces/custom-response';
+
+@Injectable({ providedIn: 'root' }) // The Injectable decorator is used to mark the ServerService as a service that can be injected with dependencies. It allows the service to be injected into other components or services.
+export class ServerService {
+  constructor(private http: HttpClient) {}
+
+  getServers(): Observable<CustomResponse> {
+    return this.http.get<CustomResponse>('http://localhost:8080/api/servers');
+  }
+
+  getServerById(serverId: number): Observable<CustomResponse> {
+    return this.http.get<CustomResponse>(
+      `http://localhost:8080/api/servers/${serverId}`
+    );
+  }
+
+  addServer(server: Server): Observable<Server> {
+    const methodName = 'addServer() ';
+    console.debug(methodName + 'Request Sent: ' + JSON.stringify(server));
+    return this.http.post<Server>(
+        `http://localhost:8080/api/servers`, server);
+  }
+}
+```
+
+<br/>
+
+<u>However, we will implement the `ServerService` class using the **reactive approach with RxJS operators**:</u>
+-   `servers$ = <Observable<CustomResponse>>...`: declares a property `servers$` of type `Observable<CustomResponse>`. The dollar sign convention (`$`) is a good practice to indicate that this property is an observable.
+-   `this.http.get<CustomResponse>(${this.apiUrl}/servers`): makes an HTTP GET request to the API endpoint `${this.apiUrl}/servers` using the `HttpClient` service's `get` method. It expects the response to be of type `CustomResponse`
+-   `.pipe(tap(console.log), catchError(this.handleError))`: uses the `pipe` operator to chain multiple operators to the observable. The `tap` operator is used to perform a side effect of logging the response to the console, while the `catchError` operator is used to handle any errors that may occur during the HTTP request.
+-   `handleError(handleError: any): Observable<never> { ... }`: This method defines an error handler function named `handleError` which takes an `error` parameter of type `any`. The return type is `Observable<never>`, indicating that it returns an observable that never emits any values. However, in the provided code, the implementation of the `handleError` method is incomplete and throws a `Method not implemented` error when called.
+
+The reactive approach using RxJS operators allows for a more streamlined and declarative way of handling asynchronous operations. It promotes composing and transforming observables using operators, making the code more concise and readable. Operators like `tap` and `catchError` provide powerful ways to perform side effects and error handling within the observable pipeline.
+
+Compared to the procedural approach in the previous example, this reactive approach separates the observable creation and configuration (`servers$`) from the actual usage of the observable. The reactive approach also leverages the power of RxJS operators to handle errors and perform side effects, making it more flexible and easier to manage complex asynchronous flows.
+
+```ts
+// server.service.ts - The reactive approach
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { CustomResponse } from '../interfaces/custom-response';
+
+@Injectable({ providedIn: 'root' })
+export class ServerService {
+  private readonly apiUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) {}
+
+  servers$ = <Observable<CustomResponse>>(
+    this.http
+      .get<CustomResponse>(`${this.apiUrl}/servers`)
+      .pipe(tap(console.log), catchError(this.handleError))
+  );
+
+  handleError(handleError: any): Observable<never> {
+    return throwError('Method not implemented.');
+  }
+}
+```
+
+<br/>
+
+(Monday, July 17, 2023, 22:34)
+
+The complete `server.service.ts` using the reactive approach
+
+```ts
+// server.service.ts - The reactive approach | Complete code
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { CustomResponse } from '../interfaces/custom-response';
+import { Server } from '../interfaces/server';
+import { Status } from '../enums/status.enum';
+
+@Injectable({ providedIn: 'root' })
+export class ServerService {
+  private readonly apiUrl = 'http://localhost:8080/api';
+
+  constructor(private http: HttpClient) {}
+
+  servers$ = <Observable<CustomResponse>>(
+    this.http
+      .get<CustomResponse>(`${this.apiUrl}/servers`)
+      .pipe(tap(console.log), catchError(this.handleError))
+  );
+
+  filter$ = (status: Status, response: CustomResponse) =>
+    <Observable<CustomResponse>>new Observable<CustomResponse>((subscriber) => {
+      console.log(response);
+      const servers = response.data?.servers || [];
+      const filteredServers = servers.filter(
+        (server) => server.status === status
+      );
+
+      const message =
+        status === Status.ALL
+          ? `Servers filtered by ${status} status`
+          : filteredServers.length > 0
+          ? `Servers filtered by ${
+              status === Status.SERVER_UP ? 'SERVER UP' : 'SERVER DOWN'
+            } status`
+          : `No servers of ${status} found`;
+
+      subscriber.next({
+        ...response,
+        message,
+        data: {
+          servers: filteredServers,
+        },
+      });
+      subscriber.complete();
+    }).pipe(tap(console.log), catchError(this.handleError));
+
+  getServerById = (serverId: number) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .get<CustomResponse>(`${this.apiUrl}/servers/${serverId}`)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  addServer$ = (server: Server) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .post<CustomResponse>(`${this.apiUrl}/servers`, server)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  updateServer$ = (server: Server) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .put<CustomResponse>(`${this.apiUrl}/servers`, server)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  deleteServerById = (serverId: number) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .delete<CustomResponse>(`${this.apiUrl}/servers/${serverId}`)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  pingServerById = (serverId: number) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .get<CustomResponse>(`${this.apiUrl}/servers/${serverId}/ping`)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  pingServerByIpAddress = (ipAddress: string) =>
+    <Observable<CustomResponse>>(
+      this.http
+        .get<CustomResponse>(`${this.apiUrl}/servers/ping/${ipAddress}`)
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  handleError(error: HttpErrorResponse): Observable<never> {
+    console.error(error);
+    return throwError(() => new Error(`Error Code: ${error.status}`));
+  }
+}
+```
+
+<br/>
+
+For the `filter$` function that performs filtering on a `CustomResponse` object based on the provided `status` parameter. Here's a breakdown of the function:
+
+1.  `(status: Status, response: CustomResponse) =>`: takes two parameters: `status` of type `Status` and `response` of type `CustomResponse`.
+2.  `<Observable<CustomResponse>>new Observable<CustomResponse>((subscriber) => { ... })`: creates a new instance of an observable that emits values of type `CustomResponse`. It takes a subscriber function as an argument.
+3.  `const servers = response.data?.servers || [];`: initializes the `servers` variable with the value of `response.data.servers` if it exists; otherwise, it assigns an empty array to `servers`. This guards against `response.data` or `response.data.servers` being `undefined`.
+4.  `const filteredServers = servers.filter((server) => server.status === status);`: filters the `servers` array based on the provided `status`, creating a new array `filteredServers` that only contains servers with a matching status.
+5.  `const message = ...`: This block assigns the appropriate message based on the conditionals:
+    -   If `status` is `Status.ALL`, it sets `message` to `'Servers filtered by ${status} status'`.
+    -   If `filteredServers.length` is greater than 0, it sets `message` to `'Servers filtered by SERVER UP status'` or `'Servers filtered by SERVER DOWN status'`.
+    -   If none of the above conditions are met, it sets `message` to `'No servers of ${status} found'`.
+6.  `subscriber.next({ ... })`: emits a new `CustomResponse` object to the subscriber, which includes the modified `response` object:
+    -   The `message` property is updated based on the filtering results.
+    -   The `data` property is updated with the filtered servers.
+7.  `subscriber.complete();`: signals the completion of the observable stream.
+8.  `.pipe(tap(console.log), catchError(this.handleError))`: pipes the observable to apply additional operators:
+    -   The `tap(console.log)` operator logs the emitted values to the console.
+    -   The `catchError(this.handleError)` operator catches and handles any errors that occur during the observable stream, using the `handleError` method of the `ServerService`.
+
+In summary, the `filter$` function filters servers based on the provided `status` and emits a modified `CustomResponse` object as an observable. The emitted response includes a message indicating the filtering results and the filtered server data.
+
+
+<br/>
+
+## Demo - Calling GET Servers from app.component.ts
+
+```ts
+// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ServerService } from './services/server.service';
+import { Observable, catchError, map, of, startWith } from 'rxjs';
+import { AppState } from './interfaces/app-state';
+import { CustomResponse } from './interfaces/custom-response';
+import { DataState } from './enums/data-state.enum';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  appState$!: Observable<AppState<CustomResponse>>;
+  constructor(private ServerService: ServerService) {}
+
+  ngOnInit(): void {
+    this.appState$ = this.ServerService.getServersPinged$().pipe(
+      map((response) => {
+        return { dataState: DataState.LOADED_STATE, appData: response };
+      }),
+      startWith({ dataState: DataState.LOADING_STATE }),
+      catchError((error: string) => {
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+  }
+}
+```
+
+```html
+<!-- app.component.html -->
+<div>{{ appState$ | async | json }}</div>
+```
+
+
+<br/>
+
+### Solving "blocked by CORS policy" - CORS Configuration
+
+Now, if we start the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start), and we are also starting the SpringBoot Back-end Server (mvn spring-boot:run and test on http://localhost:8080/api/servers) and the Front-end Angular Application (ng serve --open on http://localhost:4200/), we will run into the following CORS error:
+
+> Access to XMLHttpRequest at 'http://localhost:8080/api/servers/ping' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+![CORS example issue](./SpringBootAngularPingStatusApp/CORS_01.jpg)
+
+<br/>
+
+To solve this issue, we need to tell the back-end to allow the front-end app to run on requested url (origin) in order to access the resources.
+
+On the SpringBoot project, in the main application class `ServerpingstatustrackerApplication` we need to add the following CORS Configuration after the `main()` function:
+
+```java
+// ServerpingstatustrackerApplication.java
+package com.radubulai.serverpingstatustracker;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+
+@SpringBootApplication
+public class ServerpingstatustrackerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServerpingstatustrackerApplication.class, args);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8081"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
+                "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
+                "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+}
+```
+
+Now we can successfully make requests from frontend:
+
+![CORS example issue](./SpringBootAngularPingStatusApp/CORS_02.jpg)
 
 <br/>
