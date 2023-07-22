@@ -3225,6 +3225,8 @@ Original Circle color after copying by reference: Green
 
 > 🔵 Note: If you want to perform a deep copy of custom objects or arrays in Java, you would need to implement it explicitly. This typically involves creating a new instance of the object and copying each field or element individually, either manually or using serialization/deserialization techniques.
 
+![](./LearnJava_imgs/call_by_reference_vs_value_gif2.gif)
+
 <br/>
 
 ## TreeMap

@@ -328,6 +328,10 @@ exit
 
 <br/>
 
+![Docker Beginner's Tutorial](./FireshipDockerBeginnerTutorial11m/HowDoesDockerWork_ByteByteGoSchema.jpg)
+
+<br/>
+
 # Docker compose
 
 Docker only allows us to have one process per container. If our app runs multiple services (on multiple ports, eg. `4200` and `5000`), with only one Docker container we can't run all of the services.

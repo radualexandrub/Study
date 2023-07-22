@@ -41,6 +41,7 @@ java --version
 # java 17.0.1 2021-10-19 LTS
 # Java(TM) SE Runtime Environment (build 17.0.1+12-LTS-39)
 # Java HotSpot(TM) 64-Bit Server VM (build 17.0.1+12-LTS-39, mixed mode, sharing)
+java -version # for older versions (e.g. Java8 - build 1.8)
 
 where mvn
 # C:\Program Files\apache-maven-3.8.6\bin\mvn
@@ -1083,6 +1084,12 @@ After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/i
 >   --sql-mode=NO_ENGINE_SUBSTITUTION \
 >   --innodb-flush-log-at-trx-commit=0
 > ```
+> 
+> Or in one line:
+> 
+> ```shell
+> sudo docker run -d --name mysql-server -e MYSQL_ROOT_PASSWORD=yourpassword -e MYSQL_DATABASE=pingstatustracker -p 3306:3306 mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --sql-mode=NO_ENGINE_SUBSTITUTION --innodb-flush-log-at-trx-commit=0
+> ```
 >
 > - Check if the MySQL container was created with `sudo docker container ls`. You can also check images, containers, cache size with `sudo docker system df`
 > - Check if the MySQL container is running with `sudo docker container ls -a`. If MySQL:latest container is up, you can start the Spring Boot Application by running `mvn spring-boot:run` - if application ran with no errors, then the Spring Boot app did successfully connect to MySQL running as docker image!
@@ -1791,6 +1798,17 @@ In summary, the `filter$` function filters servers based on the provided `status
 
 ## Demo - Calling GET Servers from app.component.ts
 
+- `@Component` decorator provides metadata for the component, such as the selector, main template URL, and CSS styles
+- `appState$!: Observable<AppState<CustomResponse>>;`: declares the `appState$` property as an observable of type `AppState<CustomResponse>`. The `!` indicates that the property will be assigned a value later.
+- The constructor initializes the `serverService` property with an instance of the `ServerService` injected through dependency injection so we can use all the methods defined there.
+- `ngOnInit(): void` is a lifecycle hook that runs when the component is initialized
+- `this.appState$ = this.serverService.getServersPinged$().pipe(...)`: assigns the `appState$` property to the result of the `getServersPinged$()` method call from the `serverService`. The method is assumed to return an observable that emits `CustomResponse` data.
+    - `map((response) => { return { dataState: DataState.LOADED_STATE, appData: response }; })`: `map` operator transforms the emitted `response` data by wrapping it in an object with `dataState` and `appData` properties. It sets the `dataState` to `DataState.LOADED_STATE` and assigns the `response` to `appData`.
+    - `startWith({ dataState: DataState.LOADING_STATE })`: `startWith` operator emits an initial value `{ dataState: DataState.LOADING_STATE }` before the actual values emitted by the observable. This helps indicate the loading state when the component first initializes.
+    - `catchError((error: string) => { return of({ dataState: DataState.ERROR_STATE, error }); })`: `catchError` operator catches any errors that occur in the observable stream and handles them. It transforms the error into an object with `dataState` set to `DataState.ERROR_STATE` and includes the error message.
+
+In summary, this code sets up the `appState$` observable in the `AppComponent` class. It fetches data from the `serverService`, transforms the response using the `map` operator, handles loading state with `startWith`, and catches and handles errors with `catchError`. The `appState$` observable will emit different states (`LOADING_STATE`, `LOADED_STATE`, or `ERROR_STATE`) based on the server response and error conditions.
+
 ```ts
 // app.component.ts
 import { Component, OnInit } from '@angular/core';
@@ -1807,10 +1825,11 @@ import { DataState } from './enums/data-state.enum';
 })
 export class AppComponent implements OnInit {
   appState$!: Observable<AppState<CustomResponse>>;
-  constructor(private ServerService: ServerService) {}
+
+  constructor(private serverService: ServerService) {}
 
   ngOnInit(): void {
-    this.appState$ = this.ServerService.getServersPinged$().pipe(
+    this.appState$ = this.serverService.getServersPinged$().pipe(
       map((response) => {
         return { dataState: DataState.LOADED_STATE, appData: response };
       }),
@@ -1828,12 +1847,25 @@ export class AppComponent implements OnInit {
 <div>{{ appState$ | async | json }}</div>
 ```
 
+- `{{ appState$ | async | json }}`: is an Angular template expression enclosed within double curly braces (`{{ }}`). It binds the value of the `appState$` observable to the content of the `<div>` element.
+    -   `appState$`: is the `appState$` property defined in the `AppComponent` class, which is an observable of type `AppState<CustomResponse>`.
+    -   `async`: `async` pipe is used to subscribe to the `appState$` observable and automatically handle the subscription and unsubscription. It allows the template to display the latest emitted value from the observable.
+    -   `json`: The `json` pipe is used to format the value as a JSON string. It converts the emitted value from the observable into a string representation in JSON format.
+
+So, in summary, this HTML template code displays the JSON string representation of the latest emitted value from the `appState$` observable within the `<div>` element. It leverages the `async` pipe to handle the subscription and updates the displayed value whenever the observable emits a new value.
 
 <br/>
 
 ### Solving "blocked by CORS policy" - CORS Configuration
 
-Now, if we start the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start), and we are also starting the SpringBoot Back-end Server (mvn spring-boot:run and test on http://localhost:8080/api/servers) and the Front-end Angular Application (ng serve --open on http://localhost:4200/), we will run into the following CORS error:
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 20](https://www.youtube.com/watch?v=aBwdbMdq1Ck&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=20)
+
+Now:
+- if we start the application, namely:
+    - starting the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start)
+    - starting the SpringBoot Back-end Server (`mvn spring-boot:run` and test on http://localhost:8080/api/servers)
+    - starting the Front-end Angular Application (`ng serve --open` on http://localhost:4200/)
+- we will run into the following CORS error:
 
 > Access to XMLHttpRequest at 'http://localhost:8080/api/servers/ping' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
@@ -1888,3 +1920,910 @@ Now we can successfully make requests from frontend:
 ![CORS example issue](./SpringBootAngularPingStatusApp/CORS_02.jpg)
 
 <br/>
+
+## User Interface - Building the HTML using Bootstrap CSS
+
+### HTML+CSS Boilerplate
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 21](https://www.youtube.com/watch?v=QNKLK6U0Pt8&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=21)
+
+We will use the following (NOT FINISHED) HTML + CSS code (Note these may change completely untill the end of tutorial):
+
+```html
+<!-- app.component.html -->
+<!-- <div>{{ appState$ | async | json }}</div> -->
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <h1 style="font-size: 1rem">
+    <a class="navbar-brand" style="color: white">Server Ping Status Tracker</a>
+  </h1>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarColor02"
+    aria-controls="navbarColor02"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#addServerModal" data-toggle="modal"
+          >Add Server <span class="sr-only">(current)</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/"
+          >All employees <span class="sr-only">(current)</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a routerLink="/about" class="nav-link"
+          >About <span class="sr-only">(current)</span></a
+        >
+      </li>
+    </ul>
+    <div>
+      <select
+        name="status"
+        ngModel="ALL"
+        class="btn btn-primary"
+        title="Filter Severs by Status"
+      >
+        <option value="ALL">ALL</option>
+        <option value="SERVER_UP">SERVER UP</option>
+        <option value="SERVER_DOWN">SERVER DOWN</option>
+      </select>
+    </div>
+    <div
+      class="dark-mode-icon nav-item"
+      title="Toggle between light/dark theme"
+    >
+      <i class="fa fa-moon-o fa-2x mx-2"></i>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <ng-container
+        *ngIf="appState$ | async as appState"
+        [ngSwitch]="appState.dataState"
+      >
+        <ng-container *ngSwitchCase="">
+          <div class="col-md-12 text-center">
+            <div class="spinner-border text-info" role="status"></div>
+          </div>
+        </ng-container>
+        <ng-container>
+          <table class="table table-striped table-hover" id="servers">
+            <thead>
+              <tr>
+                <th>IP Address</th>
+                <th>Name</th>
+                <th>Network</th>
+                <th>Status</th>
+                <th>Ping</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody
+              *ngFor="
+                let server of (appState$ | async)?.appData?.data?.servers;
+                let i = index
+              "
+            >
+              <tr>
+                <td>{{ server.ipAddress }}</td>
+                <td>{{ server.name }}</td>
+                <td>{{ server.network }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="[
+                      server.status === Status.SERVER_UP
+                        ? ' badge-success'
+                        : ' badge-danger'
+                    ]"
+                  >
+                    {{
+                      server.status === Status.SERVER_UP
+                        ? "SERVER UP"
+                        : "SERVER DOWN"
+                    }}
+                  </span>
+                </td>
+                <td>
+                  <a style="cursor: pointer">
+                    <i *ngIf="" class="material-icons" title="Ping server"
+                      >&#xe328;</i
+                    >
+                    <i
+                      class="fa fa-spinner fa-spin"
+                      style="font-size: 24px"
+                    ></i>
+                  </a>
+                </td>
+                <td>
+                  <a class="delete" data-toggle="modal" style="cursor: pointer"
+                    ><i
+                      class="material-icons"
+                      data-toggle="tooltip"
+                      title="Delete"
+                      >&#xE872;</i
+                    ></a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <!-- <ng-container *ngSwitchCase="DataState.ERROR_STATE">
+          <div class="alert-danger">
+            {{ appState.error }}
+          </div>
+        </ng-container> -->
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Add server Modal HTML -->
+<div id="addServerModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h4 class="modal-title">Add Server</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>IP</label>
+            <input
+              type="text"
+              ngModel
+              name="ipAddress"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              ngModel
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <div class="form-group">
+                <label>Memory</label>
+                <input
+                  type="text"
+                  ngModel
+                  name="memory"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <div class="form-group">
+                <label>Type</label>
+                <input
+                  type="text"
+                  ngModel
+                  name="type"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select
+              name="status"
+              ngModel="SERVER_DOWN"
+              class="form-control"
+              name="status"
+              required
+            >
+              <option value="SERVER_UP">SERVER UP</option>
+              <option value="SERVER_DOWN">SERVER DOWN</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-warning"
+            id="closeModal"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <!-- <button
+            type="submit"
+            [disabled]="serverForm.invalid || (isLoading$ | async)"
+            class="btn btn-success"
+          >
+            <i *ngIf="isLoading$ | async" class="fas fa-spinner fa-spin"></i>
+            <span *ngIf="isLoading$ | async">Saving...</span>
+            <span *ngIf="!(isLoading$ | async)">Add</span>
+          </button> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <notifier-container></notifier-container> -->
+```
+
+<br/>
+
+Importing Bootstrap CSS and Jquery for Bootstrap builtin HTML "components" such as modals
+
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Server Ping Status Tracker by Radu-Alexandru Bulai</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      defer
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+<br/>
+
+```css
+/* styles.css */
+@import "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css";
+
+:root {
+  --background-color: hsl(201, 33%, 98%);
+  --background-color-secondary: hsl(0, 0%, 100%);
+  --primary-color: hsl(200, 27%, 37%);
+  --secondary-color: hsl(200, 33%, 24%);
+  --primary-font-color: #000;
+  --container-color: hsl(0, 0%, 97%);
+}
+[data-theme="dark"] {
+  --background-color: hsl(207, 29%, 6%);
+  --background-color-secondary: hsl(206, 28%, 10%);
+  --primary-color: hsl(216, 85%, 80%);
+  --secondary-color: hsl(210, 79%, 75%);
+  --primary-font-color: #fff;
+  --container-color: hsl(207, 29%, 8%);
+}
+::selection {
+  background: var(--primary-color);
+  color: #fff;
+}
+body {
+  background-color: var(--background-color);
+  font-size: 16px;
+  color: var(--primary-font-color);
+  transition: background-color 300ms ease-in, color 300ms ease-in;
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+.container {
+  margin-top: 2rem;
+}
+.modal-content {
+  background-color: var(--container-color);
+}
+.modal-footer {
+  border-top: none !important;
+}
+.navbar {
+  background-color: hsl(200, 33%, 10%);
+}
+.nav-link:hover {
+  cursor: pointer;
+}
+@media screen and (max-width: 992px) {
+  .nav-item {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+input {
+  color: var(--primary-font-color) !important;
+  background-color: var(--background-color-secondary) !important;
+  transition: background-color 300ms ease-in !important;
+}
+.card {
+  background-color: var(--container-color);
+  border: none;
+  box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  transition: background-color 300ms ease-in;
+}
+.card--name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+.card--img {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+.card .list-group-item {
+  background-color: transparent;
+}
+.dark-mode-icon {
+  color: #fff;
+  cursor: pointer;
+}
+.w-60 {
+  width: 4rem;
+}
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+.btn-primary:hover {
+  background-color: var(--secondary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+.btn-primary:disabled {
+  color: #fff;
+  background-color: gray;
+  border-color: gray;
+}
+.social-links li a {
+  -webkit-border-radius: 50%;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 30px;
+  font-size: 12px;
+  transition: background-color 200ms ease-in;
+}
+.social-links li a:hover {
+  background-color: var(--secondary-color);
+}
+a {
+  color: var(--primary-color);
+}
+a:hover {
+  color: var(--secondary-color);
+}
+.alert-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+```
+
+<br/>
+
+```css
+/* app.component.css */
+
+```
+
+<br/>
+
+#### Spinning Icon based on LOADING dataState when retriving servers
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 21](https://www.youtube.com/watch?v=QNKLK6U0Pt8&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=21)
+
+First, by using [Bootstrap v4.x CSS Spinner](https://getbootstrap.com/docs/4.3/components/spinners/) (and [fontawesome 6.4.0](https://fontawesome.com/v6/search?q=spinner&o=r&m=free)) and based on our LOADING/LOADED `appState$.dataState`, we can use `ngSwitch` and `ngSwitchCase` for displaying different `ng-containers` for different states of the application.
+
+```html
+<!-- app.component.html -->
+<ng-container
+    *ngIf="appState$ | async as appState"
+    [ngSwitch]="appState.dataState"
+>
+    <ng-container *ngSwitchCase="DataState.LOADING_STATE">
+      <div class="col-md-12 text-center">
+        <div class="spinner-border text-info" role="status"></div>
+      </div>
+    </ng-container>
+
+    ...
+
+    <ng-container *ngSwitchCase="DataState.LOADED_STATE">
+        <table>...</table>
+    </ng-container>
+
+    ...
+
+    <ng-container *ngSwitchCase="DataState.ERROR_STATE">
+      <div class="alert-danger">
+        {{ appState.error }}
+      </div>
+    </ng-container>
+
+</ng-container>
+```
+
+```ts
+// app.component.ts
+// Here we add readonly DataState = DataState;
+...
+import { DataState } from './enums/data-state.enum';
+import { Status } from './enums/status.enum';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  appState$!: Observable<AppState<CustomResponse>>;
+  readonly Status = Status;
+  readonly DataState = DataState;
+
+  constructor(private serverService: ServerService) {}
+
+  ngOnInit(): void {
+    this.appState$ = this.serverService.servers$.pipe(
+      map((response) => {
+        return { dataState: DataState.LOADED_STATE, appData: response };
+      }),
+      startWith({ dataState: DataState.LOADING_STATE }),
+      catchError((error: string) => {
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+  }
+}
+```
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Application_UI_00.jpg)
+
+(Thursday, July 20, 2023, 22:56)
+
+<br/>
+
+#### Displaying the servers
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 22](https://www.youtube.com/watch?v=QNKLK6U0Pt8&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=22)
+
+```html
+<!-- app.component.html -->
+<div class="container">
+  <div class="table-responsive">
+    <ng-container
+      *ngIf="appState$ | async as appState"
+      [ngSwitch]="appState.dataState"
+    >
+      <ng-container *ngSwitchCase="DataState.LOADING_STATE">
+        <div class="col-md-12 text-center">
+          <div
+            title="Loading Servers..."
+            class="spinner-border text-info"
+            role="status"
+          ></div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="DataState.LOADED_STATE">
+        <table class="table table-hover" id="servers">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>IP Address</th>
+              <th>Name</th>
+              <th>Network</th>
+              <th>Status</th>
+              <th>Ping</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="
+              let server of appState.appData?.data?.servers;
+              let i = index
+            "
+          >
+            <tr>
+              <td title="Server ID: {{ server.id }}">{{ i + 1 }}</td>
+              <td>{{ server.ipAddress }}</td>
+              <td>{{ server.name }}</td>
+              <td>{{ server.network }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="[
+                    server.status === Status.SERVER_UP
+                      ? ' badge-success'
+                      : ' badge-danger'
+                  ]"
+                >
+                  {{
+                    server.status === Status.SERVER_UP
+                      ? "SERVER UP"
+                      : "SERVER DOWN"
+                  }}
+                </span>
+              </td>
+              <td>
+                <a style="cursor: pointer">
+                  <i
+                    class="fa fa-globe"
+                    title="Ping Server"
+                    style="font-size: 1.5rem"
+                  ></i>
+                  <i
+                    class="fa fa-spinner fa-spin"
+                    style="font-size: 1.5rem"
+                  ></i>
+                </a>
+              </td>
+              <td>
+                <a class="delete" data-toggle="modal" style="cursor: pointer"
+                  ><i
+                    class="fa fa-trash-o fa-1x mx-2"
+                    title="Delete Server"
+                    style="font-size: 1.5rem"
+                  ></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="DataState.ERROR_STATE">
+        <div class="alert-danger">
+          {{ appState.error }}
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+```
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Application_UI_01.jpg)
+
+<br/>
+
+#### Showing spinning loading icon when pinging individual server
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 23](https://www.youtube.com/watch?v=I_YRbgGAdRc&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=23)
+
+We want that (from the above screenshot), when we click the "ping server" button to show a spinnig loading icon while we wait for a response. 
+
+For this, we can define the following in `app.component.ts`:
+
+- `private filterSubject = new BehaviorSubject<string>('');`:
+    - A `BehaviorSubject` is a type of `Subject` that always emits the most recent value to its subscribers, even if they subscribe after the value has been emitted. It is initialized with an empty string `''`.
+- `readonly filterStatus$ = this.filterSubject.asObservable();`:
+    - creates a public read-only `Observable` named `filterStatus$`, which is derived from the `filterSubject` using the `asObservable()` method. This ensures that external components can only subscribe to the `filterStatus$` observable and cannot modify its value directly. This observable will emit the values of the `filterSubject`.
+
+In `app.component.html`:
+
+- `*ngIf="... (filterStatus$ | async) === '' || (filterStatus$ | async) !== server.ipAddress"`:
+    - checks if the value emitted by the `filterStatus$` observable is an empty string `''` or not equal to `server.ipAddress`. The server IP address is used to filter the servers, so if there's no filtering (`filterStatus$` is an empty string) or if the filtering is not applied to the current server, the first `<i>` element with the class `fa fa-tower-broadcast` (an icon representing a server) is displayed (this would be the default since the declared string is empty).
+- `*ngIf="(filterStatus$ | async) == server.ipAddress"`: 
+    - checks if the value emitted by the `filterStatus$` observable is equal to the current `server.ipAddress`. If it matches, the second `<i>` element with the class `fa fa-circle-notch fa-spin` (an icon representing a spinning circle) is displayed. This typically indicates that the server is being actively pinged or processed.
+
+Note: We use `.fa-spin` CSS Class for the [`.fa-spinner` icon](https://fontawesome.com/v6/icons/spinner?f=classic&s=solid) (from [fontawesome 6.4.0](https://fontawesome.com/v6/icons/circle-notch?f=classic&s=solid)) for the HTML loading icon.
+
+<br/>
+
+## UI Functionalities
+
+### Pinging each server from db
+
+(Saturday, July 22, 2023)
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 25](https://www.youtube.com/watch?v=8CtdbheG71Y&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=25)
+
+```ts
+// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ServerService } from './services/server.service';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  of,
+  startWith,
+} from 'rxjs';
+import { AppState } from './interfaces/app-state';
+import { CustomResponse } from './interfaces/custom-response';
+import { DataState } from './enums/data-state.enum';
+import { Status } from './enums/status.enum';
+
+/**
+ * @author Radu-Alexandru Bulai
+ * @version 1.0.0
+ * @since 18/07/2023
+ */
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  appState$!: Observable<AppState<CustomResponse>>;
+  readonly Status = Status;
+  readonly DataState = DataState;
+  private ipAddressSubjectWhenPinging = new BehaviorSubject<string>('');
+  readonly ipAddressStatusWhenPinging$ =
+    this.ipAddressSubjectWhenPinging.asObservable();
+  private serversCopyDataSubject = new BehaviorSubject<CustomResponse>(null!);
+  // Assert that null can be assigned by using the non-null assertion operator !
+  // This assumes that the data passed to serversDataCopySubject (the UI copy of servers)
+  // will be updated before any subscribers access it, ensuring that it won't actually be null.
+
+  constructor(private serverService: ServerService) {}
+
+  ngOnInit(): void {
+    this.appState$ = this.serverService.servers$.pipe(
+      map((response) => {
+        this.serversCopyDataSubject.next(response);
+        return { dataState: DataState.LOADED_STATE, appData: response };
+      }),
+      startWith({ dataState: DataState.LOADING_STATE }),
+      catchError((error: string) => {
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+  }
+
+  pingServerByItsIpAddress(ipAddress: string): void {
+    // Assign ip string to show a spinning loading icon while pinging
+    this.ipAddressSubjectWhenPinging.next(ipAddress);
+    this.appState$ = this.serverService.pingServerByIpAddress$(ipAddress).pipe(
+      map((response) => {
+        const serversCopy = this.serversCopyDataSubject.value.data.servers;
+        const indexOfPingedServer = serversCopy!.findIndex(
+          (server) => server.id === response.data.server!.id
+        );
+        // Update the Server from serversCopy in UI after it has been pinged
+        serversCopy![indexOfPingedServer] = response.data.server!;
+        // Assign empty string to stop showing spinning loading icon
+        this.ipAddressSubjectWhenPinging.next('');
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: this.serversCopyDataSubject.value,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.serversCopyDataSubject.value,
+      }),
+      catchError((error: string) => {
+        this.ipAddressSubjectWhenPinging.next('');
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+  }
+}
+```
+
+`app.component.ts` - `pingServerByItsIpAddress()`:
+- `this.ipAddressSubjectWhenPinging.next(ipAddress);` from the HTML code, we added a condition that whenever this "variable" (that has its observer on ` readonly ipAddressStatusWhenPinging$ = this.ipAddressSubjectWhenPinging.asObservable();`) is populated, we will show a loading spinner in UI (if this `ipAddressSubjectWhenPinging` is empty then we will show the "Ping" button in UI)
+- `this.serverService.pingServerByIpAddress$` will make the ping request to the REST SpringBoot API (by calling `pingServer` method from SpringBoot) which will return a **CustomResponse** containing the updated server (with its status updated).
+- we will keep a copy of all the Servers that are already rendered/retrieved in the UI, this copy will be inside `serversCopyDataSubject = new BehaviorSubject<CustomResponse>(null!);` (and the servers data will be inside the value property, such as `const serversCopy = this.serversCopyDataSubject.value.data.servers;`)
+- once we retrieve the response from backend server:
+    - now we need to update our Server from the Servers list from UI (stored as a copy)
+    - we will identify the server (that has been pinged) from our copy of servers list in UI by founding its index
+    - to find the equivalent server in our UI, we will search the list by comparing the IDs of any server from our UI list vs the id of updated server retrieved as response from backend
+    - note that this `pingServerByItsIpAddress` called from `app.component.html` will return (in `this.appState$`) the entire copy of servers list from UI that contains the updated server, therefore the UI will be updated
+    - `this.ipAddressSubjectWhenPinging.next('');` assign an empty string to show back the "Ping" button in UI (`app.component.html`) instead of spinning loading icon
+
+<br/>
+
+```html
+<!-- app.component.html -->
+  <tbody
+    *ngFor="
+      let server of appState.appData?.data?.servers;
+      let i = index
+    "
+  >
+    <tr>
+      <td title="Server ID: {{ server.id }}">{{ i + 1 }}</td>
+      <td>{{ server.ipAddress }}</td>
+      <td>{{ server.name }}</td>
+      <td>{{ server.network }}</td>
+      <td>
+        <span
+          class="badge"
+          [ngClass]="[
+            server.status === Status.SERVER_UP
+              ? ' badge-success'
+              : ' badge-danger'
+          ]"
+        >
+          {{
+            server.status === Status.SERVER_UP
+              ? "SERVER UP"
+              : "SERVER DOWN"
+          }}
+        </span>
+      </td>
+      <td>
+        <a
+          class="edit"
+          style="cursor: pointer"
+          (click)="pingServerByItsIpAddress(server.ipAddress)"
+        >
+          <i
+            *ngIf="
+              (ipAddressStatusWhenPinging$ | async) === '' ||
+              (ipAddressStatusWhenPinging$ | async) !== server.ipAddress
+            "
+            class="fa fa-tower-broadcast fa-1x"
+            title="Ping Server"
+            style="font-size: 1.5rem"
+          ></i>
+          <i
+            *ngIf="
+              (ipAddressStatusWhenPinging$ | async) === server.ipAddress
+            "
+            class="fa fa-circle-notch fa-spin"
+            style="font-size: 1.5rem"
+          ></i>
+        </a>
+      </td>
+      <td>
+        <a class="edit" data-toggle="modal" style="cursor: pointer"
+          ><i
+            class="fa fa-pen fa-1x mx-2"
+            title="Delete Server"
+            style="font-size: 1.5rem"
+          ></i
+        ></a>
+        <a class="delete" data-toggle="modal" style="cursor: pointer"
+          ><i
+            class="fa fa-trash fa-1x mx-2"
+            title="Delete Server"
+            style="font-size: 1.5rem"
+          ></i
+        ></a>
+      </td>
+    </tr>
+  </tbody>
+```
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Demo_PingServerByIpMethod.gif)
+
+<br/>
+
+### Filter servers in list by status
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 27](https://www.youtube.com/watch?v=zEpukgALl3U&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=27)
+
+Implement Angular Filter By Status method and call it in UI
+- Refactor `filterByStatus$` from `server.service.ts` component
+    - to work with "ALL" option (that just returns the unmodified list of servers)
+    - simplify message by either "Servers filtered by %{status} status" or "No servers of ${status} status were found"
+
+```ts
+// server.service.ts
+filterByStatus$ = (status: Status, response: CustomResponse) =>
+  <Observable<CustomResponse>>new Observable<CustomResponse>((subscriber) => {
+    console.log(response);
+    const servers = response.data?.servers || [];
+    const filteredServers =
+      status === Status.ALL
+        ? servers
+        : servers.filter((server) => server.status === status);
+    const message =
+      filteredServers.length > 0
+        ? `Servers filtered by ${status} status`
+        : `No servers of ${status} status were found`;
+
+    subscriber.next({
+      ...response,
+      message,
+      data: {
+        servers: filteredServers,
+      },
+    });
+    subscriber.complete();
+  }).pipe(tap(console.log), catchError(this.handleError));
+```
+
+- Implement `filterServersByStatus` in `app.component.ts`
+    - we will call `this.serverService.filterByStatus$(status, this.serversCopyDataSubject.value)` with a copy of our data from our UI (namely `this.serversCopyDataSubject.value`)
+        - we don't want to overwrite the entire data when we filter! (therefore the original list with all servers will remain in the copy of `this.serversCopyDataSubject.value` and only `appState$` will be altered with missing Servers after filtering)
+    - after the copy of our data has been filtered by `this.serverService.filterByStatus$` method, the filtered list of servers will come as a `response`
+    - with this response we will update our main `appState$`
+
+```ts
+// app.component.ts
+filterServersByStatus(event: Event): void {
+  const statusValue: String = (event.target as HTMLInputElement).value;
+  const status: Status = Status[statusValue as keyof typeof Status];
+  this.appState$ = this.serverService
+    .filterByStatus$(status, this.serversCopyDataSubject.value)
+    .pipe(
+      map((response) => {
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: response,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.serversCopyDataSubject.value,
+      }),
+      catchError((error: string) => {
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+}
+```
+
+- Call `filterServersByStatus` from `app.component.html`
+
+```html
+<select
+  name="status"
+  (change)="filterServersByStatus($event)"
+  class="btn btn-primary"
+  title="Filter Severs by Status"
+>
+  <option value="ALL">ALL SERVERS</option>
+  <option value="SERVER_UP">SERVERS UP</option>
+  <option value="SERVER_DOWN">SERVERS DOWN</option>
+</select>
+```
+
+We can also go a step further and retain the Status Filtered within our application UI using a `BehaviorSubject`: `private statusSubject = new BehaviorSubject<Status>( Status['ALL' as keyof typeof Status] );`. It might be useful later, since we now have a <u>bug</u> that: when we filter the list by status and we ping a server, we will show to the user all servers instead of keeping the filtered list as it was.
+
+(Saturday, July 22, 2023, 15:37 - Radu-Alexandru Bulai)
+
+<br/>
+
+### Add new server
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 28](https://www.youtube.com/watch?v=HyjQNpEt5ig&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=28&ab_channel=GetArrays)
+
