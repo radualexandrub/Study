@@ -2618,6 +2618,10 @@ public class EnumExample {
 
 <br/>
 
+![](./LearnJava_imgs/data_structures_use_cases_by_bytebytego.jpg)
+
+<br/>
+
 # Sets, ArrayLists, LinkedLists
 
 When you create a set or a list, you don't need to specify it's size (like an array: `String arr[] = new String[3];` or `String[] arr = {"Hello", "Hey"}`).

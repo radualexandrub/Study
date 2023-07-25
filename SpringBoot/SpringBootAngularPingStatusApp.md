@@ -2821,9 +2821,541 @@ We can also go a step further and retain the Status Filtered within our applicat
 
 (Saturday, July 22, 2023, 15:37 - Radu-Alexandru Bulai)
 
+Resources on issues encountered:
+- [Property 'value' does not exist on type EventTarget in TypeScript](https://stackoverflow.com/questions/44321326/property-value-does-not-exist-on-type-eventtarget-in-typescript)
+
 <br/>
 
 ### Add new server
 
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 28](https://www.youtube.com/watch?v=HyjQNpEt5ig&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=28&ab_channel=GetArrays)
 
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Demo_AddServeMethod.gif)
+
+Since we are going to use Angular Forms (where user will submit a form with the new server details), we first need to import the `FormsModule` in `app.module.ts`:
+
+```ts
+// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+<br/>
+
+Implement Angular Add new server method and call it in UI:
+- first call `this.serverService.addServer$` that receives `addServerForm.value` (`NgForm`) which is a JSON object containing all the keys (HTML property `name` for each `<input>`) and values when a user submits a form
+- the response from the Back-End REST Spring API will be the new server that has been created
+- we will modify this response by adding the current servers in UI (copy of servers) and then appending the new server to the list
+- after that, we reset the HTML Form that uses sees, and assign the false state for the `this.isServerLoadingSubject.next(false);` variable (we will show a loading spinning icon while we wait for a response from the backend), and we can also close the modal on UI
+
+```ts
+// app.component.ts
+onAddServer(addServerForm: NgForm): void {
+  this.isServerLoadingSubject.next(true);
+  this.appState$ = this.serverService
+    .addServer$(addServerForm.value as Server)
+    .pipe(
+      map((response) => {
+        const currentServers =
+          this.currentServersCopyDataSubject.value?.data?.servers || [];
+        this.currentServersCopyDataSubject.next({
+          ...response,
+          data: {
+            servers: [...currentServers, response.data.server!],
+          },
+        });
+        addServerForm.resetForm({ status: this.Status.SERVER_DOWN });
+        this.isServerLoadingSubject.next(false);
+        document.getElementById('closeModal')?.click();
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: this.currentServersCopyDataSubject.value,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.currentServersCopyDataSubject.value,
+      }),
+      catchError((error: string) => {
+        this.isServerLoadingSubject.next(false);
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+}
+```
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Angular_UI_AddNewServer01.jpg)
+
+
+<br/>
+
+In order to have a loading spinning icon right after the user adds the new server (and waits for a response from backend), we can:
+- define a `isServerRequestLoadingSubject = new BehaviorSubject<boolean>(false);` where we will keep a "state" of loading
+- on the very start of `onAddServer` method, we can set this variable to true, then set it back on false
+    - when the request is completed and we received (and process) the response from backend server
+    - or when we receive an error
+
+```ts
+// app.component.ts
+private isServerRequestLoadingSubject = new BehaviorSubject<boolean>(false);
+readonly isServerRequestLoading$ = this.isServerRequestLoadingSubject.asObservable();
+```
+
+- on HTML, we will use the observable of `isServerRequestLoadingSubject` to show/hide the _"Add" button_ or _"Saving..." disabled button along with a spinner icon_
+
+```html
+<!-- app.component.html -->
+<!-- Add server Modal HTML -->
+<div id="addServerModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form #addServerForm="ngForm" (ngSubmit)="onAddServer(addServerForm)">
+        <div class="modal-header">
+          <div class="modal-title">Add Server</div>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>IP Address / FQDN</label>
+            <input
+              type="text"
+              ngModel
+              name="ipAddress"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              ngModel
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Network</label>
+            <input
+              type="text"
+              ngModel
+              name="network"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select
+              name="status"
+              ngModel="SERVER_DOWN"
+              class="form-control"
+              name="status"
+              required
+            >
+              <option value="SERVER_UP">SERVER UP</option>
+              <option value="SERVER_DOWN">SERVER DOWN</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn"
+            id="closeModal"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="addServerForm.invalid || (isServerLoading$ | async)"
+          >
+            <span *ngIf="!(isServerLoading$ | async)">Add</span>
+            <span *ngIf="isServerLoading$ | async">Saving...</span>
+            <i
+              *ngIf="isServerLoading$ | async"
+              class="fas fa-spinner fa-spin"
+            ></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+```
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Angular_UI_AddNewServer02.jpg)
+
+![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Angular_UI_AddNewServer03.jpg)
+
+(Sunday, July 23, 2023, 15:52)
+
+<br/>
+
+### Delete a server
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 30](https://www.youtube.com/watch?v=HyjQNpEt5ig&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=30&ab_channel=GetArrays)
+
+Implement Angular Delete Server method and call it in UI
+- `app.component.ts`: implement `onDeleteServer` method that will receive a server object as parameter (we will use this server to filter out our Servers Copy list that is currently displayed in UI) -> this is needed because the "Delete" method from SpringBoot backend does not send back the whole server that was just been deleted
+- once we retrieved the succesful resposne form backend, we filter out the server that has been deleted from our servers UI list
+
+```ts
+// app.component.ts
+onDeleteServer(server: Server): void {
+  this.appState$ = this.serverService.deleteServerById$(server.id).pipe(
+    map((response) => {
+      this.currentServersCopyDataSubject.next({
+        ...response,
+        data: {
+          servers:
+            this.currentServersCopyDataSubject.value.data.servers?.filter(
+              (serverToDelete) => serverToDelete.id !== server.id
+            ),
+        },
+      });
+      return {
+        dataState: DataState.LOADED_STATE,
+        appData: this.currentServersCopyDataSubject.value,
+      };
+    }),
+    startWith({
+      dataState: DataState.LOADED_STATE,
+      appData: this.currentServersCopyDataSubject.value,
+    }),
+    catchError((error: string) => {
+      return of({ dataState: DataState.ERROR_STATE, error });
+    })
+  );
+}
+```
+
+<br/>
+
+```html
+<!-- app.component.html -->
+<table class="table table-hover" id="servers">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Address</th>
+      <th>Name</th>
+      <th>Network</th>
+      <th>Status</th>
+      <th>Ping</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody
+    *ngFor="
+      let server of appState.appData?.data?.servers;
+      let i = index
+    "
+  >
+    <tr>
+      <td title="Server ID: {{ server.id }}">{{ i + 1 }}</td>
+      <td>{{ server.ipAddress }}</td>
+      <td>{{ server.name }}</td>
+      <td>{{ server.network }}</td>
+      <td>
+        <span
+          class="badge"
+          [ngClass]="[
+            server.status === Status.SERVER_UP
+              ? ' badge-success'
+              : ' badge-danger'
+          ]"
+        >
+          {{
+            server.status === Status.SERVER_UP
+              ? "SERVER UP"
+              : "SERVER DOWN"
+          }}
+        </span>
+      </td>
+      <td>
+        <a
+          class="edit"
+          style="cursor: pointer"
+          (click)="onPingServerByItsIpAddress(server.ipAddress)"
+        >
+          <i
+            *ngIf="
+              (ipAddressStatusWhenPinging$ | async) === '' ||
+              (ipAddressStatusWhenPinging$ | async) !== server.ipAddress
+            "
+            class="fa fa-tower-broadcast fa-1x"
+            title="Ping Server"
+            style="font-size: 1.5rem"
+          ></i>
+          <i
+            *ngIf="
+              (ipAddressStatusWhenPinging$ | async) === server.ipAddress
+            "
+            class="fa fa-circle-notch fa-spin"
+            style="font-size: 1.5rem"
+          ></i>
+        </a>
+      </td>
+      <td class="d-flex flex-row">
+        <a class="edit" data-toggle="modal" style="cursor: pointer"
+          ><i
+            class="fa fa-pen fa-1x mx-2"
+            title="Delete Server"
+            style="font-size: 1.5rem"
+          ></i
+        ></a>
+        <a
+          (click)="onDeleteServer(server)"
+          class="delete"
+          data-toggle="modal"
+          style="cursor: pointer"
+          ><i
+            class="fa fa-trash fa-1x mx-2"
+            title="Delete Server"
+            style="font-size: 1.5rem"
+          ></i
+        ></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+```
+
+<br/>
+
+### Update a server and onOpenModal method
+
+This part is not included in the [Main Tutorial of Full Stack Spring Boot RESTful API with MySQL and Angular](https://www.youtube.com/playlist?list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf)
+
+(Monday, July 24, 2023, 22:59 - Radu-Alexandru Bulai)
+
+Since the edit modal will need access to the Server object that we want to edit (in order to populate the input fields): we either need to include _the HTML modal with the edit `<form>`_ right inside the servers list. However, for a better code separation we can use a different approach:
+- we can create a separate `openModal` method where the "current to edit" server will be transmitted
+- we store the server locally in a separate `editServer$` variable/observable (currently in `app.component.ts`)
+- we can access the `editServer$` server anywhere in `app.component.html`
+
+<br/>
+
+The `onOpenModal` function (in `app.component.ts`) will have a "modalMode" parameter what will determine which modal will be opened: `onOpenModal(server: Server, modalMode: String): void {}`
+-   in `onOpenModal` we will create a button (by default, when we createElement button, its default type is "type=submit", but we can change it to "type=button")
+-   the button attribute `data-toggle` will be "modal" (needed for Bootstrap4)
+-   the button attribute `data-target` will be dynamic (received from the function parameter)
+-   we want to add these buttons (that opens a specific modal) dinamically to our UI (`app.component.html`): we can first add an ID to the container div in HTML: `<div class="container" id="main-container">`
+-   get the container in `app.component.ts`: `const container = document.getElementById('main-container');`
+-   append the created button to the div container (in DOM) and click it: `container?.appendChild(button); button.click();`
+
+```ts
+// app.component.ts
+private editServerSubject = new BehaviorSubject<Server>(null!);
+readonly editServer$ = this.editServerSubject.asObservable();
+
+...
+
+onOpenModal(server: Server, modalMode: String): void {
+  const container = document.getElementById('main-container');
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.style.display = 'none';
+  button.setAttribute('data-toggle', 'modal');
+  if (modalMode == 'edit') {
+    this.editServerSubject.next(server);
+    button.setAttribute('data-target', '#editServerModal');
+  }
+  container?.appendChild(button);
+  button.click();
+  button.remove();
+}
+```
+
+<br/>
+
+For the `onUpdateServer` method:
+- `this.isServerRequestLoadingSubject.next(true)`: sets the value of the isServerRequestLoadingSubject subject to true to indicate that a server update request is currently in progress (until we get a response from backend).
+- `this.appState$ = this.serverService.updateServer$(updateServerForm.value as Server).pipe(...);`: calls the `updateServer$` method from the `serverService` and pipes the resulting observable through various operators like `map`, `startWith`, and `catchError`
+- Inside the `map` operator, the function processes the server update response:
+    - update the `currentServersCopyDataSubject` with the updated server data and set the `isServerRequestLoadingSubject` to `false` after the update operation completes (we will show a loading spinning icon while we wait for a response from the backend)
+    - `document.getElementById('closeEditModal')?.click();`: close the edit modal after the server update operation is completed
+    - Note that unlike "adding" action, we do not need to reset the "edit" HTML form sincethe form will always be populated with selected server's values
+- Finally, the `map` operator returns an object with the `dataState` set to `DataState.LOADED_STATE` and `appData` set to the value of `currentServersCopyDataSubject`
+
+```ts
+// app.component.ts
+onUpdateServer(updateServerForm: NgForm): void {
+  this.isServerRequestLoadingSubject.next(true);
+  this.appState$ = this.serverService
+    .updateServer$(updateServerForm.value as Server)
+    .pipe(
+      map((response) => {
+        const currentServers =
+          this.currentServersCopyDataSubject.value?.data?.servers || [];
+        const indexOfUpdatedServer = currentServers!.findIndex(
+          (server) => server.id === response.data.server!.id
+        );
+        currentServers![indexOfUpdatedServer] = response.data.server!;
+        this.isServerRequestLoadingSubject.next(false);
+        document.getElementById('closeEditModal')?.click();
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: this.currentServersCopyDataSubject.value,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.currentServersCopyDataSubject.value,
+      }),
+      catchError((error: string) => {
+        this.isServerRequestLoadingSubject.next(false);
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+}
+```
+
+<br/>
+
+In `app.component.html`
+- Each input field will have its value populated (by default) with the current server's data that can be retrieved by the `editServer$` observable: `ngModel="{{ (editServer$ | async)?.name }}"`
+- We will use the same observable of `isServerRequestLoadingSubject` to show/hide the *"Update" button* or *"Updating..." disabled button along with a loading spinner icon*
+- Note that we will need to have a hidden input (of server's id) in order to have a complete Server object (without missing any properties) for when we will call the updateEmployee method with the UPDATE (PUT) request to our backend SpringBoot API: `<input type="hidden" ngModel="{{ (editServer$ | async)?.id }}" name="id" />`
+
+```html
+<!-- app.component.html -->
+<a
+  (click)="onOpenModal(server, 'edit')"
+  class="edit"
+  data-toggle="modal"
+  style="cursor: pointer"
+  ><i
+    class="fa fa-pen fa-1x mx-2"
+    title="Edit Server"
+    style="font-size: 1.5rem"
+  ></i
+></a>
+
+...
+
+<!-- Update server Modal HTML -->
+<div id="editServerModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form
+        #editServerForm="ngForm"
+        (ngSubmit)="onUpdateServer(editServerForm)"
+      >
+        <div class="modal-header">
+          <div class="modal-title">
+            Edit Server "{{ (editServer$ | async)?.name }}"
+          </div>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <input
+            type="hidden"
+            ngModel="{{ (editServer$ | async)?.id }}"
+            name="id"
+          />
+          <div class="form-group">
+            <label>IP Address / FQDN</label>
+            <input
+              type="text"
+              ngModel="{{ (editServer$ | async)?.ipAddress }}"
+              name="ipAddress"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              ngModel="{{ (editServer$ | async)?.name }}"
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Network</label>
+            <input
+              type="text"
+              ngModel="{{ (editServer$ | async)?.network }}"
+              name="network"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select
+              name="status"
+              ngModel="{{ (editServer$ | async)?.status }}"
+              class="form-control"
+              name="status"
+              required
+            >
+              <option value="SERVER_UP">SERVER UP</option>
+              <option value="SERVER_DOWN">SERVER DOWN</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn"
+            id="closeEditModal"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="
+              editServerForm.invalid || (isServerRequestLoading$ | async)
+            "
+          >
+            <span *ngIf="!(isServerRequestLoading$ | async)">Update</span>
+            <span *ngIf="isServerRequestLoading$ | async">Updating...</span>
+            <i
+              *ngIf="isServerRequestLoading$ | async"
+              class="fas fa-circle-notch fa-spin"
+            ></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+```
+
+<br/>
