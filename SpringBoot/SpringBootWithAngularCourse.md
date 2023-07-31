@@ -2790,6 +2790,8 @@ We will respect the REST API URLs structure ( from https://30secondsofinterviews
 
 ![What is REST API](./SpringBootWithAngularCourse/What-is-REST.jpg)
 
+![What is REST API](./SpringBootWithAngularCourse/RESTful_API_URLs_Examples_ByteByteGo.jpg)
+
 <br/>
 
 👉 So, instead of having the following URLs (from tutorial):

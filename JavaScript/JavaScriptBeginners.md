@@ -1953,6 +1953,8 @@ console.log(arr); // [3, 4, 5, 6, 7]
 
 # <a name="ArraysAndArrayIteration">[Arrays and Array iteration methods](https://www.w3schools.com/js/js_array_iteration.asp): `forEach`, `map`, `filter`, `reduce`, `every`, `some`, `indexOf`, `find`, `findIndex`</a>
 
+![JavaScript Array Methods](./JavaScriptBeginners/JS_ArrayMethods.jpg)
+
 ## <a name="ArrayforEach"></a>`Array.forEach()` method calls a function (a callback function) once for each element
 
 ```js
@@ -2620,11 +2622,8 @@ mycar = new Car("Ford")
 # Find me on Social
 
 ***My portfolio:*** [radubulai.com](https://radualexandrub.github.io/)<br>
-***My blog:*** [CodingTranquillity](https://codingtranquillity.herokuapp.com/)
 
 <a href="https://github.com/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
 <a href="https://www.linkedin.com/in/radu-alexandru-bulai/" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg" alt="radu-alexandru-bulai" height="28" width="28" /></a>&nbsp;&nbsp;
 <a href="https://dev.to/radualexandrub" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg" alt="radualexandrub" height="28" width="28" /></a>&nbsp;&nbsp;
 <a href="https://www.hackerrank.com/RaduAlexandruB" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/hackerrank.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.flickr.com/photos/radualexandru" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/flickr.svg" alt="RaduAlexandruB" height="28" width="28" /></a>&nbsp;&nbsp;
-<a href="https://www.mixcloud.com/radu-alexandru7" target="_blank"><img align="center" src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/mixcloud.svg" alt="RaduAlexandru" height="28" width="28" /></a>&nbsp;&nbsp;

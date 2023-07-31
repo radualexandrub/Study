@@ -3359,3 +3359,232 @@ In `app.component.html`
 ```
 
 <br/>
+
+### Search Servers in UI
+
+(Saturday, July 29, 2023, 23:39)
+
+```ts
+// server.service.ts
+searchServersByKeyword$ = (keyword: String, response: CustomResponse) =>
+  <Observable<CustomResponse>>new Observable<CustomResponse>((subscriber) => {
+    const currentServers = response.data?.servers || [];
+    const searchedText = keyword.toLowerCase();
+    const resultedServers: Server[] = currentServers.filter(
+      (server) =>
+        server.name.toLowerCase().indexOf(searchedText) !== -1 ||
+        server.ipAddress.toLowerCase().indexOf(searchedText) !== -1 ||
+        server.network.toLowerCase().indexOf(searchedText) !== -1
+    );
+    // --- Older less eficient method ---
+    // let resultedServers: Server[] = [];
+    // for (const server of currentServers) {
+    //   if (
+    //     server.name.toLowerCase().indexOf(searchedText) !== -1 ||
+    //     server.ipAddress.toLowerCase().indexOf(searchedText) !== -1 ||
+    //     server.network.toLowerCase().indexOf(searchedText) !== -1
+    //   ) {
+    //     resultedServers.push(server);
+    //   }
+    // }
+    subscriber.next({
+      ...response,
+      message: 'Servers resulted by search',
+      data: {
+        servers: resultedServers,
+      },
+    });
+    subscriber.complete();
+  }).pipe(tap(console.log), catchError(this.handleError));
+```
+
+<br/>
+
+```ts
+// app.components.ts or servers.component.ts
+onSearchServers(keyword: String): void {
+  this.appState$ = this.serverService
+    .searchServersByKeyword$(
+      keyword,
+      this.currentServersCopyDataSubject.value
+    )
+    .pipe(
+      map((response) => {
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: response,
+        };
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.currentServersCopyDataSubject.value,
+      }),
+      catchError((error: string) => {
+        return of({ dataState: DataState.ERROR_STATE, error });
+      })
+    );
+}
+```
+
+<br/>
+
+```html
+<!-- app.components.html or servers.component.html -->
+<form class="form-inline">
+  <input
+    (ngModelChange)="onSearchServers(keyword.value)"
+    #keyword="ngModel"
+    ngModel
+    name="keyword"
+    type="search"
+    id="searchName"
+    class="form-control"
+    style="border: none !important"
+    title="Search servers by name, address or network"
+    placeholder="Search servers..."
+  />
+</form>
+```
+
+
+<br/>
+<br/>
+
+> <hr>
+>
+> **Refactoring...**
+> 
+> Refactor: split app.component in separate servers & header components
+> - Create server and header components with `ng generate component components/header` and `ng generate component components/servers`
+> - Move all properties and methods from app.component.ts to servers.component.ts + Edit onOpenModal method to have additional "add" modalMode (and add click event listener on "Add Server" button from the header/navbar)
+> - Move all HTML from app.component.html to servers.component.html
+> - Within "header.component.ts" Pass/Inject the serversComponent: ServersComponent in constructor + Implement own onOpenModal method that calls this.serversComponent.onOpenModal(server, modalMode);
+> - Move the `<nav>` element from app.component.html/servers.component.html to header.component.html
+> - In "app.module.ts" Add `providers: [ServersComponent]` in order to fix "NullInjectorError: No provider for ServersComponent!" error 
+> 
+> (Wednesday, July 26, 2023, 23:47 - Radu-Alexandru Bulai)
+> 
+> <hr>
+
+<br/>
+
+<br/>
+
+<hr>
+
+## Refactoring: About Page Route
+
+(Saturday, July 29, 2023, 13:25)
+
+Reuse of personal notes
+- from https://github.com/radualexandrub/Study/blob/master/Angular/README.md#angular-router
+- and commit from previous EmployeeManager application https://github.com/radualexandrub/SpringBoot-Angular-EmployeeManagerApp/commit/572dbe053a617cd1f11730a9daee5444494adb67#diff-5468d09e26643f32f6d6f60deb0960d87f4f5bd8e6da893a27453e3f9ccd9116
+
+<br/>
+
+1\) Create About page by running `ng generate component components/pages/aboutPage`
+
+2\) In `app.module.ts`
+- import "Routes", define "appRoutes" where routes are specified
+- add `imports: [RouterModule.forRoot(appRoutes, { enableTracing: false })]` (this should be set on true for debugging purposes and false in production)
+
+```ts
+// app.module.ts
+const appRoutes: Routes = [
+  { path: "", component: ServersComponent },
+  { path: "about", component: AboutPageComponent },
+];
+
+...
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    ServersComponent,
+    HeaderComponent,
+    AboutPageComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot(appRoutes, { enableTracing: false }),
+  ],
+  providers: [ServersComponent],
+  bootstrap: [AppComponent],
+})
+```
+
+3\) In `app.component.html`, instead of `<app-servers>` component we add `<router-outlet>`
+
+```html
+<!-- app.component.html -->
+<app-header></app-header>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+```
+
+4\) Add contents to `about-page.component.html`
+
+5\) In `header.component.ts`
+- make sure "private router: Router" is passed in contructor
+- make sure "hasRoute" and "hasRouteIncluded" methods are defined
+
+```ts
+// header.component.ts
+constructor(
+  private serversComponent: ServersComponent,
+  private router: Router
+) {}
+
+...
+
+hasRoute(route: string): boolean {
+  return this.router.url === route;
+}
+
+hasRouteIncluded(route: string): boolean {
+  return this.router.url.includes(route);
+}
+```
+
+6\) In `header.component.html`
+- add `*ngIf="hasRoute('/')"` on "Add Server" button to hide it from navbar when we are in "About" page
+- add `*ngIf="hasRoute('/about')"` to show Servers(/) link when in "About" page
+- add `[ngClass]="{ active: hasRoute('/about') }"` to show "About" link page as active
+
+<hr>
+
+<br/>
+
+<hr>
+
+> Dockerize Application with docker-compose (Angular, Spring Boot, MySQL)
+> - Create and configure "Angular.Dockerfile"
+>     - Note that we use "outputPath": "dist/out" configured in "angular.json" as Angular build location
+> - Create .dockerignore
+> - Create and configure "Spring.Dockerfile"
+>     - Note that we use Java 17 (FROM openjdk:17-jdk-slim)
+> - Create and configure docker-compose.yml (contains MySQL Server image)
+>     - For MySQL, the db name from mysql-db service (MYSQL_DATABASE: pingstatustracker) should be reflected under the Back-End Spring Service property of SPRING_DATASOURCE_URL, as well as username and password
+> - Create environment.prod.ts Add Angular env variables from development environment.ts
+> - Create nginx-custom.con Add 'Access-Control-Allow-Origin' headers for Nginx Server (where browser clients will connect to) for CORS
+> 
+> Endpoints:
+> - Angular will run on http://localhost:8081/
+> - SpringBoot API will run on http://localhost:8080/api/servers
+> - MySQL will run on port 3306
+>     - Note: You can enter the MySQL docker container by running `docker ps -a`, then copy the container ID, then run
+ `docker exec -it containerID mysql -uradu -pradu123456 -D pingstatustracker`
+  -- e.g. for running queries directly on db:
+ `INSERT INTO server (id, ip_address, name, network) VALUES (3, '192.168.0.1', 'Server 1', 'Office');`
+> 
+> Resources used:
+>     - https://github.com/radualexandrub/SpringBoot-Angular-EmployeeManagerApp/commit/7ecee0943a11e0d10c4cde6a238feae752fbb249
+>     - https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
+> (Monday, July 31, 2023, 23:27 - Radu-Alexandru Bulai)
+
+<hr>
+
