@@ -1364,6 +1364,20 @@ find . -size +10M | xargs rm
 
 <br/>
 
+- Example: Get the total number of lines of code from a GitHub repository (credits: https://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository)
+
+```bash
+git ls-files | xargs wc -l
+
+# You can also add more instructions, e.g. looking at the JavaScript files
+git ls-files | grep '\.html' | xargs wc -l
+git ls-files | grep '\.js' | xargs wc -l
+git ls-files | grep '\.ts' | xargs wc -l
+git ls-files | grep '\.java' | xargs wc -l
+```
+
+<br/>
+
 ## xargs multiple commands
 
 You can also run multiple commands at once using the `-I` option, that allows you to get the output into a `%` placeholder.

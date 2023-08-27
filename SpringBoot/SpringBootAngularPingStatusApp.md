@@ -4,12 +4,50 @@ Credits / Notes taken from:
 
 - [Spring Boot and Angular Full Stack Development | 4 Hour Youtube Tutorial from AmigosCode](https://www.youtube.com/watch?v=8ZPsZBcue50)
 - [Full Stack Spring Boot RESTful API with MySQL and Angular - Youtube Playlist - Direct Source from getarrays.io | Roland Toussaint "Junior"](https://www.youtube.com/playlist?list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf)
+    - https://github.com/getarrays/server-backend/ - Spring Boot Backend
+    - https://github.com/getarrays/serverapp/ - Angular Frontend
 
 <br/>
 
 Table of Contents (ToC):
 
-
+- [Spring Boot with Angular App: Server Ping Status Tracker](#spring-boot-with-angular-app-server-ping-status-tracker)
+- [Backend Spring Boot](#backend-spring-boot)
+  - [Project Setup](#project-setup)
+    - [Spring Initializr](#spring-initializr)
+  - [Server Model, Repository, Service, Controller](#server-model-repository-service-controller)
+    - [Server Model - Data representation](#server-model---data-representation)
+    - [Server Repository - CRUD Operations in Database](#server-repository---crud-operations-in-database)
+    - [Server Service - Business logic and application workflow](#server-service---business-logic-and-application-workflow)
+    - [(Optional) Response Model for each response from API](#optional-response-model-for-each-response-from-api)
+      - [HTTP Status codes from Spring HttpStatus enum](#http-status-codes-from-spring-httpstatus-enum)
+    - [Server Controller/Resource - HTTP requests handling, Exposing the API](#server-controllerresource---http-requests-handling-exposing-the-api)
+  - [Database configuration](#database-configuration)
+  - [Testing with Postman](#testing-with-postman)
+- [Frontend Angular](#frontend-angular)
+  - [package.json](#packagejson)
+  - [Enums, interfaces, services](#enums-interfaces-services)
+    - [Server status.enum.ts and date-state.enum.ts](#server-statusenumts-and-date-stateenumts)
+    - [Server and Response interface/model](#server-and-response-interfacemodel)
+    - [Application state interface app-state.ts](#application-state-interface-app-statets)
+    - [Server Angular Service](#server-angular-service)
+  - [Demo - Calling GET Servers from app.component.ts](#demo---calling-get-servers-from-appcomponentts)
+    - [Solving "blocked by CORS policy" - CORS Configuration](#solving-blocked-by-cors-policy---cors-configuration)
+  - [User Interface - Building the HTML using Bootstrap CSS](#user-interface---building-the-html-using-bootstrap-css)
+    - [HTML+CSS Boilerplate](#htmlcss-boilerplate)
+      - [Spinning Icon based on LOADING dataState when retriving servers](#spinning-icon-based-on-loading-datastate-when-retriving-servers)
+      - [Displaying the servers](#displaying-the-servers)
+      - [Showing spinning loading icon when pinging individual server](#showing-spinning-loading-icon-when-pinging-individual-server)
+  - [UI Functionalities](#ui-functionalities)
+    - [Pinging each server from db](#pinging-each-server-from-db)
+    - [Filter servers in list by status](#filter-servers-in-list-by-status)
+    - [Add new server](#add-new-server)
+    - [Delete a server](#delete-a-server)
+    - [Update a server and onOpenModal method](#update-a-server-and-onopenmodal-method)
+    - [Search Servers in UI](#search-servers-in-ui)
+  - [Refactoring: About Page Route](#refactoring-about-page-route)
+  - [Angular-Notifier](#angular-notifier)
+  - [Angular Reactive vs Procedural approach](#angular-reactive-vs-procedural-approach)
 
 <br/>
 
@@ -94,7 +132,6 @@ Dependencies:
 - **MySQL JDBC driver**
 - **Validation** `I/O` - Bean Validation with Hibernate validator.
 - **Lombok** `DEVELOPER TOOL` - Java annotation library which helps to reduce boilerplate code.
-
 
 ![SpringInitializr](./SpringBootAngularPingStatusApp/SpringInitializr01.jpg)
 
@@ -207,7 +244,6 @@ The contents of `pom.xml` file:
 </project>
 ```
 
-
 <br/>
 
 ## Server Model, Repository, Service, Controller
@@ -274,16 +310,18 @@ public enum Status {
 
 Now we want this class to be in a database - that's why we added [_"Spring Data JPA (Java Persistence API)"_](https://spring.io/projects/spring-data-jpa):
 
-- We first add the `@Entity` annotation from *Java Persistence API (JPA)*. This marks the class as an entity, representing a table in a relational database. It indicates that instances of the Server class can be persisted and managed by an ORM (Object-Relational Mapping) framework, such as Hibernate.
+- We first add the `@Entity` annotation from _Java Persistence API (JPA)_. This marks the class as an entity, representing a table in a relational database. It indicates that instances of the Server class can be persisted and managed by an ORM (Object-Relational Mapping) framework, such as Hibernate.
 - We need to set our "PRIMARY KEY", for this we add `@Id` decorator. We also need to tell it how to generate this ID, so we add `@GeneratedValue(strategy = AUTO)`: This JPA annotation specifies the generation strategy for the `id` field. In this case, the value is set to `AUTO`, which means that the persistence provider (e.g., Hibernate) will determine the most appropriate strategy for generating the primary key values.
 - `@Column(unique = true)`: This JPA annotation specifies that the `ipAddress` field should be mapped to a database column, and the `unique` attribute indicates that the values in this column must be unique. It ensures that each `Server` entity has a distinct IP address in the corresponding database column.
 
 Note: from the "Lombok" library we'll use the following decorators:
+
 - `@Data`: This Lombok annotation generates boilerplate code for common methods such as getters, setters, `equals()`, `hashCode()`, and `toString()`. It helps reduce the verbosity of the code by automatically generating these methods based on the class's fields.
 - `@NoArgsConstructor`: This Lombok annotation generates a no-argument constructor for the `Server` class. It allows frameworks like JPA to create instances of the class without having to provide constructor arguments explicitly. This constructor is useful in scenarios such as object instantiation through reflection or object population through deserialization.
 - `@AllArgsConstructor`: This Lombok annotation generates a constructor with parameters for all fields in the `Server` class. It provides a convenient way to initialize all the fields in a single constructor call. This constructor can be useful when creating instances of the class manually or when mapping data from external sources to the `Server` class, and `status`) are serializable or primitive types.
 
 Note: from the "Validation" (Hibernate Validator library) library we'll use the following:
+
 - `@NotEmpty(message = "IP Address cannot be empty or null")` indicates that the `ipAddress` field must not be empty or null. If an empty or null value is encountered during validation, a validation error with the specified message will be generated.
 
 ```java
@@ -332,27 +370,27 @@ We are going to use the default methods that are already implemented in the JpaR
 However, we will create one additional custom method in order to find a Server entry by its IP Address: `Server findByIpAddress(String ipAddress);` _(or `findServerByIpAddress`, either way is correct)_ - the equivalent MySQL query for this JPA Entity Mapping would be `SELECT * FROM Server WHERE ipAddress = <ipAddress>;`.
 
 > More notes: The process behind "translating `Server findByIpAddress(String ipAddress);` in SQL and returning the `Server` Java Object:
-> 
+>
 > 1.  JPA Entity Mapping: Assuming you have properly configured JPA with Hibernate or any other JPA implementation, and you have mapped the `Server` class to a corresponding table in the database, JPA will handle the mapping between the Java object and the database table.
-> 
+>
 > 2.  Repository Interface: In JPA, you typically define a repository interface that extends `JpaRepository<Server, Long>` or a similar interface. This interface provides various methods for performing CRUD (Create, Read, Update, Delete) operations on the entity.
-> 
+>
 > 3.  Method Declaration: By defining the method `findByIpAddress(String ipAddress)` in the repository interface, you are specifying a custom query method. JPA will automatically generate the SQL query based on the method name and the rules defined in Spring Data JPA.
-> 
+>
 > 4.  SQL Generation: When the application starts up, Spring Data JPA analyzes the method name and parses it to determine the query's intent. In this case, the method name follows the naming convention of `findBy<PropertyName>`. So, Spring Data JPA understands that you want to find a `Server` object based on its `ipAddress` property.
-> 
+>
 > 5.  Query Execution: At runtime, when you invoke the `findByIpAddress()` method with a specific `ipAddress` parameter, Spring Data JPA generates the SQL query mentioned above. It replaces `<ipAddress>` with the actual parameter value and executes the query against the underlying MySQL database.
-> 
+>
 > 6.  Result Mapping: Once the query is executed, the database returns the result set, which consists of rows that match the specified `ipAddress`. Spring Data JPA maps the result set to the `Server` entity class and returns the corresponding Java object or objects.
-> 
+>
 > In summary, the process involves the JPA entity mapping, defining a repository interface with the custom query method, SQL generation based on the method name, execution of the generated query, and mapping the query result back to Java objects. This allows you to easily perform database operations using familiar Java methods and have JPA handle the underlying SQL queries and result mapping for you.
-> 
+>
 > <hr/>
-> 
+>
 > Why JpaRepository is called "repository"?
-> 
+>
 > The term "repository" in the context of Spring Data JPA refers to a pattern commonly used in software development for providing a standardized way to interact with a data source, such as a database. The repository pattern abstracts the underlying data access operations and provides a higher-level interface for working with data.
-> 
+>
 > In the case of Spring Data JPA, the `JpaRepository` interface is an implementation of the repository pattern specifically designed for JPA (Java Persistence API). It combines the features of the repository pattern with the capabilities of JPA to simplify data access and provide a consistent interface for CRUD operations.
 
 <br/>
@@ -387,11 +425,11 @@ For the `service` package:
 - On our main/base project package -> create a new package called `service`
 - Inside `service` package, create a new Java **Interface** called `ServerServiceI`
 - Here in `ServerServiceI` we can define all our of methods that we will want to implement, such as:
-    - retrieving all Servers from database: `Collection<Server> findAllServer();`
-    - adding/creating a Server in database: `Server addServer(Server server);`
-    - updating a Server in database: `Server updateServer(Server server);`
-    - deleting a Server in database: `void deleteServer(Long id);`
-    - pinging a server in database: `Server ping(String ipAddress);`
+  - retrieving all Servers from database: `Collection<Server> findAllServer();`
+  - adding/creating a Server in database: `Server addServer(Server server);`
+  - updating a Server in database: `Server updateServer(Server server);`
+  - deleting a Server in database: `void deleteServer(Long id);`
+  - pinging a server in database: `Server ping(String ipAddress);`
 
 ```java
 // ServerServiceI.java
@@ -419,9 +457,9 @@ public interface ServerServiceI {
 <br/>
 
 - Inside `service` package we can create another `implementation` package, and here we'll have the `ServerServiceImpl.java` class
-    - Inside `ServerServiceImpl.java`, we create a `ServerRepository` object where we will use the defined SQL / Query methods
-    - Now, usually after declaring this `serverRepository` object, we needed to initialize it by calling the `public ServerServiceImpl(ServerRepository serverRepository) { this.serverRepository = serverRepository; }` constructor - however, since we use the Lombok library, we can simply add the `@RequiredArgsConstructor` annotation
-    - We also need to annotate the `ServerService` class repo with `@Service` decorator
+  - Inside `ServerServiceImpl.java`, we create a `ServerRepository` object where we will use the defined SQL / Query methods
+  - Now, usually after declaring this `serverRepository` object, we needed to initialize it by calling the `public ServerServiceImpl(ServerRepository serverRepository) { this.serverRepository = serverRepository; }` constructor - however, since we use the Lombok library, we can simply add the `@RequiredArgsConstructor` annotation
+  - We also need to annotate the `ServerService` class repo with `@Service` decorator
 
 ```java
 // ServerServiceImpl.java
@@ -437,6 +475,7 @@ public class ServerServiceImpl implements ServerServiceI {
 ```
 
 > Notes on the annotations used:
+>
 > - `@Service`: This annotation is from the Spring Framework and is used to mark a class as a service component. It indicates that the class contains the business logic of the application. By annotating the class with `@Service`, it becomes eligible for auto-detection and can be injected into other Spring components, such as controllers.
 > - `@RequiredArgsConstructor`: This is a Lombok annotation that automatically generates a constructor with required arguments based on the class's final fields. In this case, since the `ServerRepository` field is marked as `final`, Lombok generates a constructor that accepts an instance of `ServerRepository` and assigns it to the field. This eliminates the need for explicitly defining a constructor in the class.
 > - `@Transactional`: This annotation is from the Spring Framework and is used to define the transactional behavior of a method or class. By annotating the class with `@Transactional`, all public methods in the class become transactional. Transactions ensure data consistency and integrity by enforcing ACID (Atomicity, Consistency, Isolation, Durability) properties when performing database operations.
@@ -482,6 +521,7 @@ public Collection<Server> findAllServers(int limit) {
 <br/>
 
 3\) `addServer(Server server)`
+
 - return the returned `Server` object from calling the JPA Repository `save` method: `return serverRepository.save(server);` that has an equivalent query of `INSERT INTO servers (column1, column2, column3, ...) VALUES (value1, value2, value3, ...)`
 
 ```java
@@ -494,6 +534,7 @@ public Server addServer(Server server) {
 <br/>
 
 4\) `updateServer(Server server)`
+
 - return `Server` object from the `save` JPA (and underlying JPA provider - e.g. Hibernate) method with the equivalent query of `UPDATE servers SET column1 = value1, column2 = value2, column3 = value3, ... WHERE id = serverId`
 
 ```java
@@ -506,6 +547,7 @@ public Server updateServer(Server server) {
 <br/>
 
 5\) `deleteServerById(Long id)`
+
 - since we can't use `serverRepo.delete(id);` because the `delete` method from inherited JPA Repo does not accept any `Long` type parameter (as an ID), we will need to create our own `serverRepo.deleteserverById(id);` inside `/repo/serverRepo.java`
 
 ```java
@@ -518,6 +560,7 @@ public void deleteServerById(Long id) {
 <br/>
 
 6\) `findServerById(Long id)`
+
 - `findServerById(Long id)` needs to be defined in the `ServerRepository` (returns `Optional<Server>`)
 - if no server is found by id in db, do not return anything - throw a `ServerNotFoundException` instead (using `orElseThrow` Java8 method that receives a Java8 lambda function as parameter)
 - we define `ServerNotFoundException` (that inherits `RuntimeException`) separatedly in a package `exception` in `ServerNotFoundExeption.java`
@@ -650,6 +693,7 @@ public class ServerServiceImpl implements ServerServiceI {
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 8](https://www.youtube.com/watch?v=yh2ZlJJ0jXg&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=8)
 
 Before implementing the Controller, we can create a `Response` class (under `model` package) that we can send back to the end user (browser) no matter the response to the request is an error or a succesfull retrieve/update/etc of data. The `Response` will include several properties such as:
+
 - `timeStamp`
 - `statusCode` (the numerical status code)
 - `status` (the corresponding `HttpStatus` enum value from Spring Framework, e.g. `OK` for 200, `CREATED` for 201, `MOVED_PERMANENTLY` for 301, `FOUND` for 302, `BAD_REQUEST` for 400, `UNAUTHORIZED` for 401, `NOT_FOUND` for 404, `INTERNAL_SERVER_ERROR` for 500, etc.)
@@ -686,6 +730,7 @@ public class Response {
 ```
 
 Annotations from above:
+
 - `@Data` annotation from Lombok library generates boilerplate code for common methods such as getters, setters, `equals()`, `hashCode()`, and `toString()`
 - `@SuperBuilder` annotation from Lombok library allows for a fluent builder API for constructing instances of the `Response` class (see below its usage in ServerResource controller).
 - `@JsonInclude(JsonInclude.Include.NON_NULL)` annotation from the Jackson library ensures that properties with null values are not included in the JSON serialization - it helps in producing a more concise and clean JSON response
@@ -696,72 +741,72 @@ Annotations from above:
 
 `org.springframework.http.HttpStatus.class`
 
-| Value | HttpStatus.Series | Reason Phrase |
-| --- | --- | --- |
-| 100 | INFORMATIONAL | Continue |
-| 101 | INFORMATIONAL | Switching Protocols |
-| 102 | INFORMATIONAL | Processing |
-| 103 | INFORMATIONAL | Checkpoint |
-| 200 | SUCCESSFUL | OK |
-| 201 | SUCCESSFUL | Created |
-| 202 | SUCCESSFUL | Accepted |
-| 203 | SUCCESSFUL | Non-Authoritative Information |
-| 204 | SUCCESSFUL | No Content |
-| 205 | SUCCESSFUL | Reset Content |
-| 206 | SUCCESSFUL | Partial Content |
-| 207 | SUCCESSFUL | Multi-Status |
-| 208 | SUCCESSFUL | Already Reported |
-| 226 | SUCCESSFUL | IM Used |
-| 300 | REDIRECTION | Multiple Choices |
-| 301 | REDIRECTION | Moved Permanently |
-| 302 | REDIRECTION | Found |
-| 303 | REDIRECTION | See Other |
-| 304 | REDIRECTION | Not Modified |
-| 307 | REDIRECTION | Temporary Redirect |
-| 308 | REDIRECTION | Permanent Redirect |
-| 400 | CLIENT_ERROR | Bad Request |
-| 401 | CLIENT_ERROR | Unauthorized |
-| 402 | CLIENT_ERROR | Payment Required |
-| 403 | CLIENT_ERROR | Forbidden |
-| 404 | CLIENT_ERROR | Not Found |
-| 405 | CLIENT_ERROR | Method Not Allowed |
-| 406 | CLIENT_ERROR | Not Acceptable |
-| 407 | CLIENT_ERROR | Proxy Authentication Required |
-| 408 | CLIENT_ERROR | Request Timeout |
-| 409 | CLIENT_ERROR | Conflict |
-| 410 | CLIENT_ERROR | Gone |
-| 411 | CLIENT_ERROR | Length Required |
-| 412 | CLIENT_ERROR | Precondition Failed |
-| 413 | CLIENT_ERROR | Payload Too Large |
-| 414 | CLIENT_ERROR | URI Too Long |
-| 415 | CLIENT_ERROR | Unsupported Media Type |
-| 416 | CLIENT_ERROR | Requested range not satisfiable |
-| 417 | CLIENT_ERROR | Expectation Failed |
-| 418 | CLIENT_ERROR | I'm a teapot |
-| 419 | CLIENT_ERROR | Insufficient Space On Resource |
-| 420 | CLIENT_ERROR | Method Failure |
-| 421 | CLIENT_ERROR | Destination Locked |
-| 422 | CLIENT_ERROR | Unprocessable Entity |
-| 423 | CLIENT_ERROR | Locked |
-| 424 | CLIENT_ERROR | Failed Dependency |
-| 425 | CLIENT_ERROR | Too Early |
-| 426 | CLIENT_ERROR | Upgrade Required |
-| 428 | CLIENT_ERROR | Precondition Required |
-| 429 | CLIENT_ERROR | Too Many Requests |
-| 431 | CLIENT_ERROR | Request Header Fields Too Large |
-| 451 | CLIENT_ERROR | Unavailable For Legal Reasons |
-| 500 | SERVER_ERROR | Internal Server Error |
-| 501 | SERVER_ERROR | Not Implemented |
-| 502 | SERVER_ERROR | Bad Gateway |
-| 503 | SERVER_ERROR | Service Unavailable |
-| 504 | SERVER_ERROR | Gateway Timeout |
-| 505 | SERVER_ERROR | HTTP Version not supported |
-| 506 | SERVER_ERROR | Variant Also Negotiates |
-| 507 | SERVER_ERROR | Insufficient Storage |
-| 508 | SERVER_ERROR | Loop Detected |
-| 509 | SERVER_ERROR | Bandwidth Limit Exceeded |
-| 510 | SERVER_ERROR | Not Extended |
-| 511 | SERVER_ERROR | Network Authentication Required |
+| Value | HttpStatus.Series | Reason Phrase                   |
+| ----- | ----------------- | ------------------------------- |
+| 100   | INFORMATIONAL     | Continue                        |
+| 101   | INFORMATIONAL     | Switching Protocols             |
+| 102   | INFORMATIONAL     | Processing                      |
+| 103   | INFORMATIONAL     | Checkpoint                      |
+| 200   | SUCCESSFUL        | OK                              |
+| 201   | SUCCESSFUL        | Created                         |
+| 202   | SUCCESSFUL        | Accepted                        |
+| 203   | SUCCESSFUL        | Non-Authoritative Information   |
+| 204   | SUCCESSFUL        | No Content                      |
+| 205   | SUCCESSFUL        | Reset Content                   |
+| 206   | SUCCESSFUL        | Partial Content                 |
+| 207   | SUCCESSFUL        | Multi-Status                    |
+| 208   | SUCCESSFUL        | Already Reported                |
+| 226   | SUCCESSFUL        | IM Used                         |
+| 300   | REDIRECTION       | Multiple Choices                |
+| 301   | REDIRECTION       | Moved Permanently               |
+| 302   | REDIRECTION       | Found                           |
+| 303   | REDIRECTION       | See Other                       |
+| 304   | REDIRECTION       | Not Modified                    |
+| 307   | REDIRECTION       | Temporary Redirect              |
+| 308   | REDIRECTION       | Permanent Redirect              |
+| 400   | CLIENT_ERROR      | Bad Request                     |
+| 401   | CLIENT_ERROR      | Unauthorized                    |
+| 402   | CLIENT_ERROR      | Payment Required                |
+| 403   | CLIENT_ERROR      | Forbidden                       |
+| 404   | CLIENT_ERROR      | Not Found                       |
+| 405   | CLIENT_ERROR      | Method Not Allowed              |
+| 406   | CLIENT_ERROR      | Not Acceptable                  |
+| 407   | CLIENT_ERROR      | Proxy Authentication Required   |
+| 408   | CLIENT_ERROR      | Request Timeout                 |
+| 409   | CLIENT_ERROR      | Conflict                        |
+| 410   | CLIENT_ERROR      | Gone                            |
+| 411   | CLIENT_ERROR      | Length Required                 |
+| 412   | CLIENT_ERROR      | Precondition Failed             |
+| 413   | CLIENT_ERROR      | Payload Too Large               |
+| 414   | CLIENT_ERROR      | URI Too Long                    |
+| 415   | CLIENT_ERROR      | Unsupported Media Type          |
+| 416   | CLIENT_ERROR      | Requested range not satisfiable |
+| 417   | CLIENT_ERROR      | Expectation Failed              |
+| 418   | CLIENT_ERROR      | I'm a teapot                    |
+| 419   | CLIENT_ERROR      | Insufficient Space On Resource  |
+| 420   | CLIENT_ERROR      | Method Failure                  |
+| 421   | CLIENT_ERROR      | Destination Locked              |
+| 422   | CLIENT_ERROR      | Unprocessable Entity            |
+| 423   | CLIENT_ERROR      | Locked                          |
+| 424   | CLIENT_ERROR      | Failed Dependency               |
+| 425   | CLIENT_ERROR      | Too Early                       |
+| 426   | CLIENT_ERROR      | Upgrade Required                |
+| 428   | CLIENT_ERROR      | Precondition Required           |
+| 429   | CLIENT_ERROR      | Too Many Requests               |
+| 431   | CLIENT_ERROR      | Request Header Fields Too Large |
+| 451   | CLIENT_ERROR      | Unavailable For Legal Reasons   |
+| 500   | SERVER_ERROR      | Internal Server Error           |
+| 501   | SERVER_ERROR      | Not Implemented                 |
+| 502   | SERVER_ERROR      | Bad Gateway                     |
+| 503   | SERVER_ERROR      | Service Unavailable             |
+| 504   | SERVER_ERROR      | Gateway Timeout                 |
+| 505   | SERVER_ERROR      | HTTP Version not supported      |
+| 506   | SERVER_ERROR      | Variant Also Negotiates         |
+| 507   | SERVER_ERROR      | Insufficient Storage            |
+| 508   | SERVER_ERROR      | Loop Detected                   |
+| 509   | SERVER_ERROR      | Bandwidth Limit Exceeded        |
+| 510   | SERVER_ERROR      | Not Extended                    |
+| 511   | SERVER_ERROR      | Network Authentication Required |
 
 <br/>
 
@@ -770,11 +815,12 @@ Annotations from above:
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 9](https://www.youtube.com/watch?v=sY2oO9oh1BE&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=9)
 
 For a newly created `resource` package:
+
 - We can create a `ServerResource.java` class (resource is a more usual term for the RESTful API Design Methodology - we could have call it `ServerController.java` instead)
 - Add the following annotations:
-    - `@RestController`: This annotation is from the Spring Framework and combines the `@Controller` and `@ResponseBody` annotations. It marks the class as a RESTful controller, indicating that the class will handle incoming HTTP requests and produce HTTP responses. The `@RestController` annotation is typically used in Spring MVC or Spring WebFlux applications.
-    - `@RequestMapping("/api/servers")`: This annotation is from the Spring Framework and is used to map incoming requests to specific handler methods in the controller. It defines the base URL ("/api/servers") that this controller will handle. In this case, any request that starts with "/api/servers" will be directed to methods within this class for further processing.
-    - `@RequiredArgsConstructor`: This annotation is from the Lombok library and generates a constructor with required arguments for the `ServerResource` class. Since `ServerServiceImpl` is a required dependency for `ServerResource`, Lombok generates a constructor that accepts an instance of `ServerServiceImpl` and assigns it to the `serverService` field. This annotation eliminates the need to explicitly write the constructor code.
+  - `@RestController`: This annotation is from the Spring Framework and combines the `@Controller` and `@ResponseBody` annotations. It marks the class as a RESTful controller, indicating that the class will handle incoming HTTP requests and produce HTTP responses. The `@RestController` annotation is typically used in Spring MVC or Spring WebFlux applications.
+  - `@RequestMapping("/api/servers")`: This annotation is from the Spring Framework and is used to map incoming requests to specific handler methods in the controller. It defines the base URL ("/api/servers") that this controller will handle. In this case, any request that starts with "/api/servers" will be directed to methods within this class for further processing.
+  - `@RequiredArgsConstructor`: This annotation is from the Lombok library and generates a constructor with required arguments for the `ServerResource` class. Since `ServerServiceImpl` is a required dependency for `ServerResource`, Lombok generates a constructor that accepts an instance of `ServerServiceImpl` and assigns it to the `serverService` field. This annotation eliminates the need to explicitly write the constructor code.
 
 ![Server Resource](./SpringBootAngularPingStatusApp/Resource01.jpg)
 
@@ -818,7 +864,6 @@ public class ServerResource {
 
 <br/>
 
-
 2\) **pingServer**
 
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 10](https://www.youtube.com/watch?v=ngFKEGmV2Ik&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=10)
@@ -853,9 +898,6 @@ public ResponseEntity<Response> pingServer(
 10. `.statusCode(OK.value())`: sets the `statusCode` property of the `Response` object to the numerical value of the `HttpStatus.OK` enum, which is 200.
 11. `.build()`: builds the final `Response` object using the configured properties and returns it.
 
-
-
-
 <br/>
 
 3\) **addServer**
@@ -886,7 +928,6 @@ public ResponseEntity<Response> addServer(@RequestBody @Valid Server server) {
 8.  `.statusCode(CREATED.value())`: sets the `statusCode` property of the `Response` object to the numerical value of the `HttpStatus.CREATED` enum, which is 201.
 9.  `.build()`: builds the final `Response` object using the configured properties and returns it.
 
-
 <br/>
 
 4\) **getServerById**
@@ -906,7 +947,6 @@ public ResponseEntity<Response> getServerById(@PathVariable Long id) {
                     .build());
 }
 ```
-
 
 <br/>
 
@@ -1043,6 +1083,7 @@ public class ServerResource {
 <br/>
 
 Note on July 10, 2023, 22:00: Additional methods were added:
+
 - `public Server pingServer(Long id) throws IOException` - that finds the server by its id then pings it
 - `public Collection<Server> pingAllServers() throws IOException` - retrieves all the servers then pings each one of them, returns the list of servers with all statuses updated (Note: could take long until the list is received on client browser)
 - `public Status pingServerOnly(String ipAddress) throws IOException` - only pings server specified in URL `@GetMapping("/ping/{ipAddress}")` and returns its status (does not query the database)
@@ -1053,16 +1094,18 @@ Note on July 10, 2023, 22:00: Additional methods were added:
 
 After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/installer/), we can open "MySQL 8.0 Command Line Client" (from Windows Start Menu).
 
-🔵 Note: *(On Windows)* If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
--   Open Windows Start Menu, search and open "Services", manually find `MySQL80` service -> Right click it -> Start.
--   (does not work in my case) We can just run (as administrator) the executable from `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe`.
--   See more here: [Can't startup and connect to MySQL server](https://stackoverflow.com/questions/31387036/cant-startup-and-connect-to-mysql-server).
+🔵 Note: _(On Windows)_ If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
+
+- Open Windows Start Menu, search and open "Services", manually find `MySQL80` service -> Right click it -> Start.
+- (does not work in my case) We can just run (as administrator) the executable from `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe`.
+- See more here: [Can't startup and connect to MySQL server](https://stackoverflow.com/questions/31387036/cant-startup-and-connect-to-mysql-server).
 
 <br/>
 
-> Alternative: Using MySQL Docker image instead of installing MySQL 8.0 Server *on Linux (or Windows)* PC
-> - Install [Docker](https://www.docker.com/). 
-> - *(In Linux)* Check if Docker service is running by `systemctl status docker` (use `systemctl start docker` if service is not running)
+> Alternative: Using MySQL Docker image instead of installing MySQL 8.0 Server _on Linux (or Windows)_ PC
+>
+> - Install [Docker](https://www.docker.com/).
+> - _(In Linux)_ Check if Docker service is running by `systemctl status docker` (use `systemctl start docker` if service is not running)
 > - Run `sudo docker images -a` to view current images
 > - Run `sudo docker pull mysql` to pull the latest MySQL image from https://hub.docker.com/_/mysql
 > - Run the below command that will create a MySQL server container with the following configurations:
@@ -1070,7 +1113,7 @@ After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/i
 >   - Root password: yourpassword
 >   - Database name: pingstatustracker
 >   - Exposed port: 3306
-> 
+>
 > ```shell
 > sudo docker run -d \
 >   --name mysql-server \
@@ -1084,9 +1127,9 @@ After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/i
 >   --sql-mode=NO_ENGINE_SUBSTITUTION \
 >   --innodb-flush-log-at-trx-commit=0
 > ```
-> 
+>
 > Or in one line:
-> 
+>
 > ```shell
 > sudo docker run -d --name mysql-server -e MYSQL_ROOT_PASSWORD=yourpassword -e MYSQL_DATABASE=pingstatustracker -p 3306:3306 mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --sql-mode=NO_ENGINE_SUBSTITUTION --innodb-flush-log-at-trx-commit=0
 > ```
@@ -1128,18 +1171,19 @@ For the MySQL setup:
 
 The `spring.jpa` section contains configuration settings for JPA (Java Persistence API) and Hibernate, the ORM (Object-Relational Mapping) framework.
 
--   `show-sql: true` enables logging of SQL statements executed by Hibernate, providing visibility into the generated SQL queries (Note that this should always be disabled in production).
--   `hibernate.ddl-auto:` 
-    - `create` specifies that Hibernate should automatically create the database schema based on the entity mappings. This will create the necessary tables when the application starts. Note that this setting is typically used in development and should be handled differently in production.
-    - `update` means that Hibernate will update the database schema based on the entity classes' definitions if necesary.
--   `properties.hibernate.dialect` specifies the dialect to use for the MySQL database. In this case, the `org.hibernate.dialect.MySQL5InnoDBDialect` dialect is selected, which is suitable for MySQL version 5 and InnoDB storage engine.
--   `properties.hibernate.format_sql: true` enables the formatting of SQL statements logged by Hibernate, making them more readable for debugging purposes.
+- `show-sql: true` enables logging of SQL statements executed by Hibernate, providing visibility into the generated SQL queries (Note that this should always be disabled in production).
+- `hibernate.ddl-auto:`
+  - `create` specifies that Hibernate should automatically create the database schema based on the entity mappings. This will create the necessary tables when the application starts. Note that this setting is typically used in development and should be handled differently in production.
+  - `update` means that Hibernate will update the database schema based on the entity classes' definitions if necesary.
+- `properties.hibernate.dialect` specifies the dialect to use for the MySQL database. In this case, the `org.hibernate.dialect.MySQL5InnoDBDialect` dialect is selected, which is suitable for MySQL version 5 and InnoDB storage engine.
+- `properties.hibernate.format_sql: true` enables the formatting of SQL statements logged by Hibernate, making them more readable for debugging purposes.
 
 <hr/>
 
 We can now create the `pingstatustracker` MySQL database:
--   Open "MySQL 8.0 Command Line Client", write: `create database pingstatustracker;`
--   We can check with `show databases;` command
+
+- Open "MySQL 8.0 Command Line Client", write: `create database pingstatustracker;`
+- We can check with `show databases;` command
 
 ![Server Database](./SpringBootAngularPingStatusApp/Database01.jpg)
 
@@ -1154,7 +1198,8 @@ mvn spring-boot:run
 <br/>
 
 After running the app, the `Server` table from the `pingstatustracker` database is created automatically in MySQL and can be seen via MySQL Workbench App:
--   On MySQL Workbench -> Click on "Database" from the menu -> "Reverse Engineer(CTRL+B)" -> next, next, next -> Select your schema -> "execute".
+
+- On MySQL Workbench -> Click on "Database" from the menu -> "Reverse Engineer(CTRL+B)" -> next, next, next -> Select your schema -> "execute".
 
 ![Server Database](./SpringBootAngularPingStatusApp/Database02.jpg)
 
@@ -1181,6 +1226,7 @@ select * from server;
 ```
 
 We can insert the following data, where:
+
 - `0` = "SERVER_UP" (Ping success)
 - `1` = "SERVER_DOWN" (Ping failed)
 
@@ -1218,6 +1264,7 @@ In Postman:
 <br/>
 
 🔵 Send a GET request to <http://localhost:8080/api/servers/<id>> (`findAllServers`)
+
 - http://localhost:8080/api/servers/1
 - http://localhost:8080/api/servers/2
 
@@ -1226,31 +1273,33 @@ In Postman:
 <br/>
 
 🔵 Send a POST request with new Server information
+
 - Open a new tab in Postman with the URL of http://localhost:8080/servers
 - Set the request type to POST request
 - Click on "Body" subtab
-    - check the "raw" radio button
-    - select "JSON" format
-    - write a JSON without specifying the id (the id will be generated by Spring JPA)
+  - check the "raw" radio button
+  - select "JSON" format
+  - write a JSON without specifying the id (the id will be generated by Spring JPA)
 
 ```json
 {
-    "ipAddress": "192.168.0.2",
-    "name": "Default IP",
-    "network": "Home",
-    "status": null
+  "ipAddress": "192.168.0.2",
+  "name": "Default IP",
+  "network": "Home",
+  "status": null
 }
 ```
 
 Another example:
+
 - for the following JSON
 
 ```json
 {
-    "ipAddress": "192.168.1.1",
-    "name": "Linksys",
-    "network": "Home",
-    "status": null
+  "ipAddress": "192.168.1.1",
+  "name": "Linksys",
+  "network": "Home",
+  "status": null
 }
 ```
 
@@ -1258,19 +1307,19 @@ Another example:
 
 ```json
 {
-    "timeStamp": "2023-07-11T21:26:11.1401562",
-    "statusCode": 201,
-    "status": "CREATED",
-    "message": "Server created",
-    "data": {
-        "server": {
-            "id": 7,
-            "ipAddress": "192.168.1.1",
-            "name": "Linksys",
-            "network": "Home",
-            "status": null
-        }
+  "timeStamp": "2023-07-11T21:26:11.1401562",
+  "statusCode": 201,
+  "status": "CREATED",
+  "message": "Server created",
+  "data": {
+    "server": {
+      "id": 7,
+      "ipAddress": "192.168.1.1",
+      "name": "Linksys",
+      "network": "Home",
+      "status": null
     }
+  }
 }
 ```
 
@@ -1297,15 +1346,15 @@ Another example:
 }
 ```
 
--   We'll send this (where the `name` and `imageUrl` was changed)
+- We'll send this (where the `name` and `imageUrl` was changed)
 
 ```json
 {
-    "id": 7,
-    "ipAddress": "192.168.1.1",
-    "name": "Linksys Updated",
-    "network": "Home 2",
-    "status": null
+  "id": 7,
+  "ipAddress": "192.168.1.1",
+  "name": "Linksys Updated",
+  "network": "Home 2",
+  "status": null
 }
 ```
 
@@ -1352,7 +1401,7 @@ ng version
 # Node: 18.16.1
 # Package Manager: npm 9.5.1
 # OS: win32 x64
-# 
+#
 # Package                      Version
 # ------------------------------------------------------
 # @angular-devkit/architect    0.1601.4 (cli-only)
@@ -1432,8 +1481,8 @@ ng serve --open
 }
 ```
 
--   `package.json`: this fo;e contains the metadata and configuration for your project, including the dependencies and scripts. It serves as a manifest for your application, specifying what libraries and versions are required.
--   `package-lock.json`: this file is automatically generated by `npm` when you install or update dependencies. It provides a detailed and deterministic description of the dependency tree, including the specific versions of each dependency installed. It ensures that all developers working on the project get the same dependency versions, helping to maintain consistency and avoid dependency conflicts.
+- `package.json`: this fo;e contains the metadata and configuration for your project, including the dependencies and scripts. It serves as a manifest for your application, specifying what libraries and versions are required.
+- `package-lock.json`: this file is automatically generated by `npm` when you install or update dependencies. It provides a detailed and deterministic description of the dependency tree, including the specific versions of each dependency installed. It ensures that all developers working on the project get the same dependency versions, helping to maintain consistency and avoid dependency conflicts.
 
 Brief explanation of above packages:
 
@@ -1468,9 +1517,9 @@ First, we can create a folder that will contain all the enumerations within the 
 ```ts
 // status.enum.ts
 export enum Status {
-  ALL = 'ALL',
-  SERVER_UP = 'SERVER_UP',
-  SERVER_DOWN = 'SERVER_DOWN',
+  ALL = "ALL",
+  SERVER_UP = "SERVER_UP",
+  SERVER_DOWN = "SERVER_DOWN",
 }
 ```
 
@@ -1483,22 +1532,22 @@ export enum Status {
 ```ts
 // data-state.enum.ts
 export enum DataState {
-  LOADING_STATE = 'LOADING_STATE',
-  LOADED_STATE = 'LOADED_STATE',
-  ERROR_STATE = 'ERROR_STATE',
+  LOADING_STATE = "LOADING_STATE",
+  LOADED_STATE = "LOADED_STATE",
+  ERROR_STATE = "ERROR_STATE",
 }
 ```
 
 <br/>
 
-### Server and Response interface/model 
+### Server and Response interface/model
 
 - create `./src/app/interface/server.ts`
 - define all the attributes that the Server model (in Spring API & database) has:
 
 ```ts
 // server.ts
-import { Status } from '../enum/status.enum';
+import { Status } from "../enum/status.enum";
 
 export interface Server {
   id: number;
@@ -1513,11 +1562,11 @@ export interface Server {
 
 - create `./src/app/interface/custom-response.ts`
 - define all the attributes that the Response model (in Spring API) has:
-    - the response that the client gets back from Spring API BackEnd could either have a server or multiple servers as data
+  - the response that the client gets back from Spring API BackEnd could either have a server or multiple servers as data
 
 ```ts
 // custom-response.ts
-import { Server } from './server';
+import { Server } from "./server";
 
 export interface CustomResponse {
   timeStamp: Date;
@@ -1539,14 +1588,15 @@ export interface CustomResponse {
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 15](https://www.youtube.com/watch?v=4ucfk6znWjM&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=15)
 
 For a reactive approach, we will habe the state of the entire application at any given moment:
+
 - create `./src/app/interface/app-state.ts`
-    - the state will be defined from the above enum `enum DataState { LOADING_STATE = 'LOADING_STATE', LOADED_STATE = 'LOADED_STATE', ERROR_STATE = 'ERROR_STATE' }`
-    - `appData` will be generic (`<T>`)
-    - since we cannot get the data and an error at the same time, `appData?` and `error?` will be both optional 
+  - the state will be defined from the above enum `enum DataState { LOADING_STATE = 'LOADING_STATE', LOADED_STATE = 'LOADED_STATE', ERROR_STATE = 'ERROR_STATE' }`
+  - `appData` will be generic (`<T>`)
+  - since we cannot get the data and an error at the same time, `appData?` and `error?` will be both optional
 
 ```ts
 // app-state.ts
-import { DataState } from '../enum/data-state.enum';
+import { DataState } from "../enum/data-state.enum";
 
 export interface AppState<T> {
   dataState: DataState;
@@ -1567,12 +1617,12 @@ First, before working on server service, un the Angular's main `/src/app/app.mod
 
 ```ts
 // app.module.ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpClientModule } from "@angular/common/http";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 
 @NgModule({
   declarations: [AppComponent],
@@ -1601,17 +1651,17 @@ In `server.service.ts` we will use Angular's `HttpClient` in order to make HTTP 
 
 ```ts
 // server.service.ts - The procedural approach
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CustomResponse } from '../interfaces/custom-response';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { CustomResponse } from "../interfaces/custom-response";
 
-@Injectable({ providedIn: 'root' }) // The Injectable decorator is used to mark the ServerService as a service that can be injected with dependencies. It allows the service to be injected into other components or services.
+@Injectable({ providedIn: "root" }) // The Injectable decorator is used to mark the ServerService as a service that can be injected with dependencies. It allows the service to be injected into other components or services.
 export class ServerService {
   constructor(private http: HttpClient) {}
 
   getServers(): Observable<CustomResponse> {
-    return this.http.get<CustomResponse>('http://localhost:8080/api/servers');
+    return this.http.get<CustomResponse>("http://localhost:8080/api/servers");
   }
 
   getServerById(serverId: number): Observable<CustomResponse> {
@@ -1621,10 +1671,9 @@ export class ServerService {
   }
 
   addServer(server: Server): Observable<Server> {
-    const methodName = 'addServer() ';
-    console.debug(methodName + 'Request Sent: ' + JSON.stringify(server));
-    return this.http.post<Server>(
-        `http://localhost:8080/api/servers`, server);
+    const methodName = "addServer() ";
+    console.debug(methodName + "Request Sent: " + JSON.stringify(server));
+    return this.http.post<Server>(`http://localhost:8080/api/servers`, server);
   }
 }
 ```
@@ -1632,10 +1681,11 @@ export class ServerService {
 <br/>
 
 <u>However, we will implement the `ServerService` class using the **reactive approach with RxJS operators**:</u>
--   `servers$ = <Observable<CustomResponse>>...`: declares a property `servers$` of type `Observable<CustomResponse>`. The dollar sign convention (`$`) is a good practice to indicate that this property is an observable.
--   `this.http.get<CustomResponse>(${this.apiUrl}/servers`): makes an HTTP GET request to the API endpoint `${this.apiUrl}/servers` using the `HttpClient` service's `get` method. It expects the response to be of type `CustomResponse`
--   `.pipe(tap(console.log), catchError(this.handleError))`: uses the `pipe` operator to chain multiple operators to the observable. The `tap` operator is used to perform a side effect of logging the response to the console, while the `catchError` operator is used to handle any errors that may occur during the HTTP request.
--   `handleError(handleError: any): Observable<never> { ... }`: This method defines an error handler function named `handleError` which takes an `error` parameter of type `any`. The return type is `Observable<never>`, indicating that it returns an observable that never emits any values. However, in the provided code, the implementation of the `handleError` method is incomplete and throws a `Method not implemented` error when called.
+
+- `servers$ = <Observable<CustomResponse>>...`: declares a property `servers$` of type `Observable<CustomResponse>`. The dollar sign convention (`$`) is a good practice to indicate that this property is an observable.
+- `this.http.get<CustomResponse>(${this.apiUrl}/servers`): makes an HTTP GET request to the API endpoint `${this.apiUrl}/servers` using the `HttpClient` service's `get` method. It expects the response to be of type `CustomResponse`
+- `.pipe(tap(console.log), catchError(this.handleError))`: uses the `pipe` operator to chain multiple operators to the observable. The `tap` operator is used to perform a side effect of logging the response to the console, while the `catchError` operator is used to handle any errors that may occur during the HTTP request.
+- `handleError(handleError: any): Observable<never> { ... }`: This method defines an error handler function named `handleError` which takes an `error` parameter of type `any`. The return type is `Observable<never>`, indicating that it returns an observable that never emits any values. However, in the provided code, the implementation of the `handleError` method is incomplete and throws a `Method not implemented` error when called.
 
 The reactive approach using RxJS operators allows for a more streamlined and declarative way of handling asynchronous operations. It promotes composing and transforming observables using operators, making the code more concise and readable. Operators like `tap` and `catchError` provide powerful ways to perform side effects and error handling within the observable pipeline.
 
@@ -1643,15 +1693,15 @@ Compared to the procedural approach in the previous example, this reactive appro
 
 ```ts
 // server.service.ts - The reactive approach
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { CustomResponse } from '../interfaces/custom-response';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { CustomResponse } from "../interfaces/custom-response";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ServerService {
-  private readonly apiUrl = 'http://localhost:8080/api';
+  private readonly apiUrl = "http://localhost:8080/api";
 
   constructor(private http: HttpClient) {}
 
@@ -1662,7 +1712,7 @@ export class ServerService {
   );
 
   handleError(handleError: any): Observable<never> {
-    return throwError('Method not implemented.');
+    return throwError("Method not implemented.");
   }
 }
 ```
@@ -1675,17 +1725,17 @@ The complete `server.service.ts` using the reactive approach
 
 ```ts
 // server.service.ts - The reactive approach | Complete code
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { CustomResponse } from '../interfaces/custom-response';
-import { Server } from '../interfaces/server';
-import { Status } from '../enums/status.enum';
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { CustomResponse } from "../interfaces/custom-response";
+import { Server } from "../interfaces/server";
+import { Status } from "../enums/status.enum";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ServerService {
-  private readonly apiUrl = 'http://localhost:8080/api';
+  private readonly apiUrl = "http://localhost:8080/api";
 
   constructor(private http: HttpClient) {}
 
@@ -1708,7 +1758,7 @@ export class ServerService {
           ? `Servers filtered by ${status} status`
           : filteredServers.length > 0
           ? `Servers filtered by ${
-              status === Status.SERVER_UP ? 'SERVER UP' : 'SERVER DOWN'
+              status === Status.SERVER_UP ? "SERVER UP" : "SERVER DOWN"
             } status`
           : `No servers of ${status} found`;
 
@@ -1780,19 +1830,18 @@ For the `filter$` function that performs filtering on a `CustomResponse` object 
 3.  `const servers = response.data?.servers || [];`: initializes the `servers` variable with the value of `response.data.servers` if it exists; otherwise, it assigns an empty array to `servers`. This guards against `response.data` or `response.data.servers` being `undefined`.
 4.  `const filteredServers = servers.filter((server) => server.status === status);`: filters the `servers` array based on the provided `status`, creating a new array `filteredServers` that only contains servers with a matching status.
 5.  `const message = ...`: This block assigns the appropriate message based on the conditionals:
-    -   If `status` is `Status.ALL`, it sets `message` to `'Servers filtered by ${status} status'`.
-    -   If `filteredServers.length` is greater than 0, it sets `message` to `'Servers filtered by SERVER UP status'` or `'Servers filtered by SERVER DOWN status'`.
-    -   If none of the above conditions are met, it sets `message` to `'No servers of ${status} found'`.
+    - If `status` is `Status.ALL`, it sets `message` to `'Servers filtered by ${status} status'`.
+    - If `filteredServers.length` is greater than 0, it sets `message` to `'Servers filtered by SERVER UP status'` or `'Servers filtered by SERVER DOWN status'`.
+    - If none of the above conditions are met, it sets `message` to `'No servers of ${status} found'`.
 6.  `subscriber.next({ ... })`: emits a new `CustomResponse` object to the subscriber, which includes the modified `response` object:
-    -   The `message` property is updated based on the filtering results.
-    -   The `data` property is updated with the filtered servers.
+    - The `message` property is updated based on the filtering results.
+    - The `data` property is updated with the filtered servers.
 7.  `subscriber.complete();`: signals the completion of the observable stream.
 8.  `.pipe(tap(console.log), catchError(this.handleError))`: pipes the observable to apply additional operators:
-    -   The `tap(console.log)` operator logs the emitted values to the console.
-    -   The `catchError(this.handleError)` operator catches and handles any errors that occur during the observable stream, using the `handleError` method of the `ServerService`.
+    - The `tap(console.log)` operator logs the emitted values to the console.
+    - The `catchError(this.handleError)` operator catches and handles any errors that occur during the observable stream, using the `handleError` method of the `ServerService`.
 
 In summary, the `filter$` function filters servers based on the provided `status` and emits a modified `CustomResponse` object as an observable. The emitted response includes a message indicating the filtering results and the filtered server data.
-
 
 <br/>
 
@@ -1803,25 +1852,25 @@ In summary, the `filter$` function filters servers based on the provided `status
 - The constructor initializes the `serverService` property with an instance of the `ServerService` injected through dependency injection so we can use all the methods defined there.
 - `ngOnInit(): void` is a lifecycle hook that runs when the component is initialized
 - `this.appState$ = this.serverService.getServersPinged$().pipe(...)`: assigns the `appState$` property to the result of the `getServersPinged$()` method call from the `serverService`. The method is assumed to return an observable that emits `CustomResponse` data.
-    - `map((response) => { return { dataState: DataState.LOADED_STATE, appData: response }; })`: `map` operator transforms the emitted `response` data by wrapping it in an object with `dataState` and `appData` properties. It sets the `dataState` to `DataState.LOADED_STATE` and assigns the `response` to `appData`.
-    - `startWith({ dataState: DataState.LOADING_STATE })`: `startWith` operator emits an initial value `{ dataState: DataState.LOADING_STATE }` before the actual values emitted by the observable. This helps indicate the loading state when the component first initializes.
-    - `catchError((error: string) => { return of({ dataState: DataState.ERROR_STATE, error }); })`: `catchError` operator catches any errors that occur in the observable stream and handles them. It transforms the error into an object with `dataState` set to `DataState.ERROR_STATE` and includes the error message.
+  - `map((response) => { return { dataState: DataState.LOADED_STATE, appData: response }; })`: `map` operator transforms the emitted `response` data by wrapping it in an object with `dataState` and `appData` properties. It sets the `dataState` to `DataState.LOADED_STATE` and assigns the `response` to `appData`.
+  - `startWith({ dataState: DataState.LOADING_STATE })`: `startWith` operator emits an initial value `{ dataState: DataState.LOADING_STATE }` before the actual values emitted by the observable. This helps indicate the loading state when the component first initializes.
+  - `catchError((error: string) => { return of({ dataState: DataState.ERROR_STATE, error }); })`: `catchError` operator catches any errors that occur in the observable stream and handles them. It transforms the error into an object with `dataState` set to `DataState.ERROR_STATE` and includes the error message.
 
 In summary, this code sets up the `appState$` observable in the `AppComponent` class. It fetches data from the `serverService`, transforms the response using the `map` operator, handles loading state with `startWith`, and catches and handles errors with `catchError`. The `appState$` observable will emit different states (`LOADING_STATE`, `LOADED_STATE`, or `ERROR_STATE`) based on the server response and error conditions.
 
 ```ts
 // app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { ServerService } from './services/server.service';
-import { Observable, catchError, map, of, startWith } from 'rxjs';
-import { AppState } from './interfaces/app-state';
-import { CustomResponse } from './interfaces/custom-response';
-import { DataState } from './enums/data-state.enum';
+import { Component, OnInit } from "@angular/core";
+import { ServerService } from "./services/server.service";
+import { Observable, catchError, map, of, startWith } from "rxjs";
+import { AppState } from "./interfaces/app-state";
+import { CustomResponse } from "./interfaces/custom-response";
+import { DataState } from "./enums/data-state.enum";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
   appState$!: Observable<AppState<CustomResponse>>;
@@ -1848,9 +1897,9 @@ export class AppComponent implements OnInit {
 ```
 
 - `{{ appState$ | async | json }}`: is an Angular template expression enclosed within double curly braces (`{{ }}`). It binds the value of the `appState$` observable to the content of the `<div>` element.
-    -   `appState$`: is the `appState$` property defined in the `AppComponent` class, which is an observable of type `AppState<CustomResponse>`.
-    -   `async`: `async` pipe is used to subscribe to the `appState$` observable and automatically handle the subscription and unsubscription. It allows the template to display the latest emitted value from the observable.
-    -   `json`: The `json` pipe is used to format the value as a JSON string. It converts the emitted value from the observable into a string representation in JSON format.
+  - `appState$`: is the `appState$` property defined in the `AppComponent` class, which is an observable of type `AppState<CustomResponse>`.
+  - `async`: `async` pipe is used to subscribe to the `appState$` observable and automatically handle the subscription and unsubscription. It allows the template to display the latest emitted value from the observable.
+  - `json`: The `json` pipe is used to format the value as a JSON string. It converts the emitted value from the observable into a string representation in JSON format.
 
 So, in summary, this HTML template code displays the JSON string representation of the latest emitted value from the `appState$` observable within the `<div>` element. It leverages the `async` pipe to handle the subscription and updates the displayed value whenever the observable emits a new value.
 
@@ -1861,10 +1910,11 @@ So, in summary, this HTML template code displays the JSON string representation 
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 20](https://www.youtube.com/watch?v=aBwdbMdq1Ck&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=20)
 
 Now:
+
 - if we start the application, namely:
-    - starting the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start)
-    - starting the SpringBoot Back-end Server (`mvn spring-boot:run` and test on http://localhost:8080/api/servers)
-    - starting the Front-end Angular Application (`ng serve --open` on http://localhost:4200/)
+  - starting the MySQL Server (Start Menu, search and open "Services", manually find MySQL80 service -> Right click it -> Start)
+  - starting the SpringBoot Back-end Server (`mvn spring-boot:run` and test on http://localhost:8080/api/servers)
+  - starting the Front-end Angular Application (`ng serve --open` on http://localhost:4200/)
 - we will run into the following CORS error:
 
 > Access to XMLHttpRequest at 'http://localhost:8080/api/servers/ping' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
@@ -2030,11 +2080,8 @@ We will use the following (NOT FINISHED) HTML + CSS code (Note these may change 
                         : ' badge-danger'
                     ]"
                   >
-                    {{
-                      server.status === Status.SERVER_UP
-                        ? "SERVER UP"
-                        : "SERVER DOWN"
-                    }}
+                    {{ server.status === Status.SERVER_UP ? "SERVER UP" :
+                    "SERVER DOWN" }}
                   </span>
                 </td>
                 <td>
@@ -2347,7 +2394,6 @@ a:hover {
 
 ```css
 /* app.component.css */
-
 ```
 
 <br/>
@@ -2361,29 +2407,28 @@ First, by using [Bootstrap v4.x CSS Spinner](https://getbootstrap.com/docs/4.3/c
 ```html
 <!-- app.component.html -->
 <ng-container
-    *ngIf="appState$ | async as appState"
-    [ngSwitch]="appState.dataState"
+  *ngIf="appState$ | async as appState"
+  [ngSwitch]="appState.dataState"
 >
-    <ng-container *ngSwitchCase="DataState.LOADING_STATE">
-      <div class="col-md-12 text-center">
-        <div class="spinner-border text-info" role="status"></div>
-      </div>
-    </ng-container>
+  <ng-container *ngSwitchCase="DataState.LOADING_STATE">
+    <div class="col-md-12 text-center">
+      <div class="spinner-border text-info" role="status"></div>
+    </div>
+  </ng-container>
 
-    ...
+  ...
 
-    <ng-container *ngSwitchCase="DataState.LOADED_STATE">
-        <table>...</table>
-    </ng-container>
+  <ng-container *ngSwitchCase="DataState.LOADED_STATE">
+    <table>
+      ...
+    </table>
+  </ng-container>
 
-    ...
+  ...
 
-    <ng-container *ngSwitchCase="DataState.ERROR_STATE">
-      <div class="alert-danger">
-        {{ appState.error }}
-      </div>
-    </ng-container>
-
+  <ng-container *ngSwitchCase="DataState.ERROR_STATE">
+    <div class="alert-danger">{{ appState.error }}</div>
+  </ng-container>
 </ng-container>
 ```
 
@@ -2481,11 +2526,8 @@ export class AppComponent implements OnInit {
                       : ' badge-danger'
                   ]"
                 >
-                  {{
-                    server.status === Status.SERVER_UP
-                      ? "SERVER UP"
-                      : "SERVER DOWN"
-                  }}
+                  {{ server.status === Status.SERVER_UP ? "SERVER UP" : "SERVER
+                  DOWN" }}
                 </span>
               </td>
               <td>
@@ -2516,9 +2558,7 @@ export class AppComponent implements OnInit {
       </ng-container>
 
       <ng-container *ngSwitchCase="DataState.ERROR_STATE">
-        <div class="alert-danger">
-          {{ appState.error }}
-        </div>
+        <div class="alert-danger">{{ appState.error }}</div>
       </ng-container>
     </ng-container>
   </div>
@@ -2533,21 +2573,21 @@ export class AppComponent implements OnInit {
 
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 23](https://www.youtube.com/watch?v=I_YRbgGAdRc&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=23)
 
-We want that (from the above screenshot), when we click the "ping server" button to show a spinnig loading icon while we wait for a response. 
+We want that (from the above screenshot), when we click the "ping server" button to show a spinnig loading icon while we wait for a response.
 
 For this, we can define the following in `app.component.ts`:
 
 - `private filterSubject = new BehaviorSubject<string>('');`:
-    - A `BehaviorSubject` is a type of `Subject` that always emits the most recent value to its subscribers, even if they subscribe after the value has been emitted. It is initialized with an empty string `''`.
+  - A `BehaviorSubject` is a type of `Subject` that always emits the most recent value to its subscribers, even if they subscribe after the value has been emitted. It is initialized with an empty string `''`.
 - `readonly filterStatus$ = this.filterSubject.asObservable();`:
-    - creates a public read-only `Observable` named `filterStatus$`, which is derived from the `filterSubject` using the `asObservable()` method. This ensures that external components can only subscribe to the `filterStatus$` observable and cannot modify its value directly. This observable will emit the values of the `filterSubject`.
+  - creates a public read-only `Observable` named `filterStatus$`, which is derived from the `filterSubject` using the `asObservable()` method. This ensures that external components can only subscribe to the `filterStatus$` observable and cannot modify its value directly. This observable will emit the values of the `filterSubject`.
 
 In `app.component.html`:
 
 - `*ngIf="... (filterStatus$ | async) === '' || (filterStatus$ | async) !== server.ipAddress"`:
-    - checks if the value emitted by the `filterStatus$` observable is an empty string `''` or not equal to `server.ipAddress`. The server IP address is used to filter the servers, so if there's no filtering (`filterStatus$` is an empty string) or if the filtering is not applied to the current server, the first `<i>` element with the class `fa fa-tower-broadcast` (an icon representing a server) is displayed (this would be the default since the declared string is empty).
-- `*ngIf="(filterStatus$ | async) == server.ipAddress"`: 
-    - checks if the value emitted by the `filterStatus$` observable is equal to the current `server.ipAddress`. If it matches, the second `<i>` element with the class `fa fa-circle-notch fa-spin` (an icon representing a spinning circle) is displayed. This typically indicates that the server is being actively pinged or processed.
+  - checks if the value emitted by the `filterStatus$` observable is an empty string `''` or not equal to `server.ipAddress`. The server IP address is used to filter the servers, so if there's no filtering (`filterStatus$` is an empty string) or if the filtering is not applied to the current server, the first `<i>` element with the class `fa fa-tower-broadcast` (an icon representing a server) is displayed (this would be the default since the declared string is empty).
+- `*ngIf="(filterStatus$ | async) == server.ipAddress"`:
+  - checks if the value emitted by the `filterStatus$` observable is equal to the current `server.ipAddress`. If it matches, the second `<i>` element with the class `fa fa-circle-notch fa-spin` (an icon representing a spinning circle) is displayed. This typically indicates that the server is being actively pinged or processed.
 
 Note: We use `.fa-spin` CSS Class for the [`.fa-spinner` icon](https://fontawesome.com/v6/icons/spinner?f=classic&s=solid) (from [fontawesome 6.4.0](https://fontawesome.com/v6/icons/circle-notch?f=classic&s=solid)) for the HTML loading icon.
 
@@ -2563,8 +2603,8 @@ Note: We use `.fa-spin` CSS Class for the [`.fa-spinner` icon](https://fontaweso
 
 ```ts
 // app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { ServerService } from './services/server.service';
+import { Component, OnInit } from "@angular/core";
+import { ServerService } from "./services/server.service";
 import {
   BehaviorSubject,
   Observable,
@@ -2572,11 +2612,11 @@ import {
   map,
   of,
   startWith,
-} from 'rxjs';
-import { AppState } from './interfaces/app-state';
-import { CustomResponse } from './interfaces/custom-response';
-import { DataState } from './enums/data-state.enum';
-import { Status } from './enums/status.enum';
+} from "rxjs";
+import { AppState } from "./interfaces/app-state";
+import { CustomResponse } from "./interfaces/custom-response";
+import { DataState } from "./enums/data-state.enum";
+import { Status } from "./enums/status.enum";
 
 /**
  * @author Radu-Alexandru Bulai
@@ -2584,15 +2624,15 @@ import { Status } from './enums/status.enum';
  * @since 18/07/2023
  */
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
   appState$!: Observable<AppState<CustomResponse>>;
   readonly Status = Status;
   readonly DataState = DataState;
-  private ipAddressSubjectWhenPinging = new BehaviorSubject<string>('');
+  private ipAddressSubjectWhenPinging = new BehaviorSubject<string>("");
   readonly ipAddressStatusWhenPinging$ =
     this.ipAddressSubjectWhenPinging.asObservable();
   private serversCopyDataSubject = new BehaviorSubject<CustomResponse>(null!);
@@ -2627,7 +2667,7 @@ export class AppComponent implements OnInit {
         // Update the Server from serversCopy in UI after it has been pinged
         serversCopy![indexOfPingedServer] = response.data.server!;
         // Assign empty string to stop showing spinning loading icon
-        this.ipAddressSubjectWhenPinging.next('');
+        this.ipAddressSubjectWhenPinging.next("");
         return {
           dataState: DataState.LOADED_STATE,
           appData: this.serversCopyDataSubject.value,
@@ -2638,7 +2678,7 @@ export class AppComponent implements OnInit {
         appData: this.serversCopyDataSubject.value,
       }),
       catchError((error: string) => {
-        this.ipAddressSubjectWhenPinging.next('');
+        this.ipAddressSubjectWhenPinging.next("");
         return of({ dataState: DataState.ERROR_STATE, error });
       })
     );
@@ -2647,89 +2687,86 @@ export class AppComponent implements OnInit {
 ```
 
 `app.component.ts` - `pingServerByItsIpAddress()`:
+
 - `this.ipAddressSubjectWhenPinging.next(ipAddress);` from the HTML code, we added a condition that whenever this "variable" (that has its observer on ` readonly ipAddressStatusWhenPinging$ = this.ipAddressSubjectWhenPinging.asObservable();`) is populated, we will show a loading spinner in UI (if this `ipAddressSubjectWhenPinging` is empty then we will show the "Ping" button in UI)
 - `this.serverService.pingServerByIpAddress$` will make the ping request to the REST SpringBoot API (by calling `pingServer` method from SpringBoot) which will return a **CustomResponse** containing the updated server (with its status updated).
 - we will keep a copy of all the Servers that are already rendered/retrieved in the UI, this copy will be inside `serversCopyDataSubject = new BehaviorSubject<CustomResponse>(null!);` (and the servers data will be inside the value property, such as `const serversCopy = this.serversCopyDataSubject.value.data.servers;`)
 - once we retrieve the response from backend server:
-    - now we need to update our Server from the Servers list from UI (stored as a copy)
-    - we will identify the server (that has been pinged) from our copy of servers list in UI by founding its index
-    - to find the equivalent server in our UI, we will search the list by comparing the IDs of any server from our UI list vs the id of updated server retrieved as response from backend
-    - note that this `pingServerByItsIpAddress` called from `app.component.html` will return (in `this.appState$`) the entire copy of servers list from UI that contains the updated server, therefore the UI will be updated
-    - `this.ipAddressSubjectWhenPinging.next('');` assign an empty string to show back the "Ping" button in UI (`app.component.html`) instead of spinning loading icon
+  - now we need to update our Server from the Servers list from UI (stored as a copy)
+  - we will identify the server (that has been pinged) from our copy of servers list in UI by founding its index
+  - to find the equivalent server in our UI, we will search the list by comparing the IDs of any server from our UI list vs the id of updated server retrieved as response from backend
+  - note that this `pingServerByItsIpAddress` called from `app.component.html` will return (in `this.appState$`) the entire copy of servers list from UI that contains the updated server, therefore the UI will be updated
+  - `this.ipAddressSubjectWhenPinging.next('');` assign an empty string to show back the "Ping" button in UI (`app.component.html`) instead of spinning loading icon
 
 <br/>
 
 ```html
 <!-- app.component.html -->
-  <tbody
-    *ngFor="
+<tbody
+  *ngFor="
       let server of appState.appData?.data?.servers;
       let i = index
     "
-  >
-    <tr>
-      <td title="Server ID: {{ server.id }}">{{ i + 1 }}</td>
-      <td>{{ server.ipAddress }}</td>
-      <td>{{ server.name }}</td>
-      <td>{{ server.network }}</td>
-      <td>
-        <span
-          class="badge"
-          [ngClass]="[
+>
+  <tr>
+    <td title="Server ID: {{ server.id }}">{{ i + 1 }}</td>
+    <td>{{ server.ipAddress }}</td>
+    <td>{{ server.name }}</td>
+    <td>{{ server.network }}</td>
+    <td>
+      <span
+        class="badge"
+        [ngClass]="[
             server.status === Status.SERVER_UP
               ? ' badge-success'
               : ' badge-danger'
           ]"
-        >
-          {{
-            server.status === Status.SERVER_UP
-              ? "SERVER UP"
-              : "SERVER DOWN"
-          }}
-        </span>
-      </td>
-      <td>
-        <a
-          class="edit"
-          style="cursor: pointer"
-          (click)="pingServerByItsIpAddress(server.ipAddress)"
-        >
-          <i
-            *ngIf="
+      >
+        {{ server.status === Status.SERVER_UP ? "SERVER UP" : "SERVER DOWN" }}
+      </span>
+    </td>
+    <td>
+      <a
+        class="edit"
+        style="cursor: pointer"
+        (click)="pingServerByItsIpAddress(server.ipAddress)"
+      >
+        <i
+          *ngIf="
               (ipAddressStatusWhenPinging$ | async) === '' ||
               (ipAddressStatusWhenPinging$ | async) !== server.ipAddress
             "
-            class="fa fa-tower-broadcast fa-1x"
-            title="Ping Server"
-            style="font-size: 1.5rem"
-          ></i>
-          <i
-            *ngIf="
+          class="fa fa-tower-broadcast fa-1x"
+          title="Ping Server"
+          style="font-size: 1.5rem"
+        ></i>
+        <i
+          *ngIf="
               (ipAddressStatusWhenPinging$ | async) === server.ipAddress
             "
-            class="fa fa-circle-notch fa-spin"
-            style="font-size: 1.5rem"
-          ></i>
-        </a>
-      </td>
-      <td>
-        <a class="edit" data-toggle="modal" style="cursor: pointer"
-          ><i
-            class="fa fa-pen fa-1x mx-2"
-            title="Delete Server"
-            style="font-size: 1.5rem"
-          ></i
-        ></a>
-        <a class="delete" data-toggle="modal" style="cursor: pointer"
-          ><i
-            class="fa fa-trash fa-1x mx-2"
-            title="Delete Server"
-            style="font-size: 1.5rem"
-          ></i
-        ></a>
-      </td>
-    </tr>
-  </tbody>
+          class="fa fa-circle-notch fa-spin"
+          style="font-size: 1.5rem"
+        ></i>
+      </a>
+    </td>
+    <td>
+      <a class="edit" data-toggle="modal" style="cursor: pointer"
+        ><i
+          class="fa fa-pen fa-1x mx-2"
+          title="Delete Server"
+          style="font-size: 1.5rem"
+        ></i
+      ></a>
+      <a class="delete" data-toggle="modal" style="cursor: pointer"
+        ><i
+          class="fa fa-trash fa-1x mx-2"
+          title="Delete Server"
+          style="font-size: 1.5rem"
+        ></i
+      ></a>
+    </td>
+  </tr>
+</tbody>
 ```
 
 ![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Demo_PingServerByIpMethod.gif)
@@ -2741,9 +2778,10 @@ export class AppComponent implements OnInit {
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 27](https://www.youtube.com/watch?v=zEpukgALl3U&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=27)
 
 Implement Angular Filter By Status method and call it in UI
+
 - Refactor `filterByStatus$` from `server.service.ts` component
-    - to work with "ALL" option (that just returns the unmodified list of servers)
-    - simplify message by either "Servers filtered by %{status} status" or "No servers of ${status} status were found"
+  - to work with "ALL" option (that just returns the unmodified list of servers)
+  - simplify message by either "Servers filtered by %{status} status" or "No servers of ${status} status were found"
 
 ```ts
 // server.service.ts
@@ -2772,10 +2810,10 @@ filterByStatus$ = (status: Status, response: CustomResponse) =>
 ```
 
 - Implement `filterServersByStatus` in `app.component.ts`
-    - we will call `this.serverService.filterByStatus$(status, this.serversCopyDataSubject.value)` with a copy of our data from our UI (namely `this.serversCopyDataSubject.value`)
-        - we don't want to overwrite the entire data when we filter! (therefore the original list with all servers will remain in the copy of `this.serversCopyDataSubject.value` and only `appState$` will be altered with missing Servers after filtering)
-    - after the copy of our data has been filtered by `this.serverService.filterByStatus$` method, the filtered list of servers will come as a `response`
-    - with this response we will update our main `appState$`
+  - we will call `this.serverService.filterByStatus$(status, this.serversCopyDataSubject.value)` with a copy of our data from our UI (namely `this.serversCopyDataSubject.value`)
+    - we don't want to overwrite the entire data when we filter! (therefore the original list with all servers will remain in the copy of `this.serversCopyDataSubject.value` and only `appState$` will be altered with missing Servers after filtering)
+  - after the copy of our data has been filtered by `this.serverService.filterByStatus$` method, the filtered list of servers will come as a `response`
+  - with this response we will update our main `appState$`
 
 ```ts
 // app.component.ts
@@ -2822,6 +2860,7 @@ We can also go a step further and retain the Status Filtered within our applicat
 (Saturday, July 22, 2023, 15:37 - Radu-Alexandru Bulai)
 
 Resources on issues encountered:
+
 - [Property 'value' does not exist on type EventTarget in TypeScript](https://stackoverflow.com/questions/44321326/property-value-does-not-exist-on-type-eventtarget-in-typescript)
 
 <br/>
@@ -2836,13 +2875,13 @@ Since we are going to use Angular Forms (where user will submit a form with the 
 
 ```ts
 // app.module.ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from "@angular/forms";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 
 @NgModule({
   declarations: [AppComponent],
@@ -2856,6 +2895,7 @@ export class AppModule {}
 <br/>
 
 Implement Angular Add new server method and call it in UI:
+
 - first call `this.serverService.addServer$` that receives `addServerForm.value` (`NgForm`) which is a JSON object containing all the keys (HTML property `name` for each `<input>`) and values when a user submits a form
 - the response from the Back-End REST Spring API will be the new server that has been created
 - we will modify this response by adding the current servers in UI (copy of servers) and then appending the new server to the list
@@ -2899,14 +2939,14 @@ onAddServer(addServerForm: NgForm): void {
 
 ![Ping Server Status Tracker UI](./SpringBootAngularPingStatusApp/Angular_UI_AddNewServer01.jpg)
 
-
 <br/>
 
 In order to have a loading spinning icon right after the user adds the new server (and waits for a response from backend), we can:
+
 - define a `isServerRequestLoadingSubject = new BehaviorSubject<boolean>(false);` where we will keep a "state" of loading
 - on the very start of `onAddServer` method, we can set this variable to true, then set it back on false
-    - when the request is completed and we received (and process) the response from backend server
-    - or when we receive an error
+  - when the request is completed and we received (and process) the response from backend server
+  - or when we receive an error
 
 ```ts
 // app.component.ts
@@ -3020,6 +3060,7 @@ readonly isServerRequestLoading$ = this.isServerRequestLoadingSubject.asObservab
 [Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 30](https://www.youtube.com/watch?v=HyjQNpEt5ig&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=30&ab_channel=GetArrays)
 
 Implement Angular Delete Server method and call it in UI
+
 - `app.component.ts`: implement `onDeleteServer` method that will receive a server object as parameter (we will use this server to filter out our Servers Copy list that is currently displayed in UI) -> this is needed because the "Delete" method from SpringBoot backend does not send back the whole server that was just been deleted
 - once we retrieved the succesful resposne form backend, we filter out the server that has been deleted from our servers UI list
 
@@ -3089,11 +3130,7 @@ onDeleteServer(server: Server): void {
               : ' badge-danger'
           ]"
         >
-          {{
-            server.status === Status.SERVER_UP
-              ? "SERVER UP"
-              : "SERVER DOWN"
-          }}
+          {{ server.status === Status.SERVER_UP ? "SERVER UP" : "SERVER DOWN" }}
         </span>
       </td>
       <td>
@@ -3154,6 +3191,7 @@ This part is not included in the [Main Tutorial of Full Stack Spring Boot RESTfu
 (Monday, July 24, 2023, 22:59 - Radu-Alexandru Bulai)
 
 Since the edit modal will need access to the Server object that we want to edit (in order to populate the input fields): we either need to include _the HTML modal with the edit `<form>`_ right inside the servers list. However, for a better code separation we can use a different approach:
+
 - we can create a separate `openModal` method where the "current to edit" server will be transmitted
 - we store the server locally in a separate `editServer$` variable/observable (currently in `app.component.ts`)
 - we can access the `editServer$` server anywhere in `app.component.html`
@@ -3161,12 +3199,13 @@ Since the edit modal will need access to the Server object that we want to edit 
 <br/>
 
 The `onOpenModal` function (in `app.component.ts`) will have a "modalMode" parameter what will determine which modal will be opened: `onOpenModal(server: Server, modalMode: String): void {}`
--   in `onOpenModal` we will create a button (by default, when we createElement button, its default type is "type=submit", but we can change it to "type=button")
--   the button attribute `data-toggle` will be "modal" (needed for Bootstrap4)
--   the button attribute `data-target` will be dynamic (received from the function parameter)
--   we want to add these buttons (that opens a specific modal) dinamically to our UI (`app.component.html`): we can first add an ID to the container div in HTML: `<div class="container" id="main-container">`
--   get the container in `app.component.ts`: `const container = document.getElementById('main-container');`
--   append the created button to the div container (in DOM) and click it: `container?.appendChild(button); button.click();`
+
+- in `onOpenModal` we will create a button (by default, when we createElement button, its default type is "type=submit", but we can change it to "type=button")
+- the button attribute `data-toggle` will be "modal" (needed for Bootstrap4)
+- the button attribute `data-target` will be dynamic (received from the function parameter)
+- we want to add these buttons (that opens a specific modal) dinamically to our UI (`app.component.html`): we can first add an ID to the container div in HTML: `<div class="container" id="main-container">`
+- get the container in `app.component.ts`: `const container = document.getElementById('main-container');`
+- append the created button to the div container (in DOM) and click it: `container?.appendChild(button); button.click();`
 
 ```ts
 // app.component.ts
@@ -3194,12 +3233,13 @@ onOpenModal(server: Server, modalMode: String): void {
 <br/>
 
 For the `onUpdateServer` method:
+
 - `this.isServerRequestLoadingSubject.next(true)`: sets the value of the isServerRequestLoadingSubject subject to true to indicate that a server update request is currently in progress (until we get a response from backend).
 - `this.appState$ = this.serverService.updateServer$(updateServerForm.value as Server).pipe(...);`: calls the `updateServer$` method from the `serverService` and pipes the resulting observable through various operators like `map`, `startWith`, and `catchError`
 - Inside the `map` operator, the function processes the server update response:
-    - update the `currentServersCopyDataSubject` with the updated server data and set the `isServerRequestLoadingSubject` to `false` after the update operation completes (we will show a loading spinning icon while we wait for a response from the backend)
-    - `document.getElementById('closeEditModal')?.click();`: close the edit modal after the server update operation is completed
-    - Note that unlike "adding" action, we do not need to reset the "edit" HTML form sincethe form will always be populated with selected server's values
+  - update the `currentServersCopyDataSubject` with the updated server data and set the `isServerRequestLoadingSubject` to `false` after the update operation completes (we will show a loading spinning icon while we wait for a response from the backend)
+  - `document.getElementById('closeEditModal')?.click();`: close the edit modal after the server update operation is completed
+  - Note that unlike "adding" action, we do not need to reset the "edit" HTML form sincethe form will always be populated with selected server's values
 - Finally, the `map` operator returns an object with the `dataState` set to `DataState.LOADED_STATE` and `appData` set to the value of `currentServersCopyDataSubject`
 
 ```ts
@@ -3238,8 +3278,9 @@ onUpdateServer(updateServerForm: NgForm): void {
 <br/>
 
 In `app.component.html`
+
 - Each input field will have its value populated (by default) with the current server's data that can be retrieved by the `editServer$` observable: `ngModel="{{ (editServer$ | async)?.name }}"`
-- We will use the same observable of `isServerRequestLoadingSubject` to show/hide the *"Update" button* or *"Updating..." disabled button along with a loading spinner icon*
+- We will use the same observable of `isServerRequestLoadingSubject` to show/hide the _"Update" button_ or _"Updating..." disabled button along with a loading spinner icon_
 - Note that we will need to have a hidden input (of server's id) in order to have a complete Server object (without missing any properties) for when we will call the updateEmployee method with the UPDATE (PUT) request to our backend SpringBoot API: `<input type="hidden" ngModel="{{ (editServer$ | async)?.id }}" name="id" />`
 
 ```html
@@ -3389,7 +3430,7 @@ searchServersByKeyword$ = (keyword: String, response: CustomResponse) =>
     // }
     subscriber.next({
       ...response,
-      message: 'Servers resulted by search',
+      message: "Servers resulted by search",
       data: {
         servers: resultedServers,
       },
@@ -3446,24 +3487,24 @@ onSearchServers(keyword: String): void {
 </form>
 ```
 
-
 <br/>
 <br/>
 
 > <hr>
 >
 > **Refactoring...**
-> 
+>
 > Refactor: split app.component in separate servers & header components
+>
 > - Create server and header components with `ng generate component components/header` and `ng generate component components/servers`
 > - Move all properties and methods from app.component.ts to servers.component.ts + Edit onOpenModal method to have additional "add" modalMode (and add click event listener on "Add Server" button from the header/navbar)
 > - Move all HTML from app.component.html to servers.component.html
 > - Within "header.component.ts" Pass/Inject the serversComponent: ServersComponent in constructor + Implement own onOpenModal method that calls this.serversComponent.onOpenModal(server, modalMode);
 > - Move the `<nav>` element from app.component.html/servers.component.html to header.component.html
-> - In "app.module.ts" Add `providers: [ServersComponent]` in order to fix "NullInjectorError: No provider for ServersComponent!" error 
-> 
+> - In "app.module.ts" Add `providers: [ServersComponent]` in order to fix "NullInjectorError: No provider for ServersComponent!" error
+>
 > (Wednesday, July 26, 2023, 23:47 - Radu-Alexandru Bulai)
-> 
+>
 > <hr>
 
 <br/>
@@ -3477,6 +3518,7 @@ onSearchServers(keyword: String): void {
 (Saturday, July 29, 2023, 13:25)
 
 Reuse of personal notes
+
 - from https://github.com/radualexandrub/Study/blob/master/Angular/README.md#angular-router
 - and commit from previous EmployeeManager application https://github.com/radualexandrub/SpringBoot-Angular-EmployeeManagerApp/commit/572dbe053a617cd1f11730a9daee5444494adb67#diff-5468d09e26643f32f6d6f60deb0960d87f4f5bd8e6da893a27453e3f9ccd9116
 
@@ -3485,6 +3527,7 @@ Reuse of personal notes
 1\) Create About page by running `ng generate component components/pages/aboutPage`
 
 2\) In `app.module.ts`
+
 - import "Routes", define "appRoutes" where routes are specified
 - add `imports: [RouterModule.forRoot(appRoutes, { enableTracing: false })]` (this should be set on true for debugging purposes and false in production)
 
@@ -3529,6 +3572,7 @@ const appRoutes: Routes = [
 4\) Add contents to `about-page.component.html`
 
 5\) In `header.component.ts`
+
 - make sure "private router: Router" is passed in contructor
 - make sure "hasRoute" and "hasRouteIncluded" methods are defined
 
@@ -3551,6 +3595,7 @@ hasRouteIncluded(route: string): boolean {
 ```
 
 6\) In `header.component.html`
+
 - add `*ngIf="hasRoute('/')"` on "Add Server" button to hide it from navbar when we are in "About" page
 - add `*ngIf="hasRoute('/about')"` to show Servers(/) link when in "About" page
 - add `[ngClass]="{ active: hasRoute('/about') }"` to show "About" link page as active
@@ -3562,29 +3607,320 @@ hasRouteIncluded(route: string): boolean {
 <hr>
 
 > Dockerize Application with docker-compose (Angular, Spring Boot, MySQL)
+>
 > - Create and configure "Angular.Dockerfile"
->     - Note that we use "outputPath": "dist/out" configured in "angular.json" as Angular build location
+>   - Note that we use "outputPath": "dist/out" configured in "angular.json" as Angular build location
 > - Create .dockerignore
 > - Create and configure "Spring.Dockerfile"
->     - Note that we use Java 17 (FROM openjdk:17-jdk-slim)
+>   - Note that we use Java 17 (FROM openjdk:17-jdk-slim)
 > - Create and configure docker-compose.yml (contains MySQL Server image)
->     - For MySQL, the db name from mysql-db service (MYSQL_DATABASE: pingstatustracker) should be reflected under the Back-End Spring Service property of SPRING_DATASOURCE_URL, as well as username and password
+>   - For MySQL, the db name from mysql-db service (MYSQL_DATABASE: pingstatustracker) should be reflected under the Back-End Spring Service property of SPRING_DATASOURCE_URL, as well as username and password
 > - Create environment.prod.ts Add Angular env variables from development environment.ts
 > - Create nginx-custom.con Add 'Access-Control-Allow-Origin' headers for Nginx Server (where browser clients will connect to) for CORS
-> 
+>
 > Endpoints:
+>
 > - Angular will run on http://localhost:8081/
 > - SpringBoot API will run on http://localhost:8080/api/servers
 > - MySQL will run on port 3306
->     - Note: You can enter the MySQL docker container by running `docker ps -a`, then copy the container ID, then run
- `docker exec -it containerID mysql -uradu -pradu123456 -D pingstatustracker`
-  -- e.g. for running queries directly on db:
- `INSERT INTO server (id, ip_address, name, network) VALUES (3, '192.168.0.1', 'Server 1', 'Office');`
-> 
-> Resources used:
->     - https://github.com/radualexandrub/SpringBoot-Angular-EmployeeManagerApp/commit/7ecee0943a11e0d10c4cde6a238feae752fbb249
->     - https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
+>   - Note: You can enter the MySQL docker container by running `docker ps -a`, then copy the container ID, then run
+>     `docker exec -it containerID mysql -uradu -pradu123456 -D pingstatustracker`
+>     -- e.g. for running queries directly on db:
+>     `INSERT INTO server (id, ip_address, name, network) VALUES (3, '192.168.0.1', 'Server 1', 'Office');`
+>
+> Resources used: - https://github.com/radualexandrub/SpringBoot-Angular-EmployeeManagerApp/commit/7ecee0943a11e0d10c4cde6a238feae752fbb249 - https://www.javachinna.com/angular-nginx-spring-boot-mysql-docker-compose/
 > (Monday, July 31, 2023, 23:27 - Radu-Alexandru Bulai)
 
 <hr>
 
+<br/>
+
+## Angular-Notifier
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 32 Notifications](https://www.youtube.com/watch?v=hTDVVdBZBqo&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=32)
+
+(Saturday, August 26, 2023, 10:18)
+
+https://www.npmjs.com/package/angular-notifier - A well designed, fully animated, highly customizable, and easy-to-use notification library for your Angular 2+ application.
+
+<br/>
+
+Step 1\) Install the angular-notifier library using `npm i angular-notifier`.
+
+Step 2\) In `app.module.ts`, import and add to `imports: []` the `BrowserAnimationsModule` - `import { BrowserAnimationsModule } from '@angular/platform-browser/animations';`
+
+Step 3\) We will turn the above `Angular Notifier` library into a module which will be bringed to `app.module.ts`.
+
+- Create in Angular `/src/app` directory a file called `notification.module.ts` (could be a copy paste of `app.module.ts`)
+- Add angular-notifier's options `const notifierDefaultOptions: NotifierOptions = {}`
+
+```ts
+// notification.module.ts
+import { NgModule } from "@angular/core";
+import { NotifierModule, NotifierOptions } from "angular-notifier";
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+    horizontal: {
+      position: "right",
+      distance: 12,
+    },
+    vertical: {
+      position: "top",
+      distance: 12,
+      gap: 10,
+    },
+  },
+  theme: "material",
+  behaviour: {
+    autoHide: 3000,
+    onClick: false,
+    onMouseover: "pauseAutoHide",
+    showDismissButton: true,
+    stacking: 4,
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: "slide",
+      speed: 300,
+      easing: "ease",
+    },
+    hide: {
+      preset: "fade",
+      speed: 300,
+      easing: "ease",
+      offset: 50,
+    },
+    shift: {
+      speed: 300,
+      easing: "ease",
+    },
+    overlap: 150,
+  },
+};
+
+@NgModule({
+  imports: [NotifierModule.withConfig(customNotifierOptions)],
+  exports: [NotifierModule],
+})
+export class NotificationModule {}
+```
+
+Step 4\) In `app.module.ts`, import the above created module `import { NotificationModule } from './notification.module';` and add it to `imports: []`
+
+Step 5\) In `styles.css`, import the styles from the module (using `~`): `@import "~angular-notifier/styles";` ... or just use `@import "../node_modules/angular-notifier/styles.css";`
+
+Step 6\) In `app.component.html` we can simply add `<notifier-container></notifier-container>`
+
+Step for demo only\) In `app.component.ts` (or `servers.component.ts` for refactored code)
+
+- in the `constructor`, add/inject as parameter `private notifier: NotifierService`
+- we can add `this.notifier.notify('success', 'You are awesome! I mean it!');` on a function like `ngOnInit()` for a demo example
+- Or add `this.notifier.notify('success', "Servers filtered by ${statusValue}");` in `onFilterServersByStatus()` method
+
+![Ping Server Status Tracker Notifier](./SpringBootAngularPingStatusApp/Demo_AngularNotifierExample.gif)
+
+<br/>
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 34](https://www.youtube.com/watch?v=UGhNvjpf6VA&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=34)
+
+Step 7\) Under `/src/app/services`, we can create our own `notification.service.ts` (or run CLI command `ng generate service services/notification`)
+
+- Logic is: our `notification.service.ts` will have direct methods to call each type of message, e.g. instead of calling (in our `app.component.ts`) a `notifierService.notify('success', 'Message for success')`, we would call a `notificationService.onSuccess('Message for success')`.
+
+```ts
+// notification.service.ts
+import { Injectable } from "@angular/core";
+import { NotifierService } from "angular-notifier";
+
+@Injectable({
+  providedIn: "root",
+})
+export class NotificationService {
+  private readonly notifier: NotifierService;
+
+  constructor(notifierService: NotifierService) {
+    this.notifier = notifierService;
+  }
+
+  onDefaultMessage(message: string) {
+    this.notifier.notify(Type.DEFAULT, message);
+  }
+  onInfoMessage(message: string) {
+    this.notifier.notify(Type.INFO, message);
+  }
+  onSuccessMessage(message: string) {
+    this.notifier.notify(Type.SUCCESS, message);
+  }
+  onWarningMessage(message: string) {
+    this.notifier.notify(Type.WARNING, message);
+  }
+  onErrorMessage(message: string) {
+    this.notifier.notify(Type.ERROR, message);
+  }
+}
+
+enum Type {
+  DEFAULT = "default",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+  ERROR = "error",
+}
+```
+
+Step 8\) In `app.component.ts` (or `servers.component.ts` for refactored code):
+
+- `import { NotificationService } from 'src/app/services/notification.service';`
+- in the `constructor`, add/inject as parameter `private notification: NotificationService`
+- under each success method, we can call `this.notification.onSuccessMessage("A success message");`
+
+<br/>
+
+## Angular Reactive vs Procedural approach
+
+[Full Stack Spring Boot RESTful API with MySQL and Angular | RxJs State Management - Part 35](https://www.youtube.com/watch?v=vl0wcmgi_Ik&list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf&index=35)
+
+Performance Advantages:
+
+- **Default (Procedural Approach)**: In the default approach, Angular uses the `checkAlways` strategy, where it constantly checks for changes in components and updates the UI. This means that Angular will continuously monitor the application's state and trigger UI updates whenever there's a potential change / Constantly watching if every variable changes.
+
+- **OnPush (Reactive Approach)**: With the OnPush change detection strategy, Angular takes a more optimized approach. It only looks for changes when certain triggers occur:
+  - When an `@Input` property changes (typically initiated by user interaction).
+  - When `events are emitted` (for example, through event binding).
+  - When `observables emit new values` (used extensively in this project).
+
+By using the OnPush strategy, Angular reduces the frequency of UI updates, leading to improved performance and responsiveness. This is particularly beneficial when dealing with complex and data-intensive applications.
+
+```typescript
+// Example of forcing OnPush strategy in Angular:
+// app.component.ts
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // This will force Angular to only detect changes based on specific triggers
+  // such as @Input changes, event emissions, or observable emissions
+})
+export class AppComponent {
+  // If this variable changes its value over time,
+  // the changes will not be automatically detected
+  name = "Radu";
+}
+```
+
+By explicitly applying the `OnPush` change detection strategy to a component, as shown in the example, Angular restricts change detection to specific triggers. This can significantly enhance performance by reducing unnecessary UI updates and improving the efficiency of rendering operations.
+
+---
+
+Here's an extended example of how the OnPush strategy works with different triggers like `@Input` changes, event emissions, and observable emissions:
+
+1. The `title` property is marked with `@Input()`, which means it can change based on external changes (typically from a parent component).
+2. An observable (`data$`) is created using a `BehaviorSubject` to simulate an asynchronous data source. The value of this observable changes over time.
+3. The `buttonClicks` property is used to track how many times a button is clicked. This is a simple event emission scenario.
+
+By using the `OnPush` change detection strategy, Angular will only perform change detection when any of these triggers are activated:
+
+- When the `title` property, marked as `@Input()`, changes from its parent component.
+- When the observable (`data$`) emits a new value.
+- When the button is clicked and the `buttonClicks` value changes.
+
+```typescript
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class AppComponent {
+  // @Input change trigger
+  @Input() title: string = "";
+
+  // Observable emissions trigger
+  dataSubject = new BehaviorSubject<string>("Initial Value");
+  data$ = this.dataSubject.asObservable();
+
+  // Event emissions trigger
+  buttonClicks = 0;
+
+  constructor() {
+    // Simulating changes over time
+    setInterval(() => {
+      // Update the Observable value
+      this.dataSubject.next("Updated Value");
+
+      // Increment button clicks
+      this.buttonClicks++;
+    }, 1000);
+  }
+}
+```
+
+This approach minimizes the frequency of change detection cycles and results in better performance, as Angular avoids unnecessary re-renders when no relevant triggers are activated.
+
+<br/>
+
+![Ping Server Status Tracker Reactive vs Procedural](./SpringBootAngularPingStatusApp/Angular_Procedural_vs_Reactive_Approach_01.jpg)
+
+<br/>
+
+> ---
+>
+> Building an app in Angular using the Reactive approach versus the Procedural approach involves different ways of structuring and managing the codebase, particularly when dealing with asynchronous operations, state management, and data flow.
+>
+> 1\. <u>**Procedural Approach**</u>:
+> In the Procedural approach, you typically handle asynchronous operations and state changes using callbacks, promises, and imperative programming techniques. This approach is more sequential and involves writing code that explicitly defines the steps to be taken.
+>
+> - **Code Structure**: Code tends to be organized around actions and events. You might have multiple callbacks or nested promises to manage asynchronous operations.
+> - **State Management**: State changes are handled explicitly by updating variables or calling functions in response to events.
+> - **Data Flow**: Data flow can be more complex to manage, as you need to ensure that the right data is available at the right time.
+> - **Error Handling**: Error handling can involve try-catch blocks or explicit checks for error conditions.
+>
+> Advantages of the Procedural Approach:
+>
+> - **Familiarity**: If developers are more comfortable with imperative programming, the procedural approach might feel more familiar.
+> - **Simplicity for Simple Scenarios**: For simpler use cases, a procedural approach might require less overhead than setting up and managing observables.
+>
+> <br/>
+>
+> 2\. <u>**Reactive Approach**</u>:
+> The Reactive approach utilizes observables and reactive programming principles to manage asynchronous operations and state changes. This approach is more declarative and focuses on describing how the data should behave over time.
+>
+> - **Code Structure**: Code is organized around data streams and how they transform over time. Observables are used to represent these streams of data.
+> - **State Management**: State changes are managed by observing streams of data and reacting to changes using operators like `map`, `filter`, and `merge`.
+> - **Data Flow**: Data flow is more streamlined, as observables provide a structured way to handle asynchronous data.
+> - **Error Handling**: Error handling is built into the observable pipeline, allowing you to catch and handle errors more effectively.
+>
+> Advantages of the Reactive Approach:
+>
+> - **Declarative**: Reactive code is more declarative, making it easier to understand the data flow and transformations.
+> - **Streamlined Data Flow**: Observables provide a clear way to handle asynchronous data flow and updates.
+> - **Composable**: Operators allow you to compose and manipulate data streams in a modular way.
+> - **Error Handling**: Observables have built-in error handling capabilities, making it easier to handle errors.
+>
+> Choosing between these approaches depends on factors like the complexity of your application, the team's familiarity with reactive programming, and the level of control you need over asynchronous operations and data flow.
+>
+> In recent years, the Reactive approach has gained popularity for its ability to handle complex asynchronous scenarios more elegantly. It also aligns well with modern frontend patterns and is often used in combination with other technologies like Redux or NgRx for state management in Angular applications.
+>
+> ---
+>
+> The statement "Reactive programming aligns well with modern frontend patterns" refers to how reactive programming principles fit naturally with some of the common patterns and practices used in modern front-end development. Here are a few patterns and concepts that are closely related to reactive programming:
+>
+> 1. **Component-Based Architecture**: Modern front-end development often follows a component-based architecture, where UI components are self-contained and reusable. Reactive programming's focus on data flow and isolation fits well with the idea of managing component state and interactions using observables.
+> 2. **State Management**: Reactive programming is used extensively in state management solutions like Redux, NgRx (for Angular), and MobX. These libraries utilize observables to manage application state in a predictable and efficient manner. Reactive programming's emphasis on data streams aligns with the need to manage and propagate state changes across the application.
+> 3. **Event-Driven Programming**: In reactive programming, observables are a natural fit for representing and handling events in the application. Modern frontend patterns often involve handling various user interactions, network requests, and other events. Reactive programming simplifies managing these asynchronous event streams.
+> 4. **UI Reactivity**: Reactive programming helps achieve responsive and dynamic user interfaces. Changes in data are automatically propagated to the UI components that depend on that data. This aligns with the goal of creating interactive and reactive user interfaces.
+> 5. **Data Transformation and Pipelines**: Modern front-end applications deal with complex data transformations, filtering, mapping, and combining data from multiple sources. Reactive programming's operators provide a powerful and composable way to perform these operations on data streams.
+> 6. **Asynchronous Operations**: Web applications often involve asynchronous operations like API calls, user interactions, timers, and more. Reactive programming provides a structured and unified approach to handle these asynchronous operations and their outcomes.
+> 7. **Real-Time Applications**: Applications that require real-time updates, such as collaborative editing, chat applications, or live data dashboards, can benefit from reactive programming's ability to handle continuous data streams and updates.
+> 8. **Functional Programming**: Reactive programming shares some functional programming concepts, such as immutability, pure functions, and transformations. Modern front-end development often embraces functional programming principles for code organization and maintainability.
+>    While not all modern front-end patterns explicitly require reactive programming, its principles align with the demands of building interactive, responsive, and data-driven web applications. It offers a more structured and elegant way to manage complex asynchronous operations and state changes, which is crucial in today's complex front-end landscapes.
+>
+> ---
+
+<br/>
