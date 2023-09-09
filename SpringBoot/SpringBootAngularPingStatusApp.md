@@ -808,6 +808,8 @@ Annotations from above:
 | 510   | SERVER_ERROR      | Not Extended                    |
 | 511   | SERVER_ERROR      | Network Authentication Required |
 
+![](./SpringBootAngularPingStatusApp/HTTP_Status_Codes.jpg)
+
 <br/>
 
 ### Server Controller/Resource - HTTP requests handling, Exposing the API
@@ -3924,3 +3926,5 @@ This approach minimizes the frequency of change detection cycles and results in 
 > ---
 
 <br/>
+
+(Sunday, August 27, 2023, 12:16)
