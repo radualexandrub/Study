@@ -35,6 +35,7 @@ My biggest collection of personal study notes from various FREE courses, tutoria
   - [**Object Oriented Programming (OOP)** and OOP in JavaScript](./JavaScript/JavaScriptOOP.md)
   - [**Dynamic Programming - Learn to Solve Algorithmic Problems & Coding Challenges**](./JavaScript/JavaScriptDynamicProgramming.md)
 - [JavaScript Algorithms from solving freeCodeCamp & HackerRank challenges](./JavaScript/JavaScriptAlgorithms.md)
+- [Design Patterns - Notes from Fireship.io & Neetcode](./JavaScript/DesignPatterns_FireshipNeetcode.md)
 
 Others:
 
@@ -52,7 +53,9 @@ Others:
 
 ---
 
-## Mobile
+## Mobile / Android
+
+- [Running Nodejs Apps (Angular/React) in Android using Termux](./Android/RunningNodeInAndroidUsingTermux.md)
 
 ### React Native
 
