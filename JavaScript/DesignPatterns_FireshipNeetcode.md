@@ -16,13 +16,13 @@ Table of Contents:
 - [Fireship/Neetcode - 10 Design Patterns - using TypeScript/Python](#fireshipneetcode---10-design-patterns---using-typescriptpython)
   - [Creational Patterns](#creational-patterns)
     - [Singleton](#singleton)
-    - [Prototype Pattern](#prototype-pattern)
+    - [Prototype Pattern (Clone)](#prototype-pattern-clone)
     - [Factory](#factory)
     - [Builder Pattern](#builder-pattern)
   - [Structural Patterns](#structural-patterns)
     - [Adapter](#adapter)
     - [Facade](#facade)
-    - [Proxy](#proxy)
+    - [Proxy (Substitute)](#proxy-substitute)
   - [Behavioral Patterns](#behavioral-patterns)
     - [Iterator](#iterator)
     - [Strategy Pattern](#strategy-pattern)
@@ -151,7 +151,11 @@ print(appState2.isLoggedIn) # True
 
 <br/>
 
-### Prototype Pattern
+### Prototype Pattern (Clone)
+
+![Refactoring.guru and Fireship Prototype Design Pattern Sketch](./DesignPatterns_FireshipNeetcode/PrototypeDesignPattern.jpg)
+
+Source: https://refactoring.guru/design-patterns/prototype
 
 > _Specify the kinds of objectsto create using a prototypical instance, and create new objects by copying this prototype._
 
@@ -173,10 +177,6 @@ const corporateZombie = Object.create(zombie, { name: { value: "Jimmy" } });
 console.log(corporateZombie); // {}
 console.log(Object.getPrototypeOf(corporateZombie)); // { eatBrains: [Function: eatBrains] }
 ```
-
-![Refactoring.guru and Fireship Prototype Design Pattern Sketch](./DesignPatterns_FireshipNeetcode/PrototypeDesignPattern.jpg)
-
-Source: https://refactoring.guru/design-patterns/prototype
 
 <br/>
 
@@ -388,6 +388,10 @@ if __name__ == "__main__":
 
 ### Factory
 
+![Factory Design Pattern](./DesignPatterns_FireshipNeetcode/FactoryDesignPattern.jpg)
+
+Source: https://refactoring.guru/design-patterns/factory-method
+
 > _Define an interface for creating an object,but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses._
 
 > A factory is a method or function that creates an object, or a set of objects, without exposing the creation logic to the client.
@@ -428,10 +432,6 @@ const factory = new ButtonFactory();
 const btn1 = factory.createButton(os);
 const btn2 = factory.createButton(os);
 ```
-
-![Factory Design Pattern](./DesignPatterns_FireshipNeetcode/FactoryDesignPattern.jpg)
-
-Source: https://refactoring.guru/design-patterns/factory-method
 
 <br/>
 
@@ -478,6 +478,10 @@ burgerFactory.createVeganBurger().print()
 
 ### Builder Pattern
 
+![Fireship Builder Design Pattern](./DesignPatterns_FireshipNeetcode/BuilderPatternSketch.jpg)
+
+Source: https://refactoring.guru/design-patterns/builder
+
 > _Separate the construction of a complex object from its representation so that the same construction process can create different representations._
 
 > The builder pattern is a creational design pattern that lets you construct complex objects step by step (instead of using the constructor).
@@ -520,12 +524,6 @@ console.log(myLunch);
 //   kraut: true
 // }
 ```
-
-![Fireship Builder Design Pattern](./DesignPatterns_FireshipNeetcode/BuilderPatternSketch.jpg)
-
-Source: https://refactoring.guru/design-patterns/builder
-
-<br/>
 
 <hr/>
 
@@ -589,9 +587,17 @@ print(burger)
 
 ### Adapter
 
+![Fireship & refactoring.guru - Facade Design Pattern](./DesignPatterns_FireshipNeetcode/AdapterDesignPattern01.jpg)
+
+Source: https://refactoring.guru/design-patterns/adapter
+
 <br/>
 
 ### Facade
+
+![Fireship & refactoring.guru - Facade Design Pattern](./DesignPatterns_FireshipNeetcode/FacadeDesignPattern.jpg)
+
+Source: https://refactoring.guru/design-patterns/facade
 
 > _Provide a unified interface to a set of interfacesin a subsystem. Facade defines a higher-level interface that makesthe subsystem easier to use._
 
@@ -634,27 +640,283 @@ client.turnOnSystems();
 client.shutDown();
 ```
 
-![Fireship & refactoring.guru - Facade Design Pattern](./DesignPatterns_FireshipNeetcode/FacadeDesignPattern.jpg)
-
-Source: https://refactoring.guru/design-patterns/facade
-
 <br/>
 
-### Proxy
+### Proxy (Substitute)
 
-More like substitute
+![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/ProxyDesignPattern01.jpg)
+
+![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/ProxyDesignPattern02.jpg)
+
+Source: https://refactoring.guru/design-patterns/proxy
+
+(October 23, 2023, 21:51)
+
+Equivalent for/Also known as "Substitute" Design Pattern.
+
+> Proxy is a structural design pattern that lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=347): Reactivity System in Vue.js
+
+- The [VueJS framework uses a Proxy](https://vuejs.org/guide/extras/reactivity-in-depth.html#how-reactivity-works-in-vu) to intercept and modify the data on the UI whenever that data changes
+- Vue handles this by replacing the original object with a `Proxy` (a substitute): 1st argument is the original object, the 2nd argument is a handler (where we can override methods such as get and set)
+
+```js
+const original = { name: "jeff" };
+
+const reactive = new Proxy(original, {
+  get(target, key) {
+    console.log("Tracking: ", key);
+    return target[key];
+  },
+  set(target, key, value) {
+    // Rerender components in UI
+    console.log("updating UI...");
+    // Use Reflect to update the data on the original object
+    return Reflect.set(target, key, value);
+  },
+});
+
+// Work with the proxy as an original object
+reactive.name; // 'Tracking: name'
+
+// Behind the scene, modifying the proxy will also trigger the rerenders
+reactive.name = "bob"; // 'updating UI...'
+```
+
+Proxy are commonly used when you have a very large object that would be expensive to duplicate in the memory.
+
+![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/ProxyDesignPattern03.jpg)
 
 <br/>
-
 <hr/>
+
+Example 1 from ChatGPT 3.5 (2023-10-23):
+
+> You are an expert system architect and senior developer. Can you please give me a real world example of Proxy Design Pattern in JavaScript?
+
+The Proxy Design Pattern in JavaScript is a structural pattern that provides a surrogate or placeholder for another object to control access to it. This can be useful in various real-world scenarios, such as implementing lazy loading, access control, logging, and more. Here's a real-world example of how you can use the Proxy pattern in JavaScript:
+
+Let's consider implementing access control for a sensitive resource - you want to restrict access to a file based on user permissions:
+
+```js
+// Real subject: Represents a sensitive file
+class SensitiveFile {
+  constructor(filename) {
+    this.filename = filename;
+  }
+  access() {
+    console.log(`Accessing sensitive file: ${this.filename}`);
+  }
+}
+
+// Proxy: Controls access to the sensitive file based on user permissions
+class FileProxy {
+  constructor(filename, user) {
+    this.filename = filename;
+    this.user = user;
+    this.file = null;
+  }
+
+  access() {
+    if (this.file === null) {
+      if (this.user.hasPermission(this.filename)) {
+        this.file = new SensitiveFile(this.filename);
+      } else {
+        console.log(`Access denied for file: ${this.filename}`);
+        return;
+      }
+    }
+    this.file.access();
+  }
+}
+
+// User class to manage permissions
+class User {
+  constructor(name) {
+    this.name = name;
+    this.permissions = new Set();
+  }
+  grantPermission(filename) {
+    this.permissions.add(filename);
+  }
+  hasPermission(filename) {
+    return this.permissions.has(filename);
+  }
+}
+
+// Example usage
+const user1 = new User("User1");
+const user2 = new User("User2");
+
+user1.grantPermission("sensitive_data.txt");
+
+const file1 = new FileProxy("sensitive_data.txt", user1);
+const file2 = new FileProxy("confidential_info.txt", user2);
+
+file1.access(); // Accessing sensitive file: sensitive_data.txt
+file2.access(); // Access denied for file: confidential_info.txt
+```
+
+---
+
+Example 2 from ChatGPT:
+
+We'll create a simple banking system where a Bank class acts as a proxy for accessing a user's bank account. The proxy controls access to the actual bank account object and performs some security checks.
+
+```java
+// Java
+import java.util.Objects;
+
+// Subject: Represents the bank account
+class BankAccount {
+    private int accountNumber;
+    private double balance;
+
+    public BankAccount(int accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited $" + amount + " into account " + accountNumber);
+    }
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            System.out.println("Withdrawn $" + amount + " from account " + accountNumber);
+        } else {
+            System.out.println("Insufficient balance in account " + accountNumber);
+        }
+    }
+    public double getBalance() {
+        return balance;
+    }
+}
+
+// Proxy: Controls access to the bank account
+class Bank {
+    private BankAccount account;
+    private String username;
+    private String password;
+
+    public Bank(String username, String password, BankAccount account) {
+        this.username = username;
+        this.password = password;
+        this.account = account;
+    }
+    public void authenticate(String username, String password) {
+        if (Objects.equals(this.username, username) && Objects.equals(this.password, password)) {
+            System.out.println("Authentication successful.");
+        } else {
+            System.out.println("Authentication failed.");
+        }
+    }
+    public void deposit(double amount) {
+        if (account != null) {
+            account.deposit(amount);
+        } else {
+            System.out.println("Please authenticate to access your account.");
+        }
+    }
+    public void withdraw(double amount) {
+        if (account != null) {
+            account.withdraw(amount);
+        } else {
+            System.out.println("Please authenticate to access your account.");
+        }
+    }
+    public double getBalance() {
+        if (account != null) {
+            return account.getBalance();
+        } else {
+            System.out.println("Please authenticate to access your account.");
+            return 0.0;
+        }
+    }
+}
+
+public class ProxyExample {
+    public static void main(String[] args) {
+        BankAccount bankAccount = new BankAccount(12345, 1000);
+        Bank bank = new Bank("user123", "password123", bankAccount);
+
+        // Access without authentication (Proxy controls access)
+        bank.deposit(500.0);
+        bank.withdraw(200.0);
+        System.out.println("Balance: $" + bank.getBalance());
+        /* Output:
+         * Please authenticate to access your account.
+         * Please authenticate to access your account.
+         * Please authenticate to access your account.
+         * Balance: $0.0
+         */
+
+        // Authenticate and access the bank account
+        bank.authenticate("user123", "password123");
+        bank.deposit(500.0);
+        bank.withdraw(200.0);
+        System.out.println("Balance: $" + bank.getBalance());
+        /* Output:
+         * Authentication successful.
+         * Deposited $500.0 into account 12345
+         * Withdrawn $200.0 from account 12345
+         * Balance: $1300.0
+        */
+    }
+}
+// Run using:
+// javac .\ProxyExample.java
+// java ProxyExample
+```
 
 ## Behavioral Patterns
 
 ### Iterator
 
+![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/IteratorDesignPattern01.jpg)
+
+Source: https://refactoring.guru/design-patterns/iterator
+
+> Iterator is a behavioral design pattern that lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.).
+
+<br/>
+
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=408):
+
+The iterator pattern is used to traverse a collection of elements/objects. Most programming languages provide abstrations for iteration like the `for` loop - e.g. in JS you can use `for (const item of items) {lonsole.log(item);}`.
+
+However, you can create your own iterators in JavaScript by using the `Symbol.iterator` property. The code below creates a custom range function that can be used in a regular for loop.
+
+```ts
+function range(start: number, end: number, step = 1) {
+  return {
+    // Symbol.iterator allow us to use this in a ES6 "for ... of" loop
+    [Symbol.iterator]() {
+      return this;
+    },
+    /* next() returns the current value in the loop */
+    next() {
+      if (start < end) {
+        start += step;
+        return { value: start, done: false };
+      }
+      return { value: end, done: true };
+    },
+  };
+}
+
+for (const n of range(0, 20, 5)) {
+  console.log(n); // 5 10 15 20
+}
+```
+
+> Note: `.ts` files can be run with `npx ts-node IteratorExample.ts` command ([reference](https://stackoverflow.com/questions/33535879/how-to-run-typescript-files-from-command-line))
+
+<br/>
 <hr/>
 
-Another example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)
+Example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)
 
 ```py
 # By default an array in Python includes an iterator
@@ -706,6 +968,17 @@ Example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAu
 
 ### Observer (PubSub)
 
+![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/ObserverDesignPattern01.jpg)
+
+Source: https://refactoring.guru/design-patterns/observer
+
+> Observer is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
+
+<br/>
+
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=475)
+
+<br/>
 <hr/>
 
 Another example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)

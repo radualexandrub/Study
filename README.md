@@ -73,6 +73,7 @@ Others:
 ### Python
 
 - [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
+- [Old: Python Data Structures](./Python/PythonDataStructures.md)
 
 ### Django
 
