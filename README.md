@@ -26,16 +26,21 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 ### **JavaScript**
 
 - [**JavaScript Full Course for Beginners (to advanced)** - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
+
 - [JavaScript DOM](./JavaScript/JavaScriptDOM.md)
 - [JavaScript Async, Await, Promises, AJAX](./JavaScript/JavaScriptAsync.md)
 - [JavaScript Local Storage, Session Storage and Cookies](./JavaScript/JavaScriptLocalStorageCookies.md)
 - [Regular Expressions (Regex) in JavaScript](./JavaScript/JavaScriptRegex.md)
+
 - [**_Programming Paradigms in JavaScript, with lots of examples:_**](./JavaScript/JavaScriptFunctionalProgramming.md)
+
   - [JavaScript **Functional Programming**](./JavaScript/JavaScriptFunctionalProgramming.md)
   - [**Object Oriented Programming (OOP)** and OOP in JavaScript](./JavaScript/JavaScriptOOP.md)
   - [**Dynamic Programming - Learn to Solve Algorithmic Problems & Coding Challenges**](./JavaScript/JavaScriptDynamicProgramming.md)
+
 - [JavaScript Algorithms from solving freeCodeCamp & HackerRank challenges](./JavaScript/JavaScriptAlgorithms.md)
 - [Design Patterns - Notes from Fireship.io & Neetcode](./JavaScript/DesignPatterns_FireshipNeetcode.md)
+- [JavaScript (Custom) Data Structures](./JavaScript/JavaScriptDataStructures.md)
 
 Others:
 
