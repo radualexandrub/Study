@@ -25,8 +25,8 @@ Table of Contents:
     - [Proxy (Substitute)](#proxy-substitute)
   - [Behavioral Patterns](#behavioral-patterns)
     - [Iterator](#iterator)
-    - [Strategy Pattern](#strategy-pattern)
     - [Observer (PubSub)](#observer-pubsub)
+    - [Strategy Pattern](#strategy-pattern)
     - [Mediator behavior](#mediator-behavior)
     - [State behavior](#state-behavior)
 
@@ -34,9 +34,11 @@ Table of Contents:
 
 ## Creational Patterns
 
-(Saturday, September 09, 2023)
+> These patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
 ### Singleton
+
+(Saturday, September 09, 2023)
 
 > _Ensure a class only has one instance, and provide a global point of access to it._
 
@@ -396,7 +398,7 @@ Source: https://refactoring.guru/design-patterns/factory-method
 
 > A factory is a method or function that creates an object, or a set of objects, without exposing the creation logic to the client.
 
-Example building a crossplatform app on both IOS and Android without Factory:
+[Example from Fireship](https://youtu.be/tv-_1er1mWI?t=266) building a crossplatform app on both IOS and Android without Factory:
 
 - they both can have the same interface
 - we need to have conditional checking whenever we need to determine which button to show
@@ -414,7 +416,7 @@ const button2 = os === "ios" ? new IOSButton() : new AndroidButton();
 Example building a crossplatform app on both IOS and Android with Factory:
 
 - we can create a subclass/function that could determine which object to instantiate
-- instead of repeating the same logic, we use the factory to determine which button should be rendered
+- instead of repeating the same logic, we use the factory to determine which button should be rendered (or: instead of using the "new" keyword to instantiate each different object, we use a method)
 
 ```ts
 class ButtonFactory {
@@ -484,7 +486,7 @@ Source: https://refactoring.guru/design-patterns/builder
 
 > _Separate the construction of a complex object from its representation so that the same construction process can create different representations._
 
-> The builder pattern is a creational design pattern that lets you construct complex objects step by step (instead of using the constructor).
+> The builder pattern is a creational design pattern that lets you construct complex objects step by step using methods (instead of using the constructor).
 
 In JavaScript, we can achieve this with method chaining.
 
@@ -500,6 +502,7 @@ class HotDog {
   addKetchup() {
     this.ketchup = true;
     return this;
+    // "this" is a reference to the object instance
   }
   addMustard() {
     this.mustard = true;
@@ -585,11 +588,93 @@ print(burger)
 
 ## Structural Patterns
 
+> These patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
+
 ### Adapter
 
-![Fireship & refactoring.guru - Facade Design Pattern](./DesignPatterns_FireshipNeetcode/AdapterDesignPattern01.jpg)
+![Refactoring.guru - Facade Design Pattern](./DesignPatterns_FireshipNeetcode/AdapterDesignPattern01.jpg)
 
-Source: https://refactoring.guru/design-patterns/adapter
+> Adapter is a structural design pattern that allows objects with incompatible interfaces to collaborate.
+
+> Source: https://refactoring.guru/design-patterns/adapter
+
+<br/>
+
+Example from [Neetcode - 8 Design Patterns - Adapter](https://youtu.be/tAuRQs_d9F8?t=440)
+
+- We have an USB Cable (connector) and an USB Port. However, for a microUsb cable we will need an adapter...
+
+```python
+class UsbCable:
+    def __init__(self, name):
+        self.isPlugged = False
+        self.name = name
+
+    def plugUsb(self):
+        self.isPlugged = True
+        print(self)
+
+    def unplugUsb(self):
+        self.isPlugged = False
+        print(self)
+
+    def __str__(self):
+        return f"UsbCable {self.name} isPlugged={self.isPlugged}"
+
+class UsbPort:
+    def __init__(self, name):
+        self.portAvailable = True
+        self.name = name
+
+    def plug(self, usb):
+        if self.portAvailable:
+            usb.plugUsb()
+            self.portAvailable = False
+            print(self)
+        else:
+            print(self)
+
+    def __str__(self):
+        return f"UsbPort {self.name} portAvailable={self.portAvailable}"
+
+class MicroUsbCable:
+    def __init__(self, name):
+        self.isPlugged = False
+        self.name = name
+
+    def plugMicroUsb(self):
+        self.isPlugged = True
+        print(self)
+
+    def __str__(self):
+        return f"MicroUsbCable {self.name} isPlugged={self.isPlugged}"
+
+class MicroToUsbAdapter(UsbCable):
+    def __init__(self, microUsbCable):
+        self.microUsbCable = microUsbCable
+        self.name = self.microUsbCable.name
+        self.microUsbCable.plugMicroUsb()
+
+    # can override UsbCable.plugUsb() if needed
+
+if __name__ == "__main__":
+    # UsbCables can plug directly into UsbPorts
+    usbCable = UsbCable("Red")
+    usbPort1 = UsbPort("One")
+    usbPort1.plug(usbCable)
+
+    # MicroUsbCables can plug into UsbPorts via an adapter
+    microToUsbAdapter = MicroToUsbAdapter(MicroUsbCable("Blue"))
+    usbPort2 = UsbPort("Two")
+    usbPort2.plug(microToUsbAdapter)
+
+# Output
+# UsbCable Red isPlugged=True
+# UsbPort One portAvailable=False
+# MicroUsbCable Blue isPlugged=True
+# UsbCable Blue isPlugged=True
+# UsbPort Two portAvailable=False
+```
 
 <br/>
 
@@ -601,7 +686,9 @@ Source: https://refactoring.guru/design-patterns/facade
 
 > _Provide a unified interface to a set of interfacesin a subsystem. Facade defines a higher-level interface that makesthe subsystem easier to use._
 
-> A facade is a class that provides a simplified API for larger body of code. It is often to used to hide low-level details of a subsystem.
+> A facade is a class that provides a simplified API for larger body of code. It is often to used to hide low-level details of a subsystem/codebase.
+
+[Example from Fireship](https://youtu.be/tv-_1er1mWI?t=297)
 
 ```ts
 class PlumbingSystem {
@@ -641,6 +728,24 @@ client.shutDown();
 ```
 
 <br/>
+<hr/>
+
+Another example from [NeetCode - 8 Design Patterns - Facade](https://youtu.be/tAuRQs_d9F8?t=505)
+
+- A facade is a wrapper class that we can use to abstract low level code/details (complexity that is hidden)
+
+```js
+/* Common example:
+ * An HTTP Client that abstracts the low level network details
+ */
+fetch("http://example.com/movies.json")
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+```
+
+- Example: Dynamic Arrays in any language (Vectors in C++, ArrayList in Java, Lists in Python) are actually facades that abstracts low level details, like **automatically resizing when adding/removing elements**
+
+<br/>
 
 ### Proxy (Substitute)
 
@@ -659,7 +764,8 @@ Equivalent for/Also known as "Substitute" Design Pattern.
 Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=347): Reactivity System in Vue.js
 
 - The [VueJS framework uses a Proxy](https://vuejs.org/guide/extras/reactivity-in-depth.html#how-reactivity-works-in-vu) to intercept and modify the data on the UI whenever that data changes
-- Vue handles this by replacing the original object with a `Proxy` (a substitute): 1st argument is the original object, the 2nd argument is a handler (where we can override methods such as get and set)
+- Vue handles this by replacing the original object with a `Proxy` (a substitute)
+- The `Proxy`'s 1st argument is the original object, the 2nd argument is a handler (where we can override methods such as get and set), which allows us to run code whenever a property on the object is accessed or changed
 
 ```js
 const original = { name: "jeff" };
@@ -872,6 +978,8 @@ public class ProxyExample {
 
 ## Behavioral Patterns
 
+> These patterns are concerned with algorithms and the assignment of responsibilities between objects.
+
 ### Iterator
 
 ![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/IteratorDesignPattern01.jpg)
@@ -884,9 +992,11 @@ Source: https://refactoring.guru/design-patterns/iterator
 
 Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=408):
 
-The iterator pattern is used to traverse a collection of elements/objects. Most programming languages provide abstrations for iteration like the `for` loop - e.g. in JS you can use `for (const item of items) {lonsole.log(item);}`.
+The iterator pattern (pull-based system) is used to traverse a collection of elements/objects. Most programming languages provide abstrations for iteration like the `for` loop - e.g. in JS you can use `for (const item of items) {console.log(item);}`.
 
-However, you can create your own iterators in JavaScript by using the `Symbol.iterator` property. The code below creates a custom range function that can be used in a regular for loop.
+However, you can create your own iterators in JavaScript by using the `Symbol.iterator` property.
+
+Example: The code below creates a custom range function that can be used in a regular for loop.
 
 ```ts
 function range(start: number, end: number, step = 1) {
@@ -916,14 +1026,18 @@ for (const n of range(0, 20, 5)) {
 <br/>
 <hr/>
 
-Example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)
+Another example from [8 Design Patterns by NeetCode](https://youtu.be/tAuRQs_d9F8?t=312):
+
+- Defines how the values in an object can be iterated through
 
 ```py
-# By default an array in Python includes an iterator
+# By default an array in Python uses the built-in list iterator
 myList = [1, 2, 3]
 for n in myList:
    print(n)
 ```
+
+For more complex data structures like Linked Lists or Binary Trees, we can define our own iterators:
 
 ```py
 # Example for a LinkedList
@@ -944,10 +1058,15 @@ class LinkedList:
 
     # Iterate
     def __next__(self):
+        # If our current pointer is not null,
+        # return the value from list
+        # and shift the current pointer
         if self.current:
             val = self.current.val
             self.current = self.current.next
             return val
+        # If we reached the end of the linked list
+        # we send the signal to stop iterating
         else:
             raise StopIteration
 
@@ -956,19 +1075,16 @@ head = ListNode(1)
 head.next = ListNode(2)
 head.next.next = ListNode(3)
 
+myList = LinkedList(head)
+for n in myList:
+  print(n)
 ```
-
-<br/>
-
-### Strategy Pattern
-
-Example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)
 
 <br/>
 
 ### Observer (PubSub)
 
-![Fireship & refactoring.guru - Proxy Design Pattern](./DesignPatterns_FireshipNeetcode/ObserverDesignPattern01.jpg)
+![Fireship & refactoring.guru - Observer Design Pattern](./DesignPatterns_FireshipNeetcode/ObserverDesignPattern01.jpg)
 
 Source: https://refactoring.guru/design-patterns/observer
 
@@ -976,29 +1092,283 @@ Source: https://refactoring.guru/design-patterns/observer
 
 <br/>
 
-Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=475)
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=475) using "[rxjs - Reactive Extensions Library for JavaScript](https://rxjs.dev/)":
+
+- Observer pattern (push-based system) allows many objects to subscribe to events that are broadcast by another object (one-to-many relationship)
+- The `Subject()` class is the data we want to listen to
+- We can add multiple subscriptions to the subject
+- The subject will keep track of the subscriptions, and call their (subscriptions) callback functions whenever the subject data changes (each subscription logs a message when a new value is emitted)
+
+```ts
+import { Subject } from "rxjs";
+
+const news = new Subject();
+
+const tv1 = news.subscribe((v) => console.log(v + "via Den TV"));
+const tv2 = news.subscribe((v) => console.log(v + "via Batcave TV"));
+const tv3 = news.subscribe((v) => console.log(v + "via Airport TV"));
+
+// Pushing a new value to the subject
+// will notify every subscription
+news.next("Breaking news: ");
+
+tv1.unsubscribe();
+
+news.next("The war is over ");
+
+/*
+ * Outputs:
+ * Breaking news: via Den TV
+ * Breaking news: via Batcave TV
+ * Breaking news: via Airport TV
+ * The war is over via Batcave TV
+ * The war is over via Airport TV
+ */
+```
+
+![Fireship - Observer Design Pattern](./DesignPatterns_FireshipNeetcode/ObserverDesignPattern02.jpg)
+
+E.g. In a real world you might have a radio tower that sends/emits signals and a bunch of receivers that are listening at the same time.
 
 <br/>
 <hr/>
 
-Another example from [8 Design Patterns by NeetCode](https://www.youtube.com/watch?v=tAuRQs_d9F8)
+Another example from [8 Design Patterns by NeetCode - Observer Pattern](https://youtu.be/tAuRQs_d9F8?t=223)
 
-- we want multiple observes/subscribers to be notified
+- Youtube is a "Subject" (or "Publisher") - emits a source of events such as new video being uploaded
+- We want multiple observers/subscribers to be notified when the above avents happen in real time
+- Note for this example, we also need to describe the subscriber interface (https://docs.python.org/3/library/abc.html - Abstract Base Classes)
 
 ```py
+"""
+YoutubeChannel class maintains a list
+of subscribers
+"""
 class YoutubeChannel:
     def __init__(self, name):
+        """
+        When new user subscribes,
+        we add it to list of subscribers
+        """
         self.name = name
         self.subscribers = []
 
     def subscribe(self, sub):
+        """
+        When an event occurs,
+        send the event data to each of the subscribers
+        """
+        self.subscribers.append(sub)
 
+    def notify(self, event):
+        for sub in self.subscribers:
+            sub.sendNotification(self.name, event)
+
+# import Abstract Base Classes
+from abc import ABC, abstractmethod
+
+class YoutubeSubscriber(ABC):
+    @abstractmethod
+    def sendNotification(self, event):
+        pass
+
+class YoutubeUser(YoutubeSubscriber):
+    def __init__(self, name):
+        self.name = name
+
+    def sendNotification(self, channel, event):
+        print(f"User {self.name} received notification from {channel}: {event}")
+
+if __name__ == "__main__":
+    channel = YoutubeChannel("neetcode")
+
+    channel.subscribe(YoutubeUser("sub1"))
+    channel.subscribe(YoutubeUser("sub2"))
+    channel.subscribe(YoutubeUser("sub3"))
+
+    channel.notify("A new video released")
+
+# User sub1 received notification from neetcode: A new video released
+# User sub2 received notification from neetcode: A new video released
+# User sub3 received notification from neetcode: A new video released
+```
+
+<br/>
+
+### Strategy Pattern
+
+![Refactoring.guru - Strategy Design Pattern](./DesignPatterns_FireshipNeetcode/StrategyDesignPattern01.jpg)
+
+> Strategy is a behavioral design pattern that lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+
+> Source: https://refactoring.guru/design-patterns/observer
+
+<br/>
+
+Example from [8 Design Patterns by NeetCode - Strategy Pattern](https://youtu.be/tAuRQs_d9F8?t=391):
+
+- We can filter an array by "removing negative" (a strategy) - but in the future we might want to add more stragies like "removing odd values"
+- Note: a Class can be both:
+  - Open for extension
+  - Closed for modification
+
+```py
+# https://docs.python.org/3/library/abc.html#module-abc - Abstract Base Classes
+from abc import ABC, abstractmethod
+
+class FilterStrategy(ABC):
+    @abstractmethod
+    def removeValue(self, val):
+        pass
+
+class RemoveNegativeStrategy(FilterStrategy):
+    def removeValue(self, val):
+        return val < 0
+
+
+class RemoveOddStrategy(FilterStrategy):
+    def removeValue(self, val):
+        return abs(val) % 2
+
+class Values:
+    def __init__(self, vals):
+        self.vals = vals
+
+    def filter(self, strategy):
+        res = []
+        for n in self.vals:
+            if not strategy.removeValue(n):
+                res.append(n)
+        return res
+
+if __name__ == "__main__":
+    values = Values([-7, -4, -1, 0, 2, 5, 9])
+
+    print(values.filter(RemoveNegativeStrategy()))  # [0, 2, 5, 9]
+    print(values.filter(RemoveOddStrategy()))  # [-4, 0, 2]
 ```
 
 <br/>
 
 ### Mediator behavior
 
+(Saturday, December 02, 2023)
+
+![Fireship & refactoring.guru - Mediator Design Pattern](./DesignPatterns_FireshipNeetcode/MediatorDesignPattern01.jpg)
+![Fireship & refactoring.guru - Mediator Design Pattern](./DesignPatterns_FireshipNeetcode/MediatorDesignPattern02.jpg)
+
+> Mediator is a behavioral design pattern that lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object (middle layer).
+
+Source: https://refactoring.guru/design-patterns/mediator
+
+<br/>
+
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=540):
+
+- A mediator is like a middleman/broker
+- In [Express.js](https://expressjs.com/) web framework we have a middleware system between incoming requests and outgoing responses
+  - Middleware intercepts every request and transforms it in the proper format for the response
+- It provides a separation of concerns and eliminates code duplication
+
+```js
+import express from "express";
+const app = express();
+
+// Middleware logic
+function mediator(req, res, next) {
+  console.log("Request Type:", req.method);
+  next();
+}
+
+app.use(mediator);
+
+// Mediator runs before each route handler
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+app.get("/about", (req, res) => {
+  res.send("About");
+});
+```
+
 <br/>
 
 ### State behavior
+
+(Saturday, December 02, 2023)
+
+![Fireship & refactoring.guru - State Design Pattern](./DesignPatterns_FireshipNeetcode/StateDesignPattern01.jpg)
+
+> State is a behavioral design pattern that lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+
+Source: https://refactoring.guru/design-patterns/state
+
+<br/>
+
+Example from [Fireship](https://youtu.be/tv-_1er1mWI?t=540):
+
+- An object behaves differently based on a finite number of states
+- State pattern allows to start with one base case class, then provide different functionality to it based on its internal state
+- Related to [Finite-state machines](https://en.wikipedia.org/wiki/Finite-state_machine) where the goal is to make an object's behavior predictible based on its underlying state
+
+```js
+// Fireship Example without using State Pattern
+class Human {
+  think(mood) {
+    switch (mood) {
+      case "happy":
+        return "I am happy 🙂";
+      case "sad":
+        return "I am sad 🙁";
+      default:
+        return "I am neutral 😐";
+    }
+  }
+}
+```
+
+```js
+// Fireship Example using State Pattern
+interface State {
+  think(): string;
+}
+
+/*
+ * Inside each class we have an
+ * identical method that behaves differently
+ */
+class HappyState implements State {
+  think() {
+    return "I am happy 🙂";
+  }
+}
+
+class SadState implements State {
+  think() {
+    return "I am sad 🙁";
+  }
+}
+
+class Human {
+  // Set the state as a property
+  state: State;
+
+  constructor() {
+    this.state = new HappyState();
+  }
+
+  changeState(state) {
+    this.state = state;
+  }
+
+  think() {
+    return this.state.think();
+  }
+}
+
+const human = new Human();
+console.log(human.think()); // I am happy 🙂
+human.changeState(new SadState());
+console.log(human.think()); // I am sad 🙁
+```
