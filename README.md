@@ -179,4 +179,4 @@ A table of some programming languages, their associated frameworks and package m
 
 The Documentation and the Software created from these notes are released under the [MIT license](LICENSE).
 
-Copyright (c) 2020-2023 [Radu-Alexandru Bulai](https://github.com/radualexandrub)
+Copyright (c) 2020-2024 [Radu-Alexandru Bulai](https://github.com/radualexandrub)
