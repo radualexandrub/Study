@@ -96,7 +96,8 @@ Others:
 ### SQL
 
 - [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
-- [MySQL Tutorial for a Personal Project Management Application - Documentation Made with ChatGPT](./SQL/MySQL_ChatGPT.md)
+- [MySQL Tutorial for a Personal Project Management Application - Documentation Made with ChatGPT on December 2022](./SQL/MySQL_ChatGPT.md)
+- [MySQL Database for Calendar Mood Tracker and Journal App - Notes made with ChatGPT on December 2022](./SQL/MySQL_DatabasesExamplesForAppIdeas.md)
 
 ---
 

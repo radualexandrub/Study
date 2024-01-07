@@ -20,13 +20,22 @@ Table of Contents (ToC):
 - [Spring Boot API with Spring Security and Docker](#spring-boot-api-with-spring-security-and-docker)
 - [Project Setup](#project-setup)
   - [Spring Initializr](#spring-initializr)
-- [CRUD Operations](#crud-operations)
+- [CRUD Operations - Model, Service, Repository, Controller](#crud-operations---model-service-repository-controller)
+  - [Model - Data Representation](#model---data-representation)
+  - [Repository - CRUD Operations in DB](#repository---crud-operations-in-db)
+  - [Service Interface and Implementation - Business Logic](#service-interface-and-implementation---business-logic)
+  - [(Optional) Response Model for each response from API](#optional-response-model-for-each-response-from-api)
+  - [Resource / Controller - Expose the API](#resource--controller---expose-the-api)
+- [Database configuration](#database-configuration)
+- [Testing with Postman](#testing-with-postman)
 - [Spring API Security](#spring-api-security)
 - [Deployment using Docker](#deployment-using-docker)
 
 <br/>
 
-What is REST (API)? https://30secondsofinterviews.org/
+Other useful resources:
+
+- What is REST (API)? https://30secondsofinterviews.org/
 
 > REST (REpresentational State Transfer) is a software design pattern for network architecture. A RESTful web application exposes data in the form of information about its resources.
 >
@@ -41,6 +50,12 @@ What is REST (API)? https://30secondsofinterviews.org/
 > - Creating: `/posts/new` => POST
 > - Updating: `/posts/:id` => PUT
 > - Destroying: `/posts/:id` => DELETE
+
+<br/>
+
+- [Amigoscode - Spring Boot Roadmap - How To Master Spring Boot 23-Aug-2021 - 17min](https://www.youtube.com/watch?v=cehTm_oSrqA)
+
+![SpringInitializr](./SpringBootAPIwithSpringSecurity/SpringBootRoadMap.png)
 
 <br/>
 
@@ -160,9 +175,642 @@ The contents of `pom.xml` file:
 
 <br/>
 
-# CRUD Operations
+# CRUD Operations - Model, Service, Repository, Controller
 
-Lorem Ipsum
+[Spring Boot API with Spring Security and Docker - Architecture - 4m](https://youtu.be/0iNmWIi5rG4?t=244)
+
+![Spring Boot Application Architecture](./SpringBootAPIwithSpringSecurity/SpringArchitecture01.jpg)
+
+## Model - Data Representation
+
+[Spring Boot API with Spring Security and Docker - Domain Model - 14m](https://youtu.be/0iNmWIi5rG4?t=839)
+
+🟠 NOTE: On this tutorial, the main database model used is "Employee" -> In these notes/tutorial, we will use a "Project" (database) model, as in https://github.com/radualexandrub/Study/blob/master/SQL/MySQL_ChatGPT.md#project-schema (Radu-Alexandru Bulai - Friday, January 05, 2024)
+
+- On `\src\main\java\com\radubulai\springbootapisecurity`: Create `model` package
+- Inside `model` package, create `Project` java class
+
+```java
+// ./model/Project.java
+package com.radubulai.springbootapisecurity.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+
+/**
+ * @author Radu-Alexandru Bulai (<a href="https://radubulai.com">https://radubulai.com</a>)
+ * @version 1.0
+ * @since 2024-01-05
+ */
+@Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class Project {
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column(nullable = false, unique = true)
+    @NotEmpty(message = "Project Key (Alphanumeric Project Identifier) cannot be empty or null")
+    private String keyName;
+    private String name;
+    private String description;
+    private String createdAt;
+}
+
+```
+
+🟠 Note: If certain words reserved by MySQL are used (such as `insert`, `select`, `key`, etc), we would receive generic error `ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near` when first compiling (`mvn spring-boot:run`) the project to create the database schema - Reference: https://stackoverflow.com/questions/23446377/syntax-error-due-to-using-a-reserved-word-as-a-table-or-column-name-in-mysql
+
+## Repository - CRUD Operations in DB
+
+[Spring Boot API with Spring Security and Docker - Service Interface - 21m](https://youtu.be/0iNmWIi5rG4?t=1260)
+
+- On `\src\main\java\com\radubulai\springbootapisecurity`: Create `repository` package
+- Within `repository` package, create "ProjectRepository" java interface
+- - This interface `ProjectRepository` will extend the `JpaRepository`. When extending from `JpaRepository` interface, we need to specify the model type (`Project`) and the ID data type (`Long`): `public interface ProjectRepository extends JpaRepository<Project, Long>`.
+
+> Note: We can CTRL+Click on `JpaRepository` interface to see its decompilled .class file (its code), and look over its methods, eg: `findAll`, `saveAll`, `deleteAllInBatch`, etc... (those are useful methods as we don't need to implement them from scratch)
+
+```java
+// ProjectRepository.java
+package com.radubulai.springbootapisecurity.repository;
+
+import com.radubulai.springbootapisecurity.model.Project;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+/**
+ * @author Radu-Alexandru Bulai (<a href="https://radubulai.com">https://radubulai.com</a>)
+ * @version 1.0
+ * @since 2024-01-05
+ */
+public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+    void deleteProjectById(Long id);
+    Optional<Project> findProjectById(Long id);
+}
+```
+
+## Service Interface and Implementation - Business Logic
+
+[Spring Boot API with Spring Security and Docker - Service Interface - 17m55s](https://youtu.be/0iNmWIi5rG4?t=1075)
+
+- On `\src\main\java\com\radubulai\springbootapisecurity`: Create `service` package
+- Within `service` package, create "ProjectService" java interface
+
+```java
+// ./service/ProjectService.java
+package com.radubulai.springbootapisecurity.service;
+
+import com.radubulai.springbootapisecurity.model.Project;
+
+import java.util.List;
+
+public interface ProjectService {
+
+    List<Project> findAllProjects();
+
+    Project findProjectById(Long id);
+
+    Project addProject(Project project);
+
+    Project updateProject(Project project);
+
+    Boolean deleteProjectById(Long id);
+}
+```
+
+- Inside `service` package we can create a `implementation` package, and here we'll have the `ProjectServiceImpl` java class
+  - Inside `ProjectServiceImpl.java`, we create a `ProjectRepository` object where we will use the defined SQL / Query methods
+  - Now, usually after declaring this `projectRepository` object, we needed to initialize it by calling the `public ProjectServiceImpl(ProjectRepository projectRepository) { this.projectRepository = projectRepository; }` constructor - however, since we use the Lombok library, we can simply add the `@RequiredArgsConstructor` annotation
+  - We also need to annotate the `ProjectService` class repo with `@Service` decorator
+
+```java
+// ProjectServiceImpl.java
+package com.radubulai.springbootapisecurity.service.implementation;
+
+import com.radubulai.springbootapisecurity.exception.ProjectNotFoundException;
+import com.radubulai.springbootapisecurity.model.Project;
+import com.radubulai.springbootapisecurity.repository.ProjectRepository;
+import com.radubulai.springbootapisecurity.service.ProjectService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * @author Radu-Alexandru Bulai (<a href="https://radubulai.com">https://radubulai.com</a>)
+ * @version 1.0
+ * @since 2024-01-05
+ */
+@Service
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
+public class ProjectServiceImpl implements ProjectService {
+    private final ProjectRepository projectRepository;
+
+    @Override
+    public List<Project> findAllProjects() {
+        return projectRepository.findAll();
+    }
+
+    @Override
+    public Project findProjectById(Long id) {
+        return projectRepository.findProjectById(id).orElseThrow(
+                () -> new ProjectNotFoundException(String.format("Project by id %s was not found", id))
+        );
+    }
+
+    @Override
+    public Project addProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public Project updateProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public Boolean deleteProjectById(Long id) {
+        projectRepository.deleteProjectById(id);
+        return Boolean.TRUE;
+    }
+}
+```
+
+> Notes on the annotations used:
+>
+> - `@Service`: This annotation is from the Spring Framework and is used to mark a class as a service component. It indicates that the class contains the business logic of the application. By annotating the class with `@Service`, it becomes eligible for auto-detection and can be injected into other Spring components, such as controllers.
+> - `@RequiredArgsConstructor`: This is a Lombok annotation that automatically generates a constructor with required arguments based on the class's final fields. In this case, since the `ProjectRepository` field is marked as `final`, Lombok generates a constructor that accepts an instance of `ProjectRepository` and assigns it to the field. This eliminates the need for explicitly defining a constructor in the class.
+> - `@Transactional`: This annotation is from the Spring Framework and is used to define the transactional behavior of a method or class. By annotating the class with `@Transactional`, all public methods in the class become transactional. Transactions ensure data consistency and integrity by enforcing ACID (Atomicity, Consistency, Isolation, Durability) properties when performing database operations.
+> - `@Slf4j`: This annotation is from Lombok and is used to generate a logger field in the class. It automatically creates a logger instance with the name "log" that can be used for logging messages within the class. The logging framework used depends on the project's configuration.
+
+Also, note that we have a dedicated ProjectNotFoundException within `exception` java package:
+
+```java
+// ProjectNotFoundException.java
+package com.radubulai.springbootapisecurity.exception;
+
+public class ProjectNotFoundException extends RuntimeException{
+    public ProjectNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+## (Optional) Response Model for each response from API
+
+(Separate from main tutorial) We will take the same approach from https://github.com/radualexandrub/Study/blob/master/SpringBoot/SpringBootAngularPingStatusApp.md#optional-response-model-for-each-response-from-api by responding with a custom `Response` whenever this REST API Server is called.
+
+Before implementing the Resource/Controller, we can create a `Response` class (under `model` package) that we can send back to the end user (browser) no matter the response to the request is an error or a succesfull retrieve/update/etc of data. The `Response` will include several properties such as:
+
+- `timeStamp`
+- `statusCode` (the numerical status code)
+- `status` (the corresponding `HttpStatus` enum value from Spring Framework, e.g. `OK` for 200, `CREATED` for 201, `MOVED_PERMANENTLY` for 301, `FOUND` for 302, `BAD_REQUEST` for 400, `UNAUTHORIZED` for 401, `NOT_FOUND` for 404, `INTERNAL_SERVER_ERROR` for 500, etc.)
+- `reason` (a descriptive reason for the response)
+- `message` (a human-readable message that can be shown to the end user)
+- `developerMessage` (a more technical message for developers or for debugging purposes)
+- `data`
+
+Note, by default, if we do not implement such class, every response that our API will send will be the direct JSON data (and other details will be found in the header of the HTTP request).
+
+```java
+// Response.java
+package com.radubulai.springbootapisecurity.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+@SuperBuilder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Response {
+    protected LocalDateTime timeStamp;
+    protected int statusCode;
+    protected HttpStatus status;
+    protected String reason;
+    protected String message;
+    protected String developerMessage;
+    protected Map<?, ?> data;
+}
+```
+
+Annotations from above:
+
+- `@Data` annotation from Lombok library generates boilerplate code for common methods such as getters, setters, `equals()`, `hashCode()`, and `toString()`
+- `@SuperBuilder` annotation from Lombok library allows for a fluent builder API for constructing instances of the `Response` class (see below its usage in ProjectResource controller).
+- `@JsonInclude(JsonInclude.Include.NON_NULL)` annotation from the Jackson library ensures that properties with null values are not included in the JSON serialization - it helps in producing a more concise and clean JSON response
+
+## Resource / Controller - Expose the API
+
+[Spring Boot API with Spring Security and Docker - Resource - 34m](https://youtu.be/0iNmWIi5rG4?t=2025)
+
+- On `\src\main\java\com\radubulai\springbootapisecurity`: Create `resource` package
+- Within `resource` package, create "ProjectResource" java class
+
+```java
+// ProjectResource.java
+package com.radubulai.springbootapisecurity.resource;
+
+import com.radubulai.springbootapisecurity.model.Project;
+import com.radubulai.springbootapisecurity.model.Response;
+import com.radubulai.springbootapisecurity.service.ProjectService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+import static java.time.LocalDateTime.now;
+
+/**
+ * @author Radu-Alexandru Bulai (<a href="https://radubulai.com">https://radubulai.com</a>)
+ * @version 1.0
+ * @since 2024-01-07
+ * @apiNote Controller/Resource for Project
+ */
+@RestController
+@RequestMapping("/api/projects")
+@RequiredArgsConstructor
+public class ProjectResource {
+    private final ProjectService projectService;
+
+    @GetMapping("")
+    public ResponseEntity<Response> getAllProjects() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("projects", projectService.findAllProjects()))
+                        .message("Projects retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getProjectById(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("project", projectService.findProjectById(id)))
+                        .message("Project retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Response> addProject(@RequestBody @Valid Project project) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("project", projectService.addProject(project)))
+                        .message("Project created")
+                        .status(HttpStatus.CREATED)
+                        .statusCode(HttpStatus.CREATED.value())
+                        .build());
+    }
+
+    @PostMapping("/save-all")
+    public ResponseEntity<Response> addProjects(@RequestBody @Valid Project[] projects) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("projects", projectService.addProjects(projects)))
+                        .message(String.format("%s Projects created", projects.length))
+                        .status(HttpStatus.CREATED)
+                        .statusCode(HttpStatus.CREATED.value())
+                        .build());
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Response> updateProject(@RequestBody @Valid Project project) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("project", projectService.updateProject(project)))
+                        .message("Project updated")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> deleteProjectById(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("deleted", projectService.deleteProjectById(id)))
+                        .message("Project deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+}
+```
+
+<br/>
+
+# Database configuration
+
+For more details, see my notes from here https://github.com/radualexandrub/Study/blob/master/SpringBoot/SpringBootAngularPingStatusApp.md#database-configuration
+
+After installing [MySQL 8.0 (448MB installer)](https://dev.mysql.com/downloads/installer/), we can open "MySQL 8.0 Command Line Client" (from Windows Start Menu).
+
+🔵 Note: _(On Windows)_ If we cannot start the MySQL Server (eg. "MySQL Workbench" just crashes when we try to start the server):
+
+- Open Windows Start Menu, search and open "Services", manually find `MySQL80` service -> Right click it -> Start.
+- See more here: [Can't startup and connect to MySQL server](https://stackoverflow.com/questions/31387036/cant-startup-and-connect-to-mysql-server).
+
+<br/>
+
+To set up our database in our Java Spring Application, we need to go to `src/main/resource/application.yml` (Note: `application.properties` can be easily renamed/refactored to `application.yml`):
+
+```yml
+# application.yml
+spring:
+  datasource:
+    # MySQL
+    url: jdbc:mysql://localhost:3306/projectmanagerapp
+    username: root
+    password: microsoft
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+debug: false
+```
+
+For the MySQL setup:
+
+- The default port for MySQL is 3306, so the DB address will be `localhost:3306`
+- the name of the database will be `projectmanagerapp` => the address will be localhost:3306/`projectmanagerapp`
+
+The `spring.jpa` section contains configuration settings for JPA (Java Persistence API) and Hibernate, the ORM (Object-Relational Mapping) framework.
+
+- `show-sql: true` enables logging of SQL statements executed by Hibernate, providing visibility into the generated SQL queries (Note that this should always be disabled in production).
+- `hibernate.ddl-auto:`
+  - value `create` specifies that Hibernate should automatically create the database schema based on the entity mappings. This will create the necessary tables when the application starts. Note that this setting is typically used in development and should be handled differently in production.
+  - value `update` means that Hibernate will update the database schema based on the entity classes' definitions if necesary.
+- `properties.hibernate.dialect` specifies the dialect to use for the MySQL database. In this case, the `org.hibernate.dialect.MySQLDialect` dialect is selected, which is suitable for MySQL version 5 and InnoDB storage engine.
+- `properties.hibernate.format_sql: true` enables the formatting of SQL statements logged by Hibernate, making them more readable for debugging purposes.
+
+🟠 NOTE: Since we use Spring Boot 3 that uses Hibernate 6, Hibernate 6 changed how dialects work, and `org.hibernate.dialect.MySQLDialect` needs to be used (which configures itself based the actual server version). The version specific dialects containing InnoDB in their name were removed in Hibernate 6 - Reference https://stackoverflow.com/questions/74582403/jpa-hibernate-how-to-find-the-dialect
+
+<hr/>
+
+We can now create the `projectmanagerapp` MySQL database:
+
+- Open "MySQL 8.0 Command Line Client", write: `create database projectmanagerapp;`
+- We can check with `show databases;` command
+
+![Project Database](./SpringBootAPIwithSpringSecurity/Database01.jpg)
+
+We can run the Java Application from Terminal, in the main project directory:
+
+```shell
+mvn spring-boot:run
+```
+
+After running the app, the `Project` table from the `pingstatustracker` database is created automatically in MySQL and can be seen via MySQL Workbench App.
+
+<br/>
+
+Accessing http://localhost:8080/api/projects will redirect us to http://localhost:8080/login since we have "Spring Security" installed as a dependency in our project. The default username is `user` and the password can be found within Spring logs when first running the application:
+
+![Project Database](./SpringBootAPIwithSpringSecurity/Database02.jpg)
+
+![Project Database](./SpringBootAPIwithSpringSecurity/Database03.jpg)
+
+<br/>
+
+# Testing with Postman
+
+See my other notes from here https://github.com/radualexandrub/Study/blob/master/SpringBoot/SpringBootAngularPingStatusApp.md#testing-with-postman
+
+<br/>
+
+🔵 Send a GET request to http://localhost:8080/api/projects
+
+![Postman test](./SpringBootAPIwithSpringSecurity/Postman01.jpg)
+
+- the server will resppond:
+
+```json
+{
+  "timeStamp": "2024-01-07T20:28:05.2301537",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Projects retrieved",
+  "data": {
+    "projects": [
+      {
+        "id": 1,
+        "keyName": "PORTFOLIO",
+        "name": "HappyCat Portfolio",
+        "description": "HappyCat Customer Portfolio",
+        "createdAt": "2024-01-06"
+      },
+      {
+        "id": 2,
+        "keyName": "CRMMANAGER",
+        "name": "CRM Manager Backend API in Spring Boot",
+        "description": "Official Project for the BACKEND of CRM Manager Application",
+        "createdAt": "2024-01-07T20:26:48.465963800"
+      }
+    ]
+  }
+}
+```
+
+<br/>
+
+🔵 Send a GET request to http://localhost:8080/api/projects/1 (id)
+
+- the server will return:
+
+```json
+{
+  "timeStamp": "2024-01-07T20:05:21.9751627",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Project retrieved",
+  "data": {
+    "project": {
+      "id": 1,
+      "keyName": "PORTFOLIO",
+      "name": "HappyCat Portfolio",
+      "description": "HappyCat Customer Portfolio",
+      "createdAt": "2024-01-06"
+    }
+  }
+}
+```
+
+<br/>
+
+🔵 Send a POST request with new Server information
+
+- Open a new tab in Postman with the URL of http://localhost:8080/api/projects
+- Set the request type to POST request
+- Click on "Body" subtab
+  - check the "raw" radio button
+  - select "JSON" format
+  - write a JSON without specifying the id (the id will be generated by Spring JPA)
+
+```json
+{
+  "keyName": "CRMMANAGER",
+  "name": "CRM Manager Backend API in Spring Boot",
+  "description": "Official Project for the BACKEND of CRM Manager Application"
+}
+```
+
+- The server will respond:
+
+```json
+{
+  "timeStamp": "2024-01-07T20:26:48.4659638",
+  "statusCode": 201,
+  "status": "CREATED",
+  "message": "Project created",
+  "data": {
+    "project": {
+      "id": 2,
+      "keyName": "CRMMANAGER",
+      "name": "CRM Manager Backend API in Spring Boot",
+      "description": "Official Project for the BACKEND of CRM Manager Application",
+      "createdAt": "2024-01-07T20:26:48.465963800"
+    }
+  }
+}
+```
+
+🟠 Note: With Spring Security dependency installed in our project, we will receive a 401 Unauthorized response when trying to send a POST request. We can temporalily disable (comment) spring security dependency in the project main `pom.xml` in order to test our API (Reference https://stackoverflow.com/questions/45232071/springboot-401-unauthorized-even-with-out-security):
+
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+Reference: https://stackoverflow.com/questions/45232071/springboot-401-unauthorized-even-with-out-security
+
+<br/>
+
+🔵 Send UPDATE request to update a server
+
+- Open a new tab in Postman with the URL of http://localhost:8080/api/projects
+- Set the request type to PUT request
+- Click on "Body" subtab, check the "raw" radio button, and select "JSON" format
+- Instead of this entry (that we currenly have in our database):
+
+```json
+{
+  "id": 1,
+  "keyName": "PORTFOLIO",
+  "name": "HappyCat Portfolio",
+  "description": "HappyCat Customer Portfolio",
+  "createdAt": "2024-01-06"
+}
+```
+
+- We'll send this project:
+
+```json
+{
+  "id": 1,
+  "keyName": "PORTFOLIO",
+  "name": "Custom HappyCat Portfolio",
+  "description": "Customized Portfolio for HappyCat Portfolio via separate contract"
+}
+```
+
+- The server will respond:
+
+```json
+{
+  "timeStamp": "2024-01-07T20:42:01.8811525",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Project updated",
+  "data": {
+    "project": {
+      "id": 1,
+      "keyName": "PORTFOLIO",
+      "name": "Custom HappyCat Portfolio",
+      "description": "Customized Portfolio for HappyCat Portfolio via separate contract",
+      "createdAt": "2024-01-06"
+    }
+  }
+}
+```
+
+<br/>
+
+🔵 Send DELETE request to delete a server http://localhost:8080/api/projects/3
+
+- The server will respond:
+
+```json
+{
+  "timeStamp": "2024-01-07T20:52:51.8763893",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Project deleted",
+  "data": {
+    "deleted": true
+  }
+}
+```
+
+<br/>
+
+Commmit Message as of 2024-01-07:
+
+```
+Create CRUD RESTful API for Project
+
+1. Create Project Model class
+2. Create ProjectRepository
+3. Create ProjectService Interface and ProjectServiceImplementation
+4. Create a Response model that include additional helpful properties
+    - timeStamp
+    - statusCode
+    - status (e.g. OK 200, CREATED 201, BAD_REQUEST 400, INTERNAL_SERVER_ERROR 500, etc)
+    - reason
+    - message (a human-readable message that can be shown to the end user)
+    - developerMessage (a more technical message for developers or for debugging purposes)
+    - data
+5. Create ProjectResource / Controller to expose API URLs
+6. Database configuration in application.yml
+
+- Temporarily comment spring-boot-starter-security in pom.xml for API Testing
+
+(Sunday, January 07, 2024, 20:59)
+```
 
 <br/>
 
