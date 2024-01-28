@@ -92,6 +92,7 @@ Others:
 
 - [Spring Boot Full Stack with Angular Application - Full Course 05-Feb-2021 - Amigoscode](./SpringBoot/SpringBootWithAngularCourse.md)
 - [Full Stack Spring Boot RESTful API with MySQL and Angular - 4 Hour Youtube Playlist - Direct Source from getarrays.io | Roland Toussaint "Junior"](./SpringBoot/SpringBootAngularPingStatusApp.md)
+- [Spring Boot API with Spring Security 5.7.11 using HTTP Basic Auth with STATELESS Sessions - Youtube 3h tutorial from getarrays.io on Oct-2022](./SpringBoot/SpringBootAPIwithSpringSecurity.md)
 
 ### SQL
 
