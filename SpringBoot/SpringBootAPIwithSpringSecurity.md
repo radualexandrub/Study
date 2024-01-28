@@ -11,6 +11,8 @@ Related Spring Boot tutorial notes from me:
 
 - [Spring Boot Full Stack with Angular Application - EmployeeManager - August 2022](https://github.com/radualexandrub/Study/blob/master/SpringBoot/SpringBootWithAngularCourse.md)
 - [Spring Boot with Angular App: Server Ping Status Tracker - July 2023](https://github.com/radualexandrub/Study/blob/master/SpringBoot/SpringBootAngularPingStatusApp.md)
+- [Spring Boot API with Spring Security 5.7.11 using HTTP Basic Auth with STATELESS Sessions - Youtube 3h tutorial from getarrays.io on Oct-2022](./SpringBootAPIwithSpringSecurity.md)
+
 - Check out all my study notes here: https://github.com/radualexandrub/Study/tree/master
 
 <br/>
@@ -65,9 +67,13 @@ Other useful resources:
 
 <br/>
 
+- [Amigoscode Spring Boot 3 + Spring Security 6 - JWT Authentication and Authorisation - 03 January 2023 - 2h05m](https://youtu.be/KxqlJblhzfI)
+
+- [Unknown Coder - Spring Security 6 | How to Create a Login System with Spring Data JPA and JWTs - 07 April 2023 - 1h44m](https://youtu.be/TeBt0Ike_Tk)
+
 - [Amigoscode - Spring Boot Roadmap - How To Master Spring Boot 23-Aug-2021 - 17min](https://www.youtube.com/watch?v=cehTm_oSrqA)
 
-![SpringInitializr](./SpringBootAPIwithSpringSecurity/SpringBootRoadMap.png)
+![Spring Roadmap by Amigoscode](./SpringBootAPIwithSpringSecurity/SpringBootRoadMap.png)
 
 <br/>
 
@@ -851,7 +857,7 @@ Reference: https://stackoverflow.com/questions/45232071/springboot-401-unauthori
 
 <br/>
 
-Commmit Message as of 2024-01-07:
+Commit message as of 2024-01-07:
 
 ```
 Create CRUD RESTful API for Project
@@ -1755,7 +1761,162 @@ public class ApplicationStartRunner implements CommandLineRunner {
 
 ## Testing Basic Auth with Postman
 
+(Sunday, January 28, 2024, 21:30)
+
 [Spring Boot API with Spring Security and Docker - Application Runner - 2h00m](https://youtu.be/0iNmWIi5rG4?t=7250)
+
+🔵 Send a GET request to http://localhost:8080/api/projects without basic auth credentials
+
+- Expected Response: 401 Unauthorized
+
+![Spring Security Postman](./SpringBootAPIwithSpringSecurity/Postman_Security01.jpg)
+
+<br/>
+
+🔵 Send a POST request to http://localhost:8080/api/accounts/ with new Account information (No auth credentials)
+
+```json
+{
+  "username": "raduu",
+  "password": "123"
+}
+```
+
+⬅The server will respond:
+
+```json
+{
+  "timeStamp": "2024-01-28T21:11:40.2450229",
+  "statusCode": 201,
+  "status": "CREATED",
+  "message": "Account created",
+  "data": {
+    "account": {
+      "id": 7,
+      "username": "raduu",
+      "enabled": true,
+      "credentialsExpired": false,
+      "expired": false,
+      "locked": false,
+      "roles": [
+        {
+          "id": 1,
+          "code": "123",
+          "name": "ROLE_USER"
+        }
+      ]
+    }
+  }
+}
+```
+
+> Note: Using `@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)` in Account.java model will prevent the password from being exposed in the JSON response of an account (password field will be hidden if we make a GET or POST request to `/api/accounts` or `api/accounts/<username>` endpoints).
+
+<br/>
+
+🔵 Send a GET request to http://localhost:8080/api/projects with basic auth credentials
+
+⬅The server will respond with Status 200 OK
+
+![Spring Security Postman](./SpringBootAPIwithSpringSecurity/Postman_Security02.jpg)
+
+```json
+{
+  "timeStamp": "2024-01-28T21:27:12.595993",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Projects retrieved",
+  "data": {
+    "projects": [
+      {
+        "id": 1,
+        "keyName": "PORTFOLIO",
+        "name": "Custom HappyCat Portfolio",
+        "description": "Customized Portfolio for HappyCat Portfolio via separate contract",
+        "createdAt": "2024-01-06"
+      },
+      {
+        "id": 2,
+        "keyName": "CRMMANAGER",
+        "name": "CRM Manager Backend API in Spring Boot",
+        "description": "Official Project for the BACKEND of CRM Manager Application",
+        "createdAt": "2024-01-07T20:26:48.465963800"
+      }
+    ]
+  }
+}
+```
+
+<br/>
+
+🔵 Send a GET request to http://localhost:8080/api/accounts with basic auth credentials
+
+⬅The server will respond with Status 200 OK
+
+![Spring Security Postman](./SpringBootAPIwithSpringSecurity/Postman_Security03.jpg)
+
+![Spring Security Postman](./SpringBootAPIwithSpringSecurity/Postman_Security04.jpg)
+
+```json
+{
+  "timeStamp": "2024-01-28T21:29:31.0205829",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Accounts retrieved",
+  "data": {
+    "accounts": [
+      {
+        "id": 7,
+        "username": "raduu",
+        "enabled": true,
+        "credentialsExpired": false,
+        "expired": false,
+        "locked": false,
+        "roles": [
+          {
+            "id": 1,
+            "code": "123",
+            "name": "ROLE_USER"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+<br/>
+<br/>
+<br/>
+
+---
+
+Commit message for all Spring Security implementation from above:
+
+```md
+Implement Security Filter Chain for REST API in Spring Security 5.7.11
+
+- Downgrade Spring Boot 3.2.1 to Spring Boot 2.7.18
+  - Spring Security 6.x will be downgrated as well to Spring Security 5.7.11
+  - In Account.java, Project.java, Role.java models
+    - Change imports of `import jakarta.persistence.*; import jakarta.validation.constraints.NotEmpty;` (Sprint Boot 3.2.1) to `import javax.persistence.*; import javax.validation.constraints.*;` (Spring Boot 2.7.18)
+  - In application.yml
+    - Change automatically dialect `dialect: org.hibernate.dialect.MySQLDialect` (Spring Boot 3.2.1) to `dialect: org.hibernate.dialect.MySQL5InnoDBDialect` (Spring Boot 2.7.18)
+- pom.xml
+  - Uncomment dependency org.springframework.boot
+- Account.java, AccountRepository, AccountService + Role.java, RoleRepository
+  - Implement Account and Role models, repositories and service
+- UserDetailsServiceImpl.java
+  - Implement User Details Service to tell Spring Security how to load the users / accounts
+- AccountAuthenticationProvider.java
+  - Implement Account Authentication Provider for validating user credentials and loading the user details from database (via UserDetailsServiceImpl by overriding the loadUserByUsername method)
+- AccountResource.java
+  - Expose REST API endpoints for Accounts (especially for POST request in order to create a new account)
+- WebSecurityConfiguration.java
+  - Define the SercurityFilterChain to set a series of security filters that intercept incoming HTTP Requests and apply security policies
+
+(Sunday, January 28, 2024, 21:51 - Radu-Alexandru B.)
+```
 
 <br/>
 
@@ -1763,4 +1924,4 @@ public class ApplicationStartRunner implements CommandLineRunner {
 
 [Spring Boot API with Spring Security and Docker - Dockerfile - 2h20m](https://youtu.be/0iNmWIi5rG4?t=8425)
 
-Lorem Ipsum
+TODO...
