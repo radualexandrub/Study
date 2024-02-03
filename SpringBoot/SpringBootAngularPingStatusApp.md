@@ -4,8 +4,8 @@ Credits / Notes taken from:
 
 - [Spring Boot and Angular Full Stack Development | 4 Hour Youtube Tutorial from AmigosCode](https://www.youtube.com/watch?v=8ZPsZBcue50)
 - [Full Stack Spring Boot RESTful API with MySQL and Angular - Youtube Playlist - Direct Source from getarrays.io | Roland Toussaint "Junior"](https://www.youtube.com/playlist?list=PLopcHtZ0hJF0OIOr88qHuJ3-UKRuCUrKf)
-    - https://github.com/getarrays/server-backend/ - Spring Boot Backend
-    - https://github.com/getarrays/serverapp/ - Angular Frontend
+  - https://github.com/getarrays/server-backend/ - Spring Boot Backend
+  - https://github.com/getarrays/serverapp/ - Angular Frontend
 
 <br/>
 
@@ -24,6 +24,7 @@ Table of Contents (ToC):
     - [Server Controller/Resource - HTTP requests handling, Exposing the API](#server-controllerresource---http-requests-handling-exposing-the-api)
   - [Database configuration](#database-configuration)
   - [Testing with Postman](#testing-with-postman)
+  - [NEW - Exception Handling](#new---exception-handling)
 - [Frontend Angular](#frontend-angular)
   - [package.json](#packagejson)
   - [Enums, interfaces, services](#enums-interfaces-services)
@@ -1373,6 +1374,285 @@ Another example:
 🔵 Sent GET request to http://localhost:8080/api/servers/ping/ to ping and retrieve all servers
 
 ![Server Database](./SpringBootAngularPingStatusApp/Postman05.jpg)
+
+<br/>
+
+## NEW - Exception Handling
+
+(Saturday, February 03, 2024, 20:35)
+
+Resources:
+
+- [Amigoscode - Spring Boot 2 Tutorial | How To Handle Exceptions](https://youtu.be/PzK4ZXa2Tbc)
+- [Teddy Smith - Spring Boot 2.7.4 For Beginners - Exception Handling](https://youtu.be/hBb7Rd1afck)
+  - GitHub Repository https://github.com/teddysmithdev/pokemon-review-springboot
+- [Spring Boot | REST API Request Validation & Exception Handling Realtime Example | JavaTechie 38m](https://youtu.be/gPnd-hzM_6A)
+
+---
+
+<br/>
+
+- Under `com.radubulai.serverpingstatustracker` create `exception` package
+- Under `exception` package, create `ServerNotFoundException.java` class
+
+```java
+// ServerNotFoundException.java
+package com.radubulai.serverpingstatustracker.exception;
+
+public class ServerNotFoundException extends RuntimeException {
+    public ServerNotFoundException(String message) {
+        super(message);
+    }
+
+    public ServerNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+```
+
+<br/>
+
+- Under `exception` package, create `ApiException.java` class
+
+```java
+// ApiException.java
+package com.radubulai.serverpingstatustracker.exception;
+
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
+
+public class ApiException {
+    private final LocalDateTime timeStamp;
+    private final int statusCode;
+    private final HttpStatus status;
+    private final String reason;
+    private final String message;
+    private final String developerMessage;
+
+    public ApiException(LocalDateTime timeStamp,
+                        int statusCode,
+                        HttpStatus status,
+                        String reason,
+                        String message,
+                        String developerMessage) {
+        this.timeStamp = timeStamp;
+        this.statusCode = statusCode;
+        this.status = status;
+        this.reason = reason;
+        this.message = message;
+        this.developerMessage = developerMessage;
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getDeveloperMessage() {
+        return developerMessage;
+    }
+}
+```
+
+<br/>
+
+- Under `exception` package, create `ApiExceptionHandler.java` class
+
+```java
+// ApiExceptionHandler.java
+package com.radubulai.serverpingstatustracker.exception;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.net.UnknownHostException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import static java.time.LocalDateTime.now;
+
+/**
+ * @author Radu-Alexandru Bulai (<a href="https://radubulai.com">https://radubulai.com</a>)
+ * @version 1.0
+ * @since 03-Feb-2024
+ */
+@Slf4j
+@ControllerAdvice
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(value = {ServerNotFoundException.class})
+    public ResponseEntity<Object> handleServerNotFoundException(ServerNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        ApiException apiException = new ApiException(
+                now(),
+                notFound.value(),
+                notFound,
+                "ServerNotFoundException",
+                e.getMessage(),
+                e.toString()
+        );
+        log.error(e.toString());
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(value = {UnknownHostException.class})
+    public ResponseEntity<Object> handleUnknownHostException(UnknownHostException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                now(),
+                httpStatus.value(),
+                httpStatus,
+                "UnknownHostException",
+                e.getMessage(),
+                e.toString()
+        );
+        log.error(e.toString());
+        e.printStackTrace();
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {SQLIntegrityConstraintViolationException.class})
+    public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(
+            SQLIntegrityConstraintViolationException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                now(),
+                httpStatus.value(),
+                httpStatus,
+                "SQLIntegrityConstraintViolationException",
+                e.getMessage(),
+                e.toString()
+        );
+        log.error(e.toString());
+        e.printStackTrace();
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+}
+```
+
+<hr/>
+
+<br/>
+
+Difference in Responses with exception handling vs no exception handling in Spring Boot:
+
+**_Example 01. Making a GET request to a non-existing server:_**
+
+- Postman: GET http://localhost:8080/api/servers/349
+
+```json
+// Response
+{
+  "timeStamp": "2024-02-03T20:47:17.0402758",
+  "statusCode": 200,
+  "status": "OK",
+  "message": "Server retrieved",
+  "data": {
+    "server": {
+      "id": 349,
+      "ipAddress": "dns.adguard.com",
+      "name": "DNS Adguard",
+      "network": "External",
+      "details": "One of the best servers for DNS with ad block",
+      "status": "SERVER_UP"
+    }
+  }
+}
+```
+
+- Postman: GET http://localhost:8080/api/servers/350 (with no Spring Boot exception handling)
+
+```json
+// Response
+{
+  "timestamp": "2024-02-03T18:49:00.842+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "path": "/api/servers/350"
+}
+```
+
+- Postman: GET http://localhost:8080/api/servers/350 (with Spring Boot exception handling)
+
+```json
+// Response
+{
+  "timeStamp": "2024-02-03T20:49:32.0222647",
+  "statusCode": 404,
+  "status": "NOT_FOUND",
+  "reason": "ServerNotFoundException",
+  "message": "Server by id 350 was not found",
+  "developerMessage": "com.radubulai.serverpingstatustracker.exception.ServerNotFoundException: Server by id 350 was not found"
+}
+```
+
+<br/>
+
+**_Example 02. Making a POST request to a server which IpAddress value (`8.8.8.8`) already exists in database_**
+
+- Postman: POST http://localhost:8080/api/servers
+
+```json
+// Request Payload
+{
+  "ipAddress": "8.8.8.8",
+  "name": "test",
+  "network": "test network",
+  "status": "SERVER_DOWN"
+}
+```
+
+```json
+// Response with no custom Spring Boot exception handling
+{
+  "timestamp": "2024-02-03T16:46:59.537+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "path": "/api/servers/"
+}
+```
+
+```json
+// Response with custom Spring Boot exception handling
+{
+  "timeStamp": "2024-02-03T18:48:16.7354346",
+  "statusCode": 400,
+  "status": "BAD_REQUEST",
+  "reason": "SQLIntegrityConstraintViolationException",
+  "message": "Duplicate entry '8.8.8.8' for key 'server.UK_96tx503up4941ibvsnhh8itdi'",
+  "developerMessage": "java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '8.8.8.8' for key 'server.UK_96tx503up4941ibvsnhh8itdi'"
+}
+```
+
+![Error Handling in Angular from Spring Boot](./SpringBootAngularPingStatusApp/ErrorHandling_Angular01.jpg)
+
+```log
+POST http://localhost:8080/api/servers 400 (Bad Request)
+server.service.ts:133 HttpErrorResponse {headers: HttpHeaders, status: 400, statusText: 'OK', url: 'http://localhost:8080/api/servers', ok: false, …}error: developerMessage: "java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '8.8.8.8' for key 'server.UK_96tx503up4941ibvsnhh8itdi'"message: "Duplicate entry '8.8.8.8' for key 'server.UK_96tx503up4941ibvsnhh8itdi'"reason: "SQLIntegrityConstraintViolationException"status: "BAD_REQUEST"statusCode: 400timeStamp: "2024-02-03T18:41:03.5251476"[[Prototype]]: Objectheaders: HttpHeaders {normalizedNames: Map(0), lazyUpdate: null, lazyInit: ƒ}message: "Http failure response for http://localhost:8080/api/servers: 400 OK"name: "HttpErrorResponse"ok: falsestatus: 400statusText: "OK"url: "http://localhost:8080/api/servers"[[Prototype]]: HttpResponseBase
+```
+
+```log
+POST http://localhost:8080/api/servers 500 (Internal Server Error)
+server.service.ts:133 HttpErrorResponse {headers: HttpHeaders, status: 500, statusText: 'OK', url: 'http://localhost:8080/api/servers', ok: false, …}error: error: "Internal Server Error"path: "/api/servers"status: 500timestamp: "2024-02-03T16:43:15.929+00:00"[[Prototype]]: Objectheaders: HttpHeaders {normalizedNames: Map(0), lazyUpdate: null, lazyInit: ƒ}message: "Http failure response for http://localhost:8080/api/servers: 500 OK"name: "HttpErrorResponse"ok: falsestatus: 500statusText: "OK"url: "http://localhost:8080/api/servers"[[Prototype]]: HttpResponseBase
+```
 
 <br/>
 
