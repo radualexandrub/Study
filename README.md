@@ -80,10 +80,6 @@ Others:
 - [Python Basics - from zero to At Least Some Fluency](./Python/PythonBasics.md)
 - [Old: Python Data Structures](./Python/PythonDataStructures.md)
 
-### Django
-
-- To be added...
-
 ### Java
 
 - [Java Tutorial](./Java/README.md)
@@ -99,6 +95,10 @@ Others:
 - [MySQL Tutorial for Beginners](./SQL/MySQL-Tutorial-for-Beginners.md)
 - [MySQL Tutorial for a Personal Project Management Application - Documentation Made with ChatGPT on December 2022](./SQL/MySQL_ChatGPT.md)
 - [MySQL Database for Calendar Mood Tracker and Journal App - Notes made with ChatGPT on December 2022](./SQL/MySQL_DatabasesExamplesForAppIdeas.md)
+
+<br/>
+
+- [PostgreSQL and PgAdmin Tutorial - Installing and running on Red Hat 8](./SQL/PostgreSQL-on-RHEL8.md)
 
 ---
 
