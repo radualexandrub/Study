@@ -104,11 +104,13 @@ Others:
 
 ## Other
 
-### Linux
+### Linux & OS
 
+- [Windows Command Line Tools](./Linux/WindowsCLI.md)
 - [Install Windows Subsystem for Linux (WSL) and Learn these first basic Linux commands](./Linux/WSL-Tutorial-and-Linux-Commands.md)
 - [The Most Popular Linux & Terminal Commands](./Linux/Top-Linux-Commands.md)
 - [Load Balancing using NGINX](./Linux/LoadBalancerNginx.md)
+- [Load Balancing using NGINX on Ping Status Tracker - Full Stack Application](https://github.com/radualexandrub/SpringBoot-Angular-Server-Ping-Status-Tracker/blob/main/README_LoadBalancer.md)
 
 ### Git
 
@@ -118,6 +120,7 @@ Others:
 ### Docker
 
 - [Learn Docker in 7 Easy Steps - Beginner's Tutorial by Fireship.io - 11min, 24-Aug-2020](./Docker/FireshipDockerBeginnerTutorial11m.md)
+- [Installing Docker on RedHat versions 8 and later](https://github.com/radualexandrub/SpringBoot-Angular-Server-Ping-Status-Tracker/blob/main/README_Docker_RedHat.md)
 
 ---
 
