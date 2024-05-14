@@ -56,6 +56,7 @@
 - [regexr.com: Find matches in a text with custom regex + show hints](https://regexr.com/)
 - [regexster.com Same as above, but with multiple regex already made presets](https://www.regextester.com/)
 - [regex101.com: Find matches with custom regex. JS, Python, PHP, Golang also supported](https://regex101.com/)
+- [cyrilex: Same as above, but with a pattern visualizer. JS, Java, MySQL, PHP, Python, and Ruby are also supported](https://extendsclass.com/regex-tester.html)
 - [Dev.to article: A Visual Guide to Regular Expression](https://dev.to/amitness/a-visual-guide-to-regular-expression-i3)
 - [Dev.to article 20 Small Steps to Become a Regex Master 42min read](https://dev.to/awwsmm/20-small-steps-to-become-a-regex-master-mpc)
 - https://javascript.info/regular-expressions
