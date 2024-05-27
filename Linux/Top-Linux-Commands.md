@@ -22,6 +22,7 @@ Table of Contents:
   - [ls, cd, open](#ls-cd-open)
   - [mv, cp](#mv-cp)
   - [wc](#wc)
+- [Linux File System](#linux-file-system)
 - [Piping commands](#piping-commands)
 - [Expansions](#expansions)
 - [Searching, Sorting, Replacing](#searching-sorting-replacing)
@@ -38,6 +39,7 @@ Table of Contents:
 - [history](#history)
 - [Processes](#processes)
   - [ps, htop](#ps-htop)
+  - [top](#top)
   - [kill](#kill)
   - [killall](#killall)
   - [jobs, bg, fg](#jobs-bg-fg)
@@ -54,19 +56,19 @@ Table of Contents:
 
 For reference: A table listing some popular Linux distributions along with their associated operating systems and the package managers they use:
 
-| Distribution | Associated Operating Systems | Package Manager | Possible Desktop Environments |
-| --- | --- | --- | --- |
-| Red Hat | CentOS, Fedora, Oracle Linux, Rocky Linux | RPM | GNOME, KDE, Xfce, Cinnamon, LXQt |
-| Debian | Ubuntu, Linux Mint, KDE neon, Zorin OS, Kali Linux, Pop! OS, MX Linux, Elementary OS, Raspberry Pi OS | APT | GNOME, KDE, Xfce, Cinnamon, LXQt, MATE |
-| Arch Linux | Manjaro, Antergos, EndeavourOS, ArcoLinux | Pacman | GNOME, KDE, Xfce, Cinnamon, LXQt |
-| SUSE Linux | openSUSE, SUSE Linux Enterprise Server | Zypper | GNOME, KDE, Xfce, LXQt |
-| Slackware | Absolute Linux, Zenwalk Linux, Slax | pkgtools | Xfce, Fluxbox, KDE, MATE |
-| Gentoo | Sabayon, Funtoo, Calculate Linux | Portage | GNOME, KDE, Xfce, LXQt, MATE |
-| Alpine Linux | postmarketOS, Adélie Linux, NixOS | APK | XFCE, i3, Fluxbox, MATE |
-| Mageia | OpenMandriva, PCLinuxOS, ROSA Linux | urpmi | GNOME, KDE, Xfce, LXQt |
-| Solus | Budgie, GNOME, MATE, Plasma | eopkg | Budgie, GNOME, MATE, Plasma |
-| Void Linux | Artix Linux, Obarun, Adélie Linux | XBPS | Xfce, Cinnamon, Enlightenment, MATE |
-| macOS | - | Homebrew | Aqua (default) |
+| Distribution | Associated Operating Systems                                                                          | Package Manager | Possible Desktop Environments          |
+| ------------ | ----------------------------------------------------------------------------------------------------- | --------------- | -------------------------------------- |
+| Red Hat      | CentOS, Fedora, Oracle Linux, Rocky Linux                                                             | RPM             | GNOME, KDE, Xfce, Cinnamon, LXQt       |
+| Debian       | Ubuntu, Linux Mint, KDE neon, Zorin OS, Kali Linux, Pop! OS, MX Linux, Elementary OS, Raspberry Pi OS | APT             | GNOME, KDE, Xfce, Cinnamon, LXQt, MATE |
+| Arch Linux   | Manjaro, Antergos, EndeavourOS, ArcoLinux                                                             | Pacman          | GNOME, KDE, Xfce, Cinnamon, LXQt       |
+| SUSE Linux   | openSUSE, SUSE Linux Enterprise Server                                                                | Zypper          | GNOME, KDE, Xfce, LXQt                 |
+| Slackware    | Absolute Linux, Zenwalk Linux, Slax                                                                   | pkgtools        | Xfce, Fluxbox, KDE, MATE               |
+| Gentoo       | Sabayon, Funtoo, Calculate Linux                                                                      | Portage         | GNOME, KDE, Xfce, LXQt, MATE           |
+| Alpine Linux | postmarketOS, Adélie Linux, NixOS                                                                     | APK             | XFCE, i3, Fluxbox, MATE                |
+| Mageia       | OpenMandriva, PCLinuxOS, ROSA Linux                                                                   | urpmi           | GNOME, KDE, Xfce, LXQt                 |
+| Solus        | Budgie, GNOME, MATE, Plasma                                                                           | eopkg           | Budgie, GNOME, MATE, Plasma            |
+| Void Linux   | Artix Linux, Obarun, Adélie Linux                                                                     | XBPS            | Xfce, Cinnamon, Enlightenment, MATE    |
+| macOS        | -                                                                                                     | Homebrew        | Aqua (default)                         |
 
 Note: macOS is a proprietary operating system (is not a Linux distribution) developed by Apple and differs significantly from Linux distributions in terms of its core architecture and package management.
 
@@ -491,6 +493,7 @@ Note: The `echo -e` option enables interpretion of backslash, meaning `/n` will 
 <br/>
 
 From:
+
 - https://www.linuxfoundation.org/blog/blog/classic-sysadmin-the-linux-filesystem-explained:
 - https://www.blackmoreops.com/2015/02/14/linux-file-system-hierarchy/
 
@@ -1146,6 +1149,73 @@ However, a waaay easier method to manage processes is by installing and using `h
 ```bash
 htop
 ```
+
+<br/>
+
+## top
+
+On a Server, run the `top` command.
+
+```bash
+man top
+```
+
+```bash
+top
+```
+
+![Top Command Explained - Radu Bulai](./Top-Linux-Commands-imgs/top_01.jpg)
+
+![Top Command Explained - Radu Bulai](./Top-Linux-Commands-imgs/top_02.jpg)
+
+In `top` command you can press:
+
+- -d, --delay = SECS [.TENTHS] - Specifies the delay between screen updates
+
+- -E, --scale-summary-mem = k | m | g | t | p | e - Instructs top to force summary area memory to be scaled as:
+
+  - k - kibibytes
+  - m - mebibytes
+  - g - gibibytes
+  - t - tebibytes
+  - p - pebibytes
+  - e - exbibytes
+
+- -e, --scale-task-mem = k | m | g | t | p - Instructs top to force task area memory to be scaled as:
+
+  - k - kibibyte = 1024 bytes
+  - m - mebibyte = 1024 KiB = 1,048,576 bytes
+  - g - gibibyte = 1024 MiB = 1,073,741,824 bytes
+  - t - tebibyte = 1024 GiB = 1,099,511,627,776 bytes
+  - p - pebibyte = 1024 TiB = 1,125,899,906,842,624 bytes
+
+- -i, --idle-toggle - When this toggle is Off, tasks that have not used any CPU since the last update will **not** be displayed.
+
+- k - Kill-a-task - You will be prompted for a PID and then the signal to send.
+
+  - Entering no PID or a negative number will be interpreted as the default shown in the prompt (the first task displayed).
+  - The default signal, as reflected in the prompt, is SIGTERM. However, you can send any signal, via number or name.
+  - If you wish to abort the kill process, do one of the following depending on your progress:
+    - at the pid prompt, type an invalid number
+    - at the signal prompt, type 0 (or any invalid signal)
+    - at any prompt, type `<Esc>`
+
+- r - Renice-a-Task - You will be prompted for a PID and then the value to **nice** it to.
+
+- SORTING of task window by pressing
+  - `SHIFT+m` (Capital M) - Sort by `%MEM`
+  - `SHIFT+n` (Capital N) - Sort by `PID`
+  - `SHIFT+p` (Capital P) - Sort by `%CPU`
+  - `SHIFT+t` (Capital T) - Sort by `TIME+`
+
+<br/>
+
+More notes on `top` command here:
+
+- https://man7.org/linux/man-pages/man1/top.1.html
+- https://askubuntu.com/questions/656771/process-niceness-vs-priority
+- [Demystifying the Top Command in Linux | Linux Crash Course Series - Learn Linux Tv](https://www.youtube.com/watch?v=WsR11EGF9PA)
+- [Top Command: A Linux Command for Quickly Seeing What is Running on Your System](https://www.youtube.com/watch?v=hK-tYkiIoqY)
 
 <br/>
 
