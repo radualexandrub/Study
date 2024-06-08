@@ -35,8 +35,16 @@ Table of Contents:
     - [tasklist \& taskkill](#tasklist--taskkill)
     - [clip command](#clip-command)
     - [powercfg](#powercfg)
+      - [Enable Performance Mode](#enable-performance-mode)
     - [shutdown](#shutdown)
+    - [winver](#winver)
   - [CMD Prompt File system commands](#cmd-prompt-file-system-commands)
+    - [File Management commands](#file-management-commands)
+      - [mkdir, rm, rmdir, copy](#mkdir-rm-rmdir-copy)
+      - [xcopy, robocopy](#xcopy-robocopy)
+    - [Partition commands](#partition-commands)
+      - [Powershell Get-Volume](#powershell-get-volume)
+      - [diskpart utility tool](#diskpart-utility-tool)
 
 (Monday, May 06, 2024)
 
@@ -119,6 +127,19 @@ nslookup example.com
 ![](./WindowsCLI/CMDPrompt_arp.jpg)
 
 <br/>
+
+https://stackoverflow.com/questions/30644314/list-all-devices-on-local-network
+
+```bash
+# Windows Batch Script (.bat)
+# notepad pingAll.bat
+# however it is very slow...
+for /L %%i in (1,1,254) do (
+ping -a -n 1 192.168.0.%%i
+)
+
+arp -a >con
+```
 
 ### getmac
 
@@ -451,6 +472,36 @@ powercfg /batteryreport
 
 <br/>
 
+#### Enable Performance Mode
+
+From: https://www.howtogeek.com/368781/how-to-enable-ultimate-performance-power-plan-in-windows-10/
+
+In Windows 10 or later, to enable performance power plan, run:
+
+```bash
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+```
+
+Now go to Start > Choose a power plan > Ultimate Performance
+
+![Performance Power Plan](./WindowsCLI/PerformancePowerPlan01.jpg)
+
+<br/>
+
+Go to Task Manager (CTRL+SHIFT+ESC) > StartUp Tab > Disable all unnecessary apps (except Docker, Realtech HD Audio)
+
+![Performance Power Plan](./WindowsCLI/PerformancePowerPlan02.jpg)
+
+<br/>
+
+For more UI perfomance, go to Start > Adjust the appearance and performance > Uncheck all options except the followings
+
+![Performance Power Plan](./WindowsCLI/PerformancePowerPlan03.jpg)
+
+Finally restart the laptop.
+
+<br/>
+
 ### shutdown
 
 (Tuesday, May 07, 2024)
@@ -470,6 +521,232 @@ Other resources on this:
 
 <br/>
 
+- To shutdown and **restart** the system on UEFI mode, we can use the `/r` switch
+
+```bash
+# Restart
+shutdown /r
+
+# Wait 10 seconds, then shutdown and restart
+shutdown /r /t 10
+
+# Abort the shutdown countdown
+shutdown /a
+```
+
+<br/>
+
+### winver
+
+`winver` (Windows Version) is a utility used to obtain information about the operating system version.
+
+```bash
+winver
+```
+
+<br/>
+
 ## CMD Prompt File system commands
 
 Resource: [Windows Command Line Tools - CompTIA A+ 220-1102 - 1.2 - 24min - Professor Messer](https://www.youtube.com/watch?v=Df2rx7b2tMY)
+
+Note: For manual (help) of each command, we can use `/?` option.
+
+```bash
+# In CMD Prompt
+copy /?
+
+# In PowerShell
+man copy
+
+# NAME
+#     Copy-Item
+
+# SYNTAX
+#     Copy-Item [-Path] <string[]> [[-Destination] <string>] [-Container] [-Force] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Recurse] [-PassThru] [-Credential <pscredential>] [-WhatIf]
+#     [-Confirm] [-FromSession <PSSession>] [-ToSession <PSSession>] [<CommonParameters>]
+
+#     Copy-Item [[-Destination] <string>] -LiteralPath <string[]> [-Container] [-Force] [-Filter <string>] [-Include <string[]>] [-Exclude <string[]>] [-Recurse] [-PassThru] [-Credential <pscredential>]
+#     [-WhatIf] [-Confirm] [-FromSession <PSSession>] [-ToSession <PSSession>] [<CommonParameters>]
+
+# PARAMETERS
+#     -Confirm
+#     -Container
+#     -Credential <pscredential>
+#     -Destination <string>
+#     -Exclude <string[]>
+#     -Filter <string>
+#     -Force
+#     -FromSession <PSSession>
+#     -Include <string[]>
+#     -LiteralPath <string[]>
+#     -PassThru
+#     -Path <string[]>
+#     -Recurse
+#     -ToSession <PSSession>
+#     -WhatIf
+#     <CommonParameters>
+#         This cmdlet supports the common parameters: Verbose, Debug,
+#         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+#         OutBuffer, PipelineVariable, and OutVariable. For more information, see
+#         about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216).
+
+# INPUTS
+#     System.String[]
+#     System.String
+#     System.Management.Automation.PSCredential
+
+# OUTPUTS
+#     System.Object
+
+# ALIASES
+#     cpi
+#     cp
+#     copy
+
+# REMARKS
+#     Get-Help cannot find the Help files for this cmdlet on this computer. It is displaying only partial help.
+#         -- To download and install Help files for the module that includes this cmdlet, use Update-Help.
+#         -- To view the Help topic for this cmdlet online, type: "Get-Help Copy-Item -Online" or
+#            go to https://go.microsoft.com/fwlink/?LinkID=2096990.
+```
+
+<Br/>
+
+### File Management commands
+
+#### mkdir, rm, rmdir, copy
+
+- Create an empty directory (folder)
+
+```shell
+PS D:\> cd E:
+PS E:\> mkdir WindowsCommands
+
+#     Directory: E:\
+# Mode                 LastWriteTime         Length Name
+# ----                 -------------         ------ ----
+# d----           29-May-24    21:40                WindowsCommands
+
+rmdir .\WindowsCommands\
+```
+
+- Create recursive directories
+
+```shell
+# CMD Prompt
+mkdir WindowsCommands\SubFolder\SubSubFolder
+
+# Powershell
+mkdir -p WindowsCommands\SubFolder\SubSubFolder
+# or md (make directory) for short
+md -p WindowsCommands\SubFolder\SubSubFolder
+```
+
+- Delete Directory containing files
+
+```shell
+# PowerShell
+rm -r .\SubFolder\
+
+# CMD Prompt
+rmdir /s/q foldername
+```
+
+> https://stackoverflow.com/questions/186737/whats-the-fastest-way-to-delete-a-large-folder-in-windows
+
+- Copy files with `copy (/v, /y)`
+  - `/v` - verifies that new files are written correctyl
+  - `/y` - supresses propting to confirm you want to overwrite an existing destination file
+
+```shell
+echo "Hello" > hello.txt
+
+copy hello.txt hello2.txt
+```
+
+<br/>
+
+#### xcopy, robocopy
+
+https://www.quora.com/Is-it-faster-to-copy-tons-of-small-files-say-1TB-of-photos-using-xcopy-in-dos-or-Linux-or-whatever-than-in-Windows-In-other-words-does-Windows-indexing-and-all-that-slow-down-the-copy-or-is-the-bottleneck-in-the-HD
+
+Copy files and directory trees (using `/s` option)
+
+```shell
+xcopy /s .\Documents E:\backups\Documents
+
+# Note Wednesday, May 29, 2024:
+# This was very fast (around 2 seconds) considering it was from a partition to another
+# It would've taken longer if I was using Explorer GUI
+
+cd E:\
+rm -r .\backups\
+```
+
+Robocopy (robust copy) is a better version of `xcopy`. It has multithreading (default) and can be used to copy files and directory trees.
+
+```shell
+cd ~
+
+# For manual, note that /s for subdirectories and files should be used
+robocopy /?
+
+robocopy /s .\Documents\ E:\backups\Documents
+  #              Total    Copied   Skipped  Mismatch    FAILED    Extras
+  #   Dirs :       397       393         1         0         3         0
+  #  Files :       714       710         4         0         0         0
+  #  Bytes :  775.62 m  775.57 m    51.3 k         0         0         0
+  #  Times :   0:00:02   0:00:00                       0:00:00   0:00:01
+
+
+  #  Speed :           1017837949 Bytes/sec.
+  #  Speed :            58241.154 MegaBytes/min.
+  #  Ended : Wednesday, May 29, 2024 22:20:30
+# It took again around 2 seconds
+```
+
+<br/>
+
+### Partition commands
+
+#### Powershell Get-Volume
+
+```shell
+# PowerShell
+Get-Volume
+# DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
+# ----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
+# D           Second SSD   NTFS           Fixed     Healthy      OK                     75.39 GB 931.51 GB
+#                          FAT32          Fixed     Healthy      OK                     976.3 MB    996 MB
+# C                        NTFS           Fixed     Healthy      OK                     41.54 GB 299.46 GB
+#                          NTFS           Fixed     Healthy      OK                     84.75 MB    556 MB
+```
+
+#### diskpart utility tool
+
+To enter `diskpart` cli, just run:
+
+```shell
+diskpart
+```
+
+Now we can use `list volume` command to list all the volumes on the system
+
+```shell
+list
+# Microsoft DiskPart version 10.0.19041.3636
+
+# DISK        - Display a list of disks. For example, LIST DISK.
+# PARTITION   - Display a list of partitions on the selected disk. For example, LIST PARTITION.
+# VOLUME      - Display a list of volumes. For example, LIST VOLUME.
+# VDISK       - Displays a list of virtual disks.
+
+list volume
+  # Volume ###  Ltr  Label        Fs     Type        Size     Status     Info
+  # ----------  ---  -----------  -----  ----------  -------  ---------  --------
+  # Volume 0                      FAT32  Partition   1000 MB  Healthy    System
+  # Volume 1     C                NTFS   Partition    299 GB  Healthy    Boot
+  # Volume 3                      NTFS   Partition    556 MB  Healthy    Hidden
+  # Volume 4     D   Second SSD   NTFS   Partition    931 GB  Healthy
+```

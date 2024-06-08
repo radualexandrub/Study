@@ -434,6 +434,9 @@ Finally, we can start all the containers at once by running `docker-compose up` 
 
 ```bash
 docker compose up
+
+# or use --no-deps flag to rebuild images that might've been modified
+docker compose up --no-deps
 ```
 
 🔵 Note: you can also use `docker compose up` (newer version) instead of `docker-compose up` (old version). See more [here](https://stackoverflow.com/questions/66514436/difference-between-docker-compose-and-docker-compose).
