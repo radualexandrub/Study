@@ -14,7 +14,7 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 
 ## Front-end
 
-### **HTML, CSS, Sass**
+### HTML, CSS, Sass
 
 - [CSS Full Course, including Flexbox - freeCodeCamp](./CSS/CSS_fullcourse_flexbox.md)
 - [Responsive Web Design Certification from freeCodeCamp](./CSS/ResponsiveWebDesign.md)
@@ -23,7 +23,7 @@ My biggest collection of personal study notes from various FREE courses, tutoria
 - [Sass Tutorial for Beginners - CSS With Superpowers - freeCodeCamp](./CSS/SassTutorialBegginners.md)
 - [HTML, CSS & Vanilla JS Ready-to-use elements - modals, navbars, etc](./HTML/HTML-Elements.md)
 
-### **JavaScript**
+### JavaScript
 
 - [**JavaScript Full Course for Beginners (to advanced)** - w3schools and freeCodeCamp](./JavaScript/JavaScriptBeginners.md)
 
@@ -46,13 +46,13 @@ Others:
 
 - [Using ChatGPT to create a CRUD (without update) Vanilla JS App - "Time Investment in Hours per Day to Complete a Task Calculator"](./time-investment-to-complete-a-task-calculator/TimeInvestmentCalculatorREADME.md) with [App Live Link](https://radubulai.com/Study/time-investment-to-complete-a-task-calculator)
 
-### **React**
+### React
 
 - [Have a taste of React: Build your first ToDo App and host it on GitHub Pages](./React/React-ToDoApp.md)
 - [From zero to Hero: React Fundamentals Course 2020 - freeCodeCamp](./React/ReactFundamentals.md)
 - [React JS Crash Course 2021 - Traversy Media](./React/ReactCrashCourse.md)
 
-### **Angular**
+### Angular
 
 - [Angular Crash Course 2021 - Traversy Media](./Angular/README.md)
 
@@ -99,6 +99,14 @@ Others:
 <br/>
 
 - [PostgreSQL and PgAdmin Tutorial - Installing and running on Red Hat 8](./SQL/PostgreSQL-on-RHEL8.md)
+
+---
+
+## Desktop Applications
+
+### Avalonia (.NET)
+
+- [Avalonia 11.2.7 UI Tutorial with .NET8 - Biding, CommunityToolkit.Mvvm/ReactiveUI, Navigation](./Avalonia/Avalonia_UI_Aug2023Tutorial/Avalonia_UI_Aug2023Tutorial.md)
 
 ---
 
@@ -185,4 +193,4 @@ A table of some programming languages, their associated frameworks and package m
 
 The Documentation and the Software created from these notes are released under the [MIT license](LICENSE).
 
-Copyright (c) 2020-2024 [Radu-Alexandru Bulai](https://github.com/radualexandrub)
+Copyright (c) 2020-2025 [Radu-Alexandru Bulai](https://github.com/radualexandrub)
