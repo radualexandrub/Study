@@ -14,6 +14,37 @@ Table of Contents / ToC:
   - [.NET Avalonia Project Setup](#net-avalonia-project-setup)
     - [Install Avalonia UI Templates](#install-avalonia-ui-templates)
     - [Create Avalonia .NET MVVM Project](#create-avalonia-net-mvvm-project)
+    - [First time build \& run](#first-time-build--run)
+    - [Main App, MainWindow, MainWindowViewModel workflow](#main-app-mainwindow-mainwindowviewmodel-workflow)
+  - [Playing with the UI - Controls](#playing-with-the-ui---controls)
+  - [Data binding](#data-binding)
+    - [Data binding with ReactiveUI Example1 - ChatGPT](#data-binding-with-reactiveui-example1---chatgpt)
+    - [Data binding with ReactiveUI Example2 - TODO List](#data-binding-with-reactiveui-example2---todo-list)
+    - [Data binding with CommunityToolkit - Tutorial](#data-binding-with-communitytoolkit---tutorial)
+  - [Sidebar Menu Navigation using a Splitview](#sidebar-menu-navigation-using-a-splitview)
+    - [Splitview Navigation routing using CommunityToolkit.Mvvm](#splitview-navigation-routing-using-communitytoolkitmvvm)
+      - [SplitView Control](#splitview-control)
+      - [Toggle open menu pane](#toggle-open-menu-pane)
+      - [See view within TransitioningContentControl via its ViewModel](#see-view-within-transitioningcontentcontrol-via-its-viewmodel)
+      - [Binding ListBox Items to Views](#binding-listbox-items-to-views)
+      - [Adding more nav items and actually changing the view](#adding-more-nav-items-and-actually-changing-the-view)
+      - [Adding icons to nav items](#adding-icons-to-nav-items)
+      - [Complete code for Navigation using CommunityToolkit for binding with icons](#complete-code-for-navigation-using-communitytoolkit-for-binding-with-icons)
+    - [Splitview Navigation routing using ReactiveUI](#splitview-navigation-routing-using-reactiveui)
+  - [Real Page Routing using ReactiveUI \[Separate Project\]](#real-page-routing-using-reactiveui-separate-project)
+    - [Real Page Routing using ReactiveUI - Adding Home and About pages](#real-page-routing-using-reactiveui---adding-home-and-about-pages)
+  - [SubNavigation within Splitview Window routing using ReactiveUI](#subnavigation-within-splitview-window-routing-using-reactiveui)
+  - [Open/Navigate to a new window](#opennavigate-to-a-new-window)
+  - [Avalonia XAML UI Elements](#avalonia-xaml-ui-elements)
+    - [Avalonia Images](#avalonia-images)
+      - [Local Image using declarative/hardcoded path](#local-image-using-declarativehardcoded-path)
+      - [Web Image using custom ImageHelper class](#web-image-using-custom-imagehelper-class)
+    - [Avalonia Grids](#avalonia-grids)
+      - [Standard Grids](#standard-grids)
+      - [Uniform Grids](#uniform-grids)
+      - [Data Grids](#data-grids)
+    - [Fluent UI - Custom Avalonia Styles](#fluent-ui---custom-avalonia-styles)
+  - [Avalonia Dependency Injection](#avalonia-dependency-injection)
 
 <br/>
 
@@ -33,29 +64,29 @@ Other UI Frameworks based on .NET / C# Table (generated with ChatGPT)
 
 Here's a comprehensive table detailing the major .NET versions, their release dates, support status, key features, end-of-support timelines, and notable deprecated features:
 
-|        Version       | Release Date | LTS |                                                               Major Changes/Features                                                               | End of Support |                                           Deprecated Features                                          |
-|:--------------------:|:------------:|:---:|:--------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------:|:------------------------------------------------------------------------------------------------------:|
-| .NET 9               | Nov 12, 2024 | No  | - Performance improvements<br>- Enhanced cloud-native support<br>- New APIs and language features                                                            | May 12, 2026   | TBD                                                                                                    |
-| .NET 8               | Nov 14, 2023 | Yes | Long-Term Support (LTS)<br>- Native AOT compilation improvements<br>- Enhanced MAUI and Blazor support<br>- Improved performance and diagnostics   | Nov 10, 2026   | TBD                                                                                                    |
-| .NET 7               | Nov 8, 2022  | No  | Performance enhancements<br>- Simplified development experience<br>- Improved container support                                                    | May 14, 2024   | TBD                                                                                                    |
-| .NET 6               | Nov 8, 2021  | Yes | LTS release<br>- Unified platform for desktop, mobile, and web<br>- Introduction of MAUI<br>- Improved performance and diagnostics                 | Nov 12, 2024   | TBD                                                                                                    |
-| .NET 5               | Nov 10, 2020 | No  | First release under unified .NET branding<br>- Cross-platform support<br>- Improved performance and support for C# 9                               | May 10, 2022   | .NET Framework-specific technologies<br/> like Web Forms, WCF,<br/> and Windows Workflow Foundation not included |
-| .NET Core 3.1        | Dec 3, 2019  | Yes | LTS release<br>- Support for Windows Desktop (WinForms, WPF)<br>- C# 8 support                                                                     | Dec 13, 2022   | TBD                                                                                                    |
-| .NET Core 3.0        | Sep 23, 2019 | No  | Support for Windows Desktop applications<br>- C# 8 support<br>- Improved performance                                                               | Mar 3, 2020    | TBD                                                                                                    |
-| .NET Core 2.2        | Dec 4, 2018  | No  | Improved build performance<br>- Additional APIs                                                                                                    | Dec 23, 2019   | TBD                                                                                                    |
-| .NET Core 2.1        | May 30, 2018 | Yes | LTS release<br>- Improved performance and diagnostics<br>- C# 7.3 support                                                                          | Aug 21, 2021   | TBD                                                                                                    |
-| .NET Core 2.0        | Aug 14, 2017 | No  | Support for .NET Standard 2.0<br>- Improved performance                                                                                            | Oct 1, 2018    | TBD                                                                                                    |
-| .NET Core 1.1        | Nov 16, 2016 | No  | Improved performance<br>- Additional APIs                                                                                                          | Jun 27, 2019   | TBD                                                                                                    |
-| .NET Core 1.0        | Jun 27, 2016 | No  | Initial release of cross-platform .NET Core<br>- Modular and lightweight                                                                           | Jun 27, 2019   | TBD                                                                                                    |
-| .NET Framework 4.8.1 | Aug 9, 2022  | Yes | Last version of .NET Framework<br>- Improved accessibility and high DPI support                                                                    | TBD            | .NET Framework is no longer being developed; focus has shifted to .NET Core and .NET 5+                |
-| .NET Framework 4.8   | Apr 18, 2019 | Yes | Improved performance and accessibility<br>- High DPI improvements                                                                                  | TBD            | Same as above                                                                                          |
-| .NET Framework 4.7.2 | Apr 30, 2018 | Yes | Enhanced cryptography support<br>- Improved performance                                                                                            | TBD            | Same as above                                                                                          |
-| .NET Framework 4.7.1 | Oct 17, 2017 | Yes | Support for .NET Standard 2.0<br>- Accessibility improvements                                                                                      | TBD            | Same as above                                                                                          |
-| .NET Framework 4.7   | Apr 11, 2017 | Yes | Performance improvements<br>- High DPI support                                                                                                     | TBD            | Same as above                                                                                          |
-| .NET Framework 4.6.2 | Aug 2, 2016  | Yes | Support for Windows 10 Anniversary Update<br>- Improved cryptography                                                                               | Jan 12, 2027   | Same as above                                                                                          |
-| .NET Framework 4.6.1 | Nov 30, 2015 | Yes | Support for Windows 10<br>- Improved debugging and profiling                                                                                       | Apr 26, 2022   | Retired due to SHA-1 certificate issues                                                                |
-| .NET Framework 4.6   | Jul 29, 2015 | Yes | RyuJIT compiler<br>- Support for Windows 10                                                                                                        | Apr 26, 2022   | Retired due to SHA-1 certificate issues                                                                |
-| .NET Framework 4.5.2 | May 5, 2014  | Yes | Enhanced diagnostics<br>- Improved performance                                                                                                     | Apr 26, 2022   | Retired due to SHA-1 certificate issues                                                                |
+|       Version        | Release Date | LTS |                                                              Major Changes/Features                                                              | End of Support |                                               Deprecated Features                                                |
+| :------------------: | :----------: | :-: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :------------: | :--------------------------------------------------------------------------------------------------------------: |
+|        .NET 9        | Nov 12, 2024 | No  |                        - Performance improvements<br>- Enhanced cloud-native support<br>- New APIs and language features                         |  May 12, 2026  |                                                       TBD                                                        |
+|        .NET 8        | Nov 14, 2023 | Yes | Long-Term Support (LTS)<br>- Native AOT compilation improvements<br>- Enhanced MAUI and Blazor support<br>- Improved performance and diagnostics |  Nov 10, 2026  |                                                       TBD                                                        |
+|        .NET 7        | Nov 8, 2022  | No  |                         Performance enhancements<br>- Simplified development experience<br>- Improved container support                          |  May 14, 2024  |                                                       TBD                                                        |
+|        .NET 6        | Nov 8, 2021  | Yes |        LTS release<br>- Unified platform for desktop, mobile, and web<br>- Introduction of MAUI<br>- Improved performance and diagnostics        |  Nov 12, 2024  |                                                       TBD                                                        |
+|        .NET 5        | Nov 10, 2020 | No  |               First release under unified .NET branding<br>- Cross-platform support<br>- Improved performance and support for C# 9               |  May 10, 2022  | .NET Framework-specific technologies<br/> like Web Forms, WCF,<br/> and Windows Workflow Foundation not included |
+|    .NET Core 3.1     | Dec 3, 2019  | Yes |                                  LTS release<br>- Support for Windows Desktop (WinForms, WPF)<br>- C# 8 support                                  |  Dec 13, 2022  |                                                       TBD                                                        |
+|    .NET Core 3.0     | Sep 23, 2019 | No  |                               Support for Windows Desktop applications<br>- C# 8 support<br>- Improved performance                               |  Mar 3, 2020   |                                                       TBD                                                        |
+|    .NET Core 2.2     | Dec 4, 2018  | No  |                                                 Improved build performance<br>- Additional APIs                                                  |  Dec 23, 2019  |                                                       TBD                                                        |
+|    .NET Core 2.1     | May 30, 2018 | Yes |                                    LTS release<br>- Improved performance and diagnostics<br>- C# 7.3 support                                     |  Aug 21, 2021  |                                                       TBD                                                        |
+|    .NET Core 2.0     | Aug 14, 2017 | No  |                                             Support for .NET Standard 2.0<br>- Improved performance                                              |  Oct 1, 2018   |                                                       TBD                                                        |
+|    .NET Core 1.1     | Nov 16, 2016 | No  |                                                    Improved performance<br>- Additional APIs                                                     |  Jun 27, 2019  |                                                       TBD                                                        |
+|    .NET Core 1.0     | Jun 27, 2016 | No  |                                     Initial release of cross-platform .NET Core<br>- Modular and lightweight                                     |  Jun 27, 2019  |                                                       TBD                                                        |
+| .NET Framework 4.8.1 | Aug 9, 2022  | Yes |                                 Last version of .NET Framework<br>- Improved accessibility and high DPI support                                  |      TBD       |             .NET Framework is no longer being developed; focus has shifted to .NET Core and .NET 5+              |
+|  .NET Framework 4.8  | Apr 18, 2019 | Yes |                                        Improved performance and accessibility<br>- High DPI improvements                                         |      TBD       |                                                  Same as above                                                   |
+| .NET Framework 4.7.2 | Apr 30, 2018 | Yes |                                             Enhanced cryptography support<br>- Improved performance                                              |      TBD       |                                                  Same as above                                                   |
+| .NET Framework 4.7.1 | Oct 17, 2017 | Yes |                                          Support for .NET Standard 2.0<br>- Accessibility improvements                                           |      TBD       |                                                  Same as above                                                   |
+|  .NET Framework 4.7  | Apr 11, 2017 | Yes |                                                  Performance improvements<br>- High DPI support                                                  |      TBD       |                                                  Same as above                                                   |
+| .NET Framework 4.6.2 | Aug 2, 2016  | Yes |                                       Support for Windows 10 Anniversary Update<br>- Improved cryptography                                       |  Jan 12, 2027  |                                                  Same as above                                                   |
+| .NET Framework 4.6.1 | Nov 30, 2015 | Yes |                                           Support for Windows 10<br>- Improved debugging and profiling                                           |  Apr 26, 2022  |                                     Retired due to SHA-1 certificate issues                                      |
+|  .NET Framework 4.6  | Jul 29, 2015 | Yes |                                                   RyuJIT compiler<br>- Support for Windows 10                                                    |  Apr 26, 2022  |                                     Retired due to SHA-1 certificate issues                                      |
+| .NET Framework 4.5.2 | May 5, 2014  | Yes |                                                  Enhanced diagnostics<br>- Improved performance                                                  |  Apr 26, 2022  |                                     Retired due to SHA-1 certificate issues                                      |
 
 - LTS (Long-Term Support): Versions marked as LTS receive support and patches for three years.
 
@@ -88,17 +119,18 @@ Download JetBrains Rider IDE ( https://www.jetbrains.com/rider/download/#section
 
 ---
 
-> Notes: 
+> Notes:
+>
 > - In JetBrains Rider (or JetBrains IntelliJ), we can set the following tabs preferences:
 >
 > ![Avalonia Templates](./Jetbrains_Rider_TabsSettings.jpg)
-> 
+>
 > - ⚠In JetBrains Rider we can also install `AvaloniaRider` plugin that will allow us to preview `xaml` files
 >
 > ![Avalonia Rider](./Jetbrains_Rider_AvaloniaRiderPlugin.jpg)
 >
 > - In JetBrain Rider we can disable going to external sources while debugging
-> 
+>
 > ![Rider Disable External Sources Debugging](./Jetbrains_Rider_DisableExternalSourcesDebugging.jpg)
 
 <br/>
@@ -221,35 +253,35 @@ This separation facilitates easier testing, maintenance, and scalability. Avalon
 
 1. **Startup (`dotnet run`):**
 
-    - The app starts at `Program.cs`, where it:
+   - The app starts at `Program.cs`, where it:
 
-        - Configures the Avalonia app (invokes `BuildAvaloniaApp()`).
+     - Configures the Avalonia app (invokes `BuildAvaloniaApp()`).
 
-        - Starts the application using `StartWithClassicDesktopLifetime(args)`.
+     - Starts the application using `StartWithClassicDesktopLifetime(args)`.
 
 2. **Application Initialization (`App.axaml.cs`):**
 
-    - `Initialize()` loads XAML resources.
+   - `Initialize()` loads XAML resources.
 
-    - `OnFrameworkInitializationCompleted()` is called after the base framework is set up:
+   - `OnFrameworkInitializationCompleted()` is called after the base framework is set up:
 
-        - It checks the app lifetime type.
+     - It checks the app lifetime type.
 
-        - Creates a new instance of `MainWindow`.
+     - Creates a new instance of `MainWindow`.
 
-        - Sets `MainWindow.DataContext` to a new `MainWindowViewModel` --- this is how the View gets its data.
+     - Sets `MainWindow.DataContext` to a new `MainWindowViewModel` --- this is how the View gets its data.
 
 3. **Main Window Rendering (`MainWindow.axaml`):**
 
-    - Avalonia renders the layout defined in XAML.
+   - Avalonia renders the layout defined in XAML.
 
-    - The `TextBlock` has `{Binding Greeting}`, which binds to the `Greeting` property in the ViewModel.
+   - The `TextBlock` has `{Binding Greeting}`, which binds to the `Greeting` property in the ViewModel.
 
-    - The `Design.DataContext` is just for IDE preview; **only the `DataContext` in code (step 2)** is used at runtime.
+   - The `Design.DataContext` is just for IDE preview; **only the `DataContext` in code (step 2)** is used at runtime.
 
 4. **ViewModel (`MainWindowViewModel.cs`):**
 
-    - Holds the data and logic. In this simple case, just one string: `"Hello world from Avalonia!"`.
+   - Holds the data and logic. In this simple case, just one string: `"Hello world from Avalonia!"`.
 
 ![Avalonia Templates](./Avalonia_UI_ProjectFirstDefaultFiles02_ChatGPT.jpg)
 
@@ -291,7 +323,7 @@ Also note, that to set the actual height and width of the application, we need t
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
+
     <!-- We can have only 1 UI Element/Control per Window/Content -->
     <StackPanel Margin="10" Spacing="10">
     <StackPanel Margin="10" Spacing="10">
@@ -328,7 +360,7 @@ public partial class MainWindow : Window
 }
 ```
 
-Note that by adding `name` to `<SelectableTextBlock Name="SelectableTextBlockName">` (in `MainWindow.axaml`), we can now use the `SelectableTextBlockName` in our `MainWindow.axaml.cs` to also modify the properties of this `<SelectableTextBlock>` Control Element. *This name for this element should be unique in the entire application if possible.*
+Note that by adding `name` to `<SelectableTextBlock Name="SelectableTextBlockName">` (in `MainWindow.axaml`), we can now use the `SelectableTextBlockName` in our `MainWindow.axaml.cs` to also modify the properties of this `<SelectableTextBlock>` Control Element. _This name for this element should be unique in the entire application if possible._
 
 ![Avalonia Templates](./Avalonia_UI_ProjectFirstDefaultFiles04.jpg)
 
@@ -343,6 +375,7 @@ Avalonia UI - 02 - Data Binding: https://www.youtube.com/watch?v=FSS6UdUy128&lis
 https://docs.avaloniaui.net/docs/basics/data/data-binding/
 
 Avalonia uses data binding to
+
 - move data from application objects into UI controls (from C# variables to UI)
 - change the data in application objects in response to user input
 - and initiate actions on the application objects in response to commands from the user.
@@ -356,13 +389,14 @@ When Avalonia performs data binding, it has to locate an application/C# object t
 <br/>
 
 👉Data binding can be implemented:
+
 1. either from scratch using `INotifyPropertyChanged`
 2. either using frameworks such as
-    - **ReactiveUI**
-    - **CommunityToolkit.Mvvm** that includes
-        - `ObservableObject`
-        - `ObservablePropperty`
-        - `RelayCommand`
+   - **ReactiveUI**
+   - **CommunityToolkit.Mvvm** that includes
+     - `ObservableObject`
+     - `ObservablePropperty`
+     - `RelayCommand`
 
 <br/>
 
@@ -388,7 +422,7 @@ When Avalonia performs data binding, it has to locate an application/C# object t
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
+
     <!-- We can have only 1 UI Element/Control per Window/Content -->
     <StackPanel Margin="20" Spacing="10">
         <TextBox Text="{Binding UserName, Mode=TwoWay}" Watermark="Enter your name" />
@@ -401,14 +435,13 @@ When Avalonia performs data binding, it has to locate an application/C# object t
 
 > Note from https://docs.avaloniaui.net/docs/basics/data/data-binding/data-binding-syntax
 > The available binding modes are:
-> | Mode           | Description                                                                                                               |
+> | Mode | Description |
 > |----------------|---------------------------------------------------------------------------------------------------------------------------|
-> | OneWay         | Changes in the data source propagate to the binding target.                                                               |
-> | TwoWay         | Changes in the data source propagate to the binding target and vice-versa.                                                |
-> | OneTime        | The value from the data source is propagated ***at initialization*** to the binding target, but subsequent changes are ignored. |
-> | OneWayToSource | Changes in the binding target propagate to the data source, but not the other way.                                        |
-> | Default        | The binding mode is based on a default mode defined in the code for the property. See below.                              |
-
+> | OneWay | Changes in the data source propagate to the binding target. |
+> | TwoWay | Changes in the data source propagate to the binding target and vice-versa. |
+> | OneTime | The value from the data source is propagated **_at initialization_** to the binding target, but subsequent changes are ignored. |
+> | OneWayToSource | Changes in the binding target propagate to the data source, but not the other way. |
+> | Default | The binding mode is based on a default mode defined in the code for the property. See below. |
 
 ```cs
 // MainWindowViewModel.cs
@@ -491,7 +524,6 @@ public partial class MainWindow : Window
 
 📄 `./ViewModels/TodoItemViewModel.cs` - Class for Todo list item - Data binding with ReactiveUI
 
-
 ```cs
 // TodoItemViewModel.cs
 using ReactiveUI;
@@ -525,7 +557,6 @@ public class TodoItemViewModel : ReactiveObject
 <br/>
 
 📄 `./ViewModels/MainWindowViewModel.cs` - Data binding with ReactiveUI for TODO List App
-
 
 ```cs
 using System;
@@ -568,7 +599,7 @@ public class MainWindowViewModel : ReactiveObject
                 this.RaisePropertyChanged(nameof(CompletedCount));
                 this.RaisePropertyChanged(nameof(PendingCount));
             });
-        
+
         var canAdd = this.WhenAnyValue(x => x.NewTaskTitle, title => !string.IsNullOrWhiteSpace(title));
 
         AddTaskCommand = ReactiveCommand.Create(() =>
@@ -577,7 +608,7 @@ public class MainWindowViewModel : ReactiveObject
             NewTaskTitle = string.Empty;
         }, canAdd);
     }
-    
+
     private void RemoveTask(TodoItemViewModel task)
     {
         Tasks.Remove(task);
@@ -592,7 +623,6 @@ Note that `new TodoItemViewModel(NewTaskTitle, RemoveTask)` has an implemented `
 <br/>
 
 📄 `./Views/MainWindow.axaml` - Main View for TODO List App - Data binding with ReactiveUI
-
 
 ```xml
 <Window xmlns="https://github.com/avaloniaui"
@@ -613,7 +643,7 @@ Note that `new TodoItemViewModel(NewTaskTitle, RemoveTask)` has an implemented `
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
+
     <!-- We can have only 1 UI Element/Control per Window/Content -->
     <StackPanel Margin="20" Spacing="10">
 
@@ -656,15 +686,15 @@ Note that `new TodoItemViewModel(NewTaskTitle, RemoveTask)` has an implemented `
 
 Note on the above nested structre of UI Elements/Controls:
 
-|                     Element                    |                                                                                                    Purpose                                                                                                   |
-|:----------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| `<ItemsControl>`                                 | A control that displays a collection of items — but unlike ListBox, it doesn’t have selection behavior. Think of it as a simple list container.                                                              |
-| `ItemsSource="{Binding Tasks}"`                  | Binds the list of tasks `(ObservableCollection<TodoItemViewModel>)` from your ViewModel.                                                                                                                       |
-| `<ItemsControl.ItemTemplate>`                    | Tells Avalonia how to render each individual item in the list — it’s a template that repeats for every item.                                                                                                 |
-| `<DataTemplate>`                                 | Wraps the actual UI layout for each item in the list. The x:DataType tells the compiler that this template will receive an instance of TodoItemViewModel. Enables better IntelliSense and compiled bindings. |
-| `<StackPanel Orientation="Horizontal">`          | Arranges the child controls (checkbox and text) in a horizontal line. You could also use Grid, DockPanel, etc., depending on your layout needs.                                                              |
-| `<CheckBox IsChecked="{Binding IsCompleted}" />` | Binds to the IsCompleted property of the individual task item (toggles its completion).                                                                                                                      |
-| `<SelectableTextBlock Text="{Binding Title}" />` | Displays the task title, bound to the Title property of the task item.                                                                                                                                       |
+|                     Element                      |                                                                                                   Purpose                                                                                                    |
+| :----------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                 `<ItemsControl>`                 |                               A control that displays a collection of items — but unlike ListBox, it doesn’t have selection behavior. Think of it as a simple list container.                                |
+|         `ItemsSource="{Binding Tasks}"`          |                                                           Binds the list of tasks `(ObservableCollection<TodoItemViewModel>)` from your ViewModel.                                                           |
+|          `<ItemsControl.ItemTemplate>`           |                                                 Tells Avalonia how to render each individual item in the list — it’s a template that repeats for every item.                                                 |
+|                 `<DataTemplate>`                 | Wraps the actual UI layout for each item in the list. The x:DataType tells the compiler that this template will receive an instance of TodoItemViewModel. Enables better IntelliSense and compiled bindings. |
+|     `<StackPanel Orientation="Horizontal">`      |                               Arranges the child controls (checkbox and text) in a horizontal line. You could also use Grid, DockPanel, etc., depending on your layout needs.                                |
+| `<CheckBox IsChecked="{Binding IsCompleted}" />` |                                                           Binds to the IsCompleted property of the individual task item (toggles its completion).                                                            |
+| `<SelectableTextBlock Text="{Binding Title}" />` |                                                                    Displays the task title, bound to the Title property of the task item.                                                                    |
 
 ![Avalonia Simple TODO List App](./Avalonia_UI_ProjectTODOLIST_01.jpg)
 
@@ -724,7 +754,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _greetingmessage = string.Empty;
-    
+
     [RelayCommand]
     public void GreetUser()
     {
@@ -829,22 +859,25 @@ public partial class MainWindowViewModel : ViewModelBase
 Now, to actually implement the pages transition when clicking on each tab => we will add a `<TransitioningContentControl Content="{Binding CurrentPage}">` within the `<SplitView.Content>` Control.
 
 We will create the following pages (views), their C# classes and their viewmodels:
+
 - For HomePage
-    - `/Views/HomePageView.axaml` (Create it as "Avalonia User Control" in JetBrains Rider)
-        - `/Views/HomePageView.axaml.cs` (will either be created automatically or create manually and make it dependant on `HomePageView.axaml`)
-    - `/ViewModels/HomePageViewModel.cs` (Create it as CS class)
+
+  - `/Views/HomePageView.axaml` (Create it as "Avalonia User Control" in JetBrains Rider)
+    - `/Views/HomePageView.axaml.cs` (will either be created automatically or create manually and make it dependant on `HomePageView.axaml`)
+  - `/ViewModels/HomePageViewModel.cs` (Create it as CS class)
 
 - For AboutPage
-    - `/Views/AboutPageView.axaml` (Create it as "Avalonia User Control" in JetBrains Rider)
-        - `/Views/AboutPageView.axaml.cs`
-    - `/ViewModels/AboutPageViewModel.cs` (Create it as CS class)
+  - `/Views/AboutPageView.axaml` (Create it as "Avalonia User Control" in JetBrains Rider)
+    - `/Views/AboutPageView.axaml.cs`
+  - `/ViewModels/AboutPageViewModel.cs` (Create it as CS class)
 
 <br/>
 
 ⚠Name convention is important (as Avalonia uses `ViewLocator.cs` which looks for a `View` starting from/based on their `ViewModel` name to automatically identify views):
+
 - `axaml`/`xaml` pages/views to be displayed need their filenames to end in `View.axaml (or View.xaml)`
 - `cs` view models associated with views need their filenames to end in `ViewModel.cs`
-    - ⚠ViewModels also needs to be inherited from `ViewModelBase` (e.g. `public class HomePageViewModel : ViewModelBase`)
+  - ⚠ViewModels also needs to be inherited from `ViewModelBase` (e.g. `public class HomePageViewModel : ViewModelBase`)
 
 <br/>
 
@@ -930,7 +963,7 @@ public class ViewLocator : IDataTemplate
         </SplitView.Pane>
         <SplitView.Content>
             <Border CornerRadius="12 0 0 0" Background="#121416">
-                <TransitioningContentControl 
+                <TransitioningContentControl
                     Content="{Binding CurrentPage}">
                 </TransitioningContentControl>
             </Border>
@@ -956,7 +989,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsPaneNavMenuOpen = !IsPaneNavMenuOpen;
     }
-    
+
     [ObservableProperty]
     private ViewModelBase _currentPage = new HomePageViewModel();
 }
@@ -976,7 +1009,7 @@ public partial class HomePageViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _greetingMessage = string.Empty;
-    
+
     [RelayCommand]
     public void GreetUser()
     {
@@ -1029,6 +1062,7 @@ public partial class HomePageView : UserControl
 #### Binding ListBox Items to Views
 
 In `MainWindowViewModel.cs` we can create a `ListNavItemViewTemplate` that will contain items with information about each View/Page that we want to show when such navigation item is clicked. The information that each nav item hols will be:
+
 - a label to show in the UI for that nav item
 - the ModelView that points to its View
 
@@ -1053,9 +1087,9 @@ public class ListNavItemViewTemplate
 <br/>
 
 In `MainWindow.axaml`:
+
 - we can replace the hardcoded nav items with `<ListBox.ItemTemplate>` within `<SplitView.Pane>`
 - we can add `<ListBox ItemsSource="{Binding NavItems}">` to provide the List of Navigation Items that holds the view label and ViewModel of each view (it will loop through it)
-
 
 ```xml
 <!-- Views/MainWindow.axaml -->
@@ -1084,7 +1118,7 @@ In `MainWindow.axaml`:
         </SplitView.Pane>
         <SplitView.Content>
             <Border CornerRadius="12 0 0 0" Background="#121416">
-                <TransitioningContentControl 
+                <TransitioningContentControl
                     Content="{Binding CurrentPage}">
                 </TransitioningContentControl>
             </Border>
@@ -1101,8 +1135,9 @@ In `MainWindow.axaml`:
 (Wednesday, May 14, 2025, 22:53)
 
 Add the AboutPage with:
+
 - `/Views/AboutPageView.axaml` (Create it as "Avalonia User Control" in JetBrains Rider)
-    - `/Views/AboutPageView.axaml.cs`
+  - `/Views/AboutPageView.axaml.cs`
 - `/ViewModels/AboutPageViewModel.cs` (Create it as CS class)
 
 <br/>
@@ -1147,15 +1182,15 @@ So far if we add one more nav item _(e.g. "About" page/view with its `AboutPageV
 // MainWindowViewModel.cs
     [ObservableProperty]
     private ListNavItemViewTemplate? _selectedNavItemFromList;
-    
+
     partial void OnSelectedNavItemFromListChanged(ListNavItemViewTemplate? selectedNavItem)
     {
         if (selectedNavItem is null) return;
-        
+
         // Create an instance of the ViewModel
         var viewModelInstance = (ViewModelBase)Activator.CreateInstance(selectedNavItem.ViewModelType);
         if (viewModelInstance is null) return;
-        
+
         // Set the current page to the new ViewModel
         CurrentPage = viewModelInstance;
     }
@@ -1209,7 +1244,7 @@ So far if we add one more nav item _(e.g. "About" page/view with its `AboutPageV
         <SplitView.Content>
             <Border CornerRadius="12 0 0 12" Background="#121416"
                     Padding="18">
-                <TransitioningContentControl 
+                <TransitioningContentControl
                     Content="{Binding CurrentPage}">
                 </TransitioningContentControl>
             </Border>
@@ -1237,25 +1272,25 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsPaneNavMenuOpen = !IsPaneNavMenuOpen;
     }
-    
+
     [ObservableProperty]
     private ViewModelBase _currentPage = new HomePageViewModel();
-    
+
     [ObservableProperty]
     private ListNavItemViewTemplate? _selectedNavItemFromList;
-    
+
     partial void OnSelectedNavItemFromListChanged(ListNavItemViewTemplate? selectedNavItem)
     {
         if (selectedNavItem is null) return;
-        
+
         // Create an instance of the ViewModel
         var viewModelInstance = (ViewModelBase)Activator.CreateInstance(selectedNavItem.ViewModelType);
         if (viewModelInstance is null) return;
-        
+
         // Set the current page to the new ViewModel
         CurrentPage = viewModelInstance;
     }
-    
+
     public ObservableCollection<ListNavItemViewTemplate> NavItems { get; } = new()
     {
         new ListNavItemViewTemplate(typeof(HomePageViewModel)),
@@ -1290,7 +1325,7 @@ public partial class HomePageViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _greetingMessage = string.Empty;
-    
+
     [RelayCommand]
     public void GreetUser()
     {
@@ -1379,7 +1414,7 @@ In our main `App.axaml` file we need to add/include these new styles sheet using
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://AvaloniaFirstUIApp/Assets/Icons.axaml"></StyleInclude>
@@ -1401,6 +1436,7 @@ Now in `MainWindow.axaml` we can add the icon with `<PathIcon>` element:
 <br/>
 
 Now, to add the menu icons to the dynamically list of nav items `ObservableCollection<ListNavItemViewTemplate> NavItems`, we can modity the `ListNavItemViewTemplate` class to:
+
 - add a new property called `NavItemIcon`
 - modify the constructor to add `string NavItemIconKey` and try to get the icon resource based on key name from the constructor
 
@@ -1485,25 +1521,25 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsPaneNavMenuOpen = !IsPaneNavMenuOpen;
     }
-    
+
     [ObservableProperty]
     private ViewModelBase _currentPage = new HomePageViewModel();
-    
+
     [ObservableProperty]
     private ListNavItemViewTemplate? _selectedNavItemFromList;
-    
+
     partial void OnSelectedNavItemFromListChanged(ListNavItemViewTemplate? selectedNavItem)
     {
         if (selectedNavItem is null) return;
-        
+
         // Create an instance of the ViewModel
         var viewModelInstance = (ViewModelBase)Activator.CreateInstance(selectedNavItem.ViewModelType);
         if (viewModelInstance is null) return;
-        
+
         // Set the current page to the new ViewModel
         CurrentPage = viewModelInstance;
     }
-    
+
     public ObservableCollection<ListNavItemViewTemplate> NavItems { get; } = new()
     {
         new ListNavItemViewTemplate(typeof(HomePageViewModel), "HomeRegular", "Home"),
@@ -1584,7 +1620,7 @@ public class ListNavItemViewTemplate
         <SplitView.Content>
             <Border CornerRadius="12 0 0 12" Background="#121416"
                     Padding="18">
-                <TransitioningContentControl 
+                <TransitioningContentControl
                     Content="{Binding CurrentPage}">
                 </TransitioningContentControl>
             </Border>
@@ -1624,7 +1660,7 @@ public partial class HomePageViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _greetingMessage = string.Empty;
-    
+
     [RelayCommand]
     public void GreetUser()
     {
@@ -1636,7 +1672,7 @@ public partial class HomePageViewModel : ViewModelBase
 ```
 
 ```cs
-// Views/HomePageView.axaml.cs 
+// Views/HomePageView.axaml.cs
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -1681,7 +1717,7 @@ namespace AvaloniaFirstUIApp.ViewModels;
 
 public class AboutPageViewModel : ViewModelBase
 {
-    
+
 }
 ```
 
@@ -1711,19 +1747,16 @@ public partial class AboutPageView : UserControl
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaFirstUIApp.Views.AboutPageView">
     <SelectableTextBlock TextWrapping="Wrap">
-        About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-        It has survived not only five centuries, but also the leap into electronic typesetting, 
-        remaining essentially unchanged. 
-        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+        About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting,
+        remaining essentially unchanged.
+        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </SelectableTextBlock>
 </UserControl>
 ```
-
-
-
 
 <br/>
 
@@ -1749,7 +1782,7 @@ Key notes to migrate the above Avalonia MVVM navigation setup from CommunityTool
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://AvaloniaFirstUIApp/Assets/Icons.axaml"></StyleInclude>
@@ -1950,7 +1983,7 @@ public class ListNavItemViewTemplate
         <SplitView.Content>
             <Border CornerRadius="12 0 0 12" Background="#121416"
                     Padding="18">
-                <TransitioningContentControl 
+                <TransitioningContentControl
                     Content="{Binding CurrentPage}">
                 </TransitioningContentControl>
             </Border>
@@ -2014,7 +2047,7 @@ public class HomePageViewModel : ViewModelBase
 ```
 
 ```cs
-// Views/HomePageView.axaml.cs - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI 
+// Views/HomePageView.axaml.cs - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -2054,17 +2087,17 @@ public partial class HomePageView : UserControl
 - AboutPage
 
 ```cs
-// ViewModels/AboutPageViewModel - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI 
+// ViewModels/AboutPageViewModel - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI
 namespace AvaloniaFirstUIApp.ViewModels;
 
 public class AboutPageViewModel : ViewModelBase
 {
-    
+
 }
 ```
 
 ```cs
-// Views/AboutPageView.axaml.cs - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI 
+// Views/AboutPageView.axaml.cs - REMAINS UNCHANGED FROM CommunityToolkit to ReactiveUI
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -2089,12 +2122,12 @@ public partial class AboutPageView : UserControl
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaFirstUIApp.Views.AboutPageView">
     <SelectableTextBlock TextWrapping="Wrap">
-        About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-        It has survived not only five centuries, but also the leap into electronic typesetting, 
-        remaining essentially unchanged. 
-        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+        About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting,
+        remaining essentially unchanged.
+        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </SelectableTextBlock>
 </UserControl>
@@ -2154,7 +2187,6 @@ dotnet add package Avalonia.ReactiveUI
 </Project>
 
 ```
-
 
 ```json
 // global.json
@@ -2258,7 +2290,7 @@ public class ViewLocator : IDataTemplate
     {
         if (param is null)
             return null;
-        
+
         var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
         var type = Type.GetType(name);
 
@@ -2266,7 +2298,7 @@ public class ViewLocator : IDataTemplate
         {
             return (Control)Activator.CreateInstance(type)!;
         }
-        
+
         return new TextBlock { Text = "Not Found: " + name };
     }
 
@@ -2276,7 +2308,6 @@ public class ViewLocator : IDataTemplate
     }
 }
 ```
-
 
 - AppViewLocator.cs
   - The `AppViewLocator` that we are passing to the `RoutedViewHost` control declared in the `MainWindow.xaml` markup shown above is responsible for resolving a View based on the type of the ViewModel. The `IScreen.Router` instance of type `RoutingState` determines which ViewModel should be currently shown. See [View Location](https://reactiveui.net/docs/handbook/view-location/) for details. The simplest possible `IViewLocator` implementation based on pattern matching might look like this.
@@ -2393,10 +2424,10 @@ public class MainWindowViewModel : ReactiveObject, IScreen
     public MainWindowViewModel()
     {
         // Manage the routing state. Use the Router.Navigate.Execute
-        // command to navigate to different view models. 
+        // command to navigate to different view models.
         //
-        // Note, that the Navigate.Execute method accepts an instance 
-        // of a view model, this allows you to pass parameters to 
+        // Note, that the Navigate.Execute method accepts an instance
+        // of a view model, this allows you to pass parameters to
         // your view models, or to reuse existing view models.
         //
         GoNext = ReactiveCommand.CreateFromObservable(
@@ -2507,6 +2538,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 ### Real Page Routing using ReactiveUI - Adding Home and About pages
 
 We can refactor the code above to have a "HomePage" and an "About" page. The goals are:
+
 - to have these 2 different pages instead of a "FirstView"
 - condition the "About" page nav button to be prevented+hidden when we are already on "About" page
   - To prevent navigation to the same page when already on that page, check the type of the current view model in the router's navigation stack before executing the navigation command. If the current view model is already of the target type, do not navigate. Use `Router.GetCurrentViewModel()` to get the current view model.
@@ -2569,7 +2601,7 @@ public class AppViewLocator : ReactiveUI.IViewLocator
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15">
             <StackPanel.Styles>
                 <Style Selector="StackPanel > :is(Control)">
@@ -2579,7 +2611,7 @@ public class AppViewLocator : ReactiveUI.IViewLocator
                     <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
             </StackPanel.Styles>
-            
+
             <Button Content="Back" Command="{Binding GoBack}" />
             <Button Content="Home" Command="{Binding GoToHomePage}" />
             <Button Content="About"
@@ -2590,14 +2622,14 @@ public class AppViewLocator : ReactiveUI.IViewLocator
                 <Run Text="different navigations" />
             </SelectableTextBlock>
         </StackPanel>
-        
+
         <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
             <reactiveUi:RoutedViewHost.DefaultContent>
                 <TextBlock Text="Hello there! Navigate to a page using the buttons above."
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
             </reactiveUi:RoutedViewHost.DefaultContent>
-            
+
             <reactiveUi:RoutedViewHost.ViewLocator>
                 <!-- See AppViewLocator.cs section below -->
                 <avaloniaNavigationWithBackButton:AppViewLocator  />
@@ -2628,17 +2660,17 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
     // The command that navigates a user back.
     public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
-    
+
     // Hide the about button if the user is on the About page.
     public bool IsAboutButtonVisible => !(Router.NavigationStack.LastOrDefault() is AboutViewModel);
 
     public MainWindowViewModel()
     {
         // Manage the routing state. Use the Router.Navigate.Execute
-        // command to navigate to different view models. 
+        // command to navigate to different view models.
         //
-        // Note, that the Navigate.Execute method accepts an instance 
-        // of a view model, this allows you to pass parameters to 
+        // Note, that the Navigate.Execute method accepts an instance
+        // of a view model, this allows you to pass parameters to
         // your view models, or to reuse existing view models.
         GoToAboutPage = ReactiveCommand.CreateFromObservable(
             () =>
@@ -2649,7 +2681,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
                 return Router.Navigate.Execute(new AboutViewModel(this));
             }
         );
-        
+
         Router.NavigationStack.CollectionChanged += (_, __) =>
             this.RaisePropertyChanged(nameof(IsAboutButtonVisible));
 
@@ -2685,7 +2717,7 @@ public class HomePageViewModel : ReactiveObject, IRoutableViewModel
     // Expose the GoToAboutPage command in HomePageViewModel by forwarding it from the HostScreen.
     public ReactiveCommand<Unit, IRoutableViewModel> GoToAboutPage =>
         (HostScreen as MainWindowViewModel)?.GoToAboutPage;
-    
+
     public string Description =>
         "Home page lorem ipsum dolor sit amet consectetur adipiscing elit.";
 
@@ -2746,7 +2778,7 @@ public class AboutViewModel : ReactiveObject, IRoutableViewModel
 
     // Mandatory Unique identifier for the routable view model.
     public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
-    
+
     public string Description => "About us lorem ipsum dolor sit amet.";
 
     public AboutViewModel(IScreen screen) => HostScreen = screen;
@@ -2805,10 +2837,129 @@ For example, in Menu we will have `Main` and `About` pages that are opened in `S
 
 Note: Was not possible to be implemented directly via Language Models (Requirement was failed by ChatGPT 4o, Claude 3.7, GPT4.1 within Copilot, etc)... yet. However it might be possible by combining the two above projects so far.
 
+<br/>
+
+## Open/Navigate to a new window
+
+( Wednesday, May 28, 2025, 20:08 - Code with Claude Sonnet 4.0 - https://claude.ai/chat/ )
+
+![Avalonia New Window Button](./AvaloniaNewWindowButton.gif)
+
+We will add a button in `HomePageView.axaml` that will open **a new window** that contains the contents of the view `AboutPageView` (with `AboutPageViewModel`).
 
 <br/>
 
-## Avalonia Images
+- In `HomePageView.axaml`, just add the button `<Button Content="Open AboutPage in a new window" Command="{Binding OpenAboutPageInWindowCommand}"/>`
+
+```xml
+<!-- Views / HomePageView.axaml -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaFirstUIApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:HomePageViewModel"
+             x:Class="AvaloniaFirstUIApp.Views.HomePageView">
+    <StackPanel Spacing="10">
+        <TextBox Text="{Binding UserName, Mode=TwoWay}"
+                 Watermark="Enter your name" />
+        <Button Content="Greet"
+                Command="{Binding GreetUserCommand}" />
+        <SelectableTextBlock Text="{Binding GreetingMessage}"
+                             FontWeight="Bold" />
+        <Button Content="Open AboutPage in a new window"
+                Command="{Binding OpenAboutPageInWindowCommand}"
+                Margin="0, 24,0,0" />
+    </StackPanel>
+</UserControl>
+```
+
+```cs
+// Views / HomePageView.axaml.cs
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+
+namespace AvaloniaFirstUIApp.Views;
+
+public partial class HomePageView : UserControl
+{
+    public HomePageView()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+- In `HomePageViewModel.cs`, declare `public ReactiveCommand<Unit, Unit> OpenAboutPageInWindowCommand { get; }` and then define this method in the `public HomePageViewModel()` constructor:
+
+```cs
+// ViewModels / HomePageViewModel.cs
+using ReactiveUI;
+using System.Reactive;
+using Avalonia.Controls;
+using AvaloniaFirstUIApp.Views;
+
+namespace AvaloniaFirstUIApp.ViewModels;
+
+public class HomePageViewModel : ViewModelBase
+{
+    private string userName = string.Empty;
+    public string UserName
+    {
+        get => userName;
+        set => this.RaiseAndSetIfChanged(ref userName, value);
+    }
+
+    private string greetingMessage = string.Empty;
+    public string GreetingMessage
+    {
+        get => greetingMessage;
+        set => this.RaiseAndSetIfChanged(ref greetingMessage, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> GreetUserCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenAboutPageInWindowCommand { get; }
+
+    public HomePageViewModel()
+    {
+        GreetUserCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? "Hello, stranger!"
+                : $"Hello, {UserName}!";
+        });
+
+        OpenAboutPageInWindowCommand = ReactiveCommand.Create(() =>
+        {
+            var aboutWindow = new Window
+            {
+                Title = "About",
+                Width = 500,
+                Height = 800,
+                Content = new AboutPageView
+                {
+                    DataContext = new AboutPageViewModel()
+                },
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            aboutWindow.Show();
+        });
+    }
+}
+```
+
+- `AboutPageView.axaml` `AboutPageView.axaml.cs` `AboutPageViewModel.cs` will remain unchanged (can be found below along with images).
+
+![Avalonia New Window Button](./AvaloniaNewWindowButtonCode.jpg)
+
+<br/>
+
+## Avalonia XAML UI Elements
+
+### Avalonia Images
 
 (Saturday, May 24, 2025, 12:44)
 
@@ -2824,7 +2975,7 @@ In Avalonia Images are stored as `Assets`.
 
 <br/>
 
-### Local Image using declarative/hardcoded path
+#### Local Image using declarative/hardcoded path
 
 ![Avalonia Image Tag](./Avalonia_UI_ImageExample.jpg)
 
@@ -2839,7 +2990,7 @@ Then, in your xaml view, just add:
 
 <br/>
 
-### Web Image using custom ImageHelper class
+#### Web Image using custom ImageHelper class
 
 Create a new cs file `Helpers/ImageHelper.cs`
 
@@ -2911,10 +3062,10 @@ public class AboutPageViewModel : ViewModelBase
 
 In your view xaml, add `x:DataType="vm:AboutPageViewModel"` and `<Image Source="{Binding ImageSourceBitmapWeb^}" MaxWidth="300"></Image>`
 
-Make sure to add `^` after variable binding!
+Make sure to add `^` after variable binding in the `xaml` file!
 
 ```xml
-<!-- Views/AboutPageView -->
+<!-- Views/AboutPageView.axaml -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -2926,18 +3077,18 @@ Make sure to add `^` after variable binding!
     <ScrollViewer>
         <StackPanel>
             <SelectableTextBlock TextWrapping="Wrap">
-                About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                About Page Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                It has survived not only five centuries, but also the leap into electronic typesetting, 
-                remaining essentially unchanged. 
+                It has survived not only five centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged.
             </SelectableTextBlock>
-        
+
             <SelectableTextBlock Margin="0 24 0 8">Image using Declarative Approach (Hardcoded)</SelectableTextBlock>
             <Border CornerRadius="16" ClipToBounds="True" Width="300">
                 <Image Source="/Assets/cat-pexels-henda-watani.jpg"
                        MaxWidth="300"></Image>
             </Border>
-            
+
             <SelectableTextBlock Margin="0 24 0 8">Image from web using custom ImageHelper</SelectableTextBlock>
             <Border CornerRadius="16" ClipToBounds="True" Width="300">
                 <Image Source="{Binding ImageSourceBitmapWeb^}"
@@ -2948,15 +3099,169 @@ Make sure to add `^` after variable binding!
 </UserControl>
 ```
 
-<br/>
+```cs
+// Views/AboutPageView.axaml.cs
+using Avalonia.Controls;
+
+namespace AvaloniaFirstUIApp.Views;
+
+public partial class AboutPageView : UserControl
+{
+    public AboutPageView()
+    {
+        InitializeComponent();
+    }
+}
+```
 
 <br/>
 
-<br/>
+### Avalonia Grids
+
+https://docs.avaloniaui.net/docs/reference/controls/grid/
+
+Mamma Mia Dev - Avalonia UI - 05 - Grids (7 Dec 2023):
+
+https://www.youtube.com/watch?v=-cDbz3gYz0g&list=PLJYo8bcmfTDF6ROxC8QMVw9Zr_3Lx4Lgd&index=5&ab_channel=MammaMiaDev
+
+There are 3 types of grids in avalonia:
+
+- `standard`
+- `uniform` (divides evenly the amount of space for rows and columns)
+- `datagrids` (available through nuget package `Avalonia.Controls.DataGrid`, they also use `datatemplates`)
 
 <br/>
 
+#### Standard Grids
+
+(Wednesday, May 28, 2025, 23:01)
+
+We can create 3 new files: `GridsPageViewModel.cs` `GridsPageView.axaml` `GridsPageView.axaml.cs`
+
+- `/ViewModels/GridsPageViewModel.cs`
+- `/Views/GridsPageView.axaml`
+- `/Views/GridsPageView.axaml.cs`
+
 <br/>
+
+⚠ Every element (UI Item / Control) within a grid needs to have an index! Otherwise the grid elements will overlap!
+
+- For rows and columns (each UI element within that parent Grid):
+
+  - Rows and columns start at 0 and they are numbered from top to bottom and left to right
+  - Rows and columns can be defined using `Grid.Row` and `Grid.Column`
+
+- We also need to define in the parent Grid the `Grid.RowDefinitions` and `Grid.ColumnDefinitions`. In `RowDefinitions`/`ColumnDefinitions`:
+
+  - We can use a number to define a column or row that will take up that amount of space
+  - We can use `auto` to define a column or row that will take up the minimum space possible
+  - We can use a star `*` to define a column or row that will expand as much as possible to take up the remaining space
+
+![Avalonia Image Tag](./Avalonia_Grids_Example.jpg)
+
+![Avalonia Image Tag](./Avalonia_Grids_Example01.jpg)
+
+We can also not force any width/heigth to the grid elements, as they will automatically expand to fit the content when using star `*`, and while setting a width and heigth to the Grid parent itself.
+
+![Avalonia Image Tag](./Avalonia_Grids_Example02.jpg)
+
+```xml
+<!-- Views/GridsPageView.axaml -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaFirstUIApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:GridsPageViewModel"
+             x:Class="AvaloniaFirstUIApp.Views.GridsPageView">
+    <ScrollViewer>
+        <StackPanel Margin="16">
+            <TextBlock Margin="0 16" FontSize="20" FontWeight="Bold">Grids</TextBlock>
+            <Grid ShowGridLines="True"
+                RowDefinitions="2*, *"
+                ColumnDefinitions="*, 2*"
+                Width="300" Height="300">
+                <Rectangle Grid.Row="0" Grid.Column="0"
+                           Fill="#016160">
+                </Rectangle>
+                <Rectangle Grid.Row="0" Grid.Column="1"
+                           Fill="#cb7646">
+                </Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="0"
+                           Fill="#8b4e3b">
+                </Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="1"
+                           Fill="#9dd1d1">
+                </Rectangle>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
+```
+
+```cs
+// Views/GridsPageView.axaml.cs
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+
+namespace AvaloniaFirstUIApp.Views;
+
+public partial class GridsPageView : UserControl
+{
+    public GridsPageView()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+```cs
+// ViewModels/GridsPageViewModel.cs
+namespace AvaloniaFirstUIApp.ViewModels;
+
+public class GridsPageViewModel : ViewModelBase
+{
+
+}
+```
+
+<br/>
+
+#### Uniform Grids
+
+https://docs.avaloniaui.net/docs/reference/controls/uniform-grid
+
+<br/>
+
+#### Data Grids
+
+https://docs.avaloniaui.net/docs/reference/controls/datagrid/
+
+<br/>
+
+### Fluent UI - Custom Avalonia Styles
+
+https://www.youtube.com/watch?v=NnF6YRN4B5o&list=PLJYo8bcmfTDF6ROxC8QMVw9Zr_3Lx4Lgd&index=7&ab_channel=MammaMiaDev
+
+So far Avalonia has these built-in styles:
+
+- Official Avalonia Themes:
+  - Fluent
+  - Simple
+- Community Avalonia Themes:
+  - Material
+  - Semi
+  - Fluent Avalonia: https://github.com/amwx/FluentAvalonia
+
+<br/>
+
+## Avalonia Dependency Injection
+
+https://www.youtube.com/watch?v=q6lFGr2DeHQ&list=PLJYo8bcmfTDF6ROxC8QMVw9Zr_3Lx4Lgd&index=6&ab_channel=MammaMiaDev
+
+https://github.com/CommunityToolkit/Labs-Windows/discussions/463 with sample example code here https://github.com/stevemonaco/AvaloniaViewModelFirstDemos (using `Micosoft.Extensions.DependencyInjection`)
 
 <br/>
 
