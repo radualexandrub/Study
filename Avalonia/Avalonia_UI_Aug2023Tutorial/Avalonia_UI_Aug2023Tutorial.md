@@ -45,6 +45,9 @@ Table of Contents / ToC:
       - [Data Grids](#data-grids)
     - [Fluent UI - Custom Avalonia Styles](#fluent-ui---custom-avalonia-styles)
   - [Avalonia Dependency Injection](#avalonia-dependency-injection)
+  - [Avalonia Save to file (TODO App)](#avalonia-save-to-file-todo-app)
+    - [Complete Code for ToDo App with save to JSON file](#complete-code-for-todo-app-with-save-to-json-file)
+    - [Complete Code for ToDo App with save to XML file](#complete-code-for-todo-app-with-save-to-xml-file)
 
 <br/>
 
@@ -112,6 +115,8 @@ dotnet nuget list source
 #   1.  nuget.org [Enabled]
 #       https://api.nuget.org/v3/index.json
 ```
+
+Note: https://stackoverflow.com/questions/68445047/rider-selects-wrong-net-version
 
 <br/>
 
@@ -501,6 +506,8 @@ git branch "AvaloniaFirstApp-TODO-List-2025-05-10"
 git checkout "AvaloniaFirstApp-TODO-List-2025-05-10"
 git stash apply
 ```
+
+![Avalonia TODO List Example](./Avalonia_UI_ProjectTODOLIST_01_gif.gif)
 
 <br/>
 
@@ -3265,9 +3272,750 @@ https://github.com/CommunityToolkit/Labs-Windows/discussions/463 with sample exa
 
 <br/>
 
-<br/>
+## Avalonia Save to file (TODO App)
+
+Continuing from the above TODO List App, we can add a Save to file functionality/persistence.
+
+(Saturday, June 21, 2025, 13:21, Claude 4)
 
 <br/>
+
+> I have the following Avalonia 11 (using ReactiveUI) with .NET8 TODO App: <provide files> Can you please save the todo items to a file by implementing reading from file (creating if doesn't exist), updating the file when creating/deleting todo items, loading the todo items when starting the application if they exists in file?
+
+Will be added:
+
+- Automatic Loading: Tasks are loaded when the app starts
+- Automatic Saving: Tasks are saved whenever you:
+  - Add a new task
+  - Delete a task
+  - Check/uncheck a task
+- File Location: Tasks are saved in `Documents/AvaloniaToDoApp/tasks.json`
+- Error Handling: Gracefully handles file I/O errors
+- JSON Format: Uses System.Text.Json for serialization
+
+How it works:
+
+- On Startup: The `MainWindowViewModel` constructor calls `LoadTasksAsync()` to restore saved tasks
+- On Changes: The **reactive** subscriptions automatically trigger `SaveTasksAsync()` whenever the task collection or completion status changes
+- Storage: Uses async file operations to prevent UI blocking
+
+Writing the code:
+
+- First create `/Models/TodoItem.cs` for data model for JSON serialization:
+
+```cs
+// /Models/TodoItem.cs
+using System.Text.Json.Serialization;
+
+namespace AvaloniaFirstUIApp.Models;
+
+public class TodoItem
+{
+    [JsonPropertyName("title")]
+    public string Title { get; set; } = string.Empty;
+
+    [JsonPropertyName("isCompleted")]
+    public bool IsCompleted { get; set; }
+
+    public TodoItem() { }
+
+    public TodoItem(string title, bool isCompleted = false)
+    {
+        Title = title;
+        IsCompleted = isCompleted;
+    }
+}
+```
+
+- Create `/Services/TodoStorageService.cs` to handle reading/writing to JSON file
+
+```cs
+// /Services/TodoStorageService.cs
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+using AvaloniaFirstUIApp.Models;
+
+namespace AvaloniaFirstUIApp.Services;
+
+public class TodoStorageService
+{
+    private readonly string _filePath;
+    private readonly JsonSerializerOptions _jsonOptions;
+
+    public TodoStorageService()
+    {
+        // Store the file in the user's Documents folder or AppData
+        var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        _filePath = Path.Combine(documentsPath, "AvaloniaToDoApp", "tasks.json");
+
+        // Ensure directory exists
+        var directory = Path.GetDirectoryName(_filePath);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory!);
+        }
+
+        _jsonOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+    }
+
+    public async Task<List<TodoItem>> LoadTasksAsync()
+    {
+        try
+        {
+            if (!File.Exists(_filePath))
+            {
+                return new List<TodoItem>();
+            }
+
+            var json = await File.ReadAllTextAsync(_filePath);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                return new List<TodoItem>();
+            }
+
+            var tasks = JsonSerializer.Deserialize<List<TodoItem>>(json, _jsonOptions);
+            return tasks ?? new List<TodoItem>();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception in a real app
+            Console.WriteLine($"Error loading tasks: {ex.Message}");
+            return new List<TodoItem>();
+        }
+    }
+
+    public async Task SaveTasksAsync(IEnumerable<TodoItem> tasks)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(tasks, _jsonOptions);
+            await File.WriteAllTextAsync(_filePath, json);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception in a real app
+            Console.WriteLine($"Error saving tasks: {ex.Message}");
+        }
+    }
+
+    public string GetStoragePath() => _filePath;
+}
+```
+
+- Update `ViewModels/TodoItemViewModel.cs` to add a constructor for loading from storage and ToModel() method
+
+```cs
+// ViewModels/TodoItemViewModel.cs
+using ReactiveUI;
+using System;
+using System.Reactive;
+using AvaloniaFirstUIApp.Models;
+
+namespace AvaloniaFirstUIApp.ViewModels;
+
+public class TodoItemViewModel : ReactiveObject
+{
+    public string Title { get; }
+
+    private bool _isCompleted;
+    public bool IsCompleted
+    {
+        get => _isCompleted;
+        set => this.RaiseAndSetIfChanged(ref _isCompleted, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
+
+    public TodoItemViewModel(string title, Action<TodoItemViewModel> onDelete)
+    {
+        Title = title;
+        DeleteCommand = ReactiveCommand.Create(() => onDelete?.Invoke(this));
+    }
+
+    // Constructor for loading from storage
+    public TodoItemViewModel(TodoItem todoItem, Action<TodoItemViewModel> onDelete)
+    {
+        Title = todoItem.Title;
+        _isCompleted = todoItem.IsCompleted;
+        DeleteCommand = ReactiveCommand.Create(() => onDelete?.Invoke(this));
+    }
+
+    // Convert to model for saving
+    public TodoItem ToModel()
+    {
+        return new TodoItem(Title, IsCompleted);
+    }
+}
+```
+
+- Update `ViewModels/MainWindowViewModel.cs` to load tasks from storage and save tasks to storage
+
+```cs
+// ViewModels/MainWindowViewModel.cs
+using System;
+using ReactiveUI;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Linq;
+using DynamicData;
+using DynamicData.Binding;
+using System.Threading.Tasks;
+using AvaloniaFirstUIApp.Services;
+using AvaloniaFirstUIApp.Models;
+
+namespace AvaloniaFirstUIApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private readonly TodoStorageService _storageService;
+    private string _newTaskTitle = string.Empty;
+
+    public string NewTaskTitle
+    {
+        get => _newTaskTitle;
+        set => this.RaiseAndSetIfChanged(ref _newTaskTitle, value);
+    }
+
+    public ObservableCollection<TodoItemViewModel> Tasks { get; set; } = new();
+
+    public ReactiveCommand<Unit, Unit> AddTaskCommand { get; }
+
+    public int CompletedCount => Tasks.Count(t => t.IsCompleted);
+    public int PendingCount => Tasks.Count(t => !t.IsCompleted);
+
+    public MainWindowViewModel()
+    {
+        _storageService = new TodoStorageService();
+
+        // Setup reactive bindings for count updates
+        this.WhenAnyValue(x => x.Tasks.Count)
+            .Subscribe(_ => this.RaisePropertyChanged(nameof(PendingCount)));
+
+        Tasks
+            .ToObservableChangeSet()
+            .AutoRefresh(t => t.IsCompleted)
+            .Subscribe(async _ =>
+            {
+                this.RaisePropertyChanged(nameof(CompletedCount));
+                this.RaisePropertyChanged(nameof(PendingCount));
+
+                // Save to file whenever completion status changes
+                await SaveTasksAsync();
+            });
+
+        var canAdd = this.WhenAnyValue(x => x.NewTaskTitle, title => !string.IsNullOrWhiteSpace(title));
+
+        AddTaskCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var newTask = new TodoItemViewModel(NewTaskTitle, RemoveTask);
+            Tasks.Add(newTask);
+            NewTaskTitle = string.Empty;
+
+            // Save to file after adding
+            await SaveTasksAsync();
+        }, canAdd);
+
+        // Load tasks when the ViewModel is created
+        _ = LoadTasksAsync();
+    }
+
+    private async void RemoveTask(TodoItemViewModel task)
+    {
+        Tasks.Remove(task);
+        this.RaisePropertyChanged(nameof(CompletedCount));
+        this.RaisePropertyChanged(nameof(PendingCount));
+
+        // Save to file after removing
+        await SaveTasksAsync();
+    }
+
+    private async Task LoadTasksAsync()
+    {
+        try
+        {
+            var todoItems = await _storageService.LoadTasksAsync();
+
+            // Clear existing tasks and add loaded ones
+            Tasks.Clear();
+            foreach (var item in todoItems)
+            {
+                Tasks.Add(new TodoItemViewModel(item, RemoveTask));
+            }
+        }
+        catch (Exception ex)
+        {
+            // In a real app, you might want to show this error to the user
+            Console.WriteLine($"Error loading tasks: {ex.Message}");
+        }
+    }
+
+    private async Task SaveTasksAsync()
+    {
+        try
+        {
+            var todoItems = Tasks.Select(vm => vm.ToModel()).ToList();
+            await _storageService.SaveTasksAsync(todoItems);
+        }
+        catch (Exception ex)
+        {
+            // In a real app, you might want to show this error to the user
+            Console.WriteLine($"Error saving tasks: {ex.Message}");
+        }
+    }
+
+    // Optional: Method to get the storage path for debugging
+    public string GetStoragePath() => _storageService.GetStoragePath();
+}
+```
+
+- JSON file example
+
+```json
+// C:\Users\radu\Documents\AvaloniaToDoApp\tasks.json
+[
+  {
+    "title": "Learn Avalonia",
+    "isCompleted": false
+  },
+  {
+    "title": "Cook rice",
+    "isCompleted": true
+  }
+]
+```
+
+![Avalonia 11 ReactiveUI TODO App with Save to storage](./Avalonia_UI_ProjectTODOLIST_02_saveToFile.jpg)
+
+<br/>
+
+### Complete Code for ToDo App with save to JSON file
+
+The rest of the code:
+
+```cs
+// Program.cs
+using Avalonia;
+using System;
+using Avalonia.ReactiveUI;
+
+namespace AvaloniaFirstUIApp;
+
+sealed class Program
+{
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace()
+            .UseReactiveUI();
+}
+```
+
+```xml
+<!-- App.axaml -->
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaFirstUIApp.App"
+             xmlns:local="using:AvaloniaFirstUIApp"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>
+```
+
+```cs
+// App.axaml.cs
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Markup.Xaml;
+using AvaloniaFirstUIApp.ViewModels;
+using AvaloniaFirstUIApp.Views;
+
+namespace AvaloniaFirstUIApp;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit.
+            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    /// <summary>
+    /// Disables Avalonia's default data annotation validation by removing the
+    /// <see cref="DataAnnotationsValidationPlugin"/> from the list of active data validation plugins.
+    /// This is useful to avoid conflicts with other validation mechanisms, such as the CommunityToolkit.
+    /// </summary>
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove by filtering for DataAnnotationsValidationPlugin
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // Iterate through the plugins and remove each one from the DataValidators collection
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+}
+```
+
+```xml
+<!-- MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaFirstUIApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
+        x:Class="AvaloniaFirstUIApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Avalonia TODO App with ReactiveUI"
+        Width="400"
+        Height="400">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <!-- We can have only 1 UI Element/Control per Window/Content -->
+    <StackPanel Margin="20" Spacing="10">
+
+        <TextBox Text="{Binding NewTaskTitle, Mode=TwoWay}"
+                 Watermark="New task name" />
+        <Button Content="Add Task" Command="{Binding AddTaskCommand}" />
+
+        <ItemsControl ItemsSource="{Binding Tasks}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:TodoItemViewModel">
+                    <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center" Margin="0,2">
+                        <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}" VerticalAlignment="Center" />
+                        <SelectableTextBlock Grid.Column="1"
+                                             Text="{Binding Title}"
+                                             VerticalAlignment="Center"
+                                             Margin="5,0" />
+                        <Button Grid.Column="2"
+                                Content="❌"
+                                Command="{Binding DeleteCommand}"
+                                ToolTip.Tip="Delete task"
+                                Background="Transparent"
+                                HorizontalAlignment="Right" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+            <TextBlock Text="Pending:"/>
+            <TextBlock Text="{Binding PendingCount}" />
+            <TextBlock Text="Completed:"/>
+            <TextBlock Text="{Binding CompletedCount}" />
+        </StackPanel>
+
+    </StackPanel>
+
+</Window>
+```
+
+```cs
+// MainWindow.axaml.cs
+using Avalonia.Controls;
+
+namespace AvaloniaFirstUIApp.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+```cs
+// ViewModels/MainWindowViewModel.cs
+// Update above
+```
+
+```cs
+// ViewModels/ToDoItemViewModel.cs
+// Update above
+```
+
+```cs
+// /Models/TodoItem.cs
+// Created Above
+```
+
+```cs
+// /Services/TodoStorageService.cs
+// Created above
+```
+
+```cs
+// ViewModels/ViewModelBase - used in ViewLocator
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace AvaloniaFirstUIApp.ViewModels;
+
+public class ViewModelBase : ObservableObject
+{
+}
+```
+
+```cs
+// ViewLocator.cs
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using AvaloniaFirstUIApp.ViewModels;
+
+namespace AvaloniaFirstUIApp;
+
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? param)
+    {
+        if (param is null)
+            return null;
+
+        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            return (Control)Activator.CreateInstance(type)!;
+        }
+
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+```
+
+<br/>
+
+### Complete Code for ToDo App with save to XML file
+
+(Sunday, June 22, 2025, 16:00)
+
+To use storage system to use XML instead of JSON, we can change from above code the following:
+
+- Update `TodoItem.cs` to use `XmlSerializer` attributes instead of `JsonPropertyName`
+
+```cs
+// Models/TodoList.cs
+using System.Xml.Serialization;
+
+namespace AvaloniaFirstUIApp.Models;
+
+[XmlRoot("TodoItem")]
+public class TodoItem
+{
+    [XmlElement("Title")]
+    public string Title { get; set; } = string.Empty;
+
+    [XmlElement("IsCompleted")]
+    public bool IsCompleted { get; set; }
+
+    public TodoItem() { }
+
+    public TodoItem(string title, bool isCompleted = false)
+    {
+        Title = title;
+        IsCompleted = isCompleted;
+    }
+}
+```
+
+- Create `TodoList.cs` Container as a new wrapper class needed for XML serialization of collections
+
+```cs
+// Models/TodoList.cs
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace AvaloniaFirstUIApp.Models;
+
+[XmlRoot("TodoList")]
+public class TodoList
+{
+    [XmlElement("TodoItem")]
+    public List<TodoItem> Items { get; set; } = new();
+
+    public TodoList() { }
+
+    public TodoList(IEnumerable<TodoItem> items)
+    {
+        Items = new List<TodoItem>(items);
+    }
+}
+```
+
+- Rewrite and update `TodoStorageService.cs` to use `XmlSerializer` instead of` System.Text.Json` and fix file access conflicts
+  - use `await Task.Run()` to run the synchronous XML operations on a background thread (makes XML serialization asynchronous)
+  - add SemaphoreSlim: `_fileLock` to ensure only one file operation happens at a time - 🚦 the semaphore prevents concurrent file access that was causing the "file being used by another process" error
+  - for Proper File Sharing, add `FileShare.Read` for loading and `FileShare.None` for saving
+  - for Lock Protection: all file operations are wrapped in `await _fileLock.WaitAsync()` with proper finally cleanup
+  - operations are properly queued when multiple save/load operations happen quickly
+
+```cs
+// Services/TodoStorageService.cs
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using System.Threading;
+using AvaloniaFirstUIApp.Models;
+
+namespace AvaloniaFirstUIApp.Services;
+
+public class TodoStorageService
+{
+    private readonly string _filePath;
+    private readonly XmlSerializer _xmlSerializer;
+    private readonly SemaphoreSlim _fileLock = new(1, 1);
+
+    public TodoStorageService()
+    {
+        // Store the file in the user's Documents folder or AppData
+        var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        _filePath = Path.Combine(documentsPath, "AvaloniaToDoApp", "tasks.xml");
+        
+        // Ensure directory exists
+        var directory = Path.GetDirectoryName(_filePath);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory!);
+        }
+
+        _xmlSerializer = new XmlSerializer(typeof(TodoList));
+    }
+
+    public async Task<List<TodoItem>> LoadTasksAsync()
+    {
+        await _fileLock.WaitAsync();
+        try
+        {
+            if (!File.Exists(_filePath))
+            {
+                return new List<TodoItem>();
+            }
+
+            return await Task.Run(() =>
+            {
+                using var fileStream = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var todoList = (TodoList?)_xmlSerializer.Deserialize(fileStream);
+                return todoList?.Items ?? new List<TodoItem>();
+            });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception in a real app
+            Console.WriteLine($"Error loading tasks: {ex.Message}");
+            return new List<TodoItem>();
+        }
+        finally
+        {
+            _fileLock.Release();
+        }
+    }
+
+    public async Task SaveTasksAsync(IEnumerable<TodoItem> tasks)
+    {
+        await _fileLock.WaitAsync();
+        try
+        {
+            var todoList = new TodoList(tasks);
+            
+            await Task.Run(() =>
+            {
+                using var fileStream = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                _xmlSerializer.Serialize(fileStream, todoList);
+            });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception in a real app
+            Console.WriteLine($"Error saving tasks: {ex.Message}");
+        }
+        finally
+        {
+            _fileLock.Release();
+        }
+    }
+
+    public string GetStoragePath() => _filePath;
+}
+```
+
+The rest of the code is the same as the above.
+
+The `tasks.xml` file will look like this:
+
+```xml
+<!-- C:\Users\radu\Documents\AvaloniaToDoApp\tasks.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<TodoList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TodoItem>
+    <Title>change plant water</Title>
+    <IsCompleted>true</IsCompleted>
+  </TodoItem>
+  <TodoItem>
+    <Title>add pizza to oven</Title>
+    <IsCompleted>false</IsCompleted>
+  </TodoItem>
+</TodoList>
+```
 
 <br/>
 
