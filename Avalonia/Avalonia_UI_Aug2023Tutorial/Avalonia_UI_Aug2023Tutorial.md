@@ -10,7 +10,10 @@ Credits / Notes taken from:
 Table of Contents / ToC:
 
 - [Avalonia UI Tutorial Project](#avalonia-ui-tutorial-project)
-  - [.NET Setup on WINDOWS](#net-setup-on-windows)
+  - [.NET Setup on Windows](#net-setup-on-windows)
+  - [.NET Setup on Debian using VBox](#net-setup-on-debian-using-vbox)
+    - [Short: Differences between VirtualBox and Hyper-V Manager](#short-differences-between-virtualbox-and-hyper-v-manager)
+    - [Short: Differences between Docker w/o WSL2](#short-differences-between-docker-wo-wsl2)
   - [.NET Avalonia Project Setup](#net-avalonia-project-setup)
     - [Install Avalonia UI Templates](#install-avalonia-ui-templates)
     - [Create Avalonia .NET MVVM Project](#create-avalonia-net-mvvm-project)
@@ -99,7 +102,7 @@ Here's a comprehensive table detailing the major .NET versions, their release da
 
 <br/>
 
-## .NET Setup on WINDOWS
+## .NET Setup on Windows
 
 Download .NET 8 (as of April 2025) from here https://dotnet.microsoft.com/en-us/download
 
@@ -137,6 +140,241 @@ Download JetBrains Rider IDE ( https://www.jetbrains.com/rider/download/#section
 > - In JetBrain Rider we can disable going to external sources while debugging
 >
 > ![Rider Disable External Sources Debugging](./Jetbrains_Rider_DisableExternalSourcesDebugging.jpg)
+
+<br/>
+
+## .NET Setup on Debian using VBox
+
+Install Virtual Box and Debian 12 ISO. System requirements for small side projects will be something like:
+
+- 4GB RAM
+- 30-40GB Storage
+- 128MB Video Memory (needs to be set in VBox after OS installation)
+
+<br/>
+
+After Debian OS installation on Vbox:
+
+- Enable SSH Root Login
+
+```bash
+# Change user to root
+su
+
+# Install ssh
+sudo apt install ssh -y
+
+# Edit sshd_config
+sudo nano /etc/ssh/sshd_config
+
+# Edit this line as
+PermitRootLogin yes
+
+# Save the file with CTRL+O then exit CTRL+X
+
+# Restart ssh service
+sudo systemctl restart ssh
+```
+
+- On VirtualBox, to SSH into Debian VM from Windows Host (steps from https://dev.to/developertharun/easy-way-to-ssh-into-virtualbox-machine-any-os-just-x-steps-5d9i):
+
+  - In VirtualBox, open Devices > Network > Network Settings (for your VM)
+  - Click on Port Forwarding and add:
+    - Name: ssh
+    - Protocol: TCP
+    - HostPort: 3022
+    - GuestPort: 22
+  - Installing SSH (steps already done above)
+    - On Debian VM, run `su` and `sudo apt install ssh`
+    - On Debian VM, run `su` and `sudo nano /etc/ssh/sshd_config`, edit `PermitRootLogin yes` and run `sudo systemctl restart ssh`
+  - On Windows Host, run from terminal `ssh -p 3022 root@127.0.0.1`
+  - You can also SSH now into an Avalonia Project Folder (within VM via VirtualBox) directly from VS Code by remotig to `root@127.0.0.1:3022`
+
+- You may install WinSCP on Windows host machine to connect as root to the Debian VM
+
+![VirtualBox - SSH into Debian VM from Windows Host](./VirtualBox_SSHfromHostToVM.jpg)
+
+- On VirtualBox, you may also add a shared directory between Windows Host PC and VM Debian (steps from https://serverfault.com/questions/674974/how-to-mount-a-virtualbox-shared-folder):
+
+  - In VirtualBox, open Devices > Shared Folders > Shared Folder Settings (for your Debian VM) and add your shared directory from Windows Host
+    - The folder should be added under "Machine Folders" (as "Transient Folders" will keep the shared folder only for this shared session)
+  - The name will be by default the folder's name and it will be used in the mounting command (e.g. `VirtualBoxShared`)
+  - Make the mount point as `/home/radu/share`
+  - In Debian VM, run:
+
+  ```bash
+  su
+
+  cd /home/radu
+  mkdir share
+
+  sudo mount -t vboxsf VirtualBoxShared /home/radu/share
+
+  cd /home/radu/share
+  xdg-open .
+  ```
+
+- Disable automatic suspend / sleep by going to Settings > Power > Screen Blank > "Never" ( https://askubuntu.com/questions/473037/how-to-permanently-disable-sleep-suspend ), then run:
+
+```bash
+# From https://wiki.debian.org/Suspend
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
+- Set full permissions to user for home directory
+
+```bash
+echo ~
+# /home/radu
+
+su
+echo ~
+# /root
+
+chown -R radu /home/radu
+chmod -R u+rX /home/radu
+```
+
+<br/>
+
+Install .NET 8 on Debian VM on Virtual Box (while not connected to any VPN):
+
+```bash
+# Update packages and install dependencies
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y wget apt-transport-https gnupg
+
+# Add Microsoft Package Repository
+wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+
+# Update Package List
+sudo apt update
+
+# Install .NET 8 SDK
+sudo apt install -y dotnet-sdk-8.0
+
+# Check .NET SDK version
+dotnet --version
+# 8.0.411
+```
+
+To run .NET 8 apps on Debian VM, we can use the following command:
+
+```bash
+dotnet build
+
+# Note: dotnet build is optional
+# as we can build and run the project directly with
+
+dotnet run
+```
+
+<br/>
+
+Install GIT
+
+```bash
+sudo apt install git -y
+
+git -v
+# git version 2.39.5
+```
+
+<br/>
+
+### Short: Differences between VirtualBox and Hyper-V Manager
+
+**Hyper-V: Type 1 hypervisor (bare-metal-like)**, replaces parts of Windows networking, especially when virtualization is enabled in BIOS. Once active, it manages the networking stack more directly and often breaks VPN connectivity or WSL2 unless carefully configured.
+
+- 🧩 **Architecture**: Runs at the kernel level as a **bare-metal hypervisor**, with Windows acting as a "management OS".
+- ⚡ **Performance**: **High performance**, close to native — ideal for production-grade VMs.
+- 🔄 **Parallel OS Behavior**: Acts like a lightweight separate OS running **alongside** Windows.
+- 📡 **Networking**: Requires **virtual switches** (e.g., "Default Switch", "External", "Internal") — not always intuitive to set up.
+- 🔒 **VPN Compatibility**: Often **incompatible with VPN clients like Cisco AnyConnect**; the VPN tunnel doesn't easily extend into Hyper-V VMs. It can work with Pulse Secure VPN.
+- 💥 **System Impact**: Can conflict with WSL2, Docker, and cause networking issues if misconfigured (e.g., disabled virtual adapters, boot loops).
+- 🖥️ **Hardware Virtualization**: Requires VT-x/AMD-V enabled in BIOS and may enforce system-wide changes.
+
+**VirtualBox: Type 2 hypervisor**, runs as a regular application inside Windows — inherits network interfaces from the host and works well with VPNs out of the box in many cases.
+
+- 🧩 **Architecture**: Runs **as an application inside the host OS (Windows/Linux/macOS)** — uses the host's OS and resources. Note: While VirtualBox does emulate some hardware components like hard disk controllers, it doesn't emulate the CPU in the way that emulators like QEMU do.
+- 🐢 **Performance**: **Slightly slower** than Hyper-V due to running on top of another OS layer (user space).
+- 🌉 **Networking**: Supports NAT, Bridged, Host-only networking — more flexible and often easier to set up.
+- ✅ **VPN Compatibility**: **Works seamlessly with host-side VPNs** — the VM uses the same network stack as the host.
+- 🚫 **System Impact**: Minimal — doesn't interfere with WSL2, Docker, or network drivers.
+- 💡 **Best Use Case**: Great for developers who need compatibility with VPNs, flexible setups, and cross-platform portability.
+
+<br/>
+
+### Short: Differences between Docker w/o WSL2
+
+1. **Docker with WSL2 (Recommended for Modern Windows Setups)**
+
+- 🧩 **Architecture**: Uses a **lightweight Linux kernel** running inside WSL2 (Windows Subsystem for Linux v2).
+- 🔧 **Windows Features Required**:
+  - “Windows Subsystem for Linux”
+  - “Virtual Machine Platform”
+- 📦 **Docker Desktop** uses WSL2 back-end instead of Hyper-V.
+- ⚙️ **Integration**:
+  - Runs Linux containers natively within WSL2 distros.
+  - Great integration with WSL2 distros (e.g., Ubuntu).
+- 💻 **Performance**: **Much faster** than Hyper-V setup; near-native filesystem access and I/O.
+- ✅ **VPN Compatibility**: **Works well with most VPNs** (no virtual switches).
+- 📂 **File Access**: Seamless access between Windows and WSL2 file systems.
+- 🔋 **Lightweight**: Consumes fewer resources than full Hyper-V VM.
+
+> 💡 **Best choice** for modern development workflows on Windows.
+
+<br/>
+
+2. **Docker without WSL2 (Uses Hyper-V Backend)**
+
+- 🧩 **Architecture**: Docker runs in a **LinuxKit VM** inside **Hyper-V**.
+- 🔧 **Windows Features Required**:
+  - “Hyper-V”
+  - “Containers”
+- 🖥️ **Runs in a hidden VM** that hosts the Docker daemon.
+- 🧱 **Networking**: Uses a **Hyper-V virtual switch** (Default Switch or NAT).
+- ❌ **VPN Conflicts**: Many VPNs (e.g., Cisco AnyConnect) **do not work** well — Docker loses external access or can't connect to services.
+- 🐢 **Performance**: Slower than WSL2 — VM-based setup incurs higher resource and I/O overhead.
+- 🔐 **Restricted File Sharing**: Sharing files between host and container can be slower and more error-prone.
+
+> ⚠️ Use this only if **WSL2 is unavailable** (older Windows versions or specific enterprise restrictions).
+
+<br/>
+
+3. **Docker on Native Linux**
+
+- 🧩 **Architecture**: Docker daemon runs directly on the **host Linux kernel**.
+- ✅ **No virtualization**: No WSL, no Hyper-V, no extra layers — **fastest and most stable setup**.
+- ⚙️ **Simple installation**:
+  ```bash
+  sudo apt install docker.io
+  sudo systemctl start docker
+  sudo usermod -aG docker $USER
+  ```
+- 📡 **Full network control**: No VPN or DNS conflicts.
+- 💻 **Performance**: **Best possible performance** — native kernel features, no emulation or bridging.
+- 🧪 **Reliability**: Ideal for production or real Linux dev environments.
+
+> 🚀 This is **what Docker was originally built for** — cleanest, fastest, most trouble-free experience.
+
+<br/>
+
+🔚 Summary Table
+
+| Feature                   | Docker on WSL2      | Docker on Hyper-V     | Docker on Linux     |
+| ------------------------- | ------------------- | --------------------- | ------------------- |
+| Kernel Layer              | WSL2 Kernel (Linux) | Hyper-V VM (LinuxKit) | Native Linux Kernel |
+| Performance               | ✅ Good             | ❌ Slower             | 🏆 Best             |
+| VPN Compatibility         | ✅ Works            | ❌ Often Broken       | ✅ Fully Compatible |
+| Required Windows Features | WSL2, VM Platform   | Hyper-V, Containers   | None                |
+| File Sharing              | ✅ Smooth           | ⚠️ Slower             | ✅ Native FS        |
+| Setup Complexity          | Medium              | Higher                | Simple              |
+| Best Use Case             | Dev on Win10+/11    | Legacy Windows        | Dev/Prod on Linux   |
+
+(ChatGPT 4.5 Free, info must be verified...)
 
 <br/>
 
@@ -3852,7 +4090,7 @@ To use storage system to use XML instead of JSON, we can change from above code 
 - Update `TodoItem.cs` to use `XmlSerializer` attributes instead of `JsonPropertyName`
 
 ```cs
-// Models/TodoList.cs
+// Models/TodoItem.cs
 using System.Xml.Serialization;
 
 namespace AvaloniaFirstUIApp.Models;
@@ -3930,7 +4168,7 @@ public class TodoStorageService
         // Store the file in the user's Documents folder or AppData
         var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         _filePath = Path.Combine(documentsPath, "AvaloniaToDoApp", "tasks.xml");
-        
+
         // Ensure directory exists
         var directory = Path.GetDirectoryName(_filePath);
         if (!Directory.Exists(directory))
@@ -3976,7 +4214,7 @@ public class TodoStorageService
         try
         {
             var todoList = new TodoList(tasks);
-            
+
             await Task.Run(() =>
             {
                 using var fileStream = new FileStream(_filePath, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -4018,6 +4256,35 @@ The `tasks.xml` file will look like this:
 ```
 
 <br/>
+
+Note: The above save to XML file works out of the box (without any code changes) on Debian Linux as well.
+
+- `Environment.SpecialFolder.MyDocuments` in code is mapped to `$HOME/Documents` on Debian Linux.
+- If you are running the app as root, the path to the XML file is `/root/Documents/AvaloniaToDoApp/tasks.xml`
+- If you are running the app as a regular user, the path to the XML file is `/home/radu/Documents/AvaloniaToDoApp/tasks.xml`
+
+  - To be able to run the app as a regular user, add all permissions to project folders and files as follows:
+
+  ```bash
+  su
+  cd /home/radu/share/AvaloniaFirstUIApp
+  chown -R radu .
+  chmod -R u+rX .
+
+  CTRL+D # to exit root
+  cd /home/radu/share/AvaloniaFirstUIApp/AvaloniaFirstUIApp
+  dotnet run
+  ```
+
+![TODO App with save to XML](./Avalonia_UI_ProjectTODOLIST_02_saveToFileOnLinux.jpg)
+
+- The cross-platform compatibility works because:
+  - `.NET's Environment.SpecialFolder` automatically maps to the appropriate OS-specific directories
+  - Avalonia handles UI rendering across different platforms
+  - `System.Xml.Serialization` is part of the base .NET runtime and works identically across platforms
+  - File I/O operations use the same APIs regardless of the underlying filesystem
+
+Pretty cool that your TODO app now runs on both Windows and Linux with the same codebase! 🎉
 
 <br/>
 
