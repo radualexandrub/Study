@@ -4288,9 +4288,460 @@ Pretty cool that your TODO app now runs on both Windows and Linux with the same 
 
 <br/>
 
-<br/>
+## Avalonia Popup to close the application
+
+(Wednesday, July 09, 2025, 19:47)
+
+![Avalonia Close Application](./Avalonia_CloseApplication.gif)
+
+### Initializing a new Avalonia project
+
+We can start from scratch a new Avalonia Project / Application:
+
+```bash
+dotnet --version
+# 8.0.411
+
+dotnet new install Avalonia.Templates
+
+dotnet new avalonia.mvvm -n AvaloniaTestApp
+
+cd ./AvaloniaTestApp
+
+echo '{"sdk": { "version": "8.0.409" }}' > global.json
+
+# Note, in AvaloniaTestApp.csproj
+# Change from <TargetFramework>net9.0</TargetFramework>
+# To
+# <TargetFramework>net8.0</TargetFramework>
+
+dotnet add package Avalonia.ReactiveUI
+
+# Open the project with JetBrains Rider
+# ...
+
+# Initialize version control 
+git init
+
+# Create .gitignore specific to this project
+dotnet new gitignore 
+
+# Commit
+git add -A
+git commit -m "First commit / git init"
+```
 
 <br/>
+
+Based on this very simple .NET8 Avalonia 11.3.2 using ReactiveUI Application, containing the current files:
+
+```cs
+// Program.cs
+using Avalonia;
+using System;
+using Avalonia.ReactiveUI;
+
+namespace AvaloniaTestApp;
+
+sealed class Program
+{
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace()
+            .UseReactiveUI();
+}
+```
+
+```cs
+// ViewLocator.cs
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using AvaloniaTestApp.ViewModels;
+
+namespace AvaloniaTestApp;
+
+public class ViewLocator : IDataTemplate
+{
+
+    public Control? Build(object? param)
+    {
+        if (param is null)
+            return null;
+        
+        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            return (Control)Activator.CreateInstance(type)!;
+        }
+        
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+```
+
+```xml
+<!-- App.axaml -->
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaTestApp.App"
+             xmlns:local="using:AvaloniaTestApp"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>
+```
+
+```cs
+// App.axaml.cs
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Markup.Xaml;
+using AvaloniaTestApp.ViewModels;
+using AvaloniaTestApp.Views;
+
+namespace AvaloniaTestApp;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+}
+```
+
+And most important:
+
+```xml
+<!-- Views/MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="500"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaTestApp">
+    
+    <StackPanel Margin="20" Spacing="10">
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" Watermark="Enter your name" />
+        <Button Content="Greet" Command="{Binding GreetCommand}" />
+        <TextBlock Text="{Binding GreetingMessage}" FontWeight="Bold" />
+    </StackPanel>
+
+</Window>
+```
+
+```cs
+// Views/MainWindow.axaml.cs
+using Avalonia.Controls;
+
+namespace AvaloniaTestApp.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+```cs
+// ViewModels / MainWindowViewModel.cs
+using System.Reactive;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private string _userName;
+    public string UserName
+    {
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+
+    private string _greetingMessage;
+    public string GreetingMessage
+    {
+        get => _greetingMessage;
+        private set => this.RaiseAndSetIfChanged(ref _greetingMessage, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> GreetCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        GreetCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? "Hello, stranger!"
+                : $"Hello, {UserName}!";
+        });
+    }
+}
+```
+
+Let's create a simple new button in `MainWindow.axaml` (`MainWindowViewModel.cs`) that would open a separate new popup window with a "Please close and reopen the application for settings to be applied" text and two buttons "Close" and "Cancel". When user clicks on "Close", the application (all thread related to this Avalonia App) should be terminated.
+
+<br/>
+
+### Add popup window and close the app
+
+Update `MainWindow.axaml` to add a new `ApplySettings` button that binds to `OpenApplySettingsCommand`
+
+```xml
+<!-- MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="500"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaTestApp">
+    
+    <StackPanel Margin="20" Spacing="10">
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" Watermark="Enter your name" />
+        <Button Content="Greet" Command="{Binding GreetCommand}" />
+        <TextBlock Text="{Binding GreetingMessage}" FontWeight="Bold" />
+        <Button Content="Apply Settings" 
+                Command="{Binding OpenApplySettingsCommand}" />
+    </StackPanel>
+
+</Window>
+```
+
+Update `MainWindowViewModel.cs` to implement `OpenApplySettingsCommand` that creates and shows the apply settings window
+
+```cs
+// ViewModels/MainWindowViewModel.cs
+using System.Reactive;
+using ReactiveUI;
+using AvaloniaTestApp.Views;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private string _userName;
+    public string UserName
+    {
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+
+    private string _greetingMessage;
+    public string GreetingMessage
+    {
+        get => _greetingMessage;
+        private set => this.RaiseAndSetIfChanged(ref _greetingMessage, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> GreetCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenApplySettingsCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        GreetCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? "Hello, stranger!"
+                : $"Hello, {UserName}!";
+        });
+
+        OpenApplySettingsCommand = ReactiveCommand.Create(() =>
+        {
+            var applySettingsWindow = new ApplySettingsWindow();
+            applySettingsWindow.DataContext = new ApplySettingsWindowViewModel(applySettingsWindow);
+            applySettingsWindow.Show();
+        });
+    }
+}
+```
+
+Create `ApplySettingsWindow.axaml` as a new popup window with:
+
+```xml
+<!-- Views/ApplySettingsWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+        x:Class="AvaloniaTestApp.Views.ApplySettingsWindow"
+        x:DataType="vm:ApplySettingsWindowViewModel"
+        Width="400"
+        Height="120"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Title="Settings">
+    
+    <StackPanel Margin="20" Spacing="20">
+        <TextBlock Text="Please close and reopen the application for settings to be applied." 
+                   TextWrapping="Wrap" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" />
+        
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    Spacing="10">
+            <Button Content="Close" 
+                    Command="{Binding CloseAppCommand}" 
+                    Width="80" 
+                    Height="30" />
+            <Button Content="Cancel" 
+                    Command="{Binding CancelCommand}" 
+                    Width="80" 
+                    Height="30" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>
+```
+
+```cs
+// Views/ApplySettingsWindow.axaml.cs
+using Avalonia.Controls;
+
+namespace AvaloniaTestApp.Views;
+
+public partial class ApplySettingsWindow : Window
+{
+    public ApplySettingsWindow()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+Create `SettingsWindowViewModel.cs` ViewModel with:
+- `CloseAppCommand` that closes the settings window and terminates the entire application using Avalonia's `desktop.Shutdown(0);` (or we can forcefully shut down the application using `Environment.Exit(0)`)
+- `CancelCommand` that simply closes the settings window
+
+```cs
+// ViewModels/ApplySettingsWindowViewModel.cs
+using System;
+using System.Reactive;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class ApplySettingsWindowViewModel : ReactiveObject
+{
+    private readonly Window _window;
+
+    public ReactiveCommand<Unit, Unit> CloseAppCommand { get; }
+    public ReactiveCommand<Unit, Unit> CancelCommand { get; }
+
+    public ApplySettingsWindowViewModel(Window window)
+    {
+        _window = window;
+        
+        CloseAppCommand = ReactiveCommand.Create(() =>
+        {
+            // Close the settings window first
+            _window.Close();
+            
+            // Graceful shutdown through Avalonia's application lifetime
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                Console.WriteLine("Closing application gracefully.");
+                desktop.Shutdown(0);
+            }
+            else
+            {
+                // Fallback for other lifetime types
+                Environment.Exit(0);
+            }
+        });
+
+        CancelCommand = ReactiveCommand.Create(() =>
+        {
+            _window.Close();
+        });
+    }
+}
+```
+
+The key features:
+- The Settings button opens a new popup window
+- The popup is modal and centered on the parent window
+- "Close" button terminates the entire application
+- "Cancel" button just closes the popup
+
+When clicking "Close", `Environment.Exit(0)` will terminate all threads related to the Avalonia application.
 
 <br/>
 

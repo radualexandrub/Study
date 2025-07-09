@@ -2454,6 +2454,8 @@ find . -name {{'*.backup'}} -print0 | xargs -0 rm -v
 
 - When viewing a detailed list of files (with `ls -lah`), the first 10 characters of every file represents the file type (`-` for file, `d` for directory, and `l` for symbolic link / "shortcuts")
 
+![](./Top-Linux-Commands-imgs/ls_file_permissions.jpg)
+
 ![](./Top-Linux-Commands-imgs/permissions01.jpg)
 
 - The next 9 characters (3 groups of 3 characters each) represents the following:
