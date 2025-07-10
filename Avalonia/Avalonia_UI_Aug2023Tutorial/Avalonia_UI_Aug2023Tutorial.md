@@ -4397,6 +4397,19 @@ public class ViewLocator : IDataTemplate
 }
 ```
 
+```cs
+// ViewModels/ViewModelBase.cs
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class ViewModelBase : ReactiveObject
+{
+    // Base class for all ViewModels
+    // This ensures the ViewLocator can properly identify ViewModels
+}
+```
+
 ```xml
 <!-- App.axaml -->
 <Application xmlns="https://github.com/avaloniaui"
@@ -4745,11 +4758,871 @@ When clicking "Close", `Environment.Exit(0)` will terminate all threads related 
 
 <br/>
 
-<br/>
+## Avalonia Simple Language Changer App
+
+We will start from the same "greeting" project initialized above.
+
+Let's implement a language feature by adding a dropdown (`ComboBox`) that will contain 2 languages: English (U.S.) and Français. When the user will select a language, the entire application will be shown in that language. All strings used in texts, buttons and other UI elements will need to be changed to adapt the language change by user.
+
+![Avalonia Language Picker Application](./Avalonia_LanguagePickerGreetingsApp.gif)
 
 <br/>
 
+### Language Picker using hardcoded dictionary with en-US fr-FR strings
+
+Update `MainWindow.axaml` to add ComboBox (dropdown) for language selection and bound all text to localized properties
+
+```xml
+<!-- Views/MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="500"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding WindowTitle}">
+    
+    <StackPanel Margin="20" Spacing="10">
+        <!-- Language Selection -->
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="{Binding LanguageLabel}" 
+                       VerticalAlignment="Center" 
+                       Width="80" />
+            <ComboBox ItemsSource="{Binding Languages}"
+                      SelectedItem="{Binding SelectedLanguage}"
+                      DisplayMemberBinding="{Binding DisplayName}"
+                      Width="150" />
+        </StackPanel>
+        
+        <Separator Margin="0,10" />
+        
+        <!-- Name Input -->
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" 
+                 Watermark="{Binding NameWatermark}" />
+        
+        <!-- Greet Button and Message -->
+        <Button Content="{Binding GreetButtonText}" 
+                Command="{Binding GreetCommand}" />
+        <TextBlock Text="{Binding GreetingMessage}" 
+                   FontWeight="Bold" />
+    </StackPanel>
+</Window>
+```
+
+Update `MainWindowViewModel.cs` 
+- In Constructor, we'll initialize `_localizationService = LocalizationService.Instance;`
+- For each string used in `MainWindow.axaml` (and in entire application), we use `_localizationService.GetString("HelloStranger")`
+- When user changes the langauge, call `UpdateLocalizedStrings();` implemented here...
+  - `UpdateLocalizedStrings();` manually gets and updates every string (via `_localizationService.GetString`) in the `MainWindow.axaml` (in this view) 
+
+```cs
+// ViewModels/MainWindowViewModel.cs
+using System;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Linq;
+using ReactiveUI;
+using AvaloniaTestApp.Models;
+using AvaloniaTestApp.Services;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private readonly LocalizationService _localizationService;
+    private string _userName = string.Empty;
+    private string _greetingMessage = string.Empty;
+    private string _windowTitle = string.Empty;
+    private string _nameWatermark = string.Empty;
+    private string _greetButtonText = string.Empty;
+    private string _languageLabel = string.Empty;
+    private LanguageItem _selectedLanguage;
+
+    public string UserName
+    {
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+
+    public string GreetingMessage
+    {
+        get => _greetingMessage;
+        private set => this.RaiseAndSetIfChanged(ref _greetingMessage, value);
+    }
+
+    public string WindowTitle
+    {
+        get => _windowTitle;
+        private set => this.RaiseAndSetIfChanged(ref _windowTitle, value);
+    }
+
+    public string NameWatermark
+    {
+        get => _nameWatermark;
+        private set => this.RaiseAndSetIfChanged(ref _nameWatermark, value);
+    }
+
+    public string GreetButtonText
+    {
+        get => _greetButtonText;
+        private set => this.RaiseAndSetIfChanged(ref _greetButtonText, value);
+    }
+
+    public string LanguageLabel
+    {
+        get => _languageLabel;
+        private set => this.RaiseAndSetIfChanged(ref _languageLabel, value);
+    }
+
+    public LanguageItem SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
+    }
+
+    public ObservableCollection<LanguageItem> Languages { get; }
+
+    public ReactiveCommand<Unit, Unit> GreetCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        _localizationService = LocalizationService.Instance;
+
+        // Initialize languages
+        Languages = new ObservableCollection<LanguageItem>();
+        InitializeLanguages();
+
+        // Set initial selected language
+        _selectedLanguage = Languages[0]; // English by default
+
+        // Create greet command
+        GreetCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? _localizationService.GetString("HelloStranger")
+                : _localizationService.GetString("HelloUser", UserName);
+        });
+
+        // Subscribe to language changes
+        this.WhenAnyValue(x => x.SelectedLanguage)
+            .Where(x => x != null)
+            .Subscribe(language =>
+            {
+                _localizationService.CurrentLanguage = language.Code;
+                UpdateLocalizedStrings();
+            });
+
+        // Subscribe to localization service language changes
+        _localizationService.LanguageChanged
+            .Subscribe(_ => UpdateLocalizedStrings());
+
+        // Initialize localized strings
+        UpdateLocalizedStrings();
+    }
+
+    private void InitializeLanguages()
+    {
+        Languages.Clear();
+        Languages.Add(new LanguageItem("en-US", _localizationService.GetString("English")));
+        Languages.Add(new LanguageItem("fr-FR", _localizationService.GetString("French")));
+    }
+
+    private void UpdateLocalizedStrings()
+    {
+        WindowTitle = _localizationService.GetString("WindowTitle");
+        NameWatermark = _localizationService.GetString("NameWatermark");
+        GreetButtonText = _localizationService.GetString("GreetButton");
+        LanguageLabel = _localizationService.GetString("LanguageLabel");
+
+        // Update language display names
+        Languages[0].DisplayName = _localizationService.GetString("English");
+        Languages[1].DisplayName = _localizationService.GetString("French");
+
+        // Update greeting message if it exists
+        if (!string.IsNullOrEmpty(GreetingMessage))
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? _localizationService.GetString("HelloStranger")
+                : _localizationService.GetString("HelloUser", UserName);
+        }
+
+        // Trigger property change notifications for the collection
+        this.RaisePropertyChanged(nameof(Languages));
+    }
+}
+```
+
+Create `Models/LanguageItem.cs` as a simple model for language selection items
+
+```cs
+// Models/LanguageItem.cs
+namespace AvaloniaTestApp.Models;
+
+public class LanguageItem
+{
+    public string Code { get; set; }
+    public string DisplayName { get; set; }
+
+    public LanguageItem(string code, string displayName)
+    {
+        Code = code;
+        DisplayName = displayName;
+    }
+}
+```
+
+Create `Services/LocalizationService.cs` 
+- Contains the hardcoded dictionaries for the languages
+
+```cs
+// Services/LocalizationService.cs
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reactive.Subjects;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.Services;
+
+public class LocalizationService : ReactiveObject
+{
+    private static readonly Lazy<LocalizationService> _instance = new(() => new LocalizationService());
+    public static LocalizationService Instance => _instance.Value;
+
+    private readonly Dictionary<string, Dictionary<string, string>> _resources;
+    private string _currentLanguage = "en-US";
+    private readonly Subject<string> _languageChanged = new();
+
+    public IObservable<string> LanguageChanged => _languageChanged;
+
+    public string CurrentLanguage
+    {
+        get => _currentLanguage;
+        set
+        {
+            if (_currentLanguage != value && _resources.ContainsKey(value))
+            {
+                _currentLanguage = value;
+                _languageChanged.OnNext(value);
+                this.RaisePropertyChanged();
+            }
+        }
+    }
+
+    public IEnumerable<string> AvailableLanguages => _resources.Keys;
+
+    private LocalizationService()
+    {
+        _resources = new Dictionary<string, Dictionary<string, string>>();
+        InitializeResources();
+    }
+
+    private void InitializeResources()
+    {
+        // English (US) resources
+        _resources["en-US"] = new Dictionary<string, string>
+        {
+            ["WindowTitle"] = "Avalonia Test App",
+            ["NameWatermark"] = "Enter your name",
+            ["GreetButton"] = "Greet",
+            ["HelloStranger"] = "Hello, stranger!",
+            ["HelloUser"] = "Hello, {0}!",
+            ["LanguageLabel"] = "Language:",
+            ["English"] = "English (U.S.)",
+            ["French"] = "Français"
+        };
+
+        // French resources
+        _resources["fr-FR"] = new Dictionary<string, string>
+        {
+            ["WindowTitle"] = "Application Avalonia Test",
+            ["NameWatermark"] = "Entrez votre nom",
+            ["GreetButton"] = "Saluer",
+            ["HelloStranger"] = "Bonjour, étranger!",
+            ["HelloUser"] = "Bonjour, {0}!",
+            ["LanguageLabel"] = "Langue:",
+            ["English"] = "English (U.S.)",
+            ["French"] = "Français"
+        };
+    }
+
+    public string GetString(string key)
+    {
+        if (_resources.TryGetValue(_currentLanguage, out var languageResources) &&
+            languageResources.TryGetValue(key, out var value))
+        {
+            return value;
+        }
+
+        // Fallback to English if key not found in current language
+        if (_currentLanguage != "en-US" && 
+            _resources.TryGetValue("en-US", out var englishResources) &&
+            englishResources.TryGetValue(key, out var englishValue))
+        {
+            return englishValue;
+        }
+
+        return $"[{key}]"; // Return key in brackets if not found
+    }
+
+    public string GetString(string key, params object[] args)
+    {
+        var format = GetString(key);
+        return string.Format(format, args);
+    }
+}
+```
+
 <br/>
+
+### Language Picker using dictionaries with values from en-US.json and fr-FR.json
+
+<br/>
+
+### Language Picker using Resources.resx, Resources.fr.
+
+Avalonia (and .NET in general) commonly uses `.resx` (Resource) files for localization, which is the more traditional and integrated approach. 
+
+Update `MainWindow.axaml` (it will be the same as above the language picker implementation)
+
+```xml
+<!-- /Views/MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="500"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding WindowTitle}">
+    
+    <StackPanel Margin="20" Spacing="10">
+        <!-- Language Selection -->
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="{Binding LanguageLabel}" 
+                       VerticalAlignment="Center" 
+                       Width="80" />
+            <ComboBox ItemsSource="{Binding Languages}"
+                      SelectedItem="{Binding SelectedLanguage}"
+                      DisplayMemberBinding="{Binding DisplayName}"
+                      Width="150" />
+        </StackPanel>
+        
+        <Separator Margin="0,10" />
+        
+        <!-- Name Input -->
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" 
+                 Watermark="{Binding NameWatermark}" />
+        
+        <!-- Greet Button and Message -->
+        <Button Content="{Binding GreetButtonText}" 
+                Command="{Binding GreetCommand}" />
+        <TextBlock Text="{Binding GreetingMessage}" 
+                   FontWeight="Bold" />
+    </StackPanel>
+
+</Window>
+```
+
+Update `MainWindowViewModel.cs` 
+- In Constructor, we'll initialize `_localizationService = LocalizationService.Instance;`
+- For each string used in `MainWindow.axaml` (and in entire application), we use `_localizationService.GetString("HelloStranger")`
+- When user changes the langauge, call `UpdateLocalizedStrings();` implemented here...
+  - `UpdateLocalizedStrings();` manually gets and updates every string (via `_localizationService.GetString`) in the `MainWindow.axaml` (in this view) 
+
+```cs
+// ViewModels/MainWindowViewModel.cs
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Reactive;
+using System.Reactive.Linq;
+using ReactiveUI;
+using AvaloniaTestApp.Models;
+using AvaloniaTestApp.Services;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private readonly LocalizationService _localizationService;
+    private string _userName = string.Empty;
+    private string _greetingMessage = string.Empty;
+    private string _windowTitle = string.Empty;
+    private string _nameWatermark = string.Empty;
+    private string _greetButtonText = string.Empty;
+    private string _languageLabel = string.Empty;
+    private LanguageItem _selectedLanguage;
+
+    public string UserName
+    {
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+
+    public string GreetingMessage
+    {
+        get => _greetingMessage;
+        private set => this.RaiseAndSetIfChanged(ref _greetingMessage, value);
+    }
+
+    public string WindowTitle
+    {
+        get => _windowTitle;
+        private set => this.RaiseAndSetIfChanged(ref _windowTitle, value);
+    }
+
+    public string NameWatermark
+    {
+        get => _nameWatermark;
+        private set => this.RaiseAndSetIfChanged(ref _nameWatermark, value);
+    }
+
+    public string GreetButtonText
+    {
+        get => _greetButtonText;
+        private set => this.RaiseAndSetIfChanged(ref _greetButtonText, value);
+    }
+
+    public string LanguageLabel
+    {
+        get => _languageLabel;
+        private set => this.RaiseAndSetIfChanged(ref _languageLabel, value);
+    }
+
+    public LanguageItem SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
+    }
+
+    public ObservableCollection<LanguageItem> Languages { get; }
+
+    public ReactiveCommand<Unit, Unit> GreetCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        _localizationService = LocalizationService.Instance;
+
+        // Initialize languages
+        Languages = new ObservableCollection<LanguageItem>();
+        InitializeLanguages();
+
+        // Set initial selected language
+        _selectedLanguage = Languages[0]; // English by default
+
+        // Create greet command
+        GreetCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? _localizationService.GetString("HelloStranger")
+                : _localizationService.GetString("HelloUser", UserName);
+        });
+
+        // Subscribe to language changes
+        this.WhenAnyValue(x => x.SelectedLanguage)
+            .Where(x => x != null)
+            .Subscribe(language =>
+            {
+                _localizationService.CurrentCulture = language.Culture;
+                UpdateLocalizedStrings();
+            });
+
+        // Subscribe to localization service culture changes
+        _localizationService.CultureChanged
+            .Subscribe(_ => UpdateLocalizedStrings());
+
+        // Initialize localized strings
+        UpdateLocalizedStrings();
+    }
+
+    private void InitializeLanguages()
+    {
+        Languages.Clear();
+        
+        foreach (var culture in _localizationService.SupportedCultures)
+        {
+            var displayName = culture.Name switch
+            {
+                "en-US" => _localizationService.GetString("English"),
+                "fr-FR" => _localizationService.GetString("French"),
+                _ => culture.DisplayName
+            };
+            
+            Languages.Add(new LanguageItem(culture, displayName));
+        }
+    }
+
+    private void UpdateLocalizedStrings()
+    {
+        WindowTitle = _localizationService.GetString("WindowTitle");
+        NameWatermark = _localizationService.GetString("NameWatermark");
+        GreetButtonText = _localizationService.GetString("GreetButton");
+        LanguageLabel = _localizationService.GetString("LanguageLabel");
+
+        // Update language display names
+        for (int i = 0; i < Languages.Count; i++)
+        {
+            var item = Languages[i];
+            var displayName = item.Culture.Name switch
+            {
+                "en-US" => _localizationService.GetString("English"),
+                "fr-FR" => _localizationService.GetString("French"),
+                _ => item.Culture.DisplayName
+            };
+            
+            if (item.DisplayName != displayName)
+            {
+                Languages[i] = new LanguageItem(item.Culture, displayName);
+            }
+        }
+
+        // Update greeting message if it exists
+        if (!string.IsNullOrEmpty(GreetingMessage))
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? _localizationService.GetString("HelloStranger")
+                : _localizationService.GetString("HelloUser", UserName);
+        }
+
+        // Trigger property change notifications for the collection
+        this.RaisePropertyChanged(nameof(Languages));
+    }
+}
+```
+
+Create `/Models/LanguageItem.cs` as a data model to represent the "language" in the application
+- The `Culture` property is of type `CultureInfo`, which is a .NET class representing information about a specific culture (language, country/region, formatting, etc.).
+- There are two constructors: - The `CultureInfo` part is essential for localization, as it tells the app which language and regional settings to use.
+  - One takes a CultureInfo object and a display name
+  - The other takes a culture name string (like "en-US") and a display name, and creates a CultureInfo object from the string using `CultureInfo.GetCultureInfo(cultureName)`
+
+```cs
+// /Models/LanguageItem.cs
+using System.Globalization;
+
+namespace AvaloniaTestApp.Models;
+
+public class LanguageItem
+{
+    public CultureInfo Culture { get; set; }
+    public string DisplayName { get; set; }
+
+    public LanguageItem(CultureInfo culture, string displayName)
+    {
+        Culture = culture;
+        DisplayName = displayName;
+    }
+
+    public LanguageItem(string cultureName, string displayName)
+    {
+        Culture = CultureInfo.GetCultureInfo(cultureName);
+        DisplayName = displayName;
+    }
+}
+```
+
+Create `Services/LocalizationService.cs` as a singleton that manages localization (language and culture) for the application:
+- loads localized strings from resource files using `ResourceManager`.
+- tracks the current culture (`CurrentCulture`) and notifies subscribers when it changes via `CultureChanged`.
+- provides a list of supported cultures.
+- `GetString` methods fetch localized strings, optionally formatting them.
+- `SetCulture` and `CurrentLanguage` allow changing the app's language.
+- Uses `ReactiveObject` for property change notifications, supporting reactive UI updates.
+
+```cs
+// Services/LocalizationService.cs
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
+using System.Reactive.Subjects;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.Services;
+
+public class LocalizationService : ReactiveObject
+{
+    private static readonly Lazy<LocalizationService> _instance = new(() => new LocalizationService());
+    public static LocalizationService Instance => _instance.Value;
+
+    private readonly ResourceManager _resourceManager;
+    private CultureInfo _currentCulture = CultureInfo.GetCultureInfo("en-US");
+    private readonly Subject<CultureInfo> _cultureChanged = new();
+    private readonly List<CultureInfo> _supportedCultures;
+
+    public IObservable<CultureInfo> CultureChanged => _cultureChanged;
+
+    public CultureInfo CurrentCulture
+    {
+        get => _currentCulture;
+        set
+        {
+            if (!Equals(_currentCulture, value) && _supportedCultures.Contains(value))
+            {
+                _currentCulture = value;
+                _cultureChanged.OnNext(value);
+                this.RaisePropertyChanged();
+            }
+        }
+    }
+
+    public string CurrentLanguage
+    {
+        get => _currentCulture.Name;
+        set
+        {
+            var culture = CultureInfo.GetCultureInfo(value);
+            CurrentCulture = culture;
+        }
+    }
+
+    public IEnumerable<CultureInfo> SupportedCultures => _supportedCultures;
+
+    private LocalizationService()
+    {
+        // Initialize ResourceManager to point to Resources.resx
+        _resourceManager = new ResourceManager("AvaloniaTestApp.Resources.Resources", typeof(LocalizationService).Assembly);
+        
+        // Define supported cultures
+        _supportedCultures = new List<CultureInfo>
+        {
+            CultureInfo.GetCultureInfo("en-US"),
+            CultureInfo.GetCultureInfo("fr-FR")
+        };
+    }
+
+    public string GetString(string key)
+    {
+        try
+        {
+            var value = _resourceManager.GetString(key, _currentCulture);
+            return value ?? $"[{key}]"; // Return key in brackets if not found
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error getting resource string '{key}': {ex.Message}");
+            return $"[{key}]";
+        }
+    }
+
+    public string GetString(string key, params object[] args)
+    {
+        var format = GetString(key);
+        try
+        {
+            return string.Format(format, args);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error formatting string '{key}': {ex.Message}");
+            return format;
+        }
+    }
+
+    public void SetCulture(string cultureName)
+    {
+        try
+        {
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            CurrentCulture = culture;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error setting culture '{cultureName}': {ex.Message}");
+        }
+    }
+}
+```
+
+Create `Resources/Resources.resx` for Default language (English)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="WindowTitle" xml:space="preserve">
+    <value>AvaloniaTestApp</value>
+  </data>
+    <data name="NameWatermark" xml:space="preserve">
+    <value>Enter your name</value>
+  </data>
+    <data name="GreetButton" xml:space="preserve">
+    <value>Greet</value>
+  </data>
+    <data name="HelloStranger" xml:space="preserve">
+    <value>Hello, stranger!</value>
+  </data>
+    <data name="HelloUser" xml:space="preserve">
+    <value>Hello, {0}!</value>
+  </data>
+    <data name="LanguageLabel" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+    <data name="English" xml:space="preserve">
+    <value>English (U.S.)</value>
+  </data>
+    <data name="French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+</root>
+```
+
+Create `Resources/Resources.fr.resx` for French 
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="WindowTitle" xml:space="preserve">
+    <value>Application Avalonia Test</value>
+  </data>
+    <data name="NameWatermark" xml:space="preserve">
+    <value>Entrez votre nom</value>
+  </data>
+    <data name="GreetButton" xml:space="preserve">
+    <value>Saluer</value>
+  </data>
+    <data name="HelloStranger" xml:space="preserve">
+    <value>Bonjour, étranger!</value>
+  </data>
+    <data name="HelloUser" xml:space="preserve">
+    <value>Bonjour, {0}!</value>
+  </data>
+    <data name="LanguageLabel" xml:space="preserve">
+    <value>Langue:</value>
+  </data>
+    <data name="English" xml:space="preserve">
+    <value>English (U.S.)</value>
+  </data>
+    <data name="French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+</root>
+```
 
 <br/>
 
