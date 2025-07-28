@@ -235,6 +235,35 @@ chown -R radu /home/radu
 chmod -R u+rX /home/radu
 ```
 
+- You can also enable bi-directional copy-paste (clipboard) by following these steps on the Debian VM: https://askubuntu.com/questions/1421163/ubuntu-22-04-guest-additions-cd-shared-clipboard-shared-folder-do-not-work
+
+```bash
+# On Linux Debian VM running inside Virtual Box
+su
+sudo apt update
+sudo apt install -y build-essential linux-headers-$(uname -r)
+
+# Now
+# From the VirtualBox topbar menu: 
+# Click on
+# "Devices" > click on "Insert guest additions CD...""
+
+# Then on Debian VM
+# Create a folder where to place the installation content
+
+sudo mkdir -p /mnt/cdrom
+
+# Mount the CD
+sudo mount /dev/cdrom /mnt/cdrom
+
+# Run the installation software in the mount
+cd /mnt/cdrom
+sudo ./VBoxLinuxAdditions.run
+
+# Reboot the VM
+sudo reboot
+```
+
 <br/>
 
 Install .NET 8 on Debian VM on Virtual Box (while not connected to any VPN):
@@ -3202,6 +3231,63 @@ public class HomePageViewModel : ViewModelBase
 
 <br/>
 
+### New window without new xaml file
+
+In an existing xaml file, add:
+
+```xml
+<Button Content="Open a new window"
+        Command="{Binding OpenNewWindowCommand}"
+        Margin="0, 24,0,0" />
+```
+
+In the existing viewmodel associated to that xaml file, add:
+
+- before constructor
+
+```cs
+public ReactiveCommand<Unit, Unit> OpenNewWindowCommand { get; }
+public class MyWindowViewModel : ViewModelBase
+{
+  public MyWindowViewModel()
+  {
+    Console.WriteLine("MyWindowViewModel Constructor: Execute here any CS code!")
+  }
+}
+```
+
+- in costructor
+
+```cs
+OpenNewWindowCommand = ReactiveCommand.Create(() =>
+{
+  var viewModel = new MyWindowViewModel();
+
+  // Bujld some content in this new window
+  var stackPanel = new StackPanel
+  {
+    Children = 
+    {
+      new TextBlock { Text = "Hello!" },
+      new TextBox { [!TextBox.TextProperty] = new Binding("SomeProperty") }
+    }
+  };
+
+  var testWindow = new WindowTitle
+  {
+    Title = "New Test Window",
+    Width = 300,
+    Height = 300,
+    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+    Content = stackPanel,
+    DataContext = viewModel
+  }
+  testWindow.Show();
+});
+```
+
+<br/>
+
 ## Avalonia XAML UI Elements
 
 ### Avalonia Images
@@ -3222,9 +3308,39 @@ In Avalonia Images are stored as `Assets`.
 
 #### Local Image using declarative/hardcoded path
 
-![Avalonia Image Tag](./Avalonia_UI_ImageExample.jpg)
-
 Make sure to have `<AvaloniaResource Include="Assets\**" />` added in your `csproj` file.
+
+```xml
+<!-- AvaloniaFirstUIApp/AvaloniaFirstUIApp.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.2.7" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.7" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.7" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.7" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.7" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.2.7">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    </ItemGroup>
+</Project>
+```
 
 Then, in your xaml view, just add:
 
@@ -3232,6 +3348,8 @@ Then, in your xaml view, just add:
 <Image Source="/Assets/cat-pexels-henda-watani.jpg"
        MaxWidth="300"></Image>
 ```
+
+![Avalonia Image Tag](./Avalonia_UI_ImageExample.jpg)
 
 <br/>
 
@@ -5623,6 +5741,455 @@ Create `Resources/Resources.fr.resx` for French
   </data>
 </root>
 ```
+
+<br/>
+
+## Avalonia Simple Stopwatch Timer
+
+(Monday, July 28, 2025, 20:20)
+
+Based on this simple .NET8 Avalonia 11.3.2 using ReactiveUI Application, containing the current files:
+
+```cs
+// Program.cs
+using Avalonia;
+using System;
+using Avalonia.ReactiveUI;
+
+namespace AvaloniaTestApp;
+
+sealed class Program
+{
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace()
+            .UseReactiveUI();
+}
+```
+
+```cs
+// ViewLocator.cs
+using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using AvaloniaTestApp.ViewModels;
+
+namespace AvaloniaTestApp;
+
+public class ViewLocator : IDataTemplate
+{
+
+    public Control? Build(object? param)
+    {
+        if (param is null)
+            return null;
+        
+        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+        var type = Type.GetType(name);
+
+        if (type != null)
+        {
+            return (Control)Activator.CreateInstance(type)!;
+        }
+        
+        return new TextBlock { Text = "Not Found: " + name };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is ViewModelBase;
+    }
+}
+```
+
+```cs
+// ViewModels/ViewModelBase.cs
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class ViewModelBase : ReactiveObject
+{
+    // Base class for all ViewModels
+    // This ensures the ViewLocator can properly identify ViewModels
+}
+```
+
+```xml
+<!-- App.axaml -->
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaTestApp.App"
+             xmlns:local="using:AvaloniaTestApp"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>
+```
+
+```cs
+// App.axaml.cs
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core;
+using Avalonia.Data.Core.Plugins;
+using System.Linq;
+using Avalonia.Markup.Xaml;
+using AvaloniaTestApp.ViewModels;
+using AvaloniaTestApp.Views;
+
+namespace AvaloniaTestApp;
+
+public partial class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+            DisableAvaloniaDataAnnotationValidation();
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void DisableAvaloniaDataAnnotationValidation()
+    {
+        // Get an array of plugins to remove
+        var dataValidationPluginsToRemove =
+            BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
+
+        // remove each entry found
+        foreach (var plugin in dataValidationPluginsToRemove)
+        {
+            BindingPlugins.DataValidators.Remove(plugin);
+        }
+    }
+}
+```
+
+And most important:
+
+```xml
+<!-- Views/MainWindow.axaml -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="500"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaTestApp">
+    
+    <StackPanel Margin="20" Spacing="10">
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" Watermark="Enter your name" />
+        <Button Content="Greet" Command="{Binding GreetCommand}" />
+        <TextBlock Text="{Binding GreetingMessage}" FontWeight="Bold" />
+    </StackPanel>
+
+</Window>
+```
+
+```cs
+// Views/MainWindow.axaml.cs
+using Avalonia.Controls;
+
+namespace AvaloniaTestApp.Views;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+}
+```
+
+```cs
+// ViewModels / MainWindowViewModel.cs
+using System.Reactive;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private string _userName;
+    public string UserName
+    {
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+
+    private string _greetingMessage;
+    public string GreetingMessage
+    {
+        get => _greetingMessage;
+        private set => this.RaiseAndSetIfChanged(ref _greetingMessage, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> GreetCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        GreetCommand = ReactiveCommand.Create(() =>
+        {
+            GreetingMessage = string.IsNullOrWhiteSpace(UserName)
+                ? "Hello, stranger!"
+                : $"Hello, {UserName}!";
+        });
+    }
+}
+```
+
+Let's modify the app to contain a stopwatch functionality.
+
+The stopwatch will have buttons to allow the users to start, pause, and reset the timer, displaying the elapsed time in a user-friendly format, e.g. `HH:mm:ss`.
+
+![Avalonia .NET8 Stopwatch Timer](./Avalonia_StopwatchTimer.gif)
+
+<br/>
+
+`MainWindowViewModel` Changes:
+
+-   **Stopwatch Core**: Uses `System.Diagnostics.Stopwatch` for accurate timing
+-   **Reactive Properties**:
+    -   `ElapsedTime` - displays the formatted time (`HH:mm:ss.ff`)
+    -   `IsRunning` - tracks the stopwatch state
+-   **Commands**:
+    -   `StartCommand` - only enabled when not running
+    -   `PauseCommand` - only enabled when running
+    -   `ResetCommand` - always available
+-   **Auto-Update**: Uses `Observable.Interval` to update the display every 100ms for time updates
+
+```cs
+using System;
+using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Linq;
+using ReactiveUI;
+
+namespace AvaloniaTestApp.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
+{
+    private readonly Stopwatch _stopwatch;
+    private IDisposable? _timerSubscription;
+
+    private string _elapsedTime = "00:00:00";
+    public string ElapsedTime
+    {
+        get => _elapsedTime;
+        private set => this.RaiseAndSetIfChanged(ref _elapsedTime, value);
+    }
+
+    private bool _isRunning;
+    private bool IsRunning
+    {
+        get => _isRunning;
+        set => this.RaiseAndSetIfChanged(ref _isRunning, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> StartCommand { get; }
+    public ReactiveCommand<Unit, Unit> PauseCommand { get; }
+    public ReactiveCommand<Unit, Unit> ResetCommand { get; }
+
+    public MainWindowViewModel()
+    {
+        _stopwatch = new Stopwatch();
+
+        // Create commands with appropriate enabling conditions
+        StartCommand = ReactiveCommand.Create(Start, this.WhenAnyValue(x => x.IsRunning, running => !running));
+        PauseCommand = ReactiveCommand.Create(Pause, this.WhenAnyValue(x => x.IsRunning));
+        ResetCommand = ReactiveCommand.Create(Reset);
+
+        // Start the timer that updates the display every 100ms
+        StartTimer();
+    }
+
+    private void Start()
+    {
+        _stopwatch.Start();
+        IsRunning = true;
+    }
+
+    private void Pause()
+    {
+        _stopwatch.Stop();
+        IsRunning = false;
+    }
+
+    private void Reset()
+    {
+        _stopwatch.Reset();
+        IsRunning = false;
+        UpdateElapsedTime();
+    }
+
+    private void StartTimer()
+    {
+        // Update the display every 100 milliseconds
+        _timerSubscription = Observable.Interval(TimeSpan.FromMilliseconds(100))
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(_ => UpdateElapsedTime());
+    }
+
+    private void UpdateElapsedTime()
+    {
+        var elapsed = _stopwatch.Elapsed;
+        ElapsedTime = elapsed.ToString(@"hh\:mm\:ss\.ff");
+    }
+
+    // Cleanup when the ViewModel is disposed
+    public void Dispose()
+    {
+        _timerSubscription?.Dispose();
+    }
+}
+```
+
+`MainWindow.axaml` Changes:
+
+-   **Time Display**: Large, monospaced font in a styled border for easy reading
+-   **Control Buttons**: Color-coded buttons (green for start, orange for pause, red for reset)
+-   **Responsive UI**: Buttons are automatically enabled/disabled based on the stopwatch state
+
+```xml
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTestApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTestApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="400"
+        Height="250"
+        Background="#0d0d0e"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Stopwatch App">
+
+        <StackPanel Margin="20"
+                    Spacing="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <!-- Elapsed Time Display -->
+                <Border Background="#121416"
+                        CornerRadius="10"
+                        Padding="20,15"
+                        BorderBrush="Transparent"
+                        BorderThickness="1">
+                        <TextBlock Text="{Binding ElapsedTime}"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   FontFamily="Consolas, monospace"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                </Border>
+
+                <!-- Control Buttons -->
+                <StackPanel Orientation="Horizontal"
+                            Spacing="15"
+                            HorizontalAlignment="Center">
+                        <Button Content="Start"
+                                Command="{Binding StartCommand}"
+                                Width="60"
+                                Height="30"
+                                FontSize="14"
+                                Background="#2b627c"
+                                Foreground="White"
+                                CornerRadius="5" />
+                        <Button Content="Pause"
+                                Command="{Binding PauseCommand}"
+                                Width="60"
+                                Height="30"
+                                FontSize="14"
+                                Background="#cabfa6"
+                                Foreground="White"
+                                CornerRadius="5" />
+                        <Button Content="Reset"
+                                Command="{Binding ResetCommand}"
+                                Width="60"
+                                Height="30"
+                                FontSize="14"
+                                Background="#e47272"
+                                Foreground="White"
+                                CornerRadius="5" />
+                </StackPanel>
+        </StackPanel>
+</Window>
+```
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
+
+<br/>
 
 <br/>
 

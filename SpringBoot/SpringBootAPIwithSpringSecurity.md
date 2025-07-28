@@ -1925,3 +1925,9 @@ Implement Security Filter Chain for REST API in Spring Security 5.7.11
 [Spring Boot API with Spring Security and Docker - Dockerfile - 2h20m](https://youtu.be/0iNmWIi5rG4?t=8425)
 
 TODO...
+
+<br/>
+
+---
+
+NEXT STEPS AFTER LEARNING BASIC AUTH (with username/pass sent on every request) - Learn token based auth such as OAuth https://auth0.com/intro-to-iam/what-is-oauth-2

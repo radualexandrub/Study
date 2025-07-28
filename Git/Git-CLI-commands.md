@@ -361,6 +361,8 @@ git push origin --delete my_new_branch
 
     Note: Make sure that it has been reviewed by at least one or two other person on your team. This will help catch any bugs or issues before they make it into the main codebase.
 
+    **Note [IMPORTANT]: When leaving comments on a PR (Pull Request) on GitHub, make sure they are NOT IN "PENDING" by clicking "finish review" (which means "DRAFT" / "ONLY VISIBLE TO YOU", namely these "Pending" comments are only visible to you and not other colleagues) ⚠⚠⚠ Please see: https://github.com/orgs/community/discussions/10369 (_Make it clear that "PENDING" comments have to be submitted #10369_)** 
+
 10. If you encounter merge conflicts while applying the stash or merging the new branch:
 
     - Resolve the conflicts manually by editing the affected files

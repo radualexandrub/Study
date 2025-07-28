@@ -1498,6 +1498,18 @@ In `top` command you can press:
   - `SHIFT+p` (Capital P) - Sort by `%CPU`
   - `SHIFT+t` (Capital T) - Sort by `TIME+`
 
+- FILTERING of tasks/processes by their COMMAND name
+  - `O` (Capital O) then write `COMMAND=<TaskName>` (e.g. `COMMAND=dotnet`)
+
+<br/>
+
+Note: you can kill all the processes with that Name with the `pkill -f <name>` command (e.g. `pkill -f dotnet`), and with another terminal in background running `top` you can see the processes with that name dissapear. E.g. workflow:
+  - Run `top` command in a terminal
+  - Press `SHIFT M` to sort by memory descending
+  - Press `E`, `E` to show the processes by GB of RAM used (instead of KB units)
+  - Press `O` and write `COMMAND=dotnet`
+  - In a separate terminal you may run `pkill -f dotnet`
+
 <br/>
 
 More notes on `top` command here:
