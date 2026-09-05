@@ -13,12 +13,12 @@
 - f.lux: https://justgetflux.com/
 - LightShot: https://app.prntscr.com/en/download.html
 - Windirstat: https://windirstat.net/download.html
-- CCleaner: https://www.ccleaner.com/
+- ScreenRec fast recorder: https://screenrec.com/download-screenrec/
+- CCleaner: https://www.ccleaner.com/ (or search for open source app or CMD commands for registry cleaner alternative?)
 - Microsoft Power Toys: https://github.com/microsoft/PowerToys/releases/tag/v0.33.1 (scroll down to Assets to download)
 - Adobe Reader: https://get2.adobe.com/ro/reader/
 - Foxit Phantom PDF Business [SEE LICENSE]
 - [VLC media player](https://www.videolan.org/vlc/download-windows.html)
-- ScreenRec fast recorder: https://screenrec.com/download-screenrec/
 - Flashback Express Recorder: https://www.flashbackrecorder.com/express/
 - Audacity (portable): https://www.audacityteam.org/
 - [Mathpix snipping tool](https://mathpix.com/)
@@ -29,7 +29,6 @@
 - Steam: https://store.steampowered.com/about/
 - Epic Games Launcher: https://www.epicgames.com/store/en-US/download
 - Discord: https://discord.com/download
-- Monday: https://support.monday.com/hc/en-us/articles/115005316885-Does-monday-com-have-a-desktop-app-
 - Thunderbird: https://www.thunderbird.net/en-US/
 
 ### Browsers
@@ -55,7 +54,8 @@
 
 ### Work
 
-- Git and Git GUI: https://git-scm.com/downloads
+- Git and Git GUI: https://git-scm.com/downloads [OLD]
+- GH (Newer Git CLI): https://cli.github.com/
 - Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
 - [Postgre SQL](https://www.postgresql.org/download/) and/or [MySQL](https://dev.mysql.com/downloads/installer/)
   
@@ -64,7 +64,6 @@
 - FTP:
   - FileZilla Client: https://filezilla-project.org/download.php?platform=win64
   - WinSCP (better): https://winscp.net/eng/download.php
-- Kite: https://www.kite.com/
 - [CodeBlocks?](http://www.codeblocks.org/downloads)
 - [Article on How to properly install Java JDK 13 on Windows + Eclipse 2020](https://www.guru99.com/install-java.html)
 - Node.js: https://nodejs.org/en/

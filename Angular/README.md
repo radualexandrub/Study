@@ -89,6 +89,36 @@ https://angular.io/guide/what-is-angular#first-party-libraries
 
 <br/>
 
+## New: Managing Node versions with NVM on Windows
+
+Based on issue: https://github.com/coreybutler/nvm-windows/issues/1229 (January 2025) we need to download NVM 1.1.12.
+
+Download and install NVM 1.1.12 (windows exe `nvm-setup.exe`) from here https://github.com/coreybutler/nvm-windows/releases/tag/1.1.12
+
+Then run ( as per README https://github.com/nvm-sh/nvm ):
+
+```bash
+nvm -v
+
+nvm list
+
+nvm install 24
+
+nvm use 24
+
+node -v
+
+npm -v
+```
+
+--- Updated Saturday, September 05, 2026
+
+Download https://github.com/nvm-windows/nvm/releases/tag/v2.0.0 -> nvm-2.0.0-amd64-setup.exe -> Then run the above.
+
+Check latest LTS stable Node version at https://nodejs.org/en/download
+
+<br/>
+
 ## Components Introduction
 
 **Angular is Component Driven**. A component includes a TypeScript class with a `@Component()` decorator, an HTML template, and styles. The `@Component()` decorator specifies the following Angular-specific information:
